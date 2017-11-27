@@ -18,8 +18,8 @@
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
         $fname = isset($_POST['fname'])?$instance->re_db_input($_POST['fname']):'';
         $lname = isset($_POST['lname'])?$instance->re_db_input($_POST['lname']):'';
-        $email = isset($_POST['uname'])?$instance->re_db_input($_POST['uname']):'';
-        $uname = isset($_POST['email'])?$instance->re_db_input($_POST['email']):'';
+        $email = isset($_POST['email'])?$instance->re_db_input($_POST['email']):'';
+        $uname = isset($_POST['uname'])?$instance->re_db_input($_POST['uname']):'';
         $user_image = isset($_POST['user_image'])?$_POST['user_image']:array();
         //echo '<pre>';print_r($_POST);exit;
         $return = $instance->insert_update($_POST);

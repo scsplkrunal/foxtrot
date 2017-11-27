@@ -11,13 +11,16 @@
 <link href="css/bootstrap.min.css" rel="stylesheet" />
 <!-- font-awesome -->
 <link href="css/font-awesome.min.css" rel="stylesheet" />
+<!-- font-awesome -->
+<!--<link href="css/nifty.min.css" rel="stylesheet" />-->
 <!-- common-styles -->
 <link href="css/style.css" rel="stylesheet" />
 <!-- Fevicon -->
 <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
-
+<link href="<?php echo SITE_CSS; ?>bootstrap-datepicker.min.css" rel="stylesheet"/>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
-<script src="js/jquery.min.js"></script> 
+<script src="js/jquery.min.js"></script>
+<script src="<?php echo SITE_JS; ?>bootstrap-datepicker.min.js"></script> 
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -32,19 +35,19 @@
 <div class="sectionwrapper">
   <div class="container">
     <div class="headertop">
-      <div class="sitelogo"><a href="#" title="Foxtrot"><img src="images/sitelogo.png" alt="Foxtrot" /></a></div>
+      <div class="sitelogo"><a href="home.php" title="Foxtrot"><img src="images/sitelogo.png" alt="Foxtrot" /></a></div>
       <div class="headertopright">
 		<a href="#" class="userinfo"><i class="fa fa-info-circle"></i></a>
 		<div class="userlogin">
-			<div class="userimg"><img src="images/usericon.jpg" alt="User Image" /></div>
+			<div class="userimg"><img src="images/usericon.jpeg" alt="User Image" /></div>
 			<ul class="nav navbar-nav">
                  <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">John
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">User
                     <i class="fa fa-angle-down"></i>
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="sign-out.php">Logout</a></li>
-						<li><a href="#">Option 02</a></li>
+						<!--li><a href="#">Option 02</a></li-->
                     </ul>
                  </li>              
              </ul>
@@ -97,8 +100,9 @@
                 <ul class="dropdown-menu">
 				  <li><a href="#">Mulit-Company Maintenance</a></li>
 				  <li><a href="#">Branch Maintenance</a></li>
-				  <li><a href="#">Broker Maintenance</a></li>
-                  <li><a href="#">Client Maintenance</a></li>
+				  <li><a href="<?php echo SITE_URL; ?>manage_broker.php">Broker Maintenance</a></li>
+                  <li><a href="product_cate.php">Product Maintenance</a></li>
+                  <li><a href="client_maintenance.php">Client Maintenance</a></li>
 				</ul>
               </li>		  
 			  <li>
@@ -117,10 +121,11 @@
 				  <li><a href="data_interface.php">Data Interface</a></li>
 				  <li><a href="of_fi.php">OFAC/FINCH</a></li>
                   <li><a href="client_ress.php">client Reassignment</a></li>
-				  <li><a href="#">Account Type Maintenance</a></li>
-				  <li><a href="#">Product category Maintenance</a></li>
-                  <li><a href="#">System Configuration</a></li>
-				  <li><a href="#">Rebuild Data File</a></li>
+				  <li><a href="account_type.php">Account Type Maintenance</a></li>
+				  <li><a href="product_category_maintenance.php">Product category Maintenance</a></li>
+                  <li><a href="system_config.php">System Configuration</a></li>
+                  <li><a href="client_suitability.php">Client Suitability</a></li>
+                  <li><a href="payroll_adjustment.php">Payroll Adjustment</a></li>
 				</ul>
 			  </li>
 			</ul>

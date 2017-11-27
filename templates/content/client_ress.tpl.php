@@ -58,5 +58,13 @@
             </div>
            </div>
         </div>
+        
+            <div class="panel-footer">
+                <div class="selectwrap">
+					<input type="button" name="proceed" class="btn btn-warning btn-lg btn3d " value="Proceed"/>
+					<input type="button" name="cancel" class="btn btn-warning btn-lg btn3d " value="Cancel"/>
+                </div>
+            </div>
+        
     </div>
 </div>

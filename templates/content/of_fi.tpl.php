@@ -9,32 +9,31 @@
         </ul>
         <div class="tab-content col-md-10">
                 <div class="tab-pane active" id="tab_a">
-                    <div class="selectwrap">
-                        <div class="row"><center>
-            					<button name="connect" class="btn btn-warning btn-lg btn3d" onclick="waitingDialog.show();setTimeout(function () {waitingDialog.hide();}, 5000);" >OFAC Connect</button>	
-                                <button name="download" class="btn btn-warning btn-lg btn3d">OFAC Download</button></center>
+                        <div class="selectwrap"><center>
+                					<input type="button" name="connect" class="btn btn-warning btn-lg btn3d" onclick="waitingDialog.show();setTimeout(function () {waitingDialog.hide();}, 5000);" value="OFAC Connect" />	
+                                    <input type="button" name="download" class="btn btn-warning btn-lg btn3d" value="OFAC Download"/></center> 
                         </div>
-                    </div>
+                   
                 </div>
                 <div class="tab-pane " id="tab_b">
                     <div class="selectwrap">
                         <div class="row"><center>
-            					<button name="connect" class="btn btn-warning btn-lg btn3d">OFAC System Scan</button></center>
+            					<input type="button" name="connect" class="btn btn-warning btn-lg btn3d" onclick="waitingDialog.show();setTimeout(function () {waitingDialog.hide();}, 5000);" value="OFAC System Scan"/></center>
                         </div>
                     </div>
                 </div>
                 <div class="tab-pane " id="tab_c">
                     <div class="selectwrap">
                         <div class="row"><center>
-            					<button name="connect" class="btn btn-warning btn-lg btn3d" onclick="waitingDialog.show();setTimeout(function () {waitingDialog.hide();}, 5000);">FINCEN Connect</button>	
-                                <button name="download" class="btn btn-warning btn-lg btn3d">FINCEN Download</button></center>
+            					<input type="button" name="connect" class="btn btn-warning btn-lg btn3d" onclick="waitingDialog.show();setTimeout(function () {waitingDialog.hide();}, 5000);" value="FINCEN Connect"/>	
+                                <input type="button" name="download" class="btn btn-warning btn-lg btn3d" value="FINCEN Download"/></center>
                         </div>
                     </div>
                 </div>
                 <div class="tab-pane " id="tab_d">
                     <div class="selectwrap">
                         <div class="row"><center>
-            					<button name="connect" class="btn btn-warning btn-lg btn3d">FINCEN System Scan</button></center>
+            					<input type="button" name="connect" class="btn btn-warning btn-lg btn3d" onclick="waitingDialog.show();setTimeout(function () {waitingDialog.hide();}, 5000);" value="FINCEN System Scan"/></center>
                         </div>
                     </div>
                 </div>
@@ -71,7 +70,7 @@ var waitingDialog = waitingDialog || (function ($) {
 				options = {};
 			}
 			if (typeof message === 'undefined') {
-				message = 'Loading';
+				message = 'Connecting...';
 			}
 			var settings = $.extend({
 				dialogSize: 'm',

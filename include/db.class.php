@@ -37,7 +37,7 @@ class db
         die('<font color="#000000"><b>' . $errno . ' - ' . $error . '<br><br>' . $query . '<br><br><small><font color="#ff0000">[RE STOP]</font></small><br><br></b></font>');
 		}
 		else{
-			die('something went wrong, please try agina');
+			die('something went wrong, please try again');
 		}
     }
      
@@ -828,7 +828,7 @@ class db
         $insert_common_sql = " , `created_ip`='".$this->get_client_ip()."', `created_by`='".$_SESSION['user_id']."', `created_time`='".CURRENT_DATETIME."' ";
         return $insert_common_sql;
     }
-
+/*
     public function send_email($to,$subject,$body,$cc=array(),$bcc=array(),$attachemnt=array()){
         
         // Configuring SMTP server settings
@@ -866,7 +866,53 @@ class db
         }
         
     }
-    
+    */
+    public function send_email($to,$subject,$body,$cc=array(),$bcc=array(),$attachemnt=array()){
+        
+        // Configuring SMTP server settings
+        $mail = new PHPMailer();
+	    $mail->isSMTP();
+        //$mail->Mailer = "smtp";
+        //$mail->SMTPDebug = true;
+        $mail->isMail();
+        //$mail->SMTPDebug = 1;
+	    $mail->Host = SMTP_HOST;
+        
+	    $mail->Port = 465; // 465 587
+	    $mail->SMTPSecure = 'ssl'; //tls ssl
+	    $mail->SMTPAuth = true;
+	    $mail->setFrom(SMTP_ID,'FoxtrotSoftware');
+	    $mail->Username = SMTP_ID;
+	    $mail->Password = SMTP_PASSWORD;
+        
+        foreach($to as $key=>$val){
+            $mail->addAddress($val);
+        }
+        foreach($cc as $key=>$val){
+            $mail->AddCC($val);
+        }
+        foreach($bcc as $key=>$val){
+            $mail->AddBCC($val);
+        }
+        foreach($attachemnt as $key=>$val){
+            $mail->AddAttachment($val,'Attachment');
+        }
+        //$mail->AddBCC('scspl.amarshi@gmail.com');
+        $mail->Subject = $subject;
+        $mail->isHTML(true);    
+        $mail->msgHTML($body);
+        //var_dump($mail->send());exit;
+        // Success or Failure
+        if($mail->send())
+        {
+            return true;
+        }
+        else 
+        {
+            return false;
+        }
+        
+    }
     public function buildTree(array $elements, $parentId = 0, $id='id', $parent_key='parent_id') {
         $branch = array();
     

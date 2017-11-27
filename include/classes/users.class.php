@@ -211,17 +211,25 @@
                                         </div>
                                     </body>
                                 </html>';
-                        $this->send_email(array($email),$subject,$body);
-    				    $_SESSION['success'] = 'Email with username and password has been sent to your email address.';
-    					return true;
+                        if($this->send_email(array($email),$subject,$body))
+                        {
+                            $_SESSION['success'] = 'Email with username and password has been sent to your email address.';
+    					    return true;   
+                        }
+                        else
+                        {
+                            $_SESSION['warning'] = 'Something went wrong, please try again.#2';
+                            return false;    
+                        }
     				}
     				else{
-    					$_SESSION['warning'] = 'Something went wrong, please try again.';
+    					$_SESSION['warning'] = 'Something went wrong, please try again.#1';
                         return false;
     				}
                 }
                 else{
-                    return 'Please enter valid email.';exit;
+                    $_SESSION['error'] = 'Please enter registered email address!';
+                    return false;
                 }
             
             }

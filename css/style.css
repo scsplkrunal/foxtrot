@@ -44,6 +44,10 @@ select {
     -moz-appearance: none;
     -ms-appearance: none \9;
     -o-appearance: none;
+   	background-color: #fff;
+	background-image:url(../assets/images/icondrp.png) !important;
+	background-repeat:no-repeat;
+	background-position:95% 15px;
 }
 select::-ms-expand {
  display:none;
@@ -114,7 +118,7 @@ select::-ms-expand {
 	margin-top:7px !important;
 }
 .selectwrap input[type="submit"], .selectwrap input[type="button"] {
-	background: #fb641f;
+	background: #EF7623;
 	border: none;
 	border-radius: 0;
 	color: #fff;
@@ -122,14 +126,40 @@ select::-ms-expand {
 	font-weight: 600;
 	font-size: 13px;
 	height: 34px;
-	padding: 0 25px;
+	padding: 0 15px;
 	text-transform: uppercase;
 	border: none;
 	margin: 0 7px 0 1px;
 	vertical-align: middle;
 }
+.checkbox{
+  width: 25px; /*Desired width*/
+  height: 25px; /*Desired height*/
+}
+.radio{
+  width: 20px; /*Desired width*/
+  height: 20px; /*Desired height*/
+}
 .selectwrap input[type="submit"]:hover, .selectwrap input[type="button"]:hover {
 	background:#333333;
+	-webkit-transition: all 0.3s;
+	transition: all 0.3s;
+}
+.default_button{
+    background: #EF7623;
+	border: none;
+	border-radius: 0;
+	color: #fff;
+	font-weight: 600;
+	font-size: 13px;
+	height: 34px;
+	padding: 0 15px;
+	border: none;
+	margin: 0 7px 0 1px;
+	vertical-align: middle;
+}
+.default_button:hover{
+    background:#333333;
 	-webkit-transition: all 0.3s;
 	transition: all 0.3s;
 }
@@ -442,6 +472,7 @@ select::-ms-expand {
 	float:none;
 }
 }
+
 
 
 

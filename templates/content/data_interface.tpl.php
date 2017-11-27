@@ -107,7 +107,7 @@
                                     <label>Local Folder </label>
                                 </div>
                                 <div class="col-sm-6 form-group">
-                                    <input type="file" name="file1"  class="form-control" />
+                                    <input type="file" class="form-control" name="flup" class="form-control" webkitdirectory mozdirectory msdirectory odirectory directory />
                                 </div>
                             </div>	
                             <div class="selectwrap">
@@ -159,7 +159,7 @@
                                     <label>Local Folder </label>
                                 </div>
                                 <div class="col-sm-6 form-group">
-                                    <input type="file" name="file1"  class="form-control" />
+                                    <input type="file" class="form-control" name="flup" class="form-control" webkitdirectory mozdirectory msdirectory odirectory directory />
                                 </div>
                             </div>	
                             <div class="selectwrap">
@@ -211,7 +211,7 @@
                                     <label>Local Folder </label>
                                 </div>
                                 <div class="col-sm-6 form-group">
-                                    <input type="file" name="file1"  class="form-control" />
+                                    <input type="file" class="form-control" name="flup" class="form-control" webkitdirectory mozdirectory msdirectory odirectory directory />
                                 </div>
                             </div>	
                             <div class="selectwrap">
@@ -253,7 +253,7 @@
                                     <label>Local Folder </label>
                                 </div>
                                 <div class="col-sm-6 form-group">
-                                    <input type="file" name="file1"  class="form-control" />
+                                    <input type="file" class="form-control" name="flup" class="form-control" webkitdirectory mozdirectory msdirectory odirectory directory />
                                 </div>
                             </div>	
                             <div class="selectwrap">
@@ -295,7 +295,7 @@
                                     <label>Local Folder </label>
                                 </div>
                                 <div class="col-sm-6 form-group">
-                                    <input type="file" name="file1"  class="form-control" />
+                                    <input type="file" class="form-control" name="flup" class="form-control" webkitdirectory mozdirectory msdirectory odirectory directory />
                                 </div>
                             </div>	
                             <div class="selectwrap">
@@ -337,7 +337,7 @@
                                     <label>Local Folder </label>
                                 </div>
                                 <div class="col-sm-6 form-group">
-                                    <input type="file" name="file1"  class="form-control" />
+                                    <input type="file"  class="form-control" name="flup" class="form-control" webkitdirectory mozdirectory msdirectory odirectory directory />
                                 </div>
                             </div>	
                             <div class="selectwrap">
@@ -379,7 +379,7 @@
                                     <label>Local Folder </label>
                                 </div>
                                 <div class="col-sm-6 form-group">
-                                    <input type="file" name="file1"  class="form-control" />
+                                    <input type="file" class="form-control" name="flup" class="form-control" webkitdirectory mozdirectory msdirectory odirectory directory />
                                 </div>
                             </div>	
                             <div class="selectwrap">
