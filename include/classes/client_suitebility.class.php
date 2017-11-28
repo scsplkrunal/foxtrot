@@ -1,7 +1,7 @@
 <?php
-	class product_master extends db{
+	class client_suitebility_master extends db{
 		
-		public $table = PRODUCT_TYPE;
+		public $table = CLIENT_SUITABILITY;
 		public $errors = '';
         
         /**
@@ -20,7 +20,7 @@
 				return $this->errors;
 			}
 			else{
-				    
+				
 				/* check duplicate record */
 				$con = '';
 				if($id>0){
@@ -74,7 +74,7 @@
 		 * @param int status, default all
 		 * @return array of record if success, error message if any errors
 		 * */
-		public function select_product_type(){
+		public function select_client_suitability(){
 			$return = array();
 			
 			$q = "SELECT `at`.*
@@ -113,7 +113,7 @@
 		 * @param status to update
 		 * @return true if success, false message if any errors
 		 * */
-		public function status($id,$status){
+		/*public function status($id,$status){
 			$id = trim($this->re_db_input($id));
 			$status = trim($this->re_db_input($status));
 			if($id>0 && ($status==0 || $status==1) ){
@@ -132,13 +132,13 @@
 			     $_SESSION['warning'] = UNKWON_ERROR;
 				return false;
 			}
-		}
+		}*/
 		
 		/**
 		 * @param id of record
 		 * @return true if success, false message if any errors
 		 * */
-		/*public function delete($id){
+		public function delete($id){
 			$id = trim($this->re_db_input($id));
 			if($id>0 && ($status==0 || $status==1) ){
 				$q = "UPDATE `".$this->table."` SET `is_delete`='1' WHERE `id`='".$id."'";
@@ -156,7 +156,7 @@
 			     $_SESSION['warning'] = UNKWON_ERROR;
 				return false;
 			}
-		}*/
+		}
         
     }
 ?>

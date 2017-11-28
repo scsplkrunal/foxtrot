@@ -10,19 +10,11 @@
 		 * */
 		public function insert_update($data){
 			$id = isset($data['id'])?$this->re_db_input($data['id']):0;
-			$advance = isset($data['advance'])?$this->re_db_input($data['advance']):'';
-			$advertising = isset($data['advertising'])?$this->re_db_input($data['advertising']):'';
-            $advisor_chanel = isset($data['advisor_chanel'])?$this->re_db_input($data['advisor_chanel']):'';
+			$type = isset($data['type'])?$this->re_db_input($data['type']):'';
             
-			if($advance==''){
-				$this->errors = '<br />Please enter advance...';    
+			if($type==''){
+				$this->errors = '<br />Please enter Type...';    
 			}
-			if($advertising==''){
-                $this->errors .= '<br />Please enter advertising...';        
-            }
-            if($advisor_chanel==''){
-			    $this->errors .= '<br />Please enter advisor_chanel...';
-            }
 			if($this->errors!=''){
 				return $this->errors;
 			}
@@ -45,7 +37,7 @@
 				}
 				else if($id>=0){
 					if($id==0){
-						$q = "INSERT INTO `".$this->table."` SET `advance`='".$advance."' , `advertising`='".$advertising."' ,`advisor_chanel`='".$advisor_chanel."'".$this->insert_common_sql();
+						$q = "INSERT INTO `".$this->table."` SET `type`='".$type."' ".$this->insert_common_sql();
 						$res = $this->re_db_query($q);
                         $id = $this->re_db_insert_id();
 						if($res){
@@ -58,7 +50,7 @@
 						}
 					}
 					else if($id>0){
-						$q = "UPDATE `".$this->table."` SET `advance`='".$advance."' , `advertising`='".$advertising."' ,`advisor_chanel`='".$advisor_chanel."' ".$this->update_common_sql()." WHERE `id`='".$id."'";
+						$q = "UPDATE `".$this->table."` SET `type`='".$type."' ".$this->update_common_sql()." WHERE `id`='".$id."'";
 						$res = $this->re_db_query($q);
 						if($res){
 						    $_SESSION['success'] = UPDATE_MESSAGE;
@@ -145,7 +137,7 @@
 		 * @param id of record
 		 * @return true if success, false message if any errors
 		 * */
-		public function delete($id){
+		/*public function delete($id){
 			$id = trim($this->re_db_input($id));
 			if($id>0 && ($status==0 || $status==1) ){
 				$q = "UPDATE `".$this->table."` SET `is_delete`='1' WHERE `id`='".$id."'";
@@ -163,7 +155,7 @@
 			     $_SESSION['warning'] = UNKWON_ERROR;
 				return false;
 			}
-		}
+		}*/
         
     }
 ?>

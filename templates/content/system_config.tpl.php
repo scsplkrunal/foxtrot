@@ -1,30 +1,16 @@
 <div class="container">
-<h1>System Configurtion</h1>
+<h1>System Configuration</h1>
     <div class="col-lg-12 well">
         <form name="frm" action="#" method="POST" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-sm-3 form-group">
-                    <label>Company Name:</label>
+                    <label style="float: right;">Company Name:</label>
                 </div>
                 <div class="col-sm-3 form-group">
                     <input type="text" class="form-control" name="cname"  />
                 </div>
                 <div class="col-sm-3 form-group">
-                    <label>Address 1:</label>
-                </div>
-                <div class="col-sm-3 form-group">
-                    <input type="text" class="form-control" name="address1"  />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-3 form-group">
-                    <label>Address 2:</label>
-                </div>
-                <div class="col-sm-3 form-group">
-                    <input type="text" class="form-control" name="address2"  />
-                </div>
-                <div class="col-sm-3 form-group">
-                    <label>City:</label>
+                    <label style="float: right;">City:</label>
                 </div>
                 <div class="col-sm-3 form-group">
                     <input type="text" class="form-control" name="city"  />
@@ -32,13 +18,28 @@
             </div>
             <div class="row">
                 <div class="col-sm-3 form-group">
-                    <label>State:</label>
+                    <label style="float: right;">Address 1:</label>
+                </div>
+                <div class="col-sm-3 form-group">
+                    <input type="text" class="form-control" name="address1"  />
+                </div>
+                <div class="col-sm-3 form-group">
+                    <label style="float: right;">Address 2:</label>
+                </div>
+                <div class="col-sm-3 form-group">
+                    <input type="text" class="form-control" name="address2"  />
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="col-sm-3 form-group">
+                    <label style="float: right;">State:</label>
                 </div>
                 <div class="col-sm-3 form-group">
                     <input type="text" class="form-control" name="state"  />
                 </div>
                 <div class="col-sm-3 form-group">
-                    <label>Zip code:</label>
+                    <label style="float: right;">Zip code:</label>
                 </div>
                 <div class="col-sm-3 form-group">
                     <input type="text" class="form-control" name="zip"  />
@@ -46,57 +47,44 @@
             </div>
             <div class="row">
                 <div class="col-sm-3 form-group">
-                    <label>Logo:</label>
+                    <label style="float: right;">Logo:</label>
                 </div>
                 <div class="col-sm-3 form-group">
                     <input type="file" class="form-control" name="logo"  />
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-sm-3 form-group">
-                    <label>Minimum Check Amount :</label>
+                    <label style="float: right;">Minimum Check Amount :</label>
                 </div>
                 <div class="col-sm-3 form-group">
                     <input type="text" class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' name="ch_amount"  />
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-sm-3 form-group">
-                    <label>FINRA Assessment:</label>
+                    <label style="float: right;">FINRA Assessment:</label>
                 </div>
                 <div class="col-sm-3 form-group">
                     <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' onblur="checkLength(this)" maxlength="8"  class="form-control" name="finra"  />
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-sm-3 form-group">
-                    <label>SIPC Assessment:</label>
+                    <label style="float: right;">SIPC Assessment:</label>
                 </div>
                 <div class="col-sm-3 form-group">
                     <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' onblur="checkLength(this)" maxlength="8"  class="form-control" name="sipc"  />
                 </div>
-                <div class="col-lg-6">
-                    <div class="input-group">
-                      <span class="input-group-addon">
-                         <input type="checkbox"  name="broker" value="broker" style="display: inline;" />
-                      </span>
-                      <label class="form-control">Display Terminated Brokers on Pick-Lists</label>
-                    </div>
-                </div>
             </div>
             <div class="row">
-                <div class="col-lg-6">
-                    <div class="input-group">
-                      <span class="input-group-addon">
-                         <input type="checkbox"  name="branch" value="branch" style="display: inline;" />
-                      </span>
-                      <label class="form-control">Display Terminated Branches of Pick-lists</label>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="input-group">
-                      <span class="input-group-addon">
-                         <input type="checkbox"  name="bro_sta" value="bro_sta" style="display: inline;" />
-                      </span>
-                      <label class="form-control">Exclude Terminated Brokers on Statements</label>
+                <div class="col-sm-1"></div>
+                <div class="col-sm-11">
+                    <div class="form-group">
+                        <input type="checkbox" class="checkbox" name="summarize_direct_imported_trades" style="display: inline;" id="summarize_direct_imported_trades" />&nbsp;
+                        <label>Display Terminated Brokers on Pick-Lists</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                        
+                        <input type="checkbox" class="checkbox" name="summarize_direct_imported_trades" style="display: inline;" id="summarize_direct_imported_trades" />&nbsp;
+                        <label>Display Terminated Branches of Pick-lists</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                        
+                        <input type="checkbox" class="checkbox" name="summarize_direct_imported_trades" style="display: inline;" id="summarize_direct_imported_trades" />&nbsp;
+                        <label>Exclude Terminated Brokers on Statements</label>&nbsp;&nbsp;&nbsp;&nbsp;
                     </div>
                 </div>
             </div>

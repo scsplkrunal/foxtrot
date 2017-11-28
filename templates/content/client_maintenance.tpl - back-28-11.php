@@ -28,48 +28,6 @@ $(document).on('click','.remove-row',function(){
     $(this).closest('.row').remove();
 });
 </script>
-<script>
-function addMoreNotes(){
-    var html = '<tr class="add_row_notes">'+
-                    '<td>2</td>'+
-                    '<td><?php echo date('d/m/Y');?></td>'+
-                    '<td><?php echo $_SESSION['user_name'];?></td>'+
-                    '<td><input type="text" name="client_note" class="form-control" id="client_note"/></td>'+
-                    '<td class="text-center">'+
-                    '<a href="<?php echo CURRENT_PAGE; ?>?action=add" class="btn btn-sm btn-warning"><i class="fa fa-save"></i> Save</a>&nbsp;'+
-                    '<a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>&nbsp;'+
-                    '<a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>'+
-                    '</td>'+
-                '</tr>';
-                
-            
-    $(html).insertBefore('#add_row_notes');
-}
-$(document).on('click','.remove-row',function(){
-    $(this).closest('tr').remove();
-});
-</script>
-<script>
-function addMoreAttach(){
-    var html = '<tr class="add_row_attach">'+
-                    '<td>2</td>'+
-                    '<td><?php echo date('d/m/Y');?></td>'+
-                    '<td><?php echo $_SESSION['user_name'];?></td>'+
-                    '<td><input type="file" name="attach" class="form-control" id="attach"/></td>'+
-                    '<td class="text-center">'+
-                    '<a href="<?php echo CURRENT_PAGE; ?>?action=add&id=" class="btn btn-sm btn-warning"><i class="fa fa-save"></i> Ok</a>&nbsp;'+
-                    '<a href="<?php echo CURRENT_PAGE; ?>?action=download&id=" class="btn btn-sm btn-success"><i class="fa fa-download"></i> Download</a>&nbsp;'+
-                    '<a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>'+
-                    '</td>'+
-                '</tr>';
-                
-            
-    $(html).insertBefore('#add_row_attach');
-}
-$(document).on('click','.remove-row',function(){
-    $(this).closest('tr').remove();
-});
-</script>
 <div class="container">
 <h1>Client Maintenance</h1>
     <div class="col-lg-12 well">
@@ -886,9 +844,9 @@ $(document).on('click','.remove-row',function(){
                                             <div class="form-group">
                                                 <label></label><br />
                                                 <a href="#client_notes" data-toggle="modal"><input type="button" name="notes" value="Notes" /></a>
-                                                <a href="#client_transactions" data-toggle="modal"><input type="button" name="transactions" value="Transactions" /></a>
-                                                <a href="#joint_account" data-toggle="modal"><input type="button" name="joint_account" value="Joint Account" /></a>
-                                                <a href="#client_attachment" data-toggle="modal"><input type="button" name="attach" value="Attach" /></a>
+                                                <a href="#transactions"><input type="button" name="transactions" value="Transactions" /></a>
+                                                <a href="#joint_account"><input type="button" name="joint_account" value="Joint Account" /></a>
+                                                <a href="#attach"><input type="button" name="attach" value="Attach" /></a>
                                             </div>
                                          </div>
                                      </div>
@@ -913,7 +871,7 @@ $(document).on('click','.remove-row',function(){
                 </div>
         </div>
         <!-- Lightbox strart -->							
-			<!-- Modal for add client notes -->
+			<!-- Modal -->
 			<div id="client_notes" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 				<div class="modal-dialog">
 				<div class="modal-content">
@@ -922,12 +880,18 @@ $(document).on('click','.remove-row',function(){
 					<h4 class="modal-title">Client's Notes</h4>
 				</div>
 				<div class="modal-body">
+                <div class="inputpopup">
+                    <div class="btn-group dropdown" style="float: right;">
+                        <button type="button" class="dropdown-toggle btn btn-default" style="margin-right: 5px !important;" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
+    					<ul class="dropdown-menu dropdown-menu-right" style="">
+    						<li><a href="#add_client_notes" data-toggle="modal" ><i class="fa fa-plus"></i> Add New</a></li>
+    					</ul>
+    				</div>
+                    <!--<a href="<?php echo CURRENT_PAGE; ?>?action=add_new" style="float: right; margin-right: 5px;" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Add New</a>-->
+                </div>
                 <form method="post">
                 <div class="inputpopup">
-                    <a class="btn btn-sm btn-success" style="float: right !important; margin-right: 5px !important;" onclick="addMoreNotes();"><i class="fa fa-plus"></i> Add New</a></li>
-    			</div>
-                <div class="inputpopup">
-                    <div class="table-responsive" id="table-scroll" style="margin: 0px 5px 0px 5px;">
+					<div class="table-responsive" id="table-scroll" style="margin: 0px 5px 0px 5px !important;">
                         <table class="table table-bordered table-stripped table-hover">
                             <thead>
                                 <th>#NO</th>
@@ -937,15 +901,54 @@ $(document).on('click','.remove-row',function(){
                                 <th class="text-center">Action</th>
                             </thead>
                             <tbody>
-                                <tr id="add_row_notes">
+                                <tr>
                                     <td>1</td>
-                                    <td><?php echo date('d/m/Y');?></td>
-                                    <td><?php echo $_SESSION['user_name'];?></td>
-                                    <td><input type="text" name="client_note" class="form-control" id="client_note"/></td>
+                                    <td></td>
+                                    <td>user01</td>
+                                    <td></td>
                                     <td class="text-center">
-                                       <a href="<?php echo CURRENT_PAGE; ?>?action=add" class="btn btn-sm btn-warning"><i class="fa fa-save"></i> Save</a>
-                                       <a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                                       <a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
+                                        <a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                                        <a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td></td>
+                                    <td>user02</td>
+                                    <td></td>
+                                    <td class="text-center">
+                                        <a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                                        <a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td></td>
+                                    <td>user03</td>
+                                    <td></td>
+                                    <td class="text-center">
+                                        <a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                                        <a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td></td>
+                                    <td>user04</td>
+                                    <td></td>
+                                    <td class="text-center">
+                                        <a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                                        <a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td></td>
+                                    <td>user05</td>
+                                    <td></td>
+                                    <td class="text-center">
+                                        <a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                                        <a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
                                     </td>
                                 </tr>
                           </tbody>
@@ -958,165 +961,28 @@ $(document).on('click','.remove-row',function(){
 				</div><!-- End of Modal dialog -->
 		</div><!-- End of Modal -->
         <!-- Lightbox strart -->							
-			<!-- Modal for transaction list -->
-			<div id="client_transactions" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+			<!-- Modal -->
+			<div id="add_client_notes" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 				<div class="modal-dialog">
 				<div class="modal-content">
 				<div class="modal-header" style="margin-bottom: 0px !important;">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-					<h4 class="modal-title">Client's Transactions</h4>
-				</div>
-				<div class="modal-body">
-                <form method="post">
-                <div class="inputpopup">
-                    <div class="table-responsive" id="table-scroll" style="margin: 0px 5px 0px 5px;">
-                        <table class="table table-bordered table-stripped table-hover">
-                            <thead>
-                                <th>#NO</th>
-                                <th>Trade No</th>
-                                <th>Date</th>
-                                <th>Product</th>
-                                <th>Client No</th>
-                                <th>Trade Amount</th>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>30</td>
-                                    <td>28/11/2017</td>
-                                    <td>Electronics</td>
-                                    <td>20</td>
-                                    <td>$200</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>30</td>
-                                    <td>28/11/2017</td>
-                                    <td>Mobile accessories</td>
-                                    <td>20</td>
-                                    <td>$200</td>
-                                </tr>
-                          </tbody>
-                        </table>
-                    </div>
-				</div>
-                </form>
-                </div><!-- End of Modal body -->
-				</div><!-- End of Modal content -->
-				</div><!-- End of Modal dialog -->
-		  </div><!-- End of Modal -->
-          <!-- Lightbox strart -->							
-			<!-- Modal for joint account -->
-			<div id="joint_account" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-				<div class="modal-dialog">
-				<div class="modal-content">
-				<div class="modal-header" style="margin-bottom: 0px !important;">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-					<h4 class="modal-title">Joint Accounts</h4>
-				</div>
-				<div class="modal-body">
-                <form method="post">
-                <div class="inputpopup">
-                    <a class="btn btn-sm btn-success" href="#add_joint_account" data-toggle="modal" style="float: right !important; margin-right: 5px !important;"><i class="fa fa-plus"></i> Add New</a>
-    			</div>
-                <div class="inputpopup">
-                    <div class="table-responsive" id="table-scroll" style="margin: 0px 5px 0px 5px;">
-                        <table class="table table-bordered table-stripped table-hover">
-                            <thead>
-                                <th>#NO</th>
-                                <th>Joint Name</th>
-                                <th>SSN</th>
-                                <th>DOB</th>
-                                <th>Income</th>
-                                <th>Occupation</th>
-                                <th>Position</th>
-                                <th>Securities-Related Firm?</th>
-                                <th>Employer</th>
-                                <th>Emp. Address</th>
-                                <th>Action</th>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td><a href="#add_joint_account" data-toggle="modal" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a></td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td><a href="#add_joint_account" data-toggle="modal" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a></td>
-                                </tr>
-                          </tbody>
-                        </table>
-                    </div>
-				</div>
-                </form>
-                </div><!-- End of Modal body -->
-				</div><!-- End of Modal content -->
-				</div><!-- End of Modal dialog -->
-		  </div><!-- End of Modal -->
-        <!-- Lightbox strart -->							
-			<!-- Modal for add joint account -->
-			<div id="add_joint_account" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-				<div class="modal-dialog">
-				<div class="modal-content">
-				<div class="modal-header" style="margin-bottom: 0px !important;">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-					<h4 class="modal-title">Add Joint Account</h4>
+					<h4 class="modal-title">Client's Notes</h4>
 				</div>
 				<div class="modal-body">
                 <form method="post" id="add_new_note" name="add_new_note" onsubmit="return formsubmit_addnotes();">
                     <div class="inputpopup">
-    					<label>Joint Name:<span>*</span></label>
-                        <input type="text" name="joint_name" id="joint_name" class="form-control" />
+    					<label>Date:<span>*</span></label>
+    					<label class="form-control" style="text-align: left !important;"><?php echo date('m/d/Y');?></label>
     				</div>
                     <div class="inputpopup">
-    					<label>SSN:<span>*</span></label>
-                        <input type="text" name="ssn" id="ssn" class="form-control" />
+    					<label>User:<span>*</span></label>
+                        <input type="hidden" value="<?php echo $_SESSION['user_id'];?>" name="note_user" id="note_user"/>
+                        <label class="form-control" style="text-align: left !important;"><?php echo $_SESSION['user_name'];?></label>
     				</div>
-                    <div class="inputpopup">
-    					<label>DOB:<span>*</span></label>
-                        <input type="text" name="dob" id="dob" class="form-control" />
-                    </div>
-                    <div class="inputpopup">
-    					<label>Income:<span>*</span></label>
-                        <input type="text" name="income" id="income" class="form-control" />
-    				</div>
-                    <div class="inputpopup">
-    					<label>Occupation:<span>*</span></label>
-                        <input type="text" name="occupation" id="occupation" class="form-control" />
-    				</div>
-                    <div class="inputpopup">
-    					<label>Position:<span>*</span></label>
-                        <input type="text" name="position" id="position" class="form-control" />
-    				</div>
-                    <div class="inputpopup">
-    					<label>Securities-Related Firm?:<span>*</span></label>
-                        <input type="checkbox" name="security_related_firm" id="security_related_firm" class="checkbox" />
-    				</div>
-                    <div class="inputpopup">
-    					<label>Employer:<span>*</span></label>
-                        <input type="text" name="employer" id="employer" class="form-control" />
-    				</div>
-                    <div class="inputpopup">
-    					<label>Emp. Address:<span>*</span></label>
-                        <input type="text" name="employer_add" id="employer_add" class="form-control" />
+    				<div class="inputpopup">
+    					<label>Notes:<span>*</span></label>
+                        <textarea class="form-control" name="client_notes" id="client_notes"></textarea>
     				</div>
     				<div class="col-md-12">
                         <div id="msg">
@@ -1124,60 +990,16 @@ $(document).on('click','.remove-row',function(){
                     </div>
                    	<div class="inputpopup">
     				<label class="labelblank">&nbsp;</label>
-                        <input type="hidden" name="submit" value="Ok" />
-    					<input type="submit" value="Ok" name="submit" />
+                    <input type="hidden" name="submit" value="Add Note" />
+    					<input type="submit" value="Add Note" name="submit" />
+    					<input type="reset" value="Cancel"/>
     				</div>
 				</form>					
                 
 				</div><!-- End of Modal body -->
 				</div><!-- End of Modal content -->
-			</div><!-- End of Modal dialog -->
-		</div><!-- End of Modal -->
-        <!-- Lightbox strart -->							
-			<!-- Modal for attach -->
-			<div id="client_attachment" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-				<div class="modal-dialog">
-				<div class="modal-content">
-				<div class="modal-header" style="margin-bottom: 0px !important;">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-					<h4 class="modal-title">Attachments</h4>
-				</div>
-				<div class="modal-body">
-                <form method="post">
-                <div class="inputpopup">
-                    <a class="btn btn-sm btn-success" style="float: right !important; margin-right: 5px !important;" onclick="addMoreAttach();"><i class="fa fa-plus"></i> Add New</a></li>
-    			</div>
-                <div class="inputpopup">
-                    <div class="table-responsive" id="table-scroll" style="margin: 0px 5px 0px 5px;">
-                        <table class="table table-bordered table-stripped table-hover">
-                            <thead>
-                                <th>#NO</th>
-                                <th>Date</th>
-                                <th>User</th>
-                                <th>Files Name</th>
-                                <th class="text-center">Action</th>
-                            </thead>
-                            <tbody>
-                                <tr id="add_row_attach">
-                                    <td>1</td>
-                                    <td><?php echo date('d/m/Y');?></td>
-                                    <td><?php echo $_SESSION['user_name'];?></td>
-                                    <td><input type="file" name="attach" class="form-control" id="attach"/></td>
-                                    <td class="text-center">
-                                       <a href="<?php echo CURRENT_PAGE; ?>?action=add&id=" class="btn btn-sm btn-warning"><i class="fa fa-save"></i> Ok</a>
-                                       <a href="<?php echo CURRENT_PAGE; ?>?action=download&id=" class="btn btn-sm btn-success"><i class="fa fa-download"></i> Download</a>
-                                       <a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
-                                    </td>
-                                </tr>
-                          </tbody>
-                        </table>
-                    </div>
-				</div>
-                </form>
-                </div><!-- End of Modal body -->
-				</div><!-- End of Modal content -->
 				</div><!-- End of Modal dialog -->
-		  </div><!-- End of Modal -->
+		</div><!-- End of Modal -->
     </div>
 </div>
 <script>
@@ -1203,7 +1025,7 @@ function close_other()
     border-color: #2e6da4 !important;
 }
 #table-scroll {
-  height:400px;
+  height:200px;
   overflow:auto;  
   margin-top:20px;
 }

@@ -62,7 +62,7 @@
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
 			<ul class="nav navbar-nav">
-			  <li class="active menuhome"><a href="#"><i class="fa fa-home"></i></a></li>
+			  <li class="active menuhome"><a href="home.php"><i class="fa fa-home"></i></a></li>
 			  <li>
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Import <i class="fa fa-download"></i></a>
                 

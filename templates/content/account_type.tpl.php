@@ -93,7 +93,6 @@
                                 </td>
                                 <td class="text-center">
                                     <a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                                    <a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
                                 </td>
                             </tr>
                             <?php

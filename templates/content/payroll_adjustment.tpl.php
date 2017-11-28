@@ -24,24 +24,8 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Advance <span class="text-red">*</span></label>
-                                    <input type="text" name="advance" id="advance" value="<?php echo $advance; ?>" class="form-control" />
-                                </div>
-                            </div>
-                       </div>
-                       <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Advertising <span class="text-red">*</span></label>
-                                    <input type="text" name="advertising" id="advertising" value="<?php echo $advertising; ?>" class="form-control" />
-                                </div>
-                            </div>
-                       </div>
-                       <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Advisor Chanel <span class="text-red">*</span></label>
-                                    <input type="text" name="advisor_chanel" id="advisor_chanel" value="<?php echo $advisor_chanel; ?>" class="form-control" />
+                                    <label>Payroll Type <span class="text-red">*</span></label>
+                                    <input type="text" name="type" id="advance" value="<?php echo $type; ?>" class="form-control" />
                                 </div>
                             </div>
                        </div>
@@ -80,9 +64,8 @@
 	            <thead>
 	                <tr>
                         <th class="text-center">#NO</th>
-                        <th>ADVANCE</th>
-                        <th>ADVERTISING</th>
-                        <th>ADVISOR CHANEL</th>
+                        <th>PAYROLL ADJUSTMENT TYPE</th>
+                        <th class="text-center">STATUS</th>
                         <th class="text-center">ACTION</th>
                     </tr>
 	            </thead>
@@ -93,12 +76,23 @@
                             ?>
                             <tr>
                                 <td class="text-center"><?php echo ++$count; ?></td>
-                                <td><?php echo $val['advance']; ?></td>
-                                <td><?php echo $val['advertising']; ?></td>
-                                <td><?php echo $val['advisor_chanel']; ?></td>
+                                <td><?php echo $val['type']; ?></td>
+                                <td class="text-center">
+                                    <?php
+                                        if($val['status']==1){
+                                            ?>
+                                            <a href="<?php echo CURRENT_PAGE; ?>?action=status&id=<?php echo $val['id']; ?>&status=0" class="btn btn-sm btn-success"><i class="fa fa-check-square-o"></i> Enabled</a>
+                                            <?php
+                                        }
+                                        else{
+                                            ?>
+                                            <a href="<?php echo CURRENT_PAGE; ?>?action=status&id=<?php echo $val['id']; ?>&status=1" class="btn btn-sm btn-warning"><i class="fa fa-warning"></i> Disabled</a>
+                                            <?php
+                                        }
+                                    ?>
+                                </td>
                                 <td class="text-center">
                                     <a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                                    <a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
                                 </td>
                             </tr>
                             <?php

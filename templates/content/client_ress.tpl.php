@@ -1,11 +1,11 @@
 <div class="container">
 <h1>Client Reassignment</h1>
-    <div class="col-lg-12 well">
+    <div class="col-md-12 well">
         <div class="row">
-            <div style="padding-left: 22%;" class="col-sm-6 form-group">
-                <label>Broker From:</label>
+            <div class="col-md-3">
+                <label style="float: right;">From Broker:</label>
             </div>
-            <div class="col-sm-6 form-group">
+            <div class="col-md-4 form-group">
                     <select class="form-control" name="values[]">
                         <option value="">Select one</option>
                         <option value="1">Option 1</option>
@@ -16,10 +16,10 @@
             </div>
         </div>
         <div class="row">
-            <div  style="padding-left: 22%;" class="col-sm-6 form-group">
-                <label>Broker To:</label>
+            <div class="col-md-3">
+                <label style="float: right;">To Broker:</label>
             </div>
-            <div class="col-sm-6 form-group">
+            <div class="col-md-4 form-group">
                     <select class="form-control" name="values[]">
                         <option value="">Select one</option>
                         <option value="1">Option 1</option>
@@ -30,41 +30,27 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-3">
-                <label>List Of Ressigned Client</label>
-            </div>
-          <div class="col-lg-3">
-            <div class="input-group">
-              <span class="input-group-addon">
-                <input type="radio"  name="radio1" />
-              </span>
-              <label class="form-control">Output to Screen</label>
-            </div>
-           </div>
-            <div class="col-lg-3">
-            <div class="input-group">
-              <span class="input-group-addon">
-                <input type="radio" name="radio1" />
-              </span>
-              <label class="form-control" >Output to Printer</label>
-            </div>
-           </div>
-           <div class="col-lg-3">
-            <div class="input-group">
-              <span class="input-group-addon">
-                <input type="radio" name="radio1" />
-              </span>
-              <label class="form-control">Output to PDF </label>
-            </div>
-           </div>
+        <div class="col-md-3">
+            <label style="float: right;">List Of Ressigned Client:</label>
         </div>
-        
-            <div class="panel-footer">
-                <div class="selectwrap">
-					<input type="button" name="proceed" class="btn btn-warning btn-lg btn3d " value="Proceed"/>
-					<input type="button" name="cancel" class="btn btn-warning btn-lg btn3d " value="Cancel"/>
-                </div>
+        <div class="col-md-8">
+            <label class="radio-inline">
+              <input type="radio" class="radio" name="output" id="output" checked="checked" /> Output to Screen
+            </label>&nbsp;&nbsp;
+            <label class="radio-inline">
+              <input type="radio" class="radio" name="output" id="output" /> Output to Printer
+            </label>&nbsp;&nbsp;
+            <label class="radio-inline">
+              <input type="radio" class="radio" name="output" id="output" /> Output to PDF
+            </label>
+        </div><br />
+        </div>
+        <div class="panel-footer">
+            <div class="selectwrap">
+				<input type="button" name="proceed" class="btn btn-warning btn-lg btn3d " value="Proceed"/>
+				<input type="button" name="cancel" class="btn btn-warning btn-lg btn3d " value="Cancel"/>
             </div>
+        </div>
         
     </div>
 </div>

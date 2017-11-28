@@ -9,7 +9,7 @@
     $uname = '';
     $user_image = array();
     
-    $action = isset($_GET['action'])&&$_GET['action']!=''?$dbins->re_db_input($_GET['action']):'';
+    $action = isset($_GET['action'])&&$_GET['action']!=''?$dbins->re_db_input($_GET['action']):'view';
     $id = isset($_GET['id'])&&$_GET['id']!=''?$dbins->re_db_input($_GET['id']):0;
     
     $instance = new user_master();
@@ -34,10 +34,7 @@
    
     else if($action=='edit' && $id>0){
         $return = $instance->edit($id);
-        $name = $instance->re_db_output($return['name']);
-        $is_default = $instance->re_db_output($return['is_default']);
-        $subscription = $return['subscription_plan'];
-        $file = $return['file'];
+        $name = $instance->re_db_output($return['user_name']);
     }
     else if(isset($_GET['action'])&&$_GET['action']=='status'&&isset($_GET['id'])&&$_GET['id']>0&&isset($_GET['status'])&&($_GET['status']==0 || $_GET['status']==1))
     {
@@ -63,22 +60,8 @@
         }
     }
     else if($action=='view'){
-        $showtable = true;
-        $return = $instance->select();
-        $f = array();
-        $subscriptions = array();
-        foreach($return as $key=>$val){
-            $subscriptions[$val['id']] = $val;
-            if($val['subscription_name']!=''){
-                $f[$val['id']][$val['subscription_id']] = $val['subscription_name'];
-            }            
-        }
         
-        foreach($subscriptions as $key=>$val){
-            if(isset($f[$key])){
-                $subscriptions[$key]['subscription_name'] = $f[$key];
-            }
-        }
+        $return = $instance->select();//echo '<pre>';print_r($return);exit;
         
     }
     

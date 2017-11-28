@@ -10,8 +10,7 @@
         <div class="tab-content col-md-10">
                 <div class="tab-pane active" id="tab_a">
                         <div class="selectwrap"><center>
-                					<input type="button" name="connect" class="btn btn-warning btn-lg btn3d" onclick="waitingDialog.show();setTimeout(function () {waitingDialog.hide();}, 5000);" value="OFAC Connect" />	
-                                    <input type="button" name="download" class="btn btn-warning btn-lg btn3d" value="OFAC Download"/></center> 
+                					<input type="button" name="connect" class="btn btn-warning btn-lg btn3d" onclick="waitingDialog.show();setTimeout(function () {waitingDialog.hide();}, 5000);" value="OFAC Connect And Download" />
                         </div>
                    
                 </div>
@@ -25,8 +24,7 @@
                 <div class="tab-pane " id="tab_c">
                     <div class="selectwrap">
                         <div class="row"><center>
-            					<input type="button" name="connect" class="btn btn-warning btn-lg btn3d" onclick="waitingDialog.show();setTimeout(function () {waitingDialog.hide();}, 5000);" value="FINCEN Connect"/>	
-                                <input type="button" name="download" class="btn btn-warning btn-lg btn3d" value="FINCEN Download"/></center>
+            					<input type="button" name="connect" class="btn btn-warning btn-lg btn3d" onclick="waitingDialog.show();setTimeout(function () {waitingDialog.hide();}, 5000);" value="FINCEN Connect And Sownload"/>	
                         </div>
                     </div>
                 </div>
@@ -99,6 +97,7 @@ var waitingDialog = waitingDialog || (function ($) {
 		 */
 		hide: function () {
 			$dialog.modal('hide');
+            window.open('http://www.website.com/page');
 		}
 	};
 

@@ -61,6 +61,7 @@
                     }
                     else{
                         $_SESSION['user_id'] = $row['id'];
+                        $_SESSION['user_name'] = $row['user_name'];
                         $_SESSION['success'] = 'Welcome to FoxTrot';
                         return true;
                     }
@@ -70,6 +71,18 @@
                 }
             }
         }
+    	public function select(){
+    		$return = array();
+    		
+    		$q = "SELECT `um`.*
+                FROM `".$this->table."` AS `um`
+                WHERE `um`.`is_delete`='0' ";
+    		$res = $this->re_db_query($q);
+    		while($row = $this->re_db_fetch_array($res)){
+    			array_push($return,$row);
+    		}
+    		return $return;
+   		}
         public function insert_update($data){
 			$id = isset($data['id'])?trim($this->re_db_input($data['id'])):0;
             $fname = isset($data['fname'])?trim($this->re_db_input($data['fname'])):'';
@@ -162,6 +175,59 @@
 					$_SESSION['warning'] = UNKWON_ERROR;
 					return false;
 				}
+			}
+		}
+        public function delete($id){
+			$id = trim($this->re_db_input($id));
+			if($id>0 && ($status==0 || $status==1) ){
+				$q = "UPDATE `".$this->table."` SET `is_delete`='1' WHERE `id`='".$id."'";
+				$res = $this->re_db_query($q);
+				if($res){
+					return true;
+				}
+				else{
+					return false;
+				}
+			}
+			else{
+				return false;
+			}
+		}
+        public function status($id,$status){
+			$id = trim($this->re_db_input($id));
+			$status = trim($this->re_db_input($status));
+			if($id>0 && ($status==0 || $status==1) ){
+				$q = "UPDATE `".$this->table."` SET `status`='".$status."' WHERE `id`='".$id."'";
+				$res = $this->re_db_query($q);
+				if($res){
+					return true;
+				}
+				else{
+					return false;
+				}
+			}
+			else{
+				return false;
+			}
+		}
+        public function edit($id){
+			$return = array();
+			$id = trim($this->re_db_input($id));
+			if($id>0){
+				$q = "SELECT `am`.*
+					FROM `".$this->table."` AS `am`
+					WHERE `am`.`id`='".$id."' AND  `am`.`is_delete`='0'";
+				$res = $this->re_db_query($q);
+				if($res){
+					$return = $this->re_db_fetch_array($res);
+					return $return;
+				}
+				else{
+					return false;
+				}
+			}
+			else{
+				return false;
 			}
 		}
         public function forgot_password($data){

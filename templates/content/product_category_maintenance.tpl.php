@@ -63,6 +63,7 @@
 	                <tr>
                         <th class="text-center">#NO</th>
                         <th>CATEGORY</th>
+                        <th class="text-center">STATUS</th>
                         <th class="text-center">ACTION</th>
                     </tr>
 	            </thead>
@@ -75,8 +76,21 @@
                                 <td class="text-center"><?php echo ++$count; ?></td>
                                 <td><?php echo $val['type'] ?></td>
                                 <td class="text-center">
+                                    <?php
+                                        if($val['status']==1){
+                                            ?>
+                                            <a href="<?php echo CURRENT_PAGE; ?>?action=status&id=<?php echo $val['id']; ?>&status=0" class="btn btn-sm btn-success"><i class="fa fa-check-square-o"></i> Enabled</a>
+                                            <?php
+                                        }
+                                        else{
+                                            ?>
+                                            <a href="<?php echo CURRENT_PAGE; ?>?action=status&id=<?php echo $val['id']; ?>&status=1" class="btn btn-sm btn-warning"><i class="fa fa-warning"></i> Disabled</a>
+                                            <?php
+                                        }
+                                    ?>
+                                </td>
+                                <td class="text-center">
                                     <a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                                    <a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
                                 </td>
                             </tr>
                             <?php
