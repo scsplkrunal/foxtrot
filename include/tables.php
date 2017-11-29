@@ -1,9 +1,12 @@
 <?php
     define('SITE_OPTIONS','site_options');
     define('USER_MASTER','user_master');
+    define('MENU_MASTER','menu_master');
+    define('USER_MENU_RIGHTS','ft_user_menu_rights');
     define('ADMIN_MASTER','admin_master');
     define('ACCOUNT_TYPE','ft_account_type');
     define('PRODUCT_TYPE','ft_product_type');
     define('PAYROLL_TYPE','ft_payroll_master');
     define('CLIENT_SUITABILITY','ft_client_suitability');
+    define('CLIENT_MASTER','ft_client_master');
 ?>

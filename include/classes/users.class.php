@@ -4,14 +4,6 @@
         public $table = USER_MASTER;
         
         /**
-         * @param void
-         * @return void
-         */
-        public function __construct(){
-            $this->errors = '';
-        }
-        
-        /**
          * @param int id
          * @param int status, default all
          * @return array of records
@@ -83,6 +75,32 @@
     		}
     		return $return;
    		}
+        public function menu_select(){
+    		$return = array();
+    		
+    		$q = "SELECT `m`.*
+                FROM `".MENU_MASTER."` AS `m`
+                WHERE `m`.`is_delete`='0' AND `m`.`parent_id`='0' ";
+    		$res = $this->re_db_query($q);
+    		while($row = $this->re_db_fetch_array($res)){  
+    		    $row['submenu'] = $this->sub_menu_select($row['link_id']);
+    			array_push($return,$row); 
+                
+    		} 
+    		return $return;
+   		}
+        public function sub_menu_select($link_id){
+    		$return = array();
+    		
+    		$q = "SELECT `m`.*
+                FROM `".MENU_MASTER."` AS `m`
+                WHERE `m`.`is_delete`='0' AND `m`.`parent_id`='".$link_id."' ";
+    		$res = $this->re_db_query($q);
+    		while($row = $this->re_db_fetch_array($res)){ 
+    			array_push($return,$row);
+    		}
+    		return $return;
+   		}
         public function insert_update($data){
 			$id = isset($data['id'])?trim($this->re_db_input($data['id'])):0;
             $fname = isset($data['fname'])?trim($this->re_db_input($data['fname'])):'';
@@ -91,6 +109,10 @@
 			$email = isset($data['email'])?trim($this->re_db_input($data['email'])):'';
             $password = isset($data['password'])?trim($this->re_db_input($data['password'])):'';
 			$confirm_password = isset($data['confirm_password'])?trim($this->re_db_input($data['confirm_password'])):'';
+            $menu_rights = isset($data['check_sub'])?$data['check_sub']:array();
+            
+            $user_image = isset($_FILES['file_image'])?$_FILES['file_image']:array();//print_r($user_image);exit;
+            $valid_file = array('jpg','jpeg','png','bmp');
 			
 			if($fname==''){
 				$this->errors = 'Please enter first name.';
@@ -116,7 +138,37 @@
 			else if($password!=$confirm_password){
 				$this->errors = 'Confirm password must be same as password.';
 			}
+            else if($user_image['tmp_name']=='' && $id==0){
+				$this->errors = 'Please select user image.';
+			}
 			if($this->errors!=''){
+				return $this->errors;
+			}
+            
+            $file_image = '';  
+            
+            $file_name = isset($user_image['name'])?$user_image['name']:'';
+            $tmp_name = isset($user_image['tmp_name'])?$user_image['tmp_name']:'';
+            $error = isset($user_image['error'])?$user_image['error']:0;
+            $size = isset($user_image['size'])?$user_image['size']:'';
+            $type = isset($user_image['type'])?$user_image['type']:'';
+            $target_dir = DIR_FS."upload/";
+            $ext = strtolower(end(explode('.',$file_name)));
+            if($file_name!='')
+            {
+                if(!in_array($ext,$valid_file))
+                {
+                    $this->errors = 'Please select valid file.';
+                }
+                else
+                {
+                    $attachment_file = time().rand(100000,999999).'.'.$ext;
+                    move_uploaded_file($tmp_name,$target_dir.$attachment_file);
+                    $file_image = $attachment_file;
+                }
+                
+            }
+            if($this->errors!=''){
 				return $this->errors;
 			}
 			else{
@@ -140,9 +192,17 @@
 					
                     if($id==0){
 						
-						$q = "INSERT INTO `".$this->table."` SET `first_name`='".$fname."',`last_name`='".$lname."',`user_name`='".$uname."', `email`='".$email."', `password`='".md5($password)."' ".$this->insert_common_sql();
+						$q = "INSERT INTO `".$this->table."` SET `first_name`='".$fname."',`last_name`='".$lname."',`user_name`='".$uname."', `email`='".$email."', `image`='".$file_image."', `password`='".md5($password)."' ".$this->insert_common_sql();
 						$res = $this->re_db_query($q);
                         $last_id = $this->re_db_insert_id($res);
+                        if($last_id>0)
+                        {
+                            foreach($menu_rights as $key=>$data)
+                            {
+                                $q = "INSERT INTO `".USER_MENU_RIGHTS."` SET `user_id`='".$last_id."',`link_id`='".$data."' ".$this->insert_common_sql();
+    						    $res = $this->re_db_query($q);
+                            }
+                        }
                         //$_SESSION['user_id'] = $last_id;
 						if($res){
 							$_SESSION['success'] = USER_REGISTER_MESSAGE;
@@ -158,13 +218,21 @@
 						if($password!=''){
 							$con .= " , `password`='".md5($password)."' ";
 						}
-						
-						$q = "UPDATE `".$this->table."` SET `name`='".$uname."', `email`='".$email."' ".$con." ".$this->update_common_sql()." WHERE `id`='".$id."'";
+						$q = "UPDATE `".$this->table."` SET `first_name`='".$fname."',`last_name`='".$lname."',`user_name`='".$uname."', `email`='".$email."', `image`='".$file_image."' ".$con." ".$this->update_common_sql()." WHERE `id`='".$id."'";
 						$res = $this->re_db_query($q);
 						if($res){
-							$_SESSION['success'] = UPDATE_MESSAGE;
-							return true;
-						}
+                            
+                            $q = "DELETE FROM `".USER_MENU_RIGHTS."` WHERE `user_id`='".$id."'";
+                            $res = $this->re_db_query($q);
+                            foreach($menu_rights as $key=>$data)
+                            {
+                                $q = "INSERT INTO `".USER_MENU_RIGHTS."` SET `user_id`='".$id."',`link_id`='".$data."' ".$this->insert_common_sql();
+                                $res = $this->re_db_query($q);
+                                
+                            }
+                            $_SESSION['success'] = UPDATE_MESSAGE;
+						    return true;
+                        }
 						else{
 							$_SESSION['warning'] = UNKWON_ERROR;
 							return false;
@@ -183,13 +251,16 @@
 				$q = "UPDATE `".$this->table."` SET `is_delete`='1' WHERE `id`='".$id."'";
 				$res = $this->re_db_query($q);
 				if($res){
+				    $_SESSION['success'] = DELETE_MESSAGE;
 					return true;
 				}
 				else{
+				    $_SESSION['warning'] = UNKWON_ERROR;
 					return false;
 				}
 			}
 			else{
+			     $_SESSION['warning'] = UNKWON_ERROR;
 				return false;
 			}
 		}
@@ -200,13 +271,16 @@
 				$q = "UPDATE `".$this->table."` SET `status`='".$status."' WHERE `id`='".$id."'";
 				$res = $this->re_db_query($q);
 				if($res){
+				    $_SESSION['success'] = STATUS_MESSAGE;
 					return true;
 				}
 				else{
+				    $_SESSION['warning'] = UNKWON_ERROR;
 					return false;
 				}
 			}
 			else{
+			     $_SESSION['warning'] = UNKWON_ERROR;
 				return false;
 			}
 		}
@@ -216,10 +290,32 @@
 			if($id>0){
 				$q = "SELECT `am`.*
 					FROM `".$this->table."` AS `am`
-					WHERE `am`.`id`='".$id."' AND  `am`.`is_delete`='0'";
+                    WHERE `am`.`id`='".$id."' AND  `am`.`is_delete`='0'";
 				$res = $this->re_db_query($q);
 				if($res){
 					$return = $this->re_db_fetch_array($res);
+					return $return;
+				}
+				else{
+					return false;
+				}
+			}
+			else{
+				return false;
+			}
+		}
+        public function edit_menu_rights($id){
+			$return = array();
+			$id = trim($this->re_db_input($id));
+			if($id>0){
+				$q = "SELECT `umr`.`link_id`
+					FROM `".USER_MENU_RIGHTS."` AS `umr`
+                    WHERE `umr`.`user_id`='".$id."' AND  `umr`.`is_delete`='0'";
+				$res = $this->re_db_query($q);
+				if($res){
+				    while($row = $this->re_db_fetch_array($res)){ 
+            			array_push($return,$row);
+            		}
 					return $return;
 				}
 				else{

@@ -102,13 +102,13 @@ $(document).on('click','.remove-row',function(){
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>First Name <span class="text-red">*</span></label>
-                                                    <input type="text" name="fname" id="fname" value="" class="form-control" />
+                                                    <input type="text" name="fname" id="fname" value="<?php echo $fname; ?>" class="form-control" />
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Last Name <span class="text-red">*</span></label>
-                                                    <input type="text" name="lname" id="lname" value="" class="form-control" />
+                                                    <input type="text" name="lname" id="lname" value="<?php echo $lname; ?>" class="form-control" />
                                                 </div>
                                             </div>
                                        </div>
@@ -116,7 +116,7 @@ $(document).on('click','.remove-row',function(){
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Client File <span class="text-red">*</span></label>
-                                                    <input type="file" name="client_file" id="client_file" value="" class="form-control" />
+                                                    <input type="file" name="client_file" id="client_file" value="<?php echo $client_file; ?>" class="form-control" />
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -134,13 +134,13 @@ $(document).on('click','.remove-row',function(){
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Broker's Name <span class="text-red">*</span></label><br />
-                                                    <input type="text" name="broker_name" id="broker_name" value="" class="form-control" />
+                                                    <input type="text" name="broker_name" id="broker_name" value="<?php echo $broker_name; ?>" class="form-control" />
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Telephone <span class="text-red">*</span></label><br />
-                                                    <input type="number" name="telephone" id="telephone" value="" class="form-control" />
+                                                    <input type="number" name="telephone" id="telephone" value="<?php echo $telephone; ?>" class="form-control" />
                                                 </div>
                                             </div>
                                        </div>
@@ -162,7 +162,7 @@ $(document).on('click','.remove-row',function(){
                                     </div>
                                     <div class="panel-footer">
                                         <div class="selectwrap">
-                                            <input type="hidden" name="id" id="id" value="" />
+                                            <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
                         					<input type="submit" name="submit" value="Save"/>	
                                             <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                                         </div>
@@ -204,19 +204,24 @@ $(document).on('click','.remove-row',function(){
                                 </tr>
             	            </thead>
             	            <tbody>
+                            <?php
+                            $count = 0;
+                            foreach($return as $key=>$val){
+                                ?>
             	                   <tr>
-                                        <td class="text-center">1</td>
-                                        <td>Marcus Desoza</td>
-                                        <td>main.png</td>
-                                        <td>saving</td>
-                                        <td>Broker1</td>
-                                        <td>125478963</td>
-                                        <td>Yes</td>
+                                        <td class="text-center"><?php echo ++$count; ?></td>
+                                        <td><?php echo $val['first_name']; ?></td>
+                                        <td><?php echo $val['client_file']; ?></td>
+                                        <td><?php echo $val['account_type']; ?></td>
+                                        <td><?php echo $val['broker_name']; ?></td>
+                                        <td><?php echo $val['telephone']; ?></td>
+                                        <td><?php echo $val['contact_status']; ?></td>
                                         <td class="text-center">
-                                            <a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                                            <a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
+                                            <a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                                            <a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
                                         </td>
                                     </tr>
+                            <?php } ?>
                             </tbody>
                         </table>
                         </div>

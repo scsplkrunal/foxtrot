@@ -6,4 +6,5 @@
     include_once(DIR_FS_CLASSES."manage_product.class.php");
     include_once(DIR_FS_CLASSES."manage_payroll.class.php");
     include_once(DIR_FS_CLASSES."client_suitebility.class.php");
+    include_once(DIR_FS_CLASSES."client_maintenance.class.php");
 ?>
