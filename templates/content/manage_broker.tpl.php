@@ -129,11 +129,11 @@ $(document).on('click','.remove-row',function(){
                                                 <div class="form-group">
                                                     <label>Active status<span class="text-red">*</span></label>
                                                     <select name="active_status_cdd" id="active_status_cdd" class="form-control">
-                                                        <option value="0">Select Status</option>
-                                                        <option value="1">Active</option>
-                                                        <option value="2">Terminated</option>
-                                                        <option value="3">Retired</option>
-                                                        <option value="4">Deceased</option>
+                                                        <option value="">Select Status</option>
+                                                        <option <?php if(isset($active_status_cdd) && $active_status_cdd == 1){echo "selected='selected'";}?> value="1">Active</option>
+                                                        <option <?php if(isset($active_status_cdd) && $active_status_cdd == 2){echo "selected='selected'";}?> value="2">Terminated</option>
+                                                        <option <?php if(isset($active_status_cdd) && $active_status_cdd == 3){echo "selected='selected'";}?> value="3">Retired</option>
+                                                        <option <?php if(isset($active_status_cdd) && $active_status_cdd == 4){echo "selected='selected'";}?> value="4">Deceased</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -143,16 +143,16 @@ $(document).on('click','.remove-row',function(){
                                                 <div class="form-group">
                                                     <label>Pay Method <span class="text-red">*</span></label>
                                                     <select name="pay_method" id="pay_method" class="form-control">
-                                                        <option value="0">Select Pay Type</option>
-                                                        <option value="1">ACH</option>
-                                                        <option value="2">Check</option>
+                                                        <option value="">Select Pay Type</option>
+                                                        <option <?php if(isset($pay_method) && $pay_method == 1){echo "selected='selected'";}?> value="1">ACH</option>
+                                                        <option <?php if(isset($pay_method) && $pay_method == 2){echo "selected='selected'";}?> value="2">Check</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Branch Manager <span class="text-red">*</span></label><br />
-                                                    <input type="checkbox" class="checkbox" name="branch_manager" id="branch_manager" class="regular-checkbox big-checkbox" /><label for="checkbox-2-1"></label>
+                                                    <input type="checkbox" class="checkbox" name="branch_manager" value="1" id="branch_manager" class="regular-checkbox big-checkbox" <?php if($branch_manager == 1){echo "checked='true'";} ?> /><label for="checkbox-2-1"></label>
                                                 </div>
                                             </div>
                                        </div>
@@ -186,8 +186,10 @@ $(document).on('click','.remove-row',function(){
             		</div>
             		<div class="panel-body">
                         <div class="panel-control" style="float: right;">
-                            <input type="text" name="search" id="search" value=""/>
-                            <button  name="search" id="search"><i class="fa fa-search"></i> Search</button>
+                         <form method="post">
+                            <input type="text" name="search_text" id="search_text" value="<?php echo $search_text;?>"/>
+                            <button type="submit" name="submit" id="submit" value="Search"><i class="fa fa-search"></i> Search</button>
+                        </form>
                         </div><br /><br />
                         <div class="table-responsive">
             			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -197,26 +199,51 @@ $(document).on('click','.remove-row',function(){
                                     <th>Broker Name</th>
                                     <th>Fund</th>
                                     <th>SSN</th>
-                                    <th>5.Tax ID</th>
+                                    <th>Tax ID</th>
                                     <th>CRD</th>
                                     <th class="text-center">STATUS</th>
                                     <th class="text-center">ACTION</th>
                                 </tr>
             	            </thead>
             	            <tbody>
+                            <?php
+                            $count = 0;
+                            foreach($return as $key=>$val){
+                                ?>
             	                   <tr>
-                                        <td class="text-center">1</td>
-                                        <td>Broker1</td>
-                                        <td>20</td>
-                                        <td>456</td>
-                                        <td>5</td>
-                                        <td>89</td>
-                                        <td></td>
+                                        <td class="text-center"><?php echo ++$count; ?></td>
+                                        <td><?php echo $val['first_name']." ".$val['last_name']; ?></td>
+                                        <td><?php echo $val['fund']; ?></td>
+                                        <td><?php echo $val['internal']; ?></td>
+                                        <td><?php echo $val['ssn']; ?></td>
+                                        <td><?php echo $val['tax_id']; ?></td>
+                                        <td><?php echo $val['crd']; ?></td>
+                                        <td>
+                                        <?php 
+                                        if($val['active_status']==1)
+                                        {
+                                            echo "Active";
+                                        }
+                                        else if($val['active_status']==2)
+                                        {
+                                            echo "Terminated";
+                                        }
+                                        else if($val['active_status']==3)
+                                        {
+                                            echo "Retired";
+                                        }
+                                        else
+                                        {
+                                            echo "Deceased";
+                                        }
+                                        ?>
+                                        </td>
                                         <td class="text-center">
-                                            <a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                                            <a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
+                                            <a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                                            <a onclick="return conf('<?php echo CURRENT_PAGE; ?>?action=delete&id=<?php echo $val['id']; ?>');" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
                                         </td>
                                     </tr>
+                            <?php } ?>
                             </tbody>
                         </table>
                         </div>

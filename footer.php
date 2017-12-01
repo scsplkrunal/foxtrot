@@ -28,5 +28,10 @@
 
 <!-- Include all compiled plugins (below), or include individual files as needed --> 
 <script src="js/bootstrap.min.js"></script>
+<script>
+$(".alert-success").fadeTo(1000, 500).slideUp(500, function(){
+    $(".alert-success").slideUp(500);
+});
+</script>
 </body>
 </html>

@@ -83,7 +83,7 @@ $(document).on('click','.remove-row',function(){
                     <?php
                     if($action=='add_new'||($action=='edit' && $id>0)){
                         ?>
-                        <form method="post">
+                        <form method="post" enctype="multipart/form-data">
                             <div class="panel-overlay-wrap">
                                 <div class="panel">
                 					<div class="panel-heading">
@@ -117,15 +117,17 @@ $(document).on('click','.remove-row',function(){
                                                 <div class="form-group">
                                                     <label>Client File <span class="text-red">*</span></label>
                                                     <input type="file" name="client_file" id="client_file" value="<?php echo $client_file; ?>" class="form-control" />
+                                                    <!--<a target="_blank" href="<?php echo SITE_URL."upload/".$client_file; ?>"><?php echo $client_file; ?></a>-->
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Account Type<span class="text-red">*</span></label>
                                                     <select name="account_type" id="account_type" class="form-control">
-                                                        <option value="0">Select Type</option>
-                                                        <option value="1">Saving</option>
-                                                        <option value="2">Current</option>
+                                                        <option value="">Select Type</option>
+                                                        <?php foreach($get_account_type as $key=>$val){?>
+                                							<option <?php echo isset($account_type)&&$account_type==$val['id']?'selected="selected"':''; ?> value="<?php echo $val['id'];?>"><?php echo $val['type']; ?></option>
+               	                                        <?php } ?>
                                                     </select>
                                                 </div>
                                             </div>
@@ -140,7 +142,7 @@ $(document).on('click','.remove-row',function(){
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Telephone <span class="text-red">*</span></label><br />
-                                                    <input type="number" name="telephone" id="telephone" value="<?php echo $telephone; ?>" class="form-control" />
+                                                    <input type="text" name="telephone" id="telephone" value="<?php echo $telephone; ?>" class="form-control" placeholder="9999-999-9999"/>
                                                 </div>
                                             </div>
                                        </div>
@@ -149,9 +151,9 @@ $(document).on('click','.remove-row',function(){
                                                 <div class="form-group">
                                                     <label>Contact Status <span class="text-red">*</span></label>
                                                     <select name="contact_status" id="contact_status" class="form-control">
-                                                        <option value="0">Select Status</option>
-                                                        <option value="1">Yes</option>
-                                                        <option value="2">No</option>
+                                                        <option value="">Select Status</option>
+                                                        <option <?php if(isset($contact_status) && $contact_status == 1){echo "selected='selected'";}?> value="1">Yes</option>
+                                                        <option <?php if(isset($contact_status) && $contact_status == 2){echo "selected='selected'";}?> value="2">No</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -186,8 +188,10 @@ $(document).on('click','.remove-row',function(){
             		</div>
             		<div class="panel-body">
                         <div class="panel-control" style="float: right;">
-                            <input type="text" name="search" id="search" value=""/>
-                            <button  name="search" id="search"><i class="fa fa-search"></i> Search</button>
+                        <form method="post">
+                            <input type="text" name="search_text" id="search_text" value="<?php echo $search_text;?>"/>
+                            <button type="submit" name="submit" id="submit" value="Search"><i class="fa fa-search"></i> Search</button>
+                        </form>
                         </div><br /><br />
                         <div class="table-responsive">
             			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -210,15 +214,25 @@ $(document).on('click','.remove-row',function(){
                                 ?>
             	                   <tr>
                                         <td class="text-center"><?php echo ++$count; ?></td>
-                                        <td><?php echo $val['first_name']; ?></td>
+                                        <td><?php echo $val['first_name']." ".$val['last_name']; ?></td>
                                         <td><?php echo $val['client_file']; ?></td>
                                         <td><?php echo $val['account_type']; ?></td>
                                         <td><?php echo $val['broker_name']; ?></td>
                                         <td><?php echo $val['telephone']; ?></td>
-                                        <td><?php echo $val['contact_status']; ?></td>
+                                        <td>
+                                        <?php 
+                                        if($val['contact_status']==1)
+                                        {
+                                            echo "Yes";
+                                        }
+                                        else
+                                        {
+                                            echo "No"; 
+                                        } ?>
+                                        </td>
                                         <td class="text-center">
                                             <a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                                            <a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
+                                            <a onclick="return conf('<?php echo CURRENT_PAGE; ?>?action=delete&id=<?php echo $val['id']; ?>');" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
                                         </td>
                                     </tr>
                             <?php } ?>
@@ -1200,6 +1214,11 @@ function close_other()
 {
     $('#other_div').css('display','none');
 }
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#telephone').mask('9999-999-999');
+    })
 </script>
 <style>
 .btn-primary {

@@ -9,4 +9,5 @@
     define('PAYROLL_TYPE','ft_payroll_master');
     define('CLIENT_SUITABILITY','ft_client_suitability');
     define('CLIENT_MASTER','ft_client_master');
+    define('BROKER_MASTER','ft_broker_master');
 ?>

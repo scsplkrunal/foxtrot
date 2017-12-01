@@ -1,5 +1,5 @@
 <div class="container">
-    <h1 >User Profile</h1>
+    <h1 >User Profiles</h1>
 	<div class="col-lg-12 well">
 	<div class="row">
     <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
@@ -57,7 +57,7 @@
                 </div>
                 <?php if(isset($user_image) && $user_image != array()){?>
                 <div class="col-sm-6 form-group">
-					<label> <img src="<?php echo SITE_URL."upload/".$user_image;?>" class="img img-thumbnail img-lg" height="200px" width="200px"/></label>
+					<label> <img src="<?php echo SITE_URL."upload/".$user_image;?>" class="img img-thumbnail img-lg" height="100px" width="100px"/></label>
                 </div>
                 <?php }?>
             </div>
@@ -154,7 +154,7 @@
                                     </td>
                                     <td class="text-center">
                                         <a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                                        <a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> delete</a>
+                                        <a onclick="return conf('<?php echo CURRENT_PAGE; ?>?action=delete&id=<?php echo $val['id']; ?>');" class="btn btn-sm btn-danger confirm"><i class="fa fa-trash"></i> delete</a>
                                     </td>
                                 </tr>
                                 <?php
@@ -200,9 +200,10 @@ function chk_all_class(chk)
 		}
 	}
 }
-/*function checkLength(el) {
-  if (el.value.length != 2) {
-    alert("length grater than 2 characters")
+/*function checkLength(el) {//alert('hii');
+  if (el.length != 4) {
+    alert("Length should be greater than 4 characters")
   }
 }*/
+
 </script>

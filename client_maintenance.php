@@ -5,8 +5,18 @@
     $error = '';
     $action = isset($_GET['action'])&&$_GET['action']!=''?$dbins->re_db_input($_GET['action']):'view';
     $id = isset($_GET['id'])&&$_GET['id']!=''?$dbins->re_db_input($_GET['id']):0;
+    $fname = '';
+    $lname = '';
+    $client_file = '';
+    $account_type = '';
+    $broker_name = '';
+    $telephone = '';
+    $contact_status = '';
+    $search_text = '';
     
     $instance = new client_maintenance();
+    $instance_account_type = new account_master();
+    $get_account_type = $instance_account_type->select_account_type();
     
     if(isset($_POST['submit'])&& $_POST['submit']=='Save'){
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
@@ -16,7 +26,7 @@
         $account_type = isset($_POST['account_type'])?$instance->re_db_input($_POST['account_type']):'';
         $broker_name = isset($_POST['broker_name'])?$instance->re_db_input($_POST['broker_name']):'';
         $telephone = isset($_POST['telephone'])?$instance->re_db_input($_POST['telephone']):'';
-        $contact_status = isset($_POST['contact_status'])?$instance->re_db_input($_POST['contact_status']):'';
+        $contact_status = isset($_POST['contact_status'])?$instance->re_db_input($_POST['contact_status']):'';//print_r($_POST);exit;
         $return = $instance->insert_update($_POST);
         
         if($return===true){
@@ -25,6 +35,11 @@
         else{
             $error = !isset($_SESSION['warning'])?$return:'';
         }
+    }
+    else if(isset($_POST['submit'])&&$_POST['submit']=='Search'){
+        
+       $search_text = isset($_POST['search_text'])?$instance->re_db_input($_POST['search_text']):''; 
+       $return = $instance->search($search_text);
     }
     else if($action=='edit' && $id>0){
         $return = $instance->edit($id);
@@ -62,7 +77,7 @@
     }
     else if($action=='view'){
         
-        $return = $instance->select_account_type();
+        $return = $instance->select();
         
     }
     

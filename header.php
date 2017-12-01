@@ -21,7 +21,9 @@
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
 <script src="js/jquery.min.js"></script>
 <script src="<?php echo SITE_JS; ?>bootstrap-datepicker.min.js"></script> 
-
+<script src="<?php echo SITE_JS; ?>custom.js"></script>
+<script src="<?php echo SITE_PLUGINS; ?>bootbox/bootbox.min.js"></script>
+<script src="<?php echo SITE_PLUGINS; ?>masked-input/jquery.maskedinput.min.js"></script>
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
@@ -42,7 +44,7 @@
 			<div class="userimg"><img src="images/usericon.jpeg" alt="User Image" /></div>
 			<ul class="nav navbar-nav">
                  <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">User
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $_SESSION['user_name'];?>
                     <i class="fa fa-angle-down"></i>
                     </a>
                     <ul class="dropdown-menu">
@@ -117,12 +119,12 @@
 				<a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">Supervisor
 				<i class="fa fa-angle-down"></i></a>
 				<ul class="dropdown-menu">
-				  <li><a href="user_profile.php">User Profile</a></li>
-				  <li><a href="data_interface.php">Data Interface</a></li>
-				  <li><a href="of_fi.php">OFAC/FINCH</a></li>
-                  <li><a href="client_ress.php">client Reassignment</a></li>
+				  <li><a href="user_profile.php">User Profiles</a></li>
+				  <li><a href="data_interface.php">Date Interfaces</a></li>
+				  <li><a href="of_fi.php">OFAC / FINCEN</a></li>
+                  <li><a href="client_ress.php">Client Reassignment</a></li>
 				  <li><a href="account_type.php">Account Type Maintenance</a></li>
-				  <li><a href="product_category_maintenance.php">Product category Maintenance</a></li>
+				  <li><a href="product_category_maintenance.php">Product Category Maintenance</a></li>
                   <li><a href="system_config.php">System Configuration</a></li>
                   <li><a href="client_suitability.php">Client Suitability</a></li>
                   <li><a href="payroll_adjustment.php">Payroll Adjustment</a></li>

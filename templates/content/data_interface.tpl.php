@@ -1,5 +1,5 @@
 <div class="container">
-<h1>Data Interface</h1>
+<h1>Date Interfaces</h1>
     <div class="col-lg-12 well">
         <ul class="nav nav-pills nav-stacked col-md-2">
           <li class="active"><a href="#tab_a" data-toggle="pill">DST IDC</a></li>
@@ -27,7 +27,7 @@
                             </div>
                             <div class="row"> 
                                 <div class="col-sm-6 form-group">
-                                    <label>Execlude Non-Commissionable Trade Activity </label>
+                                    <label>Exclude Non-Commissionable Trade Activity </label>
                                 </div>
                                 <div class="col-sm-6 form-group">
                                     <input type="checkbox" name="ch1" onclick="chk_all_class(this.checked)"  class="form-control" />
@@ -80,7 +80,7 @@
                             </div>
                             <div class="row"> 
                                 <div class="col-sm-6 form-group">
-                                    <label>Execlude Non-Commissionable Trade Activity </label>
+                                    <label>Exclude Non-Commissionable Trade Activity </label>
                                 </div>
                                 <div class="col-sm-6 form-group">
                                     <input type="checkbox" name="ch1" onclick="chk_all_class(this.checked)"  class="form-control" />
@@ -132,7 +132,7 @@
                             </div>
                             <div class="row"> 
                                 <div class="col-sm-6 form-group">
-                                    <label>Execlude Non-Commissionable Trade Activity </label>
+                                    <label>Exclude Non-Commissionable Trade Activity </label>
                                 </div>
                                 <div class="col-sm-6 form-group">
                                     <input type="checkbox" name="ch1" onclick="chk_all_class(this.checked)"  class="form-control" />
@@ -184,7 +184,7 @@
                             </div>
                             <div class="row"> 
                                 <div class="col-sm-6 form-group">
-                                    <label>Execlude Non-Commissionable Trade Activity </label>
+                                    <label>Exclude Non-Commissionable Trade Activity </label>
                                 </div>
                                 <div class="col-sm-6 form-group">
                                     <input type="checkbox" name="ch1" onclick="chk_all_class(this.checked)"  class="form-control" />
@@ -226,7 +226,7 @@
     					<div class="col-sm-12">
                             <div class="row"> 
                                 <div class="col-sm-6 form-group">
-                                    <label>Execlude Non-Commissionable Trade Activity </label>
+                                    <label>Exclude Non-Commissionable Trade Activity </label>
                                 </div>
                                 <div class="col-sm-6 form-group">
                                     <input type="checkbox" name="ch1" onclick="chk_all_class(this.checked)"  class="form-control" />
@@ -268,7 +268,7 @@
     					<div class="col-sm-12">				
                             <div class="row"> 
                                 <div class="col-sm-6 form-group">
-                                    <label>Execlude Non-Commissionable Trade Activity </label>
+                                    <label>Exclude Non-Commissionable Trade Activity </label>
                                 </div>
                                 <div class="col-sm-6 form-group">
                                     <input type="checkbox" name="ch1" onclick="chk_all_class(this.checked)"  class="form-control" />
@@ -310,7 +310,7 @@
     					<div class="col-sm-12">				
     						<div class="row"> 
                                 <div class="col-sm-6 form-group">
-                                    <label>Execlude Non-Commissionable Trade Activity </label>
+                                    <label>Exclude Non-Commissionable Trade Activity </label>
                                 </div>
                                 <div class="col-sm-6 form-group">
                                     <input type="checkbox" name="ch1" onclick="chk_all_class(this.checked)"  class="form-control" />
@@ -352,7 +352,7 @@
     					<div class="col-sm-12">			
                             <div class="row"> 
                                 <div class="col-sm-6 form-group">
-                                    <label>Execlude Non-Commissionable Trade Activity </label>
+                                    <label>Exclude Non-Commissionable Trade Activity </label>
                                 </div>
                                 <div class="col-sm-6 form-group">
                                     <input type="checkbox" name="ch1" onclick="chk_all_class(this.checked)"  class="form-control" />

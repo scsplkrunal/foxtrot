@@ -1,7 +1,7 @@
 <?php
 	class broker_master extends db{
 		
-		public $table = SUBSCRIPTIONS_MASTER;
+		public $table = BROKER_MASTER;
 		public $errors = '';
         
         /**
@@ -10,39 +10,54 @@
 		 * */
 		public function insert_update($data){
 			$id = isset($data['id'])?$this->re_db_input($data['id']):0;
-			$name = isset($data['name'])?$this->re_db_input($data['name']):'';
-			$duration = isset($data['duration'])?$this->re_db_input($data['duration']):'';
-			$duration_type = isset($data['duration_type'])?$this->re_db_input($data['duration_type']):'';
-			$price = isset($data['price'])?$this->re_db_input($data['price']):'';
-			$currency = isset($data['currency'])?$this->re_db_input($data['currency']):'';
-			$features = isset($data['features'])?$data['features']:array();
-            $order = isset($data['order'])?$this->re_db_input($data['order']):'';
+			$fname = isset($data['fname'])?$this->re_db_input($data['fname']):'';
+			$lname = isset($data['lname'])?$this->re_db_input($data['lname']):'';
+			$mname = isset($data['mname'])?$this->re_db_input($data['mname']):'';
+			$suffix = isset($data['suffix'])?$this->re_db_input($data['suffix']):'';
+			$fund = isset($data['fund'])?$this->re_db_input($data['fund']):'';
+			$internal = isset($data['internal'])?$this->re_db_input($data['internal']):'';
+			$ssn = isset($data['ssn'])?$this->re_db_input($data['ssn']):'';
+			$tax_id = isset($data['tax_id'])?$this->re_db_input($data['tax_id']):'';
+			$crd = isset($data['crd'])?$this->re_db_input($data['crd']):'';
+            $active_status_cdd = isset($data['active_status_cdd'])?$this->re_db_input($data['active_status_cdd']):'';
+			$pay_method = isset($data['pay_method'])?$this->re_db_input($data['pay_method']):'';
+			$branch_manager = isset($data['branch_manager'])?$this->re_db_input($data['branch_manager']):'';
 			
-			if($name==''){
-				$this->errors = 'Please enter name.';
+			
+			if($fname==''){
+				$this->errors = 'Please enter first name.';
 			}
-			else if($duration==''){
-				$this->errors = 'Please enter duration.';
+            else if($lname==''){
+				$this->errors = 'Please enter last name.';
 			}
-			else if(!is_numeric($duration)){
-				$this->errors = 'Please enter valid duration.';
+            else if($mname==''){
+				$this->errors = 'Please enter middle name.';
 			}
-            else if($duration_type==''){
-				$this->errors = 'Please select duration type.';
+			else if($suffix==''){
+				$this->errors = 'Please enter suffix.';
 			}
-			else if($price==''){
-				$this->errors = 'Please enter price.';
+			else if($fund==''){//echo $fund;exit;
+				$this->errors = 'Please enter fund.';
 			}
-			else if(!is_numeric($price)){
-				$this->errors = 'Please enter valid price.';
+            else if($internal==''){
+				$this->errors = 'Please enter internal.';
 			}
-            else if($currency==''){
-				$this->errors = 'Please select currency.';
+			else if($ssn==''){
+				$this->errors = 'Please enter ssn.';
 			}
-            else if(count($features)==0){
-                $this->errors = 'Please select atleast one feature.';
+			else if($tax_id==''){
+				$this->errors = 'Please enter tax.';
+			}
+            else if($crd==''){
+				$this->errors = 'Please select crd.';
+			}
+            else if($active_status_cdd==''){
+                $this->errors = 'Please select active status.';
             }
-			
+			else if($pay_method==''){
+                $this->errors = 'Please select pay type.';
+            }
+            
 			if($this->errors!=''){
 				return $this->errors;
 			}
@@ -53,11 +68,11 @@
 				if($id>0){
 					$con = " AND `id`!='".$id."'";
 				}
-				$q = "SELECT * FROM `".$this->table."` WHERE `is_delete`='0' AND `name`='".$name."' ".$con;
+				$q = "SELECT * FROM `".$this->table."` WHERE `is_delete`='0' AND `first_name`='".$fname."' ".$con;
 				$res = $this->re_db_query($q);
 				$return = $this->re_db_num_rows($res);
 				if($return>0){
-					$this->errors = 'This feature is already exists.';
+					$this->errors = 'This broker is already exists.';
 				}
 				
 				if($this->errors!=''){
@@ -65,18 +80,11 @@
 				}
 				else if($id>=0){
 					if($id==0){
-						$q = "INSERT INTO `".$this->table."` SET `name`='".$name."',`order`='".$order."', `duration`='".$duration."', `duration_type`='".$duration_type."', `price`='".$price."', `currency`='".$currency."' ".$this->insert_common_sql();
+						$q = "INSERT INTO `".$this->table."` SET `first_name`='".$fname."',`last_name`='".$lname."',`middle_name`='".$mname."',`suffix`='".$suffix."',`fund`='".$fund."',`internal`='".$internal."',`tax_id`='".$tax_id."',`crd`='".$crd."',`ssn`='".$ssn."',`active_status`='".$active_status_cdd."',`pay_method`='".$pay_method."',`branch_manager`='".$branch_manager."'".$this->insert_common_sql();
 						$res = $this->re_db_query($q);
-                        $id = $this->re_db_insert_id();
-						if($res){
-						      $q = "UPDATE `".SUBSCRIPTION_FEATURES."` SET `is_delete`='1' WHERE `subscription_plan`='".$id."'";
-                            $this->re_db_query($q);
-                            foreach($features as $key=>$val){
-                                $q = "INSERT INTO `".SUBSCRIPTION_FEATURES."` SET `subscription_plan`='".$id."', `feature`='".$val."'";
-                                $this->re_db_query($q);
-                            }
-                            
-							$_SESSION['success'] = INSERT_MESSAGE;
+                        if($res){
+						      
+                            $_SESSION['success'] = INSERT_MESSAGE;
 							return true;
 						}
 						else{
@@ -85,17 +93,11 @@
 						}
 					}
 					else if($id>0){
-						$q = "UPDATE `".$this->table."` SET `name`='".$name."',`order`='".$order."', `duration`='".$duration."', `duration_type`='".$duration_type."', `price`='".$price."', `currency`='".$currency."' ".$this->update_common_sql()." WHERE `id`='".$id."'";
+					    $q = "UPDATE `".$this->table."` SET `first_name`='".$fname."',`last_name`='".$lname."',`middle_name`='".$mname."',`suffix`='".$suffix."',`fund`='".$fund."',`internal`='".$internal."',`tax_id`='".$tax_id."',`crd`='".$crd."',`ssn`='".$ssn."',`active_status`='".$active_status_cdd."',`pay_method`='".$pay_method."',`branch_manager`='".$branch_manager."'".$this->update_common_sql()." WHERE `id`='".$id."'";
 						$res = $this->re_db_query($q);
 						if($res){
-						      $q = "UPDATE `".SUBSCRIPTION_FEATURES."` SET `is_delete`='1' WHERE `subscription_plan`='".$id."'";
-                                $this->re_db_query($q);
-                                foreach($features as $key=>$val){
-                                    $q = "INSERT INTO `".SUBSCRIPTION_FEATURES."` SET `subscription_plan`='".$id."', `feature`='".$val."'";
-                                    $this->re_db_query($q);
-                                }
-                                
-							$_SESSION['success'] = UPDATE_MESSAGE;
+						      
+                            $_SESSION['success'] = UPDATE_MESSAGE;
 							return true;
 						}
 						else{
@@ -115,29 +117,13 @@
 		 * @param int status, default all
 		 * @return array of record if success, error message if any errors
 		 * */
-		public function select($status='',$plan_id=''){
+		public function select(){
 			$return = array();
-			$con = '';
-			if($status!='' && $status>=0){
-				$con .= " AND `sm`.`status`='".$status."' ";
-			}
-            if($plan_id!='' && $plan_id>=0){
-				$con .= " AND `sm`.`id`='".$plan_id."' ";
-			}
-            /*,(
-                    SELECT GROUP_CONCAT(`feature`)
-                    FROM `".SUBSCRIPTION_FEATURES."` AS `sf`
-                    WHERE `sf`.`subscription_plan`=`sm`.`id`
-                    ) AS feature
-                    */
-			$q = "SELECT `sm`.*,`cm`.`name` AS `currency_name`, `dm`.`name` AS `duration_name`, `fm`.`id` AS `feature_id`, `fm`.`name` AS `feature_name`
-					FROM `".$this->table."` AS `sm`
-                    LEFT JOIN `".CURRENCY_MASTER."` AS `cm` ON `cm`.`id`=`sm`.`currency`
-                    LEFT JOIN `".DURATION_TYPE."` AS `dm` ON `dm`.`id`=`sm`.`duration_type`
-                    LEFT JOIN `".SUBSCRIPTION_FEATURES."` AS `sf` ON `sf`.`subscription_plan`=`sm`.`id` AND `sf`.`is_delete`='0'
-                    LEFT JOIN `".FEATURES_MASTER."` AS `fm` ON `fm`.`id`=`sf`.`feature`
-					WHERE `sm`.`is_delete`='0' ".$con."
-                    ORDER BY `sm`.`order` ASC";
+			
+			$q = "SELECT `at`.*
+					FROM `".$this->table."` AS `at`
+                    WHERE `at`.`is_delete`='0'
+                    ORDER BY `at`.`id` ASC";
 			$res = $this->re_db_query($q);
             if($this->re_db_num_rows($res)>0){
                 $a = 0;
@@ -148,30 +134,43 @@
             }
 			return $return;
 		}
-        
         /**
 		 * @param int id
 		 * @return array of record if success, error message if any errors
 		 * */
 		public function edit($id){
 			$return = array();
-			$q = "SELECT `sm`.*,`cm`.`name` AS `currency_name`, `dm`.`name` AS `duration_name`,(
-                    SELECT GROUP_CONCAT(`feature`)
-                    FROM `".SUBSCRIPTION_FEATURES."` AS `sf`
-                    WHERE `sf`.`subscription_plan`=`sm`.`id` AND `sf`.`is_delete`='0'
-                    ) AS feature
-					FROM `".$this->table."` AS `sm`
-                    LEFT JOIN `".CURRENCY_MASTER."` AS `cm` ON `cm`.`id`=`sm`.`currency`
-                    LEFT JOIN `".DURATION_TYPE."` AS `dm` ON `dm`.`id`=`sm`.`duration_type`
-					WHERE `sm`.`is_delete`='0' AND `sm`.`id`='".$id."'";
+			$q = "SELECT `at`.*
+					FROM `".$this->table."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`id`='".$id."' "; 
 			$res = $this->re_db_query($q);
             if($this->re_db_num_rows($res)>0){
     			$return = $this->re_db_fetch_array($res);
-                $return['feature'] = explode(',',$return['feature']);
             }
 			return $return;
 		}
-        
+        public function search($search_text=''){
+			$return = array();
+			$con = '';
+            if($search_text!='' && $search_text>=0){
+				$con .= " AND `clm`.`first_name` LIKE '%".$search_text."%' ";
+			}
+            
+            $q = "SELECT `clm`.*
+					FROM `".$this->table."` AS `clm`
+                    WHERE `clm`.`is_delete`='0' ".$con."
+                    ORDER BY `clm`.`id` ASC ";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     //print_r($row);exit;
+                     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+		}
         /**
 		 * @param id of record
 		 * @param status to update
