@@ -34,7 +34,7 @@ $(document).on('click','.remove-row',function(){
     <div class="col-lg-12 well">
         <ul class="nav nav-pills nav-stacked col-md-2">
           <!--<li class="active"><a href="#tab_default" data-toggle="pill">Home</a></li>-->
-          <li><a href="<?php echo CURRENT_PAGE; ?>#tab_a" data-toggle="pill">General</a></li>
+          <li class="<?php if($action=="general"){ echo "active"; } ?>"><a href="<?php echo CURRENT_PAGE; ?>#tab_a" data-toggle="pill">General</a></li>
           <li><a href="<?php echo CURRENT_PAGE; ?>#tab_b" data-toggle="pill">Payouts</a></li>
           <li><a href="<?php echo CURRENT_PAGE; ?>#tab_c" data-toggle="pill">Charges</a></li>
           <li><a href="<?php echo CURRENT_PAGE; ?>#tab_d" data-toggle="pill">Licences</a></li>
@@ -42,7 +42,7 @@ $(document).on('click','.remove-row',function(){
           <li><a href="<?php echo CURRENT_PAGE; ?>#tab_f" data-toggle="pill">Required Docs</a></li>
        </ul>
        <div class="tab-content col-md-10">
-                <div class="tab-pane active" id="tab_default">
+                <div class="tab-pane <?php if($action!="general"){ echo "active"; } ?>" id="tab_default">
                     <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
                     <?php
                     if($action=='add_new'||($action=='edit' && $id>0)){
@@ -65,13 +65,13 @@ $(document).on('click','.remove-row',function(){
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>First Name <span class="text-red">*</span></label>
+                                                    <label>First Name </label>
                                                     <input type="text" name="fname" id="fname" value="<?php echo $fname; ?>" class="form-control" />
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Last Name <span class="text-red">*</span></label>
+                                                    <label>Last Name </label><span class="text-red">*</span>
                                                     <input type="text" name="lname" id="lname" value="<?php echo $lname; ?>" class="form-control" />
                                                 </div>
                                             </div>
@@ -79,13 +79,13 @@ $(document).on('click','.remove-row',function(){
                                        <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Middle Name <span class="text-red">*</span></label>
+                                                    <label>Middle Name </label>
                                                     <input type="text" name="mname" id="mname" value="<?php echo $mname; ?>" class="form-control" />
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Suffix <span class="text-red">*</span></label>
+                                                    <label>Suffix </label>
                                                     <input type="text" name="suffix" id="suffix" value="<?php echo $suffix; ?>" class="form-control" />
                                                 </div>
                                             </div>
@@ -93,13 +93,13 @@ $(document).on('click','.remove-row',function(){
                                        <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Fund/Clear <span class="text-red">*</span></label>
+                                                    <label>Fund/Clear </label>
                                                     <input type="text" name="fund" id="fund" value="<?php echo $fund; ?>" class="form-control" />
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Internal <span class="text-red">*</span></label>
+                                                    <label>Internal </label>
                                                     <input type="text" name="internal" id="internal" value="<?php echo $internal; ?>" class="form-control" />
                                                 </div>
                                             </div>
@@ -107,13 +107,13 @@ $(document).on('click','.remove-row',function(){
                                        <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>SSN <span class="text-red">*</span></label>
+                                                    <label>SSN </label>
                                                     <input type="text" name="ssn" id="ssn" value="<?php echo $ssn; ?>" class="form-control" />
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Tax Id <span class="text-red">*</span></label>
+                                                    <label>Tax Id </label>
                                                     <input type="text" name="tax_id" id="tax_id" value="<?php echo $tax_id; ?>" class="form-control" />
                                                 </div>
                                             </div>
@@ -121,13 +121,13 @@ $(document).on('click','.remove-row',function(){
                                        <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>CRD <span class="text-red">*</span></label>
+                                                    <label>CRD </label>
                                                     <input type="text" name="crd" id="crd" value="<?php echo $crd; ?>" class="form-control" />
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Active status<span class="text-red">*</span></label>
+                                                    <label>Active status</label>
                                                     <select name="active_status_cdd" id="active_status_cdd" class="form-control">
                                                         <option value="">Select Status</option>
                                                         <option <?php if(isset($active_status_cdd) && $active_status_cdd == 1){echo "selected='selected'";}?> value="1">Active</option>
@@ -141,7 +141,7 @@ $(document).on('click','.remove-row',function(){
                                        <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Pay Method <span class="text-red">*</span></label>
+                                                    <label>Pay Method </label>
                                                     <select name="pay_method" id="pay_method" class="form-control">
                                                         <option value="">Select Pay Type</option>
                                                         <option <?php if(isset($pay_method) && $pay_method == 1){echo "selected='selected'";}?> value="1">ACH</option>
@@ -151,7 +151,7 @@ $(document).on('click','.remove-row',function(){
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Branch Manager <span class="text-red">*</span></label><br />
+                                                    <label>Branch Manager </label><br />
                                                     <input type="checkbox" class="checkbox" name="branch_manager" value="1" id="branch_manager" class="regular-checkbox big-checkbox" <?php if($branch_manager == 1){echo "checked='true'";} ?> /><label for="checkbox-2-1"></label>
                                                 </div>
                                             </div>
@@ -251,7 +251,7 @@ $(document).on('click','.remove-row',function(){
             	</div>
                 <?php } ?>
                 </div>
-                <div class="tab-pane" id="tab_a">
+                <div class="tab-pane <?php if($action=="general"){ echo "active"; } ?>" id="tab_a">
                 <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
                     <form method="post">
                         <div class="panel-overlay-wrap">
@@ -265,43 +265,86 @@ $(document).on('click','.remove-row',function(){
                                     <h3 class="panel-title" style="font-size: 25px;"><b><i class="fa fa-pencil-square-o"></i> General</b></h3>
             					</div>
                                 <div class="panel-body">
+                                 <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Home/Business<span class="text-red">*</span></label>
-                                                <select name="active_status_cdd" id="active_status_cdd1" class="form-control">
-                                                    <option value="0">Select</option>
+                                                <label>Home/Business</label>
+                                                <select name="home_general" id="home_general" class="form-control">
+                                                    <option value="">Select Option</option>
                                                     <option value="1">Home</option>
                                                     <option value="2">Business</option>
                                                 </select>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Telephone <span class="text-red">*</span></label>
-                                                <input type="number" name="telephone" id="telephone" value="<?php echo $telephone; ?>" class="form-control" />
+                                                <label>Address 1 </label>
+                                                <input type="text" name="address1_general" id="address1_general" value="<?php echo $telephone; ?>" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Address 2 </label>
+                                                <input type="text" name="address2_general" id="address2_general" value="<?php echo $telephone; ?>" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>City </label>
+                                                <input type="text" name="city_general" id="city_general" value="<?php echo $telephone; ?>" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>State </label>
+                                                <select name="state_general" id="state_general" class="form-control">
+                                                    <option value="">Select State</option>
+                                                    <?php foreach($get_state as $statekey=>$stateval){?>
+                                                    <option value="<?php echo $stateval['id']; ?>"><?php echo $stateval['name']; ?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Zip code </label>
+                                                    <input type="number" name="zip_code_general" id="zip_code_general" value="<?php echo $telephone; ?>" class="form-control" />
+                                                </div>
+                                            </div>
+                                    </div>
+                                   </div>
+                                   <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Telephone </label>
+                                                <input type="text" name="telephone_general" id="telephone_general" value="<?php echo $telephone; ?>" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Cell </label>
+                                                <input type="text" name="cell_general" id="cell_general" value="<?php echo $cell; ?>" class="form-control" />
                                             </div>
                                         </div>
                                    </div>
                                    <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Cell <span class="text-red">*</span></label>
-                                                <input type="number" name="cell" id="cell" value="<?php echo $cell; ?>" class="form-control" />
+                                                <label>Fax </label>
+                                                <input type="text" name="fax_general" id="fax_general" value="<?php echo $fax; ?>" class="form-control" />
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Fax <span class="text-red">*</span></label>
-                                                <input type="number" name="fax" id="fax" value="<?php echo $fax; ?>" class="form-control" />
-                                            </div>
-                                        </div>
-                                   </div>
-                                   <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Gender <span class="text-red">*</span></label>
-                                                <select name="gender" id="gender" class="form-control">
+                                                <label>Gender </label>
+                                                <select name="gender_general" id="gender_general" class="form-control">
                                                     <option value="0">Select Gender</option>
                                                     <option value="1">Male</option>
                                                     <option value="2">Female</option>
@@ -309,10 +352,12 @@ $(document).on('click','.remove-row',function(){
                                                 </select>
                                             </div>
                                         </div>
+                                   </div>
+                                   <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Status  <span class="text-red">*</span></label>
-                                                <select name="status" id="status" class="form-control">
+                                                <label>Status  </label>
+                                                <select name="status_general" id="status_general" class="form-control">
                                                     <option value="0">Select Status</option>
                                                     <option value="1">Single</option>
                                                     <option value="2">Married</option>
@@ -321,18 +366,18 @@ $(document).on('click','.remove-row',function(){
                                                 </select>
                                             </div>
                                         </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Spouse </label>
+                                                <input type="text" name="spouse_general" id="spouse_general" value="<?php echo $spouse; ?>" class="form-control" />
+                                            </div>
+                                        </div>
                                    </div>
                                    <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Spouse <span class="text-red">*</span></label>
-                                                <input type="text" name="spouse" id="spouse" value="<?php echo $spouse; ?>" class="form-control" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Children <span class="text-red">*</span></label>
-                                                <select name="children" id="children" class="form-control">
+                                                <label>Children </label>
+                                                <select name="children_general" id="children_general" class="form-control">
                                                     <option value="0">Select Children</option>
                                                     <?php for($i=1;$i<10;$i++){?>
                                                     <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
@@ -340,52 +385,40 @@ $(document).on('click','.remove-row',function(){
                                                 </select>
                                             </div>
                                         </div>
-                                   </div>
-                                   <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Email 1 <span class="text-red">*</span></label>
-                                                <input type="text" name="email1" id="email1" value="<?php echo $email1; ?>" class="form-control" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Email 2 <span class="text-red">*</span></label>
-                                                 <input type="text" name="email2" id="email2" value="<?php echo $email2; ?>" class="form-control" />
+                                                <label>Email 1 </label>
+                                                <input type="text" name="email1_general" id="email1_general" value="<?php echo $email1; ?>" class="form-control" />
                                             </div>
                                         </div>
                                    </div>
                                    <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Web ID <span class="text-red">*</span></label>
-                                                <input type="text" name="web_id" id="web_id" value="<?php echo $web_id; ?>" class="form-control" />
+                                                <label>Email 2 </label>
+                                                 <input type="text" name="email2_general" id="email2_general" value="<?php echo $email2; ?>" class="form-control" />
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Web Password <span class="text-red">*</span></label><br />
-                                                <input type="text" name="web_password" id="web_password" value="<?php echo $web_password; ?>" class="form-control" />
+                                                <label>Web ID </label>
+                                                <input type="text" name="web_id_general" id="web_id_general" value="<?php echo $web_id; ?>" class="form-control" />
                                             </div>
                                         </div>
                                    </div>
                                    <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>DOB <span class="text-red">*</span></label>
+                                                <label>Web Password </label><br />
+                                                <input type="password" name="web_password_general" id="web_password_general" value="<?php echo $web_password; ?>" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>DOB </label>
                                                 <div id="demo-dp-range">
 					                                <div class="input-daterange input-group" id="datepicker">
-                                                        <input type="text" name="dob" id="dob" value="<?php echo $dob; ?>" class="form-control" />
-					                                </div>
-					                            </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Prospect Date <span class="text-red">*</span></label><br />
-                                                <div id="demo-dp-range">
-					                                <div class="input-daterange input-group" id="datepicker">
-                                                        <input type="text" name="prospect_date" id="prospect_date" value="<?php echo $prospect_date; ?>" class="form-control" />
+                                                        <input type="text" name="dob_general" id="dob_general" value="<?php echo $dob; ?>" class="form-control" />
 					                                </div>
 					                            </div>
                                             </div>
@@ -394,8 +427,18 @@ $(document).on('click','.remove-row',function(){
                                    <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Reassign Broker <span class="text-red">*</span></label>
-                                                <select name="reassign_broker" id="reassign_broker" class="form-control">
+                                                <label>Prospect Date </label><br />
+                                                <div id="demo-dp-range">
+					                                <div class="input-daterange input-group" id="datepicker">
+                                                        <input type="text" name="prospect_date_general" id="prospect_date_general" value="<?php echo $prospect_date; ?>" class="form-control" />
+					                                </div>
+					                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Reassign Broker </label>
+                                                <select name="reassign_broker_general" id="reassign_broker_general" class="form-control">
                                                     <option value="0">Select Days</option>
                                                     <?php for($i=0;$i<1000;$i++){?>
                                                     <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
@@ -403,108 +446,109 @@ $(document).on('click','.remove-row',function(){
                                                  </select>
                                             </div>
                                         </div>
+                                   </div>
+                                   <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>U4 <span class="text-red">*</span></label><br />
+                                                <label>U4 </label><br />
                                                 <div id="demo-dp-range">
 					                                <div class="input-daterange input-group" id="datepicker">
-                                                        <input type="text" name="u4" id="u4" value="<?php echo $u4; ?>" class="form-control" />
+                                                        <input type="text" name="u4_general" id="u4_general" value="<?php echo $u4; ?>" class="form-control" />
 					                                </div>
 					                            </div>
                                             </div>
                                         </div>
-                                        
-                                   </div>
-                                   <div class="row">
-                                       <div class="col-md-6">
+                                        <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>U5 <span class="text-red">*</span></label><br />
+                                                <label>U5 </label><br />
                                                 <div id="demo-dp-range">
     				                                <div class="input-daterange input-group" id="datepicker">
-                                                        <input type="text" name="u5" id="u5" value="<?php echo $u5; ?>" class="form-control" />
+                                                        <input type="text" name="u5_general" id="u5_general" value="<?php echo $u5; ?>" class="form-control" />
     				                                </div>
     				                            </div>
                                             </div>
                                         </div>
+                                   </div>
+                                   <div class="row">
+                                       <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>DBA Name </label><br />
+                                                <input type="text" name="dba_name_general" id="dba_name_general" value="<?php echo $dba_name; ?>" class="form-control" />
+                                            </div>
+                                        </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>DBA Name <span class="text-red">*</span></label><br />
-                                                <input type="text" name="dba_name" id="dba_name" value="<?php echo $dba_name; ?>" class="form-control" />
+                                                <label>EFT Information </label><br />
+                                                <label class="radio-inline">
+                                                  <input type="radio" class="radio" name="eft_info_general" id="eft_info_general" value="1" checked="checked" />Pre-Notes
+                                                </label>
+                                                <label class="radio-inline">
+                                                  <input type="radio" class="radio" name="eft_info_general" id="eft_info_general" value="2" />Direct Deposit
+                                                </label>
                                             </div>
                                         </div>
                                    </div>
                                    <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>EFT Information <span class="text-red">*</span></label><br />
-                                                <label class="radio-inline">
-                                                  <input type="radio" class="radio" name="eft_info" id="eft_info" checked="checked" />Pre-Notes
-                                                </label>
-                                                <label class="radio-inline">
-                                                  <input type="radio" class="radio" name="eft_info" id="eft_info" />Direct Deposit
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Start Date <span class="text-red">*</span></label><br />
+                                                <label>Start Date </label><br />
                                                 <div id="demo-dp-range">
 					                                <div class="input-daterange input-group" id="datepicker">
-                                                        <input type="text" name="start_date" id="start_date" value="<?php echo $start_date; ?>" class="form-control" />
+                                                        <input type="text" name="start_date_general" id="start_date_general" value="<?php echo $start_date; ?>" class="form-control" />
 					                                </div>
 					                            </div>
                                             </div>
                                         </div>
-                                   </div>
-                                   <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Transaction Type <span class="text-red">*</span></label><br />
+                                                <label>Transaction Type </label><br />
                                                 <label class="radio-inline">
-                                                  <input type="radio" class="radio" name="transaction_type" id="transaction_type" checked="checked" /> Checking
+                                                  <input type="radio" class="radio" name="transaction_type_general" value="1" id="transaction_type_general" checked="checked" /> Checking
                                                 </label>
                                                 <label class="radio-inline">
-                                                  <input type="radio" class="radio" name="transaction_type" id="transaction_type" /> Savings
+                                                  <input type="radio" class="radio" name="transaction_type_general" value="2" id="transaction_type_general" /> Savings
                                                 </label>
                                             </div>
                                         </div>
+                                   </div>
+                                   <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Routing <span class="text-red">*</span></label><br />
-                                                <input type="text" name="routing" id="routing" value="<?php echo $routing; ?>" class="form-control" />
+                                                <label>Routing </label><br />
+                                                <input type="text" name="routing_general" id="routing_general" value="<?php echo $routing; ?>" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Account No </label>
+                                                <input type="number" name="account_no_general" id="account_no_general" value="<?php echo $account_no; ?>" class="form-control" />
                                             </div>
                                         </div>
                                    </div>
                                    <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Account No <span class="text-red">*</span></label>
-                                                <input type="number" name="account_no" id="account_no" value="<?php echo $account_no; ?>" class="form-control" />
+                                                <label>Summarize Trailers </label><br />
+                                                <input type="checkbox" class="checkbox" value="1" name="summarize_trailers_general" id="summarize_trailers_general" class="regular-checkbox big-checkbox" /><label for="checkbox-2-1"></label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Summarize Trailers <span class="text-red">*</span></label><br />
-                                                <input type="checkbox" class="checkbox" name="summarize_trailers" id="summarize_trailers" class="regular-checkbox big-checkbox" /><label for="checkbox-2-1"></label>
+                                                <label>Summarize Direct Imported Trades: </label><br />
+                                                <input type="checkbox" class="checkbox" value="1" name="summarize_direct_imported_trades" id="summarize_direct_imported_trades" class="regular-checkbox big-checkbox" /><label for="checkbox-2-1"></label>
                                             </div>
                                         </div>
                                    </div>
                                    <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Summarize Direct Imported Trades: <span class="text-red">*</span></label><br />
-                                                <input type="checkbox" class="checkbox" name="summarize_direct_imported_trades" id="summarize_direct_imported_trades" class="regular-checkbox big-checkbox" /><label for="checkbox-2-1"></label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Hold Commissions <span class="text-red">*</span></label><br />
+                                                <label>Hold Commissions </label><br />
                                                 <div id="demo-dp-range">
 					                                <div class="input-daterange input-group" id="datepicker">
                                                         <span class="input-group-addon">From</span>
-					                                    <input type="text" class="form-control" name="from_date" value="<?php echo $from_date ?>" />
+					                                    <input type="text" class="form-control" name="from_date_general" value="<?php echo $from_date ?>" />
 					                                    <span class="input-group-addon">To</span>
-					                                    <input type="text" class="form-control" name="to_date" value="<?php echo $to_date ?>" />
+					                                    <input type="text" class="form-control" name="to_date_general" value="<?php echo $to_date ?>" />
 					                                </div>
 					                            </div>
                                            </div>
@@ -513,11 +557,11 @@ $(document).on('click','.remove-row',function(){
                                    <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label>Professional designations <span class="text-red">*</span></label><br />
+                                                <label>Professional designations </label><br />
                                                 <div class="col-md-2">
                                                     <div class="input-group">
                                                       <span class="input-group-addon">
-                                                         <input type="checkbox"  name="cfp" id="cfp" style="display: inline;" value="cfp" />
+                                                         <input type="checkbox"  name="cfp_general" id="cfp_general" style="display: inline;" value="1" />
                                                       </span>
                                                       <label class="form-control">CFP</label>
                                                     </div>
@@ -525,7 +569,7 @@ $(document).on('click','.remove-row',function(){
                                                 <div class="col-md-2">
                                                     <div class="input-group">
                                                       <span class="input-group-addon">
-                                                         <input type="checkbox" name="chfp" id="chfp" value="chfp" style="display: inline;" />
+                                                         <input type="checkbox" name="chfp_general" id="chfp_general" value="1" style="display: inline;" />
                                                       </span>
                                                       <label class="form-control">ChFP</label>
                                                     </div>
@@ -533,7 +577,7 @@ $(document).on('click','.remove-row',function(){
                                                 <div class="col-md-2">
                                                     <div class="input-group">
                                                       <span class="input-group-addon">
-                                                         <input type="checkbox"  name="cpa" id="cpa" value="cpa" style="display: inline;" />
+                                                         <input type="checkbox"  name="cpa_general" id="cpa_general" value="1" style="display: inline;" />
                                                       </span>
                                                       <label class="form-control">CPA</label>
                                                     </div>
@@ -541,7 +585,7 @@ $(document).on('click','.remove-row',function(){
                                                 <div class="col-md-2">
                                                     <div class="input-group">
                                                       <span class="input-group-addon">
-                                                         <input type="checkbox" name="clu" id="clu" value="clu" style="display: inline;" />
+                                                         <input type="checkbox" name="clu_general" id="clu_general" value="1" style="display: inline;" />
                                                       </span>
                                                       <label class="form-control">CLU</label>
                                                     </div>
@@ -549,7 +593,7 @@ $(document).on('click','.remove-row',function(){
                                                 <div class="col-md-2">
                                                     <div class="input-group">
                                                       <span class="input-group-addon">
-                                                         <input type="checkbox" name="cfa" id="cfa" value="cfa" style="display: inline;" />
+                                                         <input type="checkbox" name="cfa_general" id="cfa_general" value="1" style="display: inline;" />
                                                       </span>
                                                       <label class="form-control">CFA</label>
                                                     </div>
@@ -557,7 +601,7 @@ $(document).on('click','.remove-row',function(){
                                                 <div class="col-md-2">
                                                     <div class="input-group">
                                                       <span class="input-group-addon">
-                                                         <input type="checkbox" name="ria" id="ria" value="ria" style="display: inline;" />
+                                                         <input type="checkbox" name="ria_general" id="ria_general" value="1" style="display: inline;" />
                                                       </span>
                                                       <label class="form-control">RIA</label>
                                                     </div>
@@ -565,7 +609,7 @@ $(document).on('click','.remove-row',function(){
                                                 <div class="col-md-2">
                                                     <div class="input-group">
                                                       <span class="input-group-addon">
-                                                         <input type="checkbox" name="insurance" id="insurance" value="cfp" style="display: inline;" />
+                                                         <input type="checkbox" name="insurance_general" id="insurance_general" value="1" style="display: inline;" />
                                                       </span>
                                                       <label class="form-control">Insurance</label>
                                                     </div>
@@ -580,7 +624,7 @@ $(document).on('click','.remove-row',function(){
                                 <div class="panel-footer">
                                     <div class="selectwrap">
                                         <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-                    					<input type="submit" name="submit" value="Save"/>	
+                    					<input type="submit" name="general" value="Save"/>	
                                         <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                                     </div>
                                </div>
@@ -593,12 +637,17 @@ $(document).on('click','.remove-row',function(){
                     <form method="post">
                         <div class="panel-overlay-wrap">
                             <div class="panel">
+                                <div class="panel-control" style="float: right;">
+        							<div class="btn-group dropdown">
+        								<a href="<?php echo CURRENT_PAGE;?> "><i class="fa fa-mail-forward"></i></a>
+        							</div>
+        						</div>
                                 <ul class="nav nav-tabs">
                                     <li class="active"><a href="#">Payouts</a></li>
                                     <li><a href="#">Overrides</a></li>
                                     <li><a href="#">Splits</a></li>
                                 </ul>
-            					<div class="panel-body">
+                                <div class="panel-body">
                                     <div class="row">
                                         <?php echo 'PAyouts'; ?>
                                    </div>
@@ -623,6 +672,11 @@ $(document).on('click','.remove-row',function(){
                         <div class="panel-overlay-wrap">
                             <div class="panel">
                                 <div class="panel-heading">
+                                    <div class="panel-control" style="float: right;">
+            							<div class="btn-group dropdown">
+            								<a href="<?php echo CURRENT_PAGE;?> "><i class="fa fa-mail-forward"></i></a>
+            							</div>
+            						</div>
                                     <h2 class="panel-title" style="font-size: 25px;"><input type="checkbox" class="checkbox" name="pass_through" id="pass_through" style="display: inline !important;"/><b> None (Pass Through)</b></h2>
                                 </div>
             					<div class="panel-body">
@@ -1204,6 +1258,11 @@ $(document).on('click','.remove-row',function(){
                     <form method="post">
                         <div class="panel-overlay-wrap">
                             <div class="panel">
+                                <div class="panel-control" style="float: right;">
+        							<div class="btn-group dropdown">
+        								<a href="<?php echo CURRENT_PAGE;?> "><i class="fa fa-mail-forward"></i></a>
+        							</div>
+        						</div>
                                 <ul class="nav nav-tabs">
                                     <li class="active"><a href="<?php echo CURRENT_PAGE; ?>#tab_securities" data-toggle="tab">Securities</a></li>
                                     <li><a href="<?php echo CURRENT_PAGE; ?>#tab_insurance" data-toggle="tab">Insurance</a></li>
@@ -1221,7 +1280,7 @@ $(document).on('click','.remove-row',function(){
                                                         <div class="row">
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
-                                                                    <label>Product Category <span class="text-red">*</span></label>
+                                                                    <label>Product Category </label>
                                                                     <select name="product_category" id="product_category" class="form-control">
                                                                         <option value="0">Select Category</option>
                                                                         <option value="1">Matual Funds</option>
@@ -1322,6 +1381,11 @@ $(document).on('click','.remove-row',function(){
                                             <div class="panel-overlay-wrap">
                                                 <div class="panel">
                                                    <div class="panel-heading">
+                                                        <div class="panel-control" style="float: right;">
+                                							<div class="btn-group dropdown">
+                                								<a href="<?php echo CURRENT_PAGE;?> "><i class="fa fa-mail-forward"></i></a>
+                                							</div>
+                                						</div>
                                                         <h4 class="panel-title" style="font-size: 20px;"><input type="checkbox" class="checkbox" name="pass_through" id="pass_through" style="display: inline !important;"/> Waive Home State Fee</h4>
                                                     </div>
                                                     <div class="panel-body">
@@ -1558,6 +1622,11 @@ $(document).on('click','.remove-row',function(){
                         <div class="panel-overlay-wrap">
                             <div class="panel">
                                 <div class="panel-heading">
+                                    <div class="panel-control" style="float: right;">
+            							<div class="btn-group dropdown">
+            								<a href="<?php echo CURRENT_PAGE;?> "><i class="fa fa-mail-forward"></i></a>
+            							</div>
+            						</div>
                                     <h3 class="panel-title" style="font-size: 25px;"><b>Register</b></h3>
                                 </div>
             					<div class="panel-body">
@@ -2416,6 +2485,11 @@ $(document).on('click','.remove-row',function(){
                         <div class="panel-overlay-wrap">
                             <div class="panel">
                                 <div class="panel-heading">
+                                    <div class="panel-control" style="float: right;">
+            							<div class="btn-group dropdown">
+            								<a href="<?php echo CURRENT_PAGE;?> "><i class="fa fa-mail-forward"></i></a>
+            							</div>
+            						</div>
                                     <h3 class="panel-title" style="font-size: 25px;"><b>Required Documents</b></h3>
                                 </div>
             					<div class="panel-body">
@@ -2501,4 +2575,24 @@ $('#demo-dp-range .input-daterange').datepicker({
         autoclose: true,
         todayHighlight: true
     });
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('#telephone_general').mask("(999)-999-9999");
+});
+$(document).ready(function(){
+    $('#cell_general').mask("(999)-999-9999");
+});
+$(document).ready(function(){
+    $('#fax_general').mask("(999)-999-9999");
+});
+</script>
+<script>
+$("#home_general").on("change", function () {
+    document.getElementById("address1_general").value='';
+    document.getElementById("address2_general").value='';
+    document.getElementById("city_general").value='';
+    document.getElementById("state_general").value='';
+    document.getElementById("zip_code_general").value='';
+});
 </script>

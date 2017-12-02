@@ -15,7 +15,9 @@
             $account_type = isset($data['account_type'])?$this->re_db_input($data['account_type']):'';
             $broker_name = isset($data['broker_name'])?$this->re_db_input($data['broker_name']):'';
             $telephone_mask = isset($data['telephone'])?$this->re_db_input($data['telephone']):'';
-            $telephone = str_replace("-", '', $telephone_mask);
+            $telephone_no = str_replace("-", '', $telephone_mask);
+            $telephone_brack1 = str_replace("(", '', $telephone_no);
+            $telephone = str_replace(")", '', $telephone_brack1);
             $contact_status = isset($data['contact_status'])?$this->re_db_input($data['contact_status']):'';
             
             $client_file = isset($_FILES['client_file'])?$_FILES['client_file']:array();//print_r($client_file);exit;

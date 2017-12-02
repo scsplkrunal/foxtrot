@@ -83,7 +83,7 @@ $(document).on('click','.remove-row',function(){
                     <?php
                     if($action=='add_new'||($action=='edit' && $id>0)){
                         ?>
-                        <form method="post" enctype="multipart/form-data">
+                        <form method="post" enctype="multipart/form-data" name="list_broker" id="list_broker">
                             <div class="panel-overlay-wrap">
                                 <div class="panel">
                 					<div class="panel-heading">
@@ -218,7 +218,7 @@ $(document).on('click','.remove-row',function(){
                                         <td><?php echo $val['client_file']; ?></td>
                                         <td><?php echo $val['account_type']; ?></td>
                                         <td><?php echo $val['broker_name']; ?></td>
-                                        <td><?php echo $val['telephone']; ?></td>
+                                        <td><?php echo '('.substr($val['telephone'], 0, 3).')'.'-'.substr($val['telephone'], 3, 3).'-'.substr($val['telephone'],6); //echo $val['telephone']; ?></td>
                                         <td>
                                         <?php 
                                         if($val['contact_status']==1)
@@ -1216,9 +1216,12 @@ function close_other()
 }
 </script>
 <script type="text/javascript">
-    $(document).ready(function(){
-        $('#telephone').mask('9999-999-999');
-    })
+$(document).ready(function(){
+    $('#telephone').mask("(999)-999-9999");
+});
+$(document).ready(function(){
+    $('#telephone_dis').mask("(999)-999-9999");
+});
 </script>
 <style>
 .btn-primary {

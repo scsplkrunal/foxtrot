@@ -10,4 +10,8 @@
     define('CLIENT_SUITABILITY','ft_client_suitability');
     define('CLIENT_MASTER','ft_client_master');
     define('BROKER_MASTER','ft_broker_master');
+    define('BROKER_GENERAL','ft_broker_general');
+    define('STATE_MASTER','ft_state_master');
+    define('INCOME_MASTER','ft_income_master');
+    define('HORIZON_MASTER','ft_horizon_master');
 ?>
