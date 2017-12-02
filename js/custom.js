@@ -44,7 +44,7 @@ function conf_save(url){
         }
     });
 }
-/*$(document).ready(function(){
+$(document).ready(function(){
     $('.form-validate').validate ({
         // validation rules for registration form
         errorClass: "text-red",
@@ -68,4 +68,4 @@ function conf_save(url){
     
     });
     
-});*/
+});

@@ -10,9 +10,8 @@
         <div class="tab-content col-md-10">
                 <div class="tab-pane active" id="tab_a">
                         <div class="selectwrap"><center>
-                					<input type="button" name="connect" class="btn btn-warning btn-lg btn3d" onclick="waitingDialog.show();setTimeout(function () {waitingDialog.hide();}, 5000);" value="OFAC Connect And Download" />
+                					<input type="button" name="connect" class="btn btn-warning btn-lg btn3d" onclick="openNewTab1();" value="Connect And Download" />
                         </div>
-                   
                 </div>
                 <div class="tab-pane " id="tab_b">
                     <div class="selectwrap">
@@ -24,7 +23,7 @@
                 <div class="tab-pane " id="tab_c">
                     <div class="selectwrap">
                         <div class="row"><center>
-            					<input type="button" name="connect" class="btn btn-warning btn-lg btn3d" onclick="waitingDialog.show();setTimeout(function () {waitingDialog.hide();}, 5000);" value="FINCEN Connect And Sownload"/>	
+            					<input type="button" name="connect" class="btn btn-warning btn-lg btn3d" onclick="openNewTab2();" value="Connect And Download"/>	
                         </div>
                     </div>
                 </div>
@@ -102,4 +101,15 @@ var waitingDialog = waitingDialog || (function ($) {
 	};
 
 })(jQuery);
+ 
+function openNewTab1(){
+var win=window.open('https://www.treasury.gov/resource-center/sanctions/SDN-List/Pages/sdn_data.aspx');
+   win.location.reload();
+   win.focus();
+};
+function openNewTab2(){
+var win=window.open('https://www.fincen.gov/314a/Login');
+   win.location.reload();
+   win.focus();
+};
 </script>

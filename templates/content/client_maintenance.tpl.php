@@ -165,7 +165,7 @@ $(document).on('click','.remove-row',function(){
                                     <div class="panel-footer">
                                         <div class="selectwrap">
                                             <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-                        					<input type="submit" name="submit" value="Save"/>	
+                        					<input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
                                             <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                                         </div>
                                    </div>
@@ -918,7 +918,7 @@ $(document).on('click','.remove-row',function(){
                                     <div class="panel-footer">
                                         <div class="selectwrap">
                                             <input type="hidden" name="id" id="id" value="" />
-                        					<input type="submit" name="submit" value="Save"/>	
+                        					<input type="submit" onclick="waitingDialog.show();" name="submit" value="Save"/>	
                                             <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                                         </div>
                                    </div>
@@ -963,7 +963,7 @@ $(document).on('click','.remove-row',function(){
                                     <td><input type="text" name="client_note" class="form-control" id="client_note"/></td>
                                     <td class="text-center">
                                        <a href="<?php echo CURRENT_PAGE; ?>?action=add" class="btn btn-sm btn-warning"><i class="fa fa-save"></i> Save</a>
-                                       <a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                                       <a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=" class="btn btn-sm btn-primary" ><i class="fa fa-edit"></i> Edit</a>
                                        <a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
                                     </td>
                                 </tr>
@@ -1144,7 +1144,7 @@ $(document).on('click','.remove-row',function(){
                    	<div class="inputpopup">
     				<label class="labelblank">&nbsp;</label>
                         <input type="hidden" name="submit" value="Ok" />
-    					<input type="submit" value="Ok" name="submit" />
+    					<input type="submit" onclick="waitingDialog.show();" value="Ok" name="submit" />
     				</div>
 				</form>					
                 
@@ -1183,7 +1183,7 @@ $(document).on('click','.remove-row',function(){
                                     <td><?php echo $_SESSION['user_name'];?></td>
                                     <td><input type="file" name="attach" class="form-control" id="attach"/></td>
                                     <td class="text-center">
-                                       <a href="<?php echo CURRENT_PAGE; ?>?action=add&id=" class="btn btn-sm btn-warning"><i class="fa fa-save"></i> Ok</a>
+                                       <a href="<?php echo CURRENT_PAGE; ?>?action=add&id=" class="btn btn-sm btn-warning" onclick="waitingDialog.show();"><i class="fa fa-save"></i> Ok</a>
                                        <a href="<?php echo CURRENT_PAGE; ?>?action=download&id=" class="btn btn-sm btn-success"><i class="fa fa-download"></i> Download</a>
                                        <a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
                                     </td>
@@ -1222,6 +1222,67 @@ $(document).ready(function(){
 $(document).ready(function(){
     $('#telephone_dis').mask("(999)-999-9999");
 });
+
+var waitingDialog = waitingDialog || (function ($) {
+    'use strict';
+
+	// Creating modal dialog's DOM
+	var $dialog = $(
+		'<div class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true" style="padding-top:15%; overflow-y:visible;">' +
+		'<div class="modal-dialog modal-m">' +
+		'<div class="modal-content">' +
+			'<div class="modal-header"><h3 style="margin:0;"></h3></div>' +
+			'<div class="modal-body">' +
+				'<div class="progress progress-striped active" style="margin-bottom:0;"><div class="progress-bar" style="width: 100%"></div></div>' +
+			'</div>' +
+		'</div></div></div>');
+
+	return {
+		/**
+		 * Opens our dialog
+		 * @param message Custom message
+		 * @param options Custom options:
+		 * 				  options.dialogSize - bootstrap postfix for dialog size, e.g. "sm", "m";
+		 * 				  options.progressType - bootstrap postfix for progress bar type, e.g. "success", "warning".
+		 */
+		show: function (message, options) {
+			// Assigning defaults
+			if (typeof options === 'undefined') {
+				options = {};
+			}
+			if (typeof message === 'undefined') {
+				message = 'Saving...';
+			}
+			var settings = $.extend({
+				dialogSize: 'm',
+				progressType: '',
+				onHide: null // This callback runs after the dialog was hidden
+			}, options);
+
+			// Configuring dialog
+			$dialog.find('.modal-dialog').attr('class', 'modal-dialog').addClass('modal-' + settings.dialogSize);
+			$dialog.find('.progress-bar').attr('class', 'progress-bar');
+			if (settings.progressType) {
+				$dialog.find('.progress-bar').addClass('progress-bar-' + settings.progressType);
+			}
+			$dialog.find('h3').text(message);
+			// Adding callbacks
+			if (typeof settings.onHide === 'function') {
+				$dialog.off('hidden.bs.modal').on('hidden.bs.modal', function (e) {
+					settings.onHide.call($dialog);
+				});
+			}
+			// Opening dialog
+			$dialog.modal();
+		},
+		/**
+		 * Closes dialog
+		 */
+	
+	};
+
+})(jQuery);
+
 </script>
 <style>
 .btn-primary {

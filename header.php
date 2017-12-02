@@ -20,7 +20,10 @@
 <link href="<?php echo SITE_CSS; ?>bootstrap-datepicker.min.css" rel="stylesheet"/>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
 <script src="js/jquery.min.js"></script>
-<script src="<?php echo SITE_JS; ?>bootstrap-datepicker.min.js"></script> 
+<script src="<?php echo SITE_JS; ?>bootstrap-datepicker.min.js"></script>
+
+<script src="<?php echo SITE_JS; ?>validator.js"></script>
+ 
 <script src="<?php echo SITE_JS; ?>custom.js"></script>
 <script src="<?php echo SITE_PLUGINS; ?>bootbox/bootbox.min.js"></script>
 <script src="<?php echo SITE_PLUGINS; ?>masked-input/jquery.maskedinput.min.js"></script>

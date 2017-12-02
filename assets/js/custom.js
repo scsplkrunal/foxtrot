@@ -44,9 +44,10 @@ function conf_save(url){
         }
     });
 }
-/*$(document).ready(function(){
+$(document).ready(function(){
     $('.form-validate').validate ({
         // validation rules for registration form
+       
         errorClass: "text-red",
         validClass: "text-green",
         errorElement: 'div',
@@ -68,4 +69,34 @@ function conf_save(url){
     
     });
     
-});*/
+    $('.form-validate-system').validate ({
+        // validation rules for registration form
+        rules: {
+            'finra': {
+                minlength: 6
+            },
+            'sipc': {
+                minlength: 6
+            }
+        },
+        errorClass: "text-red",
+        validClass: "text-green",
+        errorElement: 'div',
+        errorPlacement: function(error, element) {
+            if(element.parent('.input-group').length) {
+                error.insertAfter(element.parent());
+            }
+			else if (element.hasClass('select2')) {     
+				error.insertAfter(element.next('span'));  // select2
+			} else {
+                error.insertAfter(element);
+            }
+        },
+        onError : function(){
+            $('.input-group.error-class').find('.help-block.form-error').each(function() {
+                $(this).closest('.form-group').addClass('error-class').append($(this));
+            });
+        },
+    
+    });
+});

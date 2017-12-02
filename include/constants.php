@@ -18,8 +18,8 @@
     define('USER_REGISTER_MESSAGE','User registred successfully.');
     define('DELETE_MESSAGE','Record deleted successfully.');
     define('DELETE_IMAGE_MESSAGE','Image deleted successfully.');
-    define('INSERT_MESSAGE','Record inserted successfully.');
-    define('UPDATE_MESSAGE','Record updated successfully.');
+    define('INSERT_MESSAGE','Data successfully saved.');
+    define('UPDATE_MESSAGE','Data updated successfully.');
     define('UNKWON_ERROR','Something went wrong, please try again.');
 	
 	define('PASSWORD_UPDATE_SUCCESS','Your password updated successfully.');
