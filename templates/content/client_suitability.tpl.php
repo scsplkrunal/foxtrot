@@ -2,8 +2,8 @@
 <h1>Client Suitability</h1>
     <div class="col-lg-12 well">
         <ul class="nav nav-pills nav-stacked col-md-2">
-          <li <?php if((isset($_GET['action'])&& $_GET['action']=='add_new_income') || (isset($_GET['action'])&& $_GET['action']=='view_income') ){ ?> class="active"<?php }?>><a href="client_suitability.php#tab_a" data-toggle="pill">Income</a></li>
-          <li <?php if((isset($_GET['action'])&& $_GET['action']=='add_new_horizon') || (isset($_GET['action'])&& $_GET['action']=='view_horizon') ){ ?> class="active"<?php }?>><a href="client_suitability.php#tab_b" data-toggle="pill">Goal Horizon</a></li>
+          <li <?php if((isset($_GET['action'])&& $_GET['action']=='add_new_income') || (isset($_GET['action'])&& $_GET['action']=='view_income') ){ ?> class="active"<?php }?>><a href="client_suitability.php?action=view_income" >Income</a></li>
+          <li <?php if((isset($_GET['action'])&& $_GET['action']=='add_new_horizon') || (isset($_GET['action'])&& $_GET['action']=='view_horizon') ){ ?> class="active"<?php }?>><a href="client_suitability.php?action=view_horizon" >Goal Horizon</a></li>
           <li><a href="#tab_c" data-toggle="pill">Net Worth</a></li>
           <li><a href="#tab_d" data-toggle="pill">Risk Tolerance</a></li>
           <li><a href="#tab_e" data-toggle="pill">Annual Expenses</a></li>

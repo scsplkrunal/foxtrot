@@ -296,6 +296,35 @@
 				}
 			/*}*/
 		}
+        /** Insert update charges data for broker. **/
+        public function insert_update_charges($data){
+        $id = isset($data['id'])?$this->re_db_input($data['id']):0;
+				if($id==0){
+				    
+				        foreach($data as $key=>$val)
+                        {
+                            $charges_type=$key;
+                            foreach($val as $key=>$value)
+                            {
+                                $charges_name=$key;//echo '<pre>';print_r($value);exit;
+                                $q = "INSERT INTO `".BROKER_CHARGES_MASTER."` SET `broker_id`='".$_SESSION['last_insert_id']."',`charges_type`='".$charges_type."',`charges_name`='".$charges_name."',`manage_clearing`='".$value['clearing']."',`manage_execution`='".$value['execution']."',`non_manage_clearing`='".$value['non_clearing']."',`non_manage_execution`='".$value['non_execution']."'".$this->insert_common_sql();
+        						$res = $this->re_db_query($q);
+                            }exit;
+                        }
+                        if($res){
+						    $_SESSION['success'] = INSERT_MESSAGE;
+							return true;
+						}
+						else{
+							$_SESSION['warning'] = UNKWON_ERROR;
+							return false;
+						}
+				}
+				else{
+					$_SESSION['warning'] = UNKWON_ERROR;
+					return false;
+				}
+		}
         /**
 		 * @param int status, default all
 		 * @return array of record if success, error message if any errors

@@ -3,6 +3,7 @@
 	require_once(DIR_FS."islogin.php");
 	
     $error = '';
+    $return = array();
     $fname = '';
     $lname = '';
     $mname = '';
@@ -119,7 +120,20 @@
         $return = $instance->insert_update_general($_POST);
         
         if($return===true){
-            header("location:".CURRENT_PAGE);exit;
+            header('location:'.CURRENT_PAGE.'?action=charges');exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+    }
+    else if(isset($_POST['charges'])&& $_POST['charges']=='Save'){
+        $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
+        //echo '<pre>';print_r($_POST);exit;
+        $return = $instance->insert_update_charges($_POST);
+        
+        if($return===true){
+            header('location:'.CURRENT_PAGE.'?action=general');exit;
+            
         }
         else{
             $error = !isset($_SESSION['warning'])?$return:'';

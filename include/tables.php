@@ -14,4 +14,10 @@
     define('STATE_MASTER','ft_state_master');
     define('INCOME_MASTER','ft_income_master');
     define('HORIZON_MASTER','ft_horizon_master');
+    define('BROKER_CHARGES_MASTER','ft_broker_charges');
+    define('PRODUCT_MAINTENANCE','ft_product_maintenance');
+    define('SYSTEM_CONFIGURATION','ft_system_configuration');
+    define('SPONSOR_MASTER','ft_sponsor_master');
+    define('DATE_INTERFACES_MASTER','ft_date_interfaces_master');
+    define('DATE_INTERFACES','ft_date_interfaces');
 ?>

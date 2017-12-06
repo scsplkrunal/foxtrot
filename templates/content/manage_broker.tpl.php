@@ -95,14 +95,14 @@ var waitingDialog = waitingDialog || (function ($) {
         <ul class="nav nav-pills nav-stacked col-md-2">
           <!--<li class="active"><a href="#tab_default" data-toggle="pill">Home</a></li>-->
           <li class="<?php if($action=="general"){ echo "active"; } ?>"><a href="<?php echo CURRENT_PAGE; ?>#tab_a" data-toggle="pill">General</a></li>
-          <li><a href="<?php echo CURRENT_PAGE; ?>#tab_b" data-toggle="pill">Payouts</a></li>
-          <li><a href="<?php echo CURRENT_PAGE; ?>#tab_c" data-toggle="pill">Charges</a></li>
+          <li class=""><a href="<?php echo CURRENT_PAGE; ?>#tab_b" data-toggle="pill">Payouts</a></li>
+          <li class="<?php if($action=="charges"){ echo "active"; } ?>"><a href="<?php echo CURRENT_PAGE; ?>#tab_c" data-toggle="pill">Charges</a></li>
           <li><a href="<?php echo CURRENT_PAGE; ?>#tab_d" data-toggle="pill">Licences</a></li>
           <li><a href="<?php echo CURRENT_PAGE; ?>#tab_e" data-toggle="pill">Registers</a></li>
           <li><a href="<?php echo CURRENT_PAGE; ?>#tab_f" data-toggle="pill">Required Docs</a></li>
        </ul>
        <div class="tab-content col-md-10">
-                <div class="tab-pane <?php if($action!="general"){ echo "active"; } ?>" id="tab_default">
+                <div class="tab-pane <?php if(isset($action) && ($action=="general"||$action=="charges")){ echo ""; }else{echo "active";} ?>" id="tab_default">
                     <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
                     <?php
                     if($action=='add_new'||($action=='edit' && $id>0)){
@@ -692,7 +692,7 @@ var waitingDialog = waitingDialog || (function ($) {
                         </div>
                     </form>
                  </div>
-                 <div class="tab-pane" id="tab_b">
+                 <div class="tab-pane " id="tab_b">
                 <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
                     <form method="post">
                         <div class="panel-overlay-wrap">
@@ -726,7 +726,7 @@ var waitingDialog = waitingDialog || (function ($) {
                         </div>
                     </form>
                  </div>
-                 <div class="tab-pane" id="tab_c">
+                 <div class="tab-pane <?php if($action=="charges"){ echo "active"; } ?>" id="tab_c">
                 <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
                     <form method="post">
                         <div class="panel-overlay-wrap">
@@ -799,22 +799,22 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="3.22" name="" type="text" />
+                                              <input class="form-control" value="3.22" name="Equities[Listed][non_clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <input class="form-control" value="0.000" name="" type="text" />
+                                                <input class="form-control" value="0.000" name="Equities[Listed][non_execution]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="25.5" name="" type="text" />
+                                              <input class="form-control" value="25.5" name="Equities[Listed][clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                            <input class="form-control" value="4.50" name="" type="text" />
+                                            <input class="form-control" value="4.50" name="Equities[Listed][execution]" type="text" />
                                            </div>
                                         </div>
                                     </div>
@@ -826,7 +826,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <input class="form-control" value="25.4" name="" type="text" />
+                                                <input class="form-control" value="25.4" name="Equities[OTC][non_clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -836,7 +836,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <input class="form-control" value="40.5" name="" type="text" />
+                                                <input class="form-control" value="40.5" name="Equities[OTC][clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -860,22 +860,22 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="3.22" name="" type="text" />
+                                              <input class="form-control" value="3.22" name="Options[Up to $1 Premium][non_clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <input class="form-control" value="0.000" name="" type="text" />
+                                                <input class="form-control" value="0.000" name="Options[Up to $1 Premium][non_execution]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="25.5" name="" type="text" />
+                                              <input class="form-control" value="25.5" name="Options[Up to $1 Premium][clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                            <input class="form-control" value="4.50" name="" type="text" />
+                                            <input class="form-control" value="4.50" name="Options[Up to $1 Premium][execution]" type="text" />
                                            </div>
                                         </div>
                                     </div>
@@ -887,22 +887,22 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="3.22" name="" type="text" />
+                                              <input class="form-control" value="3.22" name="Options[$1 Premium & Greater][non_clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <input class="form-control" value="0.000" name="" type="text" />
+                                                <input class="form-control" value="0.000" name="Options[$1 Premium & Greater][non_execution]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="25.5" name="" type="text" />
+                                              <input class="form-control" value="25.5" name="Options[$1 Premium & Greater][clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                            <input class="form-control" value="4.50" name="" type="text" />
+                                            <input class="form-control" value="4.50" name="Options[$1 Premium & Greater][execution]" type="text" />
                                            </div>
                                         </div>
                                     </div>
@@ -921,22 +921,22 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="3.22" name="" type="text" />
+                                              <input class="form-control" value="3.22" name="Fixed Income[Listed Corporate][non_clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <input class="form-control" value="0.000" name="" type="text" />
+                                                <input class="form-control" value="0.000" name="Fixed Income[Listed Corporate][non_execution]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="25.5" name="" type="text" />
+                                              <input class="form-control" value="25.5" name="Fixed Income[Listed Corporate][clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                            <input class="form-control" value="4.50" name="" type="text" />
+                                            <input class="form-control" value="4.50" name="Fixed Income[Listed Corporate][execution]" type="text" />
                                            </div>
                                         </div>
                                     </div>
@@ -948,7 +948,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="3.22" name="" type="text" />
+                                              <input class="form-control" value="3.22" name="Fixed Income[OTC][non_clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -958,7 +958,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="25.5" name="" type="text" />
+                                              <input class="form-control" value="25.5" name="Fixed Income[OTC][clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -975,7 +975,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="3.22" name="" type="text" />
+                                              <input class="form-control" value="3.22" name="Fixed Income[Goverment Securities][non_clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -985,7 +985,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="25.5" name="" type="text" />
+                                              <input class="form-control" value="25.5" name="Fixed Income[Goverment Securities][clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -1002,7 +1002,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="3.22" name="" type="text" />
+                                              <input class="form-control" value="3.22" name="Fixed Income[CMOs][[non_clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -1012,7 +1012,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="25.5" name="" type="text" />
+                                              <input class="form-control" value="25.5" name="Fixed Income[CMOs][clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -1029,7 +1029,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="3.22" name="" type="text" />
+                                              <input class="form-control" value="3.22" name="Fixed Income[Money Market/CDs][non_clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -1039,7 +1039,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="25.5" name="" type="text" />
+                                              <input class="form-control" value="25.5" name="Fixed Income[Money Market/CDs][clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -1056,7 +1056,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="3.22" name="" type="text" />
+                                              <input class="form-control" value="3.22" name="Fixed Income[Mortgage Backed Securities][non_clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -1066,7 +1066,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="25.5" name="" type="text" />
+                                              <input class="form-control" value="25.5" name="Fixed Income[Mortgage Backed Securities][clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -1083,7 +1083,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="3.22" name="" type="text" />
+                                              <input class="form-control" value="3.22" name="Fixed Income[Municipal Bonds][non_clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -1093,7 +1093,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="25.5" name="" type="text" />
+                                              <input class="form-control" value="25.5" name="Fixed Income[Municipal Bonds][clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -1110,7 +1110,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="3.22" name="" type="text" />
+                                              <input class="form-control" value="3.22" name="Fixed Income[UITs][non_clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -1120,7 +1120,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="25.5" name="" type="text" />
+                                              <input class="form-control" value="25.5" name="Fixed Income[UITs][clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -1137,7 +1137,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="3.22" name="" type="text" />
+                                              <input class="form-control" value="3.22" name="Fixed Income[Zero Coupon Bonds][non_clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -1147,7 +1147,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="25.5" name="" type="text" />
+                                              <input class="form-control" value="25.5" name="Fixed Income[Zero Coupon Bonds][clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -1171,7 +1171,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="3.22" name="" type="text" />
+                                              <input class="form-control" value="3.22" name="Mutual Funds[Buys/Sells][non_clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -1181,7 +1181,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="25.5" name="" type="text" />
+                                              <input class="form-control" value="25.5" name="Mutual Funds[Buys/Sells][clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -1198,7 +1198,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="3.22" name="" type="text" />
+                                              <input class="form-control" value="3.22" name="Mutual Funds[Exchanges][non_clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -1208,7 +1208,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="25.5" name="" type="text" />
+                                              <input class="form-control" value="25.5" name="Mutual Funds[Exchanges][clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -1225,7 +1225,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="3.22" name="" type="text" />
+                                              <input class="form-control" value="3.22" name="Mutual Funds[PIPs/SWPs][non_clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -1235,7 +1235,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="25.5" name="" type="text" />
+                                              <input class="form-control" value="25.5" name="Mutual Funds[PIPs/SWPs][clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -1252,7 +1252,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="3.22" name="" type="text" />
+                                              <input class="form-control" value="3.22" name="Mutual Funds[Transaction Surcharge][non_clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -1262,7 +1262,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="25.5" name="" type="text" />
+                                              <input class="form-control" value="25.5" name="Mutual Funds[Transaction Surcharge][clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -1279,7 +1279,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="3.22" name="" type="text" />
+                                              <input class="form-control" value="3.22" name="Mutual Funds[Postage/Transaction][non_clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -1289,7 +1289,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                              <input class="form-control" value="25.5" name="" type="text" />
+                                              <input class="form-control" value="25.5" name="Mutual Funds[Postage/Transaction][clearing]" type="text" />
                                            </div>
                                         </div>
                                         <div class="col-md-2">
@@ -1305,7 +1305,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                 <div class="panel-footer">
                                     <div class="selectwrap">
                                         <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-                    					<input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
+                    					<input type="submit" name="charges" onclick="waitingDialog.show();" value="Save"/>	
                                         <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                                     </div>
                                </div>

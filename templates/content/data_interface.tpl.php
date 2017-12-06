@@ -1,388 +1,420 @@
 <div class="container">
 <h1>Date Interfaces</h1>
+<?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
     <div class="col-lg-12 well">
         <ul class="nav nav-pills nav-stacked col-md-2">
-          <li class="active"><a href="#tab_a" data-toggle="pill">DST IDC</a></li>
-          <li><a href="#tab_b" data-toggle="pill">DST FANMail</a></li>
-          <li><a href="#tab_c" data-toggle="pill">DAZL Daily</a></li>
-          <li><a href="#tab_d" data-toggle="pill">DAZL Commissions</a></li>
-          <li><a href="#tab_e" data-toggle="pill">NFS/Fidelity</a></li>
-          <li><a href="#tab_f" data-toggle="pill">Pershing</a></li>
-          <li><a href="#tab_g" data-toggle="pill">Raymond James</a></li>
-          <li><a href="#tab_h" data-toggle="pill">RBC Dain</a></li>
+          <li <?php if(isset($_GET['dim'])&& $_GET['dim']=='1'){ ?> class="active"<?php }?>><a href="<?php echo CURRENT_PAGE; ?>?dim=1">DST IDC</a></li>
+          <li <?php if(isset($_GET['dim'])&& $_GET['dim']=='2'){ ?> class="active"<?php }?>><a href="<?php echo CURRENT_PAGE; ?>?dim=2">DST FANMail</a></li>
+          <li <?php if(isset($_GET['dim'])&& $_GET['dim']=='3'){ ?> class="active"<?php }?>><a href="<?php echo CURRENT_PAGE; ?>?dim=3">DAZL Daily</a></li>
+          <li <?php if(isset($_GET['dim'])&& $_GET['dim']=='4'){ ?> class="active"<?php }?>><a href="<?php echo CURRENT_PAGE; ?>?dim=4">DAZL Commissions</a></li>
+          <li <?php if(isset($_GET['dim'])&& $_GET['dim']=='5'){ ?> class="active"<?php }?>><a href="<?php echo CURRENT_PAGE; ?>?dim=5">NFS/Fidelity</a></li>
+          <li <?php if(isset($_GET['dim'])&& $_GET['dim']=='6'){ ?> class="active"<?php }?>><a href="<?php echo CURRENT_PAGE; ?>?dim=6">Pershing</a></li>
+          <li <?php if(isset($_GET['dim'])&& $_GET['dim']=='7'){ ?> class="active"<?php }?>><a href="<?php echo CURRENT_PAGE; ?>?dim=7">Raymond James</a></li>
+          <li <?php if(isset($_GET['dim'])&& $_GET['dim']=='8'){ ?> class="active"<?php }?>><a href="<?php echo CURRENT_PAGE; ?>?dim=8">RBC Dain</a></li>
         </ul>
         <div class="tab-content col-md-10">
-                <div class="tab-pane active" id="tab_a">
-                    <form name="frm" action="data_interface.php" method="POST" onsubmit="return validation();" enctype="multipart/form-data">
-    					<div class="col-sm-12">				
+                <div class="tab-pane <?php if(isset($_GET['dim'])&& $_GET['dim']=='1'){?>active<?php }else if(!isset($_GET['dim'])&& $_GET['dim']==''){?>active<?php }?>" id="tab_a">
+                    <form name="frm" method="POST" enctype="multipart/form-data">
+    					<div class="col-md-12">				
     						<div class="row">
-    							<div class="col-sm-6 form-group">
+    							<div class="col-md-6 form-group">
     								<label>UserName</label>
-    								<input type="text" name="uname" placeholder="Enter Username Here.." class="form-control" />
+    								<input type="text" name="uname" class="form-control" value="<?php echo $uname;?>" />
     							</div>		
-    							<div class="col-sm-6 form-group">
+    							<div class="col-md-6 form-group">
     								<label>Password</label>
-    								<input type="password" name="pass" placeholder="Enter Password Here.." class="form-control" />
+    								<input type="password" name="password" class="form-control" value=""/>
     							</div>	
                             </div>
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Exclude Non-Commissionable Trade Activity </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="checkbox" name="ch1" onclick="chk_all_class(this.checked)"  class="form-control" />
+                                <div class="col-md-6 form-group">
+                                    <input type="checkbox" name="trade_activity" value="1" onclick="chk_all_class(this.checked)" <?php if($trade_activity>0){ echo "checked='checked'";}?>  class="checkbox" />
                                 </div>
                             </div>
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Add Clients if Not Found </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="checkbox" name="ch2" onclick="chk_all_class(this.checked)"  class="form-control" />
+                                <div class="col-md-6 form-group">
+                                    <input type="checkbox" name="add_client" value="1" onclick="chk_all_class(this.checked)" <?php if($add_client>0){ echo "checked='checked'";}?>  class="checkbox" />
                                 </div>
                             </div>	
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Update Existing Clients </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="checkbox" name="ch3" onclick="chk_all_class(this.checked)"  class="form-control" />
+                                <div class="col-md-6 form-group">
+                                    <input type="checkbox" name="update_client" value="1" onclick="chk_all_class(this.checked)" <?php if($update_client>0){ echo "checked='checked'";}?>  class="checkbox" />
                                 </div>
                             </div>
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Local Folder </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="file" name="flup" class="form-control" webkitdirectory mozdirectory msdirectory odirectory directory  />
+                                <div class="col-md-6 form-group">
+                                    <input type="file" name="local_folder" class="form-control" />
                                     <!--input type="file" name="file1"   /-->
                                 </div>
                             </div>	
                             <div class="selectwrap">
-            					<input type="submit" onclick="waitingDialog.show();" name="submit1" value="Save"/>	
+                                <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
+                                <input type="hidden" name="dim_id" id="dim_id" value="1" />
+                                <input type="hidden" name="is_authorized" id="is_authorized" value="1" />
+            					<input type="submit" onclick="waitingDialog.show();" name="submit" value="Save"/>	
                                 <input type="button" name="clear" value="Clear" />
                             </div>				
     					</div>
 				    </form> 
                 </div>
-                <div class="tab-pane" id="tab_b">
-                     <form name="frm" action="#" method="POST" onsubmit="return validation();" enctype="multipart/form-data">
-    					<div class="col-sm-12">				
+                <div class="tab-pane <?php if(isset($_GET['dim'])&& $_GET['dim']=='2'){?>active<?php }?>" id="tab_b">
+                     <form name="frm" method="POST" enctype="multipart/form-data">
+    					<div class="col-md-12">				
     						<div class="row">
-    							<div class="col-sm-6 form-group">
+    							<div class="col-md-6 form-group">
     								<label>UserName</label>
-    								<input type="text" name="uname" placeholder="Enter Username Here.." class="form-control" />
+    								<input type="text" name="uname" class="form-control" value="<?php echo $uname;?>"/>
     							</div>		
-    							<div class="col-sm-6 form-group">
+    							<div class="col-md-6 form-group">
     								<label>Password</label>
-    								<input type="password" name="pass" placeholder="Enter Password Here.." class="form-control" />
+    								<input type="password" name="password" class="form-control" />
     							</div>	
                             </div>
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Exclude Non-Commissionable Trade Activity </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="checkbox" name="ch1" onclick="chk_all_class(this.checked)"  class="form-control" />
+                                <div class="col-md-6 form-group">
+                                    <input type="checkbox" name="trade_activity" value="1" onclick="chk_all_class(this.checked)" <?php if($trade_activity>0){ echo "checked='checked'";}?>  class="checkbox" />
                                 </div>
                             </div>
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Add Clients if Not Found </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="checkbox" name="ch2" onclick="chk_all_class(this.checked)"  class="form-control" />
+                                <div class="col-md-6 form-group">
+                                    <input type="checkbox" name="add_client" value="1" onclick="chk_all_class(this.checked)" <?php if($add_client>0){ echo "checked='checked'";}?>  class="checkbox" />
                                 </div>
                             </div>	
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Update Existing Clients </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="checkbox" name="ch3" onclick="chk_all_class(this.checked)"  class="form-control" />
+                                <div class="col-md-6 form-group">
+                                    <input type="checkbox" name="update_client" value="1" onclick="chk_all_class(this.checked)" <?php if($update_client>0){ echo "checked='checked'";}?>  class="checkbox" />
                                 </div>
-                            </div>	
+                            </div>
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Local Folder </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="file" class="form-control" name="flup" class="form-control" webkitdirectory mozdirectory msdirectory odirectory directory />
+                                <div class="col-md-6 form-group">
+                                    <input type="file" name="local_folder" class="form-control" />
+                                    <!--input type="file" name="file1"   /-->
                                 </div>
                             </div>	
                             <div class="selectwrap">
+                                <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
+                                <input type="hidden" name="dim_id" id="dim_id" value="2" />
+                                <input type="hidden" name="is_authorized" id="is_authorized" value="1" />
             					<input type="submit" onclick="waitingDialog.show();" name="submit" value="Save"/>	
                                 <input type="button" name="clear" value="Clear" />
                             </div>				
     					</div>
 				    </form> 
                 </div>
-                <div class="tab-pane" id="tab_c">
-                     <form name="frm" action="#" method="POST" onsubmit="return validation();" enctype="multipart/form-data">
-    					<div class="col-sm-12">				
+                <div class="tab-pane <?php if(isset($_GET['dim'])&& $_GET['dim']=='3'){?>active<?php }?>" id="tab_c">
+                     <form name="frm" method="POST" enctype="multipart/form-data">
+    					<div class="col-md-12">				
     						<div class="row">
-    							<div class="col-sm-6 form-group">
+    							<div class="col-md-6 form-group">
     								<label>UserName</label>
-    								<input type="text" name="uname" placeholder="Enter Username Here.." class="form-control" />
+    								<input type="text" name="uname" class="form-control" value="<?php echo $uname;?>" />
     							</div>		
-    							<div class="col-sm-6 form-group">
+    							<div class="col-md-6 form-group">
     								<label>Password</label>
-    								<input type="password" name="pass" placeholder="Enter Password Here.." class="form-control" />
+    								<input type="password" name="password" class="form-control" />
     							</div>	
                             </div>
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Exclude Non-Commissionable Trade Activity </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="checkbox" name="ch1" onclick="chk_all_class(this.checked)"  class="form-control" />
+                                <div class="col-md-6 form-group">
+                                    <input type="checkbox" name="trade_activity" value="1" onclick="chk_all_class(this.checked)" <?php if($trade_activity>0){ echo "checked='checked'";}?>  class="checkbox" />
                                 </div>
                             </div>
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Add Clients if Not Found </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="checkbox" name="ch2" onclick="chk_all_class(this.checked)"  class="form-control" />
+                                <div class="col-md-6 form-group">
+                                    <input type="checkbox" name="add_client" value="1" onclick="chk_all_class(this.checked)" <?php if($add_client>0){ echo "checked='checked'";}?>  class="checkbox" />
                                 </div>
                             </div>	
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Update Existing Clients </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="checkbox" name="ch3" onclick="chk_all_class(this.checked)"  class="form-control" />
+                                <div class="col-md-6 form-group">
+                                    <input type="checkbox" name="update_client" value="1" onclick="chk_all_class(this.checked)" <?php if($update_client>0){ echo "checked='checked'";}?> class="checkbox" />
                                 </div>
-                            </div>	
+                            </div>
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Local Folder </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="file" class="form-control" name="flup" class="form-control" webkitdirectory mozdirectory msdirectory odirectory directory />
+                                <div class="col-md-6 form-group">
+                                    <input type="file" name="local_folder" class="form-control" />
+                                    <!--input type="file" name="file1"   /-->
                                 </div>
                             </div>	
                             <div class="selectwrap">
+                                <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
+                                <input type="hidden" name="dim_id" id="dim_id" value="3" />
+                                <input type="hidden" name="is_authorized" id="is_authorized" value="1" />
             					<input type="submit" onclick="waitingDialog.show();" name="submit" value="Save"/>	
                                 <input type="button" name="clear" value="Clear" />
                             </div>				
     					</div>
 				    </form> 
                 </div>
-                <div class="tab-pane" id="tab_d">
-                     <form name="frm" action="#" method="POST" onsubmit="return validation();" enctype="multipart/form-data">
-    					<div class="col-sm-12">				
+                <div class="tab-pane <?php if(isset($_GET['dim'])&& $_GET['dim']=='4'){?>active<?php }?>" id="tab_d">
+                     <form name="frm" method="POST" enctype="multipart/form-data">
+    					<div class="col-md-12">				
     						<div class="row">
-    							<div class="col-sm-6 form-group">
+    							<div class="col-md-6 form-group">
     								<label>UserName</label>
-    								<input type="text" name="uname" placeholder="Enter Username Here.." class="form-control" />
+    								<input type="text" name="uname" class="form-control" value="<?php echo $uname;?>" />
     							</div>		
-    							<div class="col-sm-6 form-group">
+    							<div class="col-md-6 form-group">
     								<label>Password</label>
-    								<input type="password" name="pass" placeholder="Enter Password Here.." class="form-control" />
+    								<input type="password" name="password" class="form-control" />
     							</div>	
                             </div>
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Exclude Non-Commissionable Trade Activity </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="checkbox" name="ch1" onclick="chk_all_class(this.checked)"  class="form-control" />
+                                <div class="col-md-6 form-group">
+                                    <input type="checkbox" name="trade_activity" value="1" onclick="chk_all_class(this.checked)" <?php if($trade_activity>0){ echo "checked='checked'";}?> class="checkbox" />
                                 </div>
                             </div>
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Add Clients if Not Found </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="checkbox" name="ch2" onclick="chk_all_class(this.checked)"  class="form-control" />
+                                <div class="col-md-6 form-group">
+                                    <input type="checkbox" name="add_client" value="1" onclick="chk_all_class(this.checked)" <?php if($add_client>0){ echo "checked='checked'";}?> class="checkbox" />
                                 </div>
                             </div>	
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Update Existing Clients </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="checkbox" name="ch3" onclick="chk_all_class(this.checked)"  class="form-control" />
+                                <div class="col-md-6 form-group">
+                                    <input type="checkbox" name="update_client" value="1" onclick="chk_all_class(this.checked)" <?php if($update_client>0){ echo "checked='checked'";}?> class="checkbox" />
                                 </div>
-                            </div>	
+                            </div>
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Local Folder </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="file" class="form-control" name="flup" class="form-control" webkitdirectory mozdirectory msdirectory odirectory directory />
+                                <div class="col-md-6 form-group">
+                                    <input type="file" name="local_folder" class="form-control" />
+                                    <!--input type="file" name="file1"   /-->
                                 </div>
                             </div>	
                             <div class="selectwrap">
+                                <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
+                                <input type="hidden" name="dim_id" id="dim_id" value="4" />
+                                <input type="hidden" name="is_authorized" id="is_authorized" value="1" />
             					<input type="submit" onclick="waitingDialog.show();" name="submit" value="Save"/>	
                                 <input type="button" name="clear" value="Clear" />
                             </div>				
     					</div>
 				    </form> 
                 </div>
-                <div class="tab-pane" id="tab_e">
-                    <form name="frm" action="#" method="POST" onsubmit="return validation();" enctype="multipart/form-data">
-    					<div class="col-sm-12">
+                <div class="tab-pane <?php if(isset($_GET['dim'])&& $_GET['dim']=='5'){?>active<?php }?>" id="tab_e">
+                    <form name="frm" method="POST" enctype="multipart/form-data">
+    					<div class="col-md-12">
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Exclude Non-Commissionable Trade Activity </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="checkbox" name="ch1" onclick="chk_all_class(this.checked)"  class="form-control" />
+                                <div class="col-md-6 form-group">
+                                    <input type="checkbox" name="trade_activity" value="1" onclick="chk_all_class(this.checked)" <?php if($trade_activity>0){ echo "checked='checked'";}?> class="checkbox" />
                                 </div>
                             </div>
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Add Clients if Not Found </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="checkbox" name="ch2" onclick="chk_all_class(this.checked)"  class="form-control" />
+                                <div class="col-md-6 form-group">
+                                    <input type="checkbox" name="add_client" value="1" onclick="chk_all_class(this.checked)" <?php if($add_client>0){ echo "checked='checked'";}?> class="checkbox" />
                                 </div>
                             </div>	
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Update Existing Clients </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="checkbox" name="ch3" onclick="chk_all_class(this.checked)"  class="form-control" />
+                                <div class="col-md-6 form-group">
+                                    <input type="checkbox" name="update_client" value="1" onclick="chk_all_class(this.checked)" <?php if($update_client>0){ echo "checked='checked'";}?> class="checkbox" />
                                 </div>
-                            </div>	
+                            </div>
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Local Folder </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="file" class="form-control" name="flup" class="form-control" webkitdirectory mozdirectory msdirectory odirectory directory />
+                                <div class="col-md-6 form-group">
+                                    <input type="file" name="local_folder" class="form-control" />
+                                    <!--input type="file" name="file1"   /-->
                                 </div>
                             </div>	
                             <div class="selectwrap">
+                                <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
+                                <input type="hidden" name="dim_id" id="dim_id" value="5" />
+                                <input type="hidden" name="is_authorized" id="is_authorized" value="0" />
             					<input type="submit" onclick="waitingDialog.show();" name="submit" value="Save"/>	
                                 <input type="button" name="clear" value="Clear" />
                             </div>				
     					</div>
 				    </form> 
                 </div>
-                <div class="tab-pane" id="tab_f">
-                     <form name="frm" action="#" method="POST" onsubmit="return validation();" enctype="multipart/form-data">
-    					<div class="col-sm-12">				
+                <div class="tab-pane <?php if(isset($_GET['dim'])&& $_GET['dim']=='6'){?>active<?php }?>" id="tab_f">
+                     <form name="frm" method="POST" enctype="multipart/form-data">
+    					<div class="col-md-12">				
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Exclude Non-Commissionable Trade Activity </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="checkbox" name="ch1" onclick="chk_all_class(this.checked)"  class="form-control" />
+                                <div class="col-md-6 form-group">
+                                    <input type="checkbox" name="trade_activity" onclick="chk_all_class(this.checked)"  class="checkbox" />
                                 </div>
                             </div>
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Add Clients if Not Found </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="checkbox" name="ch2" onclick="chk_all_class(this.checked)"  class="form-control" />
+                                <div class="col-md-6 form-group">
+                                    <input type="checkbox" name="add_client" onclick="chk_all_class(this.checked)"  class="checkbox" />
                                 </div>
                             </div>	
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Update Existing Clients </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="checkbox" name="ch3" onclick="chk_all_class(this.checked)"  class="form-control" />
+                                <div class="col-md-6 form-group">
+                                    <input type="checkbox" name="update_client" onclick="chk_all_class(this.checked)"  class="checkbox" />
                                 </div>
-                            </div>	
+                            </div>
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Local Folder </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="file" class="form-control" name="flup" class="form-control" webkitdirectory mozdirectory msdirectory odirectory directory />
+                                <div class="col-md-6 form-group">
+                                    <input type="file" name="local_folder" class="form-control" webkitdirectory mozdirectory msdirectory odirectory directory  />
+                                    <!--input type="file" name="file1"   /-->
                                 </div>
                             </div>	
                             <div class="selectwrap">
+                                <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
+                                <input type="hidden" name="dim_id" id="dim_id" value="6" />
+                                <input type="hidden" name="is_authorized" id="is_authorized" value="0" />
             					<input type="submit" onclick="waitingDialog.show();" name="submit" value="Save"/>	
                                 <input type="button" name="clear" value="Clear" />
-                            </div>				
+                            </div>								
     					</div>
 				    </form> 
                 </div>
-                <div class="tab-pane" id="tab_g">
-                     <form name="frm" action="#" method="POST" onsubmit="return validation();" enctype="multipart/form-data">
-    					<div class="col-sm-12">				
+                <div class="tab-pane <?php if(isset($_GET['dim'])&& $_GET['dim']=='7'){?>active<?php }?>" id="tab_g">
+                     <form name="frm" method="POST" enctype="multipart/form-data">
+    					<div class="col-md-12">				
     						<div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Exclude Non-Commissionable Trade Activity </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="checkbox" name="ch1" onclick="chk_all_class(this.checked)"  class="form-control" />
+                                <div class="col-md-6 form-group">
+                                    <input type="checkbox" name="trade_activity" onclick="chk_all_class(this.checked)"  class="checkbox" />
                                 </div>
                             </div>
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Add Clients if Not Found </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="checkbox" name="ch2" onclick="chk_all_class(this.checked)"  class="form-control" />
+                                <div class="col-md-6 form-group">
+                                    <input type="checkbox" name="add_client" onclick="chk_all_class(this.checked)"  class="checkbox" />
                                 </div>
                             </div>	
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Update Existing Clients </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="checkbox" name="ch3" onclick="chk_all_class(this.checked)"  class="form-control" />
+                                <div class="col-md-6 form-group">
+                                    <input type="checkbox" name="update_client" onclick="chk_all_class(this.checked)"  class="checkbox" />
                                 </div>
-                            </div>	
+                            </div>
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Local Folder </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="file"  class="form-control" name="flup" class="form-control" webkitdirectory mozdirectory msdirectory odirectory directory />
+                                <div class="col-md-6 form-group">
+                                    <input type="file" name="local_folder" class="form-control" webkitdirectory mozdirectory msdirectory odirectory directory  />
+                                    <!--input type="file" name="file1"   /-->
                                 </div>
                             </div>	
                             <div class="selectwrap">
+                                <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
+                                <input type="hidden" name="dim_id" id="dim_id" value="7" />
+                                <input type="hidden" name="is_authorized" id="is_authorized" value="0" />
             					<input type="submit" onclick="waitingDialog.show();" name="submit" value="Save"/>	
                                 <input type="button" name="clear" value="Clear" />
-                            </div>				
+                            </div>								
     					</div>
 				    </form> 
                 </div>
-                <div class="tab-pane" id="tab_h">
-                     <form name="frm" action="#" method="POST" onsubmit="return validation();" enctype="multipart/form-data">
-    					<div class="col-sm-12">			
+                <div class="tab-pane <?php if(isset($_GET['dim'])&& $_GET['dim']=='8'){?>active<?php }?>" id="tab_h">
+                     <form name="frm" method="POST" enctype="multipart/form-data">
+    					<div class="col-md-12">			
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Exclude Non-Commissionable Trade Activity </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="checkbox" name="ch1" onclick="chk_all_class(this.checked)"  class="form-control" />
+                                <div class="col-md-6 form-group">
+                                    <input type="checkbox" name="trade_activity" onclick="chk_all_class(this.checked)"  class="checkbox" />
                                 </div>
                             </div>
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Add Clients if Not Found </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="checkbox" name="ch2" onclick="chk_all_class(this.checked)"  class="form-control" />
+                                <div class="col-md-6 form-group">
+                                    <input type="checkbox" name="add_client" onclick="chk_all_class(this.checked)"  class="checkbox" />
                                 </div>
                             </div>	
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Update Existing Clients </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="checkbox" name="ch3" onclick="chk_all_class(this.checked)"  class="form-control" />
+                                <div class="col-md-6 form-group">
+                                    <input type="checkbox" name="update_client" onclick="chk_all_class(this.checked)"  class="checkbox" />
                                 </div>
-                            </div>	
+                            </div>
                             <div class="row"> 
-                                <div class="col-sm-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Local Folder </label>
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    <input type="file" class="form-control" name="flup" class="form-control" webkitdirectory mozdirectory msdirectory odirectory directory />
+                                <div class="col-md-6 form-group">
+                                    <input type="file" name="local_folder" class="form-control"/>
+                                    <!--input type="file" name="file1"   /-->
                                 </div>
                             </div>	
                             <div class="selectwrap">
+                                <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
+                                <input type="hidden" name="dim_id" id="dim_id" value="8" />
+                                <input type="hidden" name="is_authorized" id="is_authorized" value="0" />
             					<input type="submit" onclick="waitingDialog.show();" name="submit" value="Save"/>	
                                 <input type="button" name="clear" value="Clear" />
                             </div>				
@@ -394,21 +426,7 @@
 </div>
 
 <script type="text/javascript">
-function validation()
-{
-    var x = document.forms["frm"]["uname"].value;
-    if (x == "") {
-        alert("Username must be filled out");
-        document.forms["frm"]["uname"].focus();
-        return false;
-        }
-    var x = document.forms["frm"]["pass"].value;
-    if (x == "") {
-        alert("Password must be filled out");
-        document.forms["frm"]["pass"].focus();
-        return false;
-        }
-}
+
 var waitingDialog = waitingDialog || (function ($) {
     'use strict';
 
@@ -428,7 +446,7 @@ var waitingDialog = waitingDialog || (function ($) {
 		 * Opens our dialog
 		 * @param message Custom message
 		 * @param options Custom options:
-		 * 				  options.dialogSize - bootstrap postfix for dialog size, e.g. "sm", "m";
+		 * 				  options.dialogSize - bootstrap postfix for dialog size, e.g. "md", "m";
 		 * 				  options.progressType - bootstrap postfix for progress bar type, e.g. "success", "warning".
 		 */
 		show: function (message, options) {
