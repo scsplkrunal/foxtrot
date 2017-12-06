@@ -154,6 +154,23 @@
     			}
             }
 			return $return;
+		} 
+		public function select_state(){
+			$return = array();
+			
+			$q = "SELECT `s`.*
+					FROM `".STATE_MASTER."` AS `s`
+                    WHERE `s`.`is_delete`='0'
+                    ORDER BY `s`.`id` ASC";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
 		}
         public function search($search_text=''){
 			$return = array();

@@ -15,6 +15,9 @@
         <div class="tab-content col-md-10">
                 <div class="tab-pane <?php if(isset($_GET['dim'])&& $_GET['dim']=='1'){?>active<?php }else if(!isset($_GET['dim'])&& $_GET['dim']==''){?>active<?php }?>" id="tab_a">
                     <form name="frm" method="POST" enctype="multipart/form-data">
+                        <div class="panel-heading">
+                            <h2 class="panel-title"><i class="fa fa-pencil-square-o"></i> DST IDC</h2>
+    					</div>
     					<div class="col-md-12">				
     						<div class="row">
     							<div class="col-md-6 form-group">
@@ -71,6 +74,9 @@
                 </div>
                 <div class="tab-pane <?php if(isset($_GET['dim'])&& $_GET['dim']=='2'){?>active<?php }?>" id="tab_b">
                      <form name="frm" method="POST" enctype="multipart/form-data">
+                        <div class="panel-heading">
+                            <h2 class="panel-title"><i class="fa fa-pencil-square-o"></i> DST FANMail</h2>
+    					</div>
     					<div class="col-md-12">				
     						<div class="row">
     							<div class="col-md-6 form-group">
@@ -126,7 +132,10 @@
 				    </form> 
                 </div>
                 <div class="tab-pane <?php if(isset($_GET['dim'])&& $_GET['dim']=='3'){?>active<?php }?>" id="tab_c">
-                     <form name="frm" method="POST" enctype="multipart/form-data">
+                    <form name="frm" method="POST" enctype="multipart/form-data">
+                        <div class="panel-heading">
+                            <h2 class="panel-title"><i class="fa fa-pencil-square-o"></i> DAZL Daily</h2>
+    					</div>
     					<div class="col-md-12">				
     						<div class="row">
     							<div class="col-md-6 form-group">
@@ -183,6 +192,9 @@
                 </div>
                 <div class="tab-pane <?php if(isset($_GET['dim'])&& $_GET['dim']=='4'){?>active<?php }?>" id="tab_d">
                      <form name="frm" method="POST" enctype="multipart/form-data">
+                        <div class="panel-heading">
+                            <h2 class="panel-title"><i class="fa fa-pencil-square-o"></i> DAZL Commissions</h2>
+    					</div>
     					<div class="col-md-12">				
     						<div class="row">
     							<div class="col-md-6 form-group">
@@ -239,6 +251,9 @@
                 </div>
                 <div class="tab-pane <?php if(isset($_GET['dim'])&& $_GET['dim']=='5'){?>active<?php }?>" id="tab_e">
                     <form name="frm" method="POST" enctype="multipart/form-data">
+                        <div class="panel-heading">
+                            <h2 class="panel-title"><i class="fa fa-pencil-square-o"></i> NFS/Fidelity</h2>
+    					</div>
     					<div class="col-md-12">
                             <div class="row"> 
                                 <div class="col-md-6 form-group">
@@ -285,13 +300,16 @@
                 </div>
                 <div class="tab-pane <?php if(isset($_GET['dim'])&& $_GET['dim']=='6'){?>active<?php }?>" id="tab_f">
                      <form name="frm" method="POST" enctype="multipart/form-data">
+                        <div class="panel-heading">
+                            <h2 class="panel-title"><i class="fa fa-pencil-square-o"></i> Pershing</h2>
+    					</div>
     					<div class="col-md-12">				
                             <div class="row"> 
                                 <div class="col-md-6 form-group">
                                     <label>Exclude Non-Commissionable Trade Activity </label>
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <input type="checkbox" name="trade_activity" onclick="chk_all_class(this.checked)"  class="checkbox" />
+                                    <input type="checkbox" name="trade_activity" onclick="chk_all_class(this.checked)" value="1" <?php if($trade_activity>0){ echo "checked='checked'";}?> class="checkbox" />
                                 </div>
                             </div>
                             <div class="row"> 
@@ -299,7 +317,7 @@
                                     <label>Add Clients if Not Found </label>
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <input type="checkbox" name="add_client" onclick="chk_all_class(this.checked)"  class="checkbox" />
+                                    <input type="checkbox" name="add_client" onclick="chk_all_class(this.checked)" value="1" <?php if($add_client>0){ echo "checked='checked'";}?> class="checkbox" />
                                 </div>
                             </div>	
                             <div class="row"> 
@@ -307,7 +325,7 @@
                                     <label>Update Existing Clients </label>
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <input type="checkbox" name="update_client" onclick="chk_all_class(this.checked)"  class="checkbox" />
+                                    <input type="checkbox" name="update_client" onclick="chk_all_class(this.checked)" value="1" <?php if($update_client>0){ echo "checked='checked'";}?> class="checkbox" />
                                 </div>
                             </div>
                             <div class="row"> 
@@ -315,7 +333,7 @@
                                     <label>Local Folder </label>
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <input type="file" name="local_folder" class="form-control" webkitdirectory mozdirectory msdirectory odirectory directory  />
+                                    <input type="file" name="local_folder" class="form-control"  />
                                     <!--input type="file" name="file1"   /-->
                                 </div>
                             </div>	
@@ -331,13 +349,16 @@
                 </div>
                 <div class="tab-pane <?php if(isset($_GET['dim'])&& $_GET['dim']=='7'){?>active<?php }?>" id="tab_g">
                      <form name="frm" method="POST" enctype="multipart/form-data">
+                        <div class="panel-heading">
+                            <h2 class="panel-title"><i class="fa fa-pencil-square-o"></i> Raymond James</h2>
+    					</div>
     					<div class="col-md-12">				
     						<div class="row"> 
                                 <div class="col-md-6 form-group">
                                     <label>Exclude Non-Commissionable Trade Activity </label>
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <input type="checkbox" name="trade_activity" onclick="chk_all_class(this.checked)"  class="checkbox" />
+                                    <input type="checkbox" name="trade_activity" onclick="chk_all_class(this.checked)" value="1" <?php if($trade_activity>0){ echo "checked='checked'";}?> class="checkbox" />
                                 </div>
                             </div>
                             <div class="row"> 
@@ -345,7 +366,7 @@
                                     <label>Add Clients if Not Found </label>
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <input type="checkbox" name="add_client" onclick="chk_all_class(this.checked)"  class="checkbox" />
+                                    <input type="checkbox" name="add_client" onclick="chk_all_class(this.checked)" value="1" <?php if($add_client>0){ echo "checked='checked'";}?> class="checkbox" />
                                 </div>
                             </div>	
                             <div class="row"> 
@@ -353,7 +374,7 @@
                                     <label>Update Existing Clients </label>
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <input type="checkbox" name="update_client" onclick="chk_all_class(this.checked)"  class="checkbox" />
+                                    <input type="checkbox" name="update_client" onclick="chk_all_class(this.checked)" value="1" <?php if($update_client>0){ echo "checked='checked'";}?> class="checkbox" />
                                 </div>
                             </div>
                             <div class="row"> 
@@ -361,7 +382,7 @@
                                     <label>Local Folder </label>
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <input type="file" name="local_folder" class="form-control" webkitdirectory mozdirectory msdirectory odirectory directory  />
+                                    <input type="file" name="local_folder" class="form-control" />
                                     <!--input type="file" name="file1"   /-->
                                 </div>
                             </div>	
@@ -377,13 +398,16 @@
                 </div>
                 <div class="tab-pane <?php if(isset($_GET['dim'])&& $_GET['dim']=='8'){?>active<?php }?>" id="tab_h">
                      <form name="frm" method="POST" enctype="multipart/form-data">
+                        <div class="panel-heading">
+                            <h2 class="panel-title"><i class="fa fa-pencil-square-o"></i> RBC Dain</h2>
+    					</div>
     					<div class="col-md-12">			
                             <div class="row"> 
                                 <div class="col-md-6 form-group">
                                     <label>Exclude Non-Commissionable Trade Activity </label>
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <input type="checkbox" name="trade_activity" onclick="chk_all_class(this.checked)"  class="checkbox" />
+                                    <input type="checkbox" name="trade_activity" onclick="chk_all_class(this.checked)" value="1" <?php if($trade_activity>0){ echo "checked='checked'";}?> class="checkbox" />
                                 </div>
                             </div>
                             <div class="row"> 
@@ -391,7 +415,7 @@
                                     <label>Add Clients if Not Found </label>
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <input type="checkbox" name="add_client" onclick="chk_all_class(this.checked)"  class="checkbox" />
+                                    <input type="checkbox" name="add_client" onclick="chk_all_class(this.checked)" value="1" <?php if($add_client>0){ echo "checked='checked'";}?> class="checkbox" />
                                 </div>
                             </div>	
                             <div class="row"> 
@@ -399,7 +423,7 @@
                                     <label>Update Existing Clients </label>
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <input type="checkbox" name="update_client" onclick="chk_all_class(this.checked)"  class="checkbox" />
+                                    <input type="checkbox" name="update_client" onclick="chk_all_class(this.checked)" value="1" <?php if($update_client>0){ echo "checked='checked'";}?> class="checkbox" />
                                 </div>
                             </div>
                             <div class="row"> 

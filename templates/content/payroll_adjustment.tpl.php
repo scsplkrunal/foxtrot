@@ -1,6 +1,6 @@
 <script src="http://code.jquery.com/color/jquery.color-2.1.2.min.js" integrity="sha256-H28SdxWrZ387Ldn0qogCzFiUDDxfPiNIyJX7BECQkDE=" crossorigin="anonymous"></script>
 <div class="container">
-    <h1>Payroll Adjustment</h1>
+    <h1>Payroll Adjustment Category Maintenance</h1>
     <!-- Add table data and some process -->
     <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
     <?php
@@ -18,13 +18,13 @@
 								</ul>
 							</div>
 						</div>
-                        <h3 class="panel-title"><i class="ti-pencil-alt"></i> <?php echo $action=='add_new'?'Add':'Edit'; ?> Adjustment Category</h3>
+                        <h3 class="panel-title"><i class="ti-pencil-alt"></i> <?php echo $action=='add_new'?'Add':'Edit'; ?> Payroll Adjustment Category</h3>
 					</div>
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Payroll Type <span class="text-red">*</span></label>
+                                    <label>Payroll Adjustment Category Type <span class="text-red">*</span></label>
                                     <input type="text" name="type" id="advance" value="<?php echo $type; ?>" class="form-control" />
                                 </div>
                             </div>

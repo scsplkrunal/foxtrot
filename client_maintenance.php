@@ -17,6 +17,7 @@
     $instance = new client_maintenance();
     $instance_account_type = new account_master();
     $get_account_type = $instance_account_type->select_account_type();
+    $get_state = $instance->select_state();
     
     if(isset($_POST['submit'])&& $_POST['submit']=='Save'){
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
