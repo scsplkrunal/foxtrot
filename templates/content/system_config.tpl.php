@@ -51,13 +51,13 @@
                     <label style="float: right;">Minimum Check Amount :</label>
                 </div>
                 <div class="col-sm-3 form-group">
-                    <input type="text" class="form-control" required="required" onkeypress='return event.charCode >= 48 && event.charCode <= 57' value="<?php echo $minimum_check_amount;?>" maxlength="8"  name="minimum_check_amount"  />
+                    <input type="text" class="currency form-control" required="required" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' value="<?php echo $minimum_check_amount;?>" maxlength="8"  name="minimum_check_amount"  />
                 </div>
                 <div class="col-sm-3 form-group">
                     <label style="float: right;">FINRA Assessment:</label>
                 </div>
                 <div class="col-sm-3 form-group">
-                    <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57 ' value="<?php echo $finra;?>" maxlength="8" required="required"  class="form-control" name="finra"  />
+                    <input type="text" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 ' value="<?php echo $finra;?>" required="required"  class="currency1 form-control" name="finra"  />
                 </div>
             </div>
             <div class="row">
@@ -65,7 +65,7 @@
                     <label style="float: right;">SIPC Assessment:</label>
                 </div>
                 <div class="col-sm-3 form-group">
-                    <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57 ' value="<?php echo $sipc;?>" maxlength="8" required="required"  class="form-control" name="sipc"  />
+                    <input type="text" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 ' value="<?php echo $sipc;?>"  required="required"  class="currency1 form-control" name="sipc"  />
                 </div>
                 <div class="col-sm-3 form-group">
                     <label style="float: right;">Logo:</label>
@@ -100,7 +100,39 @@
     </div>
 </div>
 <script type="text/javascript">
+(function($) {
+        $.fn.currencyFormat = function() {
+            this.each( function( i ) {
+                $(this).change( function( e ){
+                    if( isNaN( parseFloat( this.value ) ) ) return;
+                    this.value = parseFloat(this.value).toFixed(2);
+                });
+            });
+            return this; //for chaining
+        }
+    })( jQuery );
 
+  
+    $( function() {
+        $('.currency').currencyFormat();
+    });
+    
+(function($) {
+        $.fn.currencyFormat1 = function() {
+            this.each( function( i ) {
+                $(this).change( function( e ){
+                    if( isNaN( parseFloat( this.value ) ) ) return;
+                    this.value = parseFloat(this.value).toFixed(8);
+                });
+            });
+            return this; //for chaining
+        }
+    })( jQuery );
+
+  
+    $( function() {
+        $('.currency1').currencyFormat1();
+    });
 var waitingDialog = waitingDialog || (function ($) {
     'use strict';
 

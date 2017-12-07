@@ -20,4 +20,13 @@
     define('SPONSOR_MASTER','ft_sponsor_master');
     define('DATE_INTERFACES_MASTER','ft_date_interfaces_master');
     define('DATE_INTERFACES','ft_date_interfaces');
+    define('TABLE_NETWORTH','ft_networth_master');
+    define('TABLE_RISK_TOLERANCE','ft_risk_tolerance_master');
+    define('ANNUAL_EXPENSES_MASTER','ft_annual_expenses_master');
+    define('LIQUDITY_NEEDS_MASTER','ft_liqudity_needs_master');
+    define('LIQUID_NET_WORTH_MASTER','ft_liquid_net_worth_master');
+    define('SPECIAL_EXPENSES_MASTER','ft_special_expenses_master');
+    define('PROTFOLIO_MASTER','ft_portfolio_master');
+    define('TIME_FOR_SPECIAL_EXP_MASTER','ft_time_for_exp_master');
+    define('ACCOUNT_USE_MASTER','ft_account_use_master');
 ?>

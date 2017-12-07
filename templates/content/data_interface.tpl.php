@@ -1,9 +1,9 @@
 <div class="container">
-<h1>Date Interfaces</h1>
+<h1>Data Interfaces</h1>
 <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
     <div class="col-lg-12 well">
         <ul class="nav nav-pills nav-stacked col-md-2">
-          <li <?php if(isset($_GET['dim'])&& $_GET['dim']=='1'){ ?> class="active"<?php }?>><a href="<?php echo CURRENT_PAGE; ?>?dim=1">DST IDC</a></li>
+          <li <?php if(isset($_GET['dim'])&& $_GET['dim']=='1'){ ?> class="active"<?php }else if(!isset($_GET['dim'])){?> class="active"<?php }?>><a href="<?php echo CURRENT_PAGE; ?>?dim=1">DST IDC</a></li>
           <li <?php if(isset($_GET['dim'])&& $_GET['dim']=='2'){ ?> class="active"<?php }?>><a href="<?php echo CURRENT_PAGE; ?>?dim=2">DST FANMail</a></li>
           <li <?php if(isset($_GET['dim'])&& $_GET['dim']=='3'){ ?> class="active"<?php }?>><a href="<?php echo CURRENT_PAGE; ?>?dim=3">DAZL Daily</a></li>
           <li <?php if(isset($_GET['dim'])&& $_GET['dim']=='4'){ ?> class="active"<?php }?>><a href="<?php echo CURRENT_PAGE; ?>?dim=4">DAZL Commissions</a></li>
@@ -13,13 +13,14 @@
           <li <?php if(isset($_GET['dim'])&& $_GET['dim']=='8'){ ?> class="active"<?php }?>><a href="<?php echo CURRENT_PAGE; ?>?dim=8">RBC Dain</a></li>
         </ul>
         <div class="tab-content col-md-10">
-                <div class="tab-pane <?php if(isset($_GET['dim'])&& $_GET['dim']=='1'){?>active<?php }else if(!isset($_GET['dim'])&& $_GET['dim']==''){?>active<?php }?>" id="tab_a">
+                <div class="tab-pane <?php if(isset($_GET['dim'])&& $_GET['dim']=='1'){?>active<?php }else if(!isset($_GET['dim'])){?>active<?php }?>" id="tab_a">
                     <form name="frm" method="POST" enctype="multipart/form-data">
                         <div class="panel-heading">
-                            <h2 class="panel-title"><i class="fa fa-pencil-square-o"></i> DST IDC</h2>
+                            <h2 class="panel-title" style="color:#ef7623;"><i class="fa fa-pencil-square-o"></i> DST IDC</h2>
     					</div>
-    					<div class="col-md-12">				
-    						<div class="row">
+                        <br />
+    					<div class="col-md-12" style="background-color: #E9EEF2 !important;">				
+    						<div class="row" style="margin-top: 5px;">
     							<div class="col-md-6 form-group">
     								<label>UserName</label>
     								<input type="text" name="uname" class="form-control" value="<?php echo $uname;?>" />
@@ -68,15 +69,16 @@
                                 <input type="hidden" name="is_authorized" id="is_authorized" value="1" />
             					<input type="submit" onclick="waitingDialog.show();" name="submit" value="Save"/>	
                                 <input type="button" name="clear" value="Clear" />
-                            </div>				
+                            </div><br />				
     					</div>
 				    </form> 
                 </div>
                 <div class="tab-pane <?php if(isset($_GET['dim'])&& $_GET['dim']=='2'){?>active<?php }?>" id="tab_b">
                      <form name="frm" method="POST" enctype="multipart/form-data">
                         <div class="panel-heading">
-                            <h2 class="panel-title"><i class="fa fa-pencil-square-o"></i> DST FANMail</h2>
+                            <h2 class="panel-title" style="color:#ef7623;"><i class="fa fa-pencil-square-o"></i> DST FANMail</h2>
     					</div>
+                        <br />
     					<div class="col-md-12">				
     						<div class="row">
     							<div class="col-md-6 form-group">
@@ -134,10 +136,11 @@
                 <div class="tab-pane <?php if(isset($_GET['dim'])&& $_GET['dim']=='3'){?>active<?php }?>" id="tab_c">
                     <form name="frm" method="POST" enctype="multipart/form-data">
                         <div class="panel-heading">
-                            <h2 class="panel-title"><i class="fa fa-pencil-square-o"></i> DAZL Daily</h2>
+                            <h2 class="panel-title" style="color:#ef7623;"><i class="fa fa-pencil-square-o"></i> DAZL Daily</h2>
     					</div>
-    					<div class="col-md-12">				
-    						<div class="row">
+                        <br />
+    					<div class="col-md-12" style="background-color: #E9EEF2 !important;">				
+    						<div class="row" style="margin-top: 5px;">
     							<div class="col-md-6 form-group">
     								<label>UserName</label>
     								<input type="text" name="uname" class="form-control" value="<?php echo $uname;?>" />
@@ -186,15 +189,16 @@
                                 <input type="hidden" name="is_authorized" id="is_authorized" value="1" />
             					<input type="submit" onclick="waitingDialog.show();" name="submit" value="Save"/>	
                                 <input type="button" name="clear" value="Clear" />
-                            </div>				
+                            </div>	<br />			
     					</div>
 				    </form> 
                 </div>
                 <div class="tab-pane <?php if(isset($_GET['dim'])&& $_GET['dim']=='4'){?>active<?php }?>" id="tab_d">
                      <form name="frm" method="POST" enctype="multipart/form-data">
                         <div class="panel-heading">
-                            <h2 class="panel-title"><i class="fa fa-pencil-square-o"></i> DAZL Commissions</h2>
+                            <h2 class="panel-title" style="color:#ef7623;"><i class="fa fa-pencil-square-o"></i> DAZL Commissions</h2>
     					</div>
+                        <br />
     					<div class="col-md-12">				
     						<div class="row">
     							<div class="col-md-6 form-group">
@@ -252,10 +256,11 @@
                 <div class="tab-pane <?php if(isset($_GET['dim'])&& $_GET['dim']=='5'){?>active<?php }?>" id="tab_e">
                     <form name="frm" method="POST" enctype="multipart/form-data">
                         <div class="panel-heading">
-                            <h2 class="panel-title"><i class="fa fa-pencil-square-o"></i> NFS/Fidelity</h2>
+                            <h2 class="panel-title" style="color:#ef7623;"><i class="fa fa-pencil-square-o"></i> NFS/Fidelity</h2>
     					</div>
-    					<div class="col-md-12">
-                            <div class="row"> 
+                        <br />
+    					<div class="col-md-12" style="background-color: #E9EEF2 !important;">				
+    						<div class="row" style="margin-top: 5px;">
                                 <div class="col-md-6 form-group">
                                     <label>Exclude Non-Commissionable Trade Activity </label>
                                 </div>
@@ -294,15 +299,16 @@
                                 <input type="hidden" name="is_authorized" id="is_authorized" value="0" />
             					<input type="submit" onclick="waitingDialog.show();" name="submit" value="Save"/>	
                                 <input type="button" name="clear" value="Clear" />
-                            </div>				
+                            </div><br />				
     					</div>
 				    </form> 
                 </div>
                 <div class="tab-pane <?php if(isset($_GET['dim'])&& $_GET['dim']=='6'){?>active<?php }?>" id="tab_f">
                      <form name="frm" method="POST" enctype="multipart/form-data">
                         <div class="panel-heading">
-                            <h2 class="panel-title"><i class="fa fa-pencil-square-o"></i> Pershing</h2>
+                            <h2 class="panel-title" style="color:#ef7623;"><i class="fa fa-pencil-square-o"></i> Pershing</h2>
     					</div>
+                        <br />
     					<div class="col-md-12">				
                             <div class="row"> 
                                 <div class="col-md-6 form-group">
@@ -350,10 +356,11 @@
                 <div class="tab-pane <?php if(isset($_GET['dim'])&& $_GET['dim']=='7'){?>active<?php }?>" id="tab_g">
                      <form name="frm" method="POST" enctype="multipart/form-data">
                         <div class="panel-heading">
-                            <h2 class="panel-title"><i class="fa fa-pencil-square-o"></i> Raymond James</h2>
+                            <h2 class="panel-title" style="color:#ef7623;"><i class="fa fa-pencil-square-o"></i> Raymond James</h2>
     					</div>
-    					<div class="col-md-12">				
-    						<div class="row"> 
+                        <br />
+    					<div class="col-md-12" style="background-color: #E9EEF2 !important;">				
+    						<div class="row" style="margin-top: 5px;"> 
                                 <div class="col-md-6 form-group">
                                     <label>Exclude Non-Commissionable Trade Activity </label>
                                 </div>
@@ -392,15 +399,16 @@
                                 <input type="hidden" name="is_authorized" id="is_authorized" value="0" />
             					<input type="submit" onclick="waitingDialog.show();" name="submit" value="Save"/>	
                                 <input type="button" name="clear" value="Clear" />
-                            </div>								
+                            </div><br />								
     					</div>
 				    </form> 
                 </div>
                 <div class="tab-pane <?php if(isset($_GET['dim'])&& $_GET['dim']=='8'){?>active<?php }?>" id="tab_h">
                      <form name="frm" method="POST" enctype="multipart/form-data">
                         <div class="panel-heading">
-                            <h2 class="panel-title"><i class="fa fa-pencil-square-o"></i> RBC Dain</h2>
+                            <h2 class="panel-title" style="color:#ef7623;"><i class="fa fa-pencil-square-o"></i> RBC Dain</h2>
     					</div>
+                        <br />
     					<div class="col-md-12">			
                             <div class="row"> 
                                 <div class="col-md-6 form-group">

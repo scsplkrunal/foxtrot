@@ -109,7 +109,7 @@
 .btn-primary {
     color: #fff;
     background-color: #337ab7 !important;
-    border-color: #2e6da4 !important;
+    border-color: #2e6da4 !important;}
 </style>
 <script type="text/javascript">
 var waitingDialog = waitingDialog || (function ($) {

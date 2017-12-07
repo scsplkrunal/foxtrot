@@ -2,53 +2,50 @@
 <h1>Client Reassignment</h1>
     <div class="col-md-12 well">
         <div class="row">
-            <div class="col-md-3">
-                <label style="float: right;">From Broker:</label>
-            </div>
-            <div class="col-md-4 form-group">
-                    <select class="form-control" name="values[]">
-                        <option value="">Select one</option>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>From Broker </label>
+                    <select class="form-control" name="from_broker">
+                        <option value="">Select From</option>
                         <option value="1">Option 1</option>
                         <option value="2">Option 2</option>
                         <option value="3">Option 3</option>
                         <option value="4">Option 4</option>
                     </select>
+                </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-3">
-                <label style="float: right;">To Broker:</label>
-            </div>
-            <div class="col-md-4 form-group">
-                    <select class="form-control" name="values[]">
-                        <option value="">Select one</option>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>To Broker </label>
+                    <select class="form-control" name="to_broker">
+                        <option value="">Select To</option>
                         <option value="1">Option 1</option>
                         <option value="2">Option 2</option>
                         <option value="3">Option 3</option>
                         <option value="4">Option 4</option>
                     </select>
+                </div>
             </div>
         </div>
         <div class="row">
-        <div class="col-md-3">
-            <label style="float: right;">List Of Ressigned Client:</label>
-        </div>
-        <div class="col-md-8">
-            <label class="radio-inline">
-              <input type="radio" class="radio" name="output" id="output" checked="checked" /> Output to Screen
-            </label>&nbsp;&nbsp;
-            <label class="radio-inline">
-              <input type="radio" class="radio" name="output" id="output" /> Output to Printer
-            </label>&nbsp;&nbsp;
-            <label class="radio-inline">
-              <input type="radio" class="radio" name="output" id="output" /> Output to PDF
-            </label>
-        </div><br />
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>List Of Ressigned Client </label><br />
+                    <input type="radio" class="radio" name="output" id="output_to_screen" style="display: inline;" checked="checked" /> Output to Screen&nbsp;&nbsp;&nbsp;
+                    <input type="radio" class="radio" name="output" id="output_to_printer" style="display: inline;" /> Output to Printer&nbsp;&nbsp;&nbsp;
+                    <input type="radio" class="radio" name="output" id="output_to_pdf" style="display: inline;" /> Output to PDF
+                </div>
+            </div>
         </div>
         <div class="panel-footer">
             <div class="selectwrap">
-				<input type="button" name="proceed" onclick="waitingDialog.show();" class="btn btn-warning btn-lg btn3d " value="Proceed"/>
-				<input type="button" name="cancel" class="btn btn-warning btn-lg btn3d " value="Cancel"/>
+				<div class="selectwrap">
+                    <input type="hidden" name="id" id="id" value="<?php //echo $id; ?>" />
+					<input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
+                    <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
+                </div>
             </div>
         </div>
         
@@ -115,3 +112,10 @@ var waitingDialog = waitingDialog || (function ($) {
 
 })(jQuery);
 </script>
+<style>
+.btn-primary {
+    color: #fff;
+    background-color: #337ab7 !important;
+    border-color: #2e6da4 !important;
+}
+</style>

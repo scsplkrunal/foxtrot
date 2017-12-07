@@ -114,30 +114,30 @@ $(document).on('click','.remove-row',function(){
                                                         <input type="text" name="fname" id="fname" value="<?php echo $fname;?>" class="form-control" />
                                                     </div>
                                                 </div>
-                                            	<div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label>Last Name <span class="text-red">*</span></label><br />
-                                                        <input type="text" name="lname" id="lname" value="<?php echo $lname;?>" class="form-control" />
-                                                    </div>
-                                                </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>MI </label><br />
                                                         <input type="text" name="mi" id="mi" class="form-control" />
                                                     </div>
                                                 </div>
+                                            	<div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Last Name <span class="text-red">*</span></label><br />
+                                                        <input type="text" name="lname" id="lname" value="<?php echo $lname;?>" class="form-control" />
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>Client's File <span class="validation" id="client_file_msg"></span></label><br />
-                                                        <input type="text" onblur="checkLength(this)" name="client_file_maintain" id="client_file_maintain" maxlength="12" class="form-control" />
+                                                        <label>Client's File </label><br />
+                                                        <input type="text" name="client_file_maintain" id="client_file_maintain" maxlength="12" class="form-control" />
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>Clearing Acct <span class="validation" id="clearing_acct_msg"></span></label><br />
-                                                        <input type="text" onblur="checkLengthclr(this)" name="clearing_acct" id="clearing_acct" class="form-control" maxlength="20" />
+                                                        <label>Clearing Acct </label><br />
+                                                        <input type="text" name="clearing_acct" id="clearing_acct" class="form-control" maxlength="20" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -164,8 +164,8 @@ $(document).on('click','.remove-row',function(){
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>Household / Link Code <span class="validation" id="household_msg"></span></label><br />
-                                                        <input type="text" onblur="checkLengthhlc(this)" name="household" id="household" class="form-control" maxlength="20"/>
+                                                        <label>Household / Link Code </label><br />
+                                                        <input type="text" name="household" id="household" class="form-control" maxlength="20"/>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -184,7 +184,11 @@ $(document).on('click','.remove-row',function(){
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Split Broker </label>
-                                                        <input type="number" name="split_broker" id="split_broker" class="form-control" maxlength="3" onchange="changeHandler(this)"/>
+                                                        <select name="split_broker" id="split_broker" class="form-control">
+                                                            <option value="0">Select Broker</option>
+                                                            <option value="1">broker1</option>
+                                                            <option value="2">broker2</option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -268,18 +272,6 @@ $(document).on('click','.remove-row',function(){
                                                 </div>
                                                <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>Birth Date </label>
-                                                        <div id="demo-dp-range">
-                                                            <div class="input-daterange input-group" id="datepicker">
-                                                                <input type="text" name="birth_date" onchange="getAge(this.value);" id="birth_date" class="form-control" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div> 
-                                            <div class="row">
-                                            	<div class="col-md-6">
-                                                    <div class="form-group">
                                                         <label>Date Established </label>
                                                         <div id="demo-dp-range">
                                                             <div class="input-daterange input-group" id="datepicker">
@@ -288,6 +280,26 @@ $(document).on('click','.remove-row',function(){
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div> 
+                                            <div class="row">
+                                            	<div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Birth Date </label>
+                                                        <div id="demo-dp-range">
+                                                            <div class="input-daterange input-group" id="datepicker">
+                                                                <input type="text" name="birth_date" onchange="getAge(this.value);" id="birth_date" class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Age </label>
+                                                        <input type="text" name="age" id="age" class="form-control"/>
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                            <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Open Date </label>
@@ -298,8 +310,6 @@ $(document).on('click','.remove-row',function(){
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div> 
-                                            <div class="row">
                                             	<div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>NAF Date </label>
@@ -310,7 +320,9 @@ $(document).on('click','.remove-row',function(){
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
+                                            </div>
+                                            <div class="row">
+                                            	 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Last Contacted </label>
                                                         <div id="demo-dp-range">
@@ -322,24 +334,24 @@ $(document).on('click','.remove-row',function(){
                                                 </div>
                                             </div>
                                             <div class="row">
-                                            	<div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Age </label>
-                                                        <textarea name="age" id="age" class="form-control"></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>OFAC Check </label>
-                                                        <input type="checkbox" name="ofak_check" disabled="true" id="ofak_check" class="checkbox" />
+                                                        <div id="demo-dp-range">
+                                                            <div class="input-daterange input-group" id="datepicker">
+                                                                <input type="text" name="ofak_check" disabled="true" id="ofak_check" class="form-control" />
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             	<div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>FinCEN Check </label>
-                                                        <input type="checkbox" name="fincen_check" disabled="true" id="fincen_check" class="checkbox" />
+                                                        <div id="demo-dp-range">
+                                                            <div class="input-daterange input-group" id="datepicker">
+                                                                <input type="text" name="fincen_check" disabled="true" id="fincen_check" class="form-control" />
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 
@@ -365,7 +377,7 @@ $(document).on('click','.remove-row',function(){
                                         <div class="panel-overlay-wrap">
                                             <div class="panel">
                                                <div class="panel-heading">
-                                                    <h4 class="panel-title" style="font-size: 20px;">Client Marcus[filename]</h4>
+                                                    <h4 class="panel-title" style="font-size: 20px;">Client Marcus</h4>
                                                </div>
                                             <div class="panel-body">
                                             <div class="row">
@@ -539,7 +551,7 @@ $(document).on('click','.remove-row',function(){
                                         <div class="panel-overlay-wrap">
                                             <div class="panel">
                                                <div class="panel-heading">
-                                                    <h4 class="panel-title" style="font-size: 20px;">Client Marcus[filename]</h4>
+                                                    <h4 class="panel-title" style="font-size: 20px;">Client Marcus</h4>
                                                </div>
                                             <div class="panel-body">
                                             <div class="row" id="account_no_row">
@@ -582,7 +594,7 @@ $(document).on('click','.remove-row',function(){
                                         <div class="panel-overlay-wrap">
                                             <div class="panel">
                                                <div class="panel-heading">
-                                                    <h4 class="panel-title" style="font-size: 20px;">Client Marcus[filename]</h4>
+                                                    <h4 class="panel-title" style="font-size: 20px;">Client Marcus</h4>
                                                </div>
                                             <div class="panel-body">
                                             <div class="row">
@@ -625,7 +637,7 @@ $(document).on('click','.remove-row',function(){
                                         <div class="panel-overlay-wrap">
                                             <div class="panel">
                                                <div class="panel-heading">
-                                                    <h4 class="panel-title" style="font-size: 20px;">Client Marcus[filename]</h4>
+                                                    <h4 class="panel-title" style="font-size: 20px;">Client Marcus</h4>
                                                </div>
                                             <div class="panel-body">
                                             <div class="row">

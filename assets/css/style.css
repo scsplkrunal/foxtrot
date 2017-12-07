@@ -21,6 +21,9 @@
     color: #fff;
     font-size: 30px;
 }
+.panel-title {
+    color:#ef7623 !important;
+}
 .bg-red,
 .bg-yellow,
 .bg-aqua,

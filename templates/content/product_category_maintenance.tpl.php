@@ -164,3 +164,10 @@ var waitingDialog = waitingDialog || (function ($) {
 
 })(jQuery);
 </script>
+<style>
+.btn-primary {
+    color: #fff;
+    background-color: #337ab7 !important;
+    border-color: #2e6da4 !important;
+}
+</style>

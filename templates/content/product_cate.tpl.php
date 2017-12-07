@@ -2,17 +2,17 @@
 <h1>Product category</h1>
 <div class="col-lg-12 well">
     <ul class="nav nav-pills nav-stacked col-md-2">
-      <li <?php if((isset($_GET['action'])&& $_GET['action']=='add_new_product') || (isset($_GET['action'])&& $_GET['action']=='view_product') ){ ?> class="active"<?php }?>><a href="<?php echo CURRENT_PAGE; ?>?action=view_product" >Products</a></li>
-      <li <?php if((isset($_GET['action'])&& $_GET['action']=='add_new_sponsor') || (isset($_GET['action'])&& $_GET['action']=='view_sponsor') ){ ?> class="active"<?php }?>><a href="<?php echo CURRENT_PAGE; ?>?action=view_sponsor">Sponsors</a></li>
+      <li <?php if((isset($_GET['action'])&& $_GET['action']=='add_new_product') || (isset($_GET['action'])&& $_GET['action']=='view_product') || (isset($_GET['action'])&& $_GET['action']=='edit_product')){ ?> class="active"<?php }if($action=='view_product'){?>class="active" <?php }?>><a href="<?php echo CURRENT_PAGE; ?>?action=view_product" >Products</a></li>
+      <li <?php if((isset($_GET['action'])&& $_GET['action']=='add_new_sponsor')||(isset($_GET['action'])&& $_GET['action']=='edit_sponsor') || (isset($_GET['action'])&& $_GET['action']=='view_sponsor') ){ ?> class="active"<?php }?>><a href="<?php echo CURRENT_PAGE; ?>?action=view_sponsor">Sponsors</a></li>
     </ul>
     <div class="tab-content col-md-10">
-            <div class="tab-pane <?php if((isset($_GET['action'])&& $_GET['action']=='add_new_product') || (isset($_GET['action'])&& $_GET['action']=='view_product') || (isset($_GET['action'])&& $_GET['action']=='edit_new_product') ){?>active<?php }?>" id="tab_a">
+            <div class="tab-pane <?php if((isset($_GET['action'])&& $_GET['action']=='add_new_product') || (isset($_GET['action'])&& $_GET['action']=='view_product')|| $action=='view_product' || (isset($_GET['action'])&& $_GET['action']=='edit_product')){?>active<?php }?>" id="tab_a">
             <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
             <?php
-            if($_GET['action']=='add_new_product'||($_GET['action']=='edit_new_product'&&$id>0)){
+             if($action=='add_new_product' || ($action=='edit_product' && $id>0)){
                 ?>            
                 <form name="frm" action="<?php echo CURRENT_PAGE ?>" method="POST" onsubmit="return validation();" enctype="multipart/form-data">
-					<div class="ROW">
+					<div class="row">
                         <div class="panel-control" style="float: right;">
 							<div class="btn-group dropdown">
 								<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
@@ -24,10 +24,10 @@
                         <h3 class="panel-title"><i class="ti-pencil-alt"></i> <?php echo $action=='add_new'?'Add':'Edit'; ?> Product Category</h3>
 					</div><br />
                     <div class="row">
-                        <div  class="col-sm-3 form-group">
+                        <div  class="col-md-3 form-group">
                             <label>Product Category:</label>
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <select class="form-control" name="product_category">
                                 <option value="">Select Product Category...</option>
                                 <?php foreach($product_category as $key=>$val){?>
@@ -35,18 +35,18 @@
                                 <?php } ?>
                             </select>
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <label>Name:</label>
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <input type="text" maxlength="40" class="form-control" name="name" value="<?php echo $name; ?>"  />
                         </div>
                     </div>
                     <div class="row">
-                        <div  class="col-sm-3 form-group">
+                        <div  class="col-md-3 form-group">
                             <label>Sponsor :</label>
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <select class="form-control" name="sponsor">
                                 <option value="">Select Sponsor Category...</option>
                                  <?php foreach($get_sponsor as $key=>$val){?>
@@ -54,24 +54,24 @@
                                 <?php } ?>
                             </select>
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <label>Ticker Symbol:</label>
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <input type="text" maxlength="6" class="form-control" name="ticker_symbol" value="<?php echo $ticker_symbol; ?>"  />
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <label>CUSIP:</label>
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <input type="text" maxlength="11" class="form-control" name="cusip" value="<?php echo $cusip; ?>" />
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <label>Security:</label>
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <input type="text" maxlength="10" class="form-control" name="security" value="<?php echo $security; ?>"   />
                         </div>
                     </div>
@@ -84,55 +84,59 @@
                               <label class="form-control">Allowable Receivable</label>
                             </div>
                         </div>
-                   </div ><br />
-                   <h3>Suitability:</h3>
+                   </div >
                    <div class="row">
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-12">
+                            <h4><b>Suitability</b></h4><br />
+                        </div>
+                   </div>
+                   <div class="row">
+                        <div class="col-md-3 form-group">
                             <label>Income:</label>
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <input type="text" maxlength="9" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control" value="<?php echo $income; ?>"  name="income"  />
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <label>Net Worth:</label>
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <input type="text" maxlength="9" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control" value="<?php echo $networth; ?>"  name="networth"  />
                         </div>
                    </div>
                    <div class="row">
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <label>Net Worth Only:</label>
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <input type="text" maxlength="9" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control" value="<?php echo $networthonly; ?>"  name="networthonly"  />
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <label>Minimum Investment:</label>
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <input type="text" maxlength="9" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control" name="minimum_investment" value="<?php echo $minimum_investment; ?>"  />
                         </div>
                    </div>
                    <div class="row">
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <label>Minimum Offer:</label>
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <input type="text" maxlength="9" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control" name="minimum_offer" value="<?php echo $minimum_offer; ?>"   />
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <label>Maximum Offer:</label>
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <input type="text" maxlength="9" value="<?php echo $maximum_offer; ?>" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control" name="maximum_offer"  />
                         </div>
                    </div>
                    <div class="row">
-                        <div  class="col-sm-3 form-group">
+                        <div  class="col-md-3 form-group">
                             <label>Objectives :</label>
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <select class="form-control" name="objectives">
                                 <option value="">Select Objective...</option>
                                 <option value="1">Growth</option>
@@ -151,7 +155,11 @@
                             </div>
                         </div>
                    </div>
-                   <h3>Mutual Funds:</h3>
+                   <div class="row">
+                        <div class="col-md-12">
+                            <h4><b>Mutual Funds</b></h4><br />
+                        </div>
+                   </div>
                    <div class="row">
                         <div class="col-lg-3">
                             <label class="form-group">Class Type:</label>
@@ -190,10 +198,10 @@
                         </div>
                    </div>
                    <div class="row">
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <label>Fund Code</label>
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <input type="text" maxlength="7" value="<?php echo $fund_code; ?>" class="form-control" name="fund_code"  />
                         </div>
                         <div class="col-lg-6">
@@ -206,24 +214,24 @@
                         </div>
                    </div>
                    <div class="row">
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <label>Threshold</label>
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <input type="text" value="<?php echo $threshold; ?>"  onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="9" class="form-control" name="threshold"  />
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <label>Rate </label>
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <input type="text" value="<?php echo $rate; ?>"  onblur="checkLength(this)" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="5" class="form-control" name="Rate"  />
                         </div>
                    </div>
                    <div class="row">
-                        <div  class="col-sm-3 form-group">
+                        <div  class="col-md-3 form-group">
                             <label>Investment Banking Type :</label>
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <select class="form-control" name="investment_banking_type">
                                 <option value="">Select Type...</option>
                                 <option value="1">IPO</option>
@@ -233,10 +241,10 @@
                                 <option value="5">Private Placement</option>
                             </select>
                         </div>
-                        <div  class="col-sm-3 form-group">
+                        <div  class="col-md-3 form-group">
                             <label>RIA specific Type :</label>
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <select class="form-control" name="ria_specific_type">
                                 <option value="">Select Type...</option>
                                 <option value="1">Fee Based Mutual Funds</option>
@@ -268,16 +276,20 @@
                               <label class="form-control">Fee Based</label><br />
                             </div>
                         </div>
-                   </div><br />
+                   </div>
                    <div class="row">
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <label>Fee Rate:</label>
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <input type="text" value="<?php echo $fee_rate; ?>" onblur="checkLength(this)" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="5"   class="form-control" name="fee_rate"  />
                         </div>
                    </div>
-                   <h3>Stocks, Bonds:</h3>
+                   <div class="row">
+                        <div class="col-md-12">
+                            <h4><b>Stocks, Bonds</b></h4><br />
+                        </div>
+                   </div>
                    <div class="row"> 
                          <div class="col-lg-3">
                             <div class="input-group">
@@ -295,13 +307,17 @@
                               <label class="form-control">OTC</label><br />
                             </div>
                         </div>
-                   </div><br />
-                   <h3>CDs, UITs, Bonds :</h3>
+                   </div>
+                   <div class="row">
+                        <div class="col-md-12">
+                            <h4><b>CDs, UITs, Bonds</b></h4><br />
+                        </div>
+                   </div>
                    <div class="row"> 
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <label>Maturity Date :</label>
                         </div>
-                         <div class="col-sm-3">
+                         <div class="col-md-3">
                             <div class="form-group">
                                 <div id="demo-dp-range">
                                     <div class="input-daterange input-group" id="datepicker">
@@ -310,10 +326,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div  class="col-sm-3 form-group">
+                        <div  class="col-md-3 form-group">
                             <label>Type :</label>
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <select class="form-control" name="type">
                                 <option value="">Select Type...</option>
                                 <option value="1">Government Municipal</option>
@@ -323,8 +339,11 @@
                             </select>
                         </div>
                    </div>
-                   
-                   <h3>Variable Annuities:</h3>
+                   <div class="row">
+                        <div class="col-md-12">
+                            <h4><b>Variable Annuities</b></h4><br />
+                        </div>
+                   </div>
                    <div class="row">
                         <div class="col-lg-3">
                             <div class="input-group">
@@ -343,12 +362,16 @@
                             </div>
                         </div>
                    </div><br />
-                   <h4>Agency Tax Credits, Alternative Investments, Hedge Funds, Secondary Limited Partnerships:</h4>
                    <div class="row">
-                        <div  class="col-sm-3 form-group">
+                        <div class="col-md-12">
+                            <h4><b>Agency Tax Credits, Alternative Investments, Hedge Funds, Secondary Limited Partnerships</b></h4><br />
+                        </div>
+                    </div>
+                   <div class="row">
+                        <div  class="col-md-3 form-group">
                             <label>Registrtion Type:</label>
                         </div>
-                        <div class="col-sm-3 form-group">
+                        <div class="col-md-3 form-group">
                             <select class="form-control" name="registration_type">
                                 <option value="">Select Registration Type...</option>
                                 <option value="1">Public Real Estate</option>
@@ -374,7 +397,7 @@
                     </div>
 			    </form> 
                 <?php
-                    }else if(isset($action) && $action='view_product'){?>
+                    }if(isset($_GET['action'])=='' || $_GET['action']=='view_product' || $action =='view_product'){?>
                 <div class="panel">
             		<div class="panel-heading">
                         <div class="panel-control">
@@ -427,8 +450,8 @@
                                         }*/ ?>
                                         </td>
                                         <td class="text-center">
-                                            <a href="<?php echo CURRENT_PAGE; ?>?action=edit_new_product&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                                            <a onclick="return conf('<?php echo CURRENT_PAGE; ?>?action=delete&id=<?php echo $val['id']; ?>');" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
+                                            <a href="<?php echo CURRENT_PAGE; ?>?action=edit_new_product&id=<?php echo $val['id']; ?>" class="btn btn-md btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                                            <a onclick="return conf('<?php echo CURRENT_PAGE; ?>?action=delete&id=<?php echo $val['id']; ?>');" class="btn btn-md btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
                                         </td>
                                     </tr>
                             <?php } ?>
@@ -439,13 +462,14 @@
             	</div>
                 <?php } ?>                                    
             </div>
-            <div class="tab-pane  <?php if((isset($_GET['action'])&& $_GET['action']=='add_new_sponsor') || (isset($_GET['action'])&& $_GET['action']=='view_sponsor') ){?>active<?php }?>" id="tab_b">
+            <div class="tab-pane  <?php if((isset($_GET['action'])&& $_GET['action']=='add_new_sponsor') || (isset($_GET['action'])&& $_GET['action']=='view_sponsor') || (isset($_GET['action'])&& $_GET['action']=='edit_sponsor')){?>active<?php }?>" id="tab_b">
             <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
-            <?php
-            if($_GET['action']=='add_new_sponsor'||($_GET['action']=='edit' && $id>0)){
-                ?>            
-                <form name="frm2" method="POST" action="#">
-                    <div class="ROW">
+            <?php  
+            if($_GET['action']=='add_new_sponsor' || ($_GET['action']=='edit_sponsor' && $id>0)){
+                ?>
+                <div class="panel">            
+                <form name="frm2" method="POST">
+                    <div class="panel-heading">
                         <div class="panel-control" style="float: right;">
 							<div class="btn-group dropdown">
 								<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
@@ -454,155 +478,158 @@
 								</ul>
 							</div>
 						</div>
-                        <h3 class="panel-title"><i class="ti-pencil-alt"></i> <?php echo $action=='add_new'?'Add':'Edit'; ?> Sponsor</h3>
-					</div><br />
+                        <h3 class="panel-title"><i class="fa fa-pencil-square-o"></i><?php echo $action=='add_new_sponsor'?'Add':'Edit'; ?> Sponsor</h3>
+					</div>
+                    <div class="panel-body">
                     <div class="row">
-                        <div class="col-sm-3 form-group">
-                            <label>Sponsor Name:</label>
-                        </div>
-                        <div class="col-sm-3 form-group">
-                            <input type="text" maxlength="25" class="form-control" name="sname"  />
-                        </div>
-                        <div class="col-sm-3 form-group">
-                            <label>Address 1:</label>
-                        </div>
-                        <div class="col-sm-3 form-group">
-                            <input type="text" maxlength="50" class="form-control" name="saddress1"  />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-3 form-group">
-                            <label>Address 2:</label>
-                        </div>
-                        <div class="col-sm-3 form-group">
-                            <input type="text" maxlength="50" class="form-control" name="saddress2"  />
-                        </div>
-                        <div class="col-sm-3 form-group">
-                            <label>City:</label>
-                        </div>
-                        <div class="col-sm-3 form-group">
-                            <input type="text" maxlength="25" class="form-control" name="scity"  />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div  class="col-sm-3 form-group">
-                            <label>State:</label>
-                        </div>
-                        <div class="col-sm-3 form-group">
-                            <select class="form-control" name="reg_type">
-                                <option value="">Select State...</option>
-                            </select>
-                        </div>
-                        <div class="col-sm-3 form-group">
-                            <label>Zip Code:</label>
-                        </div>
-                        <div class="col-sm-3 form-group">
-                            <input type="text" maxlength="10" class="form-control" name="zip"  />
-                        </div>                
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-3 form-group">
-                            <label>E-Mail:</label>
-                        </div>
-                        <div class="col-sm-3 form-group">
-                            <input type="text" maxlength="50" class="form-control" name="smail"  />
-                        </div>
-                        <div class="col-sm-3 form-group">
-                            <label>Web Site:</label>
-                        </div>
-                        <div class="col-sm-3 form-group">
-                            <input type="text" maxlength="50" class="form-control" name="swebsite"  />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-3 form-group">
-                            <label>General Contact:</label>
-                        </div>
-                        <div class="col-sm-3 form-group">
-                            <input type="text"  class="form-control" name="scontact"  />
-                        </div>
-                        <div class="col-sm-3 form-group">
-                            <label>General Phone:</label>
-                        </div>
-                        <div class="col-sm-3 form-group">
-                            <input type="text"  class="form-control" name="sphone"  />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-3 form-group">
-                            <label>Operations Contact:</label>
-                        </div>
-                        <div class="col-sm-3 form-group">
-                            <input type="text"  class="form-control" name="s_op_contact"  />
-                        </div>
-                        <div class="col-sm-3 form-group">
-                            <label>Operations Phone:</label>
-                        </div>
-                        <div class="col-sm-3 form-group">
-                            <input type="text"  class="form-control" name="s_op_phone"  />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-3 form-group">
-                            <label>DST System:</label>
-                        </div>
-                        <div class="col-sm-3 form-group">
-                            <input type="text" maxlength="15" class="form-control" name="sdst"  />
-                        </div>
-                        <div class="col-sm-3 form-group">
-                            <label>DST Mgmt Code:</label>
-                        </div>
-                        <div class="col-sm-3 form-group">
-                            <input type="text" maxlength="15" class="form-control" name="sdstcode"  />
-                        </div>        
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="input-group">
-                              <span class="input-group-addon">
-                                 <input type="checkbox"  name="dst_inmport" id="cpa" value="cpa" style="display: inline;" />
-                              </span>
-                              <label class="form-control">Exclude from DST Importing</label>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Sponsor Name </label><br />
+                                <input type="text" maxlength="25" class="form-control" name="sponser_name"  />
                             </div>
                         </div>
-                        <div class="col-sm-3 form-group">
-                            <label>DAZL Code:</label>
-                        </div>
-                        <div class="col-sm-3 form-group">
-                            <input type="text" maxlength="15" class="form-control" name="sdazl"  />
-                        </div> 
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="input-group">
-                              <span class="input-group-addon">
-                                 <input type="checkbox"  name="sdaim" value="dazl_import" style="display: inline;" />
-                              </span>
-                              <label class="form-control">Exclude from DAZL Importing</label>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Address 1 </label><br />
+                                <input type="text" maxlength="50" class="form-control" name="saddress1"  />
                             </div>
                         </div>
-                        <div class="col-sm-3 form-group">
-                            <label>DTCC/NSCC ID:</label>
-                        </div>
-                        <div class="col-sm-3 form-group">
-                            <input type="text" maxlength="15" class="form-control" name="dtcc_nscc"  />
-                        </div> 
                     </div>
                     <div class="row">
-                        <div class="col-sm-3 form-group">
-                            <label>Clearing Firm ID:</label>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Address 2 </label><br />
+                                <input type="text" maxlength="50" class="form-control" name="saddress2"  />
+                            </div>
                         </div>
-                        <div class="col-sm-3 form-group">
-                            <input type="text" maxlength="15" class="form-control" name="clr_firm"  />
-                        </div> 
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>City </label><br />
+                                <input type="text" maxlength="25" class="form-control" name="scity"  />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>State </label><br />
+                                <select class="form-control" name="sstate">
+                                    <option value="">Select State</option>
+                                    <?php foreach($get_state as $key=>$val){ ?>
+                                        <option value="<?php echo $val['id'];?>"><?php echo $val['name'];?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Zip Code </label><br />
+                                <input type="text" maxlength="10" class="form-control" name="szip_code"  />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>E-Mail </label><br />
+                                <input type="text" maxlength="50" class="form-control" name="semail"  />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Web Site </label><br />
+                                <input type="text" maxlength="50" class="form-control" name="swebsite"  />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>General Contact </label><br />
+                                <input type="text"  class="form-control" maxlength="30" name="sgeneral_contact" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>General Phone </label><br />
+                                <input type="text"  class="form-control" maxlength="13" name="sgeneral_phone" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Operations Contact </label><br />
+                                <input type="text"  class="form-control" maxlength="30" name="soperations_contact" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Operations Phone </label><br />
+                                <input type="text"  class="form-control" maxlength="13" name="soperations_phone" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>DST System ID </label><br />
+                                <input type="text" maxlength="15" class="form-control" name="sdst_system_id"  />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>DST Mgmt Code </label><br />
+                                <input type="text" maxlength="15" class="form-control" name="sdst_mgmt_code"  />
+                            </div>
+                        </div>
+                    </div>
+                   <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Exclude from DST Importing </label><br />
+                                <input type="checkbox" class="checkbox"  name="sdst_import" id="cpa" value="1" style="display: inline;" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>DAZL Code </label><br />
+                                <input type="text" maxlength="15" class="form-control" name="sdazl_code"  />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Exclude from DAZL Importing </label><br />
+                                <input type="checkbox" class="checkbox"  name="sdazl_import" id="" value="1" style="display: inline;" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>DTCC/NSCC ID </label><br />
+                                <input type="text" maxlength="15" class="form-control" name="sdtcc_nscc"  />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Clearing Firm ID </label><br />
+                                <input type="checkbox" class="checkbox"  name="sclr_firm" id="" value="1" style="display: inline;" />
+                            </div>
+                        </div>
                     </div>
                     <div class="panel-footer">
                         <div class="selectwrap">
-        					<input type="button" name="proceed" onclick="waitingDialog.show();" class="btn btn-warning btn-lg btn3d " value="Proceed"/>
-        					<input type="button" name="cancel" class="btn btn-warning btn-lg btn3d " value="Cancel"/>
+                            <input type="hidden" name="id" id="id" value="<?php //echo $id; ?>" />
+        					<input type="submit" name="sponser" onclick="waitingDialog.show();" value="Save"/>	
+                            <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                         </div>
-                    </div>
+                   </div>
+                   </div>
                 </form>
+                </div>
                 <?php
                     }if($_GET['action']=='view_sponsor'){?>
                 <div class="panel">
@@ -629,9 +656,8 @@
             	            <thead>
             	                <tr>
                                     <th class="text-center">#NO</th>
-                                    <th>Product Category</th>
-                                    <th>Product Name</th>
                                     <th>Sponsor Name</th>
+                                    <th>Status</th>
                                     <th class="text-center">ACTION</th>
                                 </tr>
             	            </thead>
@@ -642,23 +668,24 @@
                                 ?>
             	                   <tr>
                                         <td class="text-center"><?php echo ++$count; ?></td>
-                                        <td><?php //echo $val[''];?></td>
-                                        <td><?php //echo $val['']; ?></td>
-                                        <td><?php //echo $val['']; ?></td>
-                                        <td>
-                                        <?php /*
-                                        if($val['contact_status']==1)
-                                        {
-                                            echo "Yes";
-                                        }
-                                        else
-                                        {
-                                            echo "No"; 
-                                        }*/ ?>
+                                        <td><?php echo $val['name'];?></td>
+                                         <td class="text-center">
+                                            <?php
+                                                if($val['status']==1){
+                                                    ?>
+                                                    <a href="<?php echo CURRENT_PAGE; ?>?action=sponsor_status&id=<?php echo $val['id']; ?>&status=0" class="btn btn-sm btn-success"><i class="fa fa-check-square-o"></i> Enabled</a>
+                                                    <?php
+                                                }
+                                                else{
+                                                    ?>
+                                                    <a href="<?php echo CURRENT_PAGE; ?>?action=sponsor_status&id=<?php echo $val['id']; ?>&status=1" class="btn btn-sm btn-warning"><i class="fa fa-warning"></i> Disabled</a>
+                                                    <?php
+                                                }
+                                            ?>
                                         </td>
                                         <td class="text-center">
-                                            <a href="<?php echo CURRENT_PAGE; ?>?action=edit_new_product&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                                            <a onclick="return conf('<?php echo CURRENT_PAGE; ?>?action=delete&id=<?php echo $val['id']; ?>');" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
+                                            <a href="<?php echo CURRENT_PAGE; ?>?action=edit_sponsor&id=<?php echo $val['id']; ?>" class="btn btn-md btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                                            <a onclick="return conf('<?php echo CURRENT_PAGE; ?>?action=delete_sponsor&id=<?php echo $val['id']; ?>');" class="btn btn-md btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
                                         </td>
                                     </tr>
                             <?php } ?>
@@ -705,7 +732,7 @@ var waitingDialog = waitingDialog || (function ($) {
 		 * Opens our dialog
 		 * @param message Custom message
 		 * @param options Custom options:
-		 * 				  options.dialogSize - bootstrap postfix for dialog size, e.g. "sm", "m";
+		 * 				  options.dialogSize - bootstrap postfix for dialog size, e.g. "md", "m";
 		 * 				  options.progressType - bootstrap postfix for progress bar type, e.g. "success", "warning".
 		 */
 		show: function (message, options) {
@@ -747,3 +774,9 @@ var waitingDialog = waitingDialog || (function ($) {
 })(jQuery);
 
 </script>
+<style>
+.btn-primary {
+    color: #fff;
+    background-color: #337ab7 !important;
+    border-color: #2e6da4 !important;
+</style>

@@ -123,14 +123,14 @@
 				<i class="fa fa-angle-down"></i></a>
 				<ul class="dropdown-menu">
 				  <li><a href="user_profile.php">User Profiles</a></li>
-				  <li><a href="data_interface.php">Date Interfaces</a></li>
+				  <li><a href="data_interface.php">Data Interfaces</a></li>
 				  <li><a href="of_fi.php">OFAC / FINCEN</a></li>
                   <li><a href="client_ress.php">Client Reassignment</a></li>
+                  <li><a href="client_suitability.php">Client Suitability</a></li>
 				  <li><a href="account_type.php">Account Type Maintenance</a></li>
 				  <li><a href="product_category_maintenance.php">Product Category Maintenance</a></li>
-                  <li><a href="system_config.php">System Configuration</a></li>
-                  <li><a href="client_suitability.php">Client Suitability</a></li>
                   <li><a href="payroll_adjustment.php">Payroll Adjustment Category Maintenance</a></li>
+                  <li><a href="system_config.php">System Configuration</a></li>
 				</ul>
 			  </li>
 			</ul>

@@ -92,6 +92,7 @@ var waitingDialog = waitingDialog || (function ($) {
 <div class="container">
 <h1>Broker Maintenance</h1>
     <div class="col-lg-12 well">
+        <?php if($action!='view'){?>
         <ul class="nav nav-pills nav-stacked col-md-2">
           <!--<li class="active"><a href="#tab_default" data-toggle="pill">Home</a></li>-->
           <li class="<?php if($action=="general"){ echo "active"; } ?>"><a href="<?php echo CURRENT_PAGE; ?>#tab_a" data-toggle="pill">General</a></li>
@@ -102,6 +103,7 @@ var waitingDialog = waitingDialog || (function ($) {
           <li><a href="<?php echo CURRENT_PAGE; ?>#tab_f" data-toggle="pill">Required Docs</a></li>
        </ul>
        <div class="tab-content col-md-10">
+       <?php } ?>
                 <div class="tab-pane <?php if(isset($action) && ($action=="general"||$action=="charges")){ echo ""; }else{echo "active";} ?>" id="tab_default">
                     <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
                     <?php
@@ -311,6 +313,7 @@ var waitingDialog = waitingDialog || (function ($) {
             	</div>
                 <?php } ?>
                 </div>
+                <?php if($action!='view'){?> 
                 <div class="tab-pane <?php if($action=="general"){ echo "active"; } ?>" id="tab_a">
                 <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
                     <form method="post">
@@ -2594,6 +2597,7 @@ var waitingDialog = waitingDialog || (function ($) {
                         </div>
                      </form>
                  </div>
+                 <?php }?>
           </div>
    </div>
 </div>

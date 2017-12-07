@@ -33,12 +33,13 @@
     $var = '';
     $reg_type = '';
     
-    $action = isset($_GET['action'])&&$_GET['action']!=''?$dbins->re_db_input($_GET['action']):'view';
+    $action = isset($_GET['action'])&&$_GET['action']!=''?$dbins->re_db_input($_GET['action']):'view_product';
     $id = isset($_GET['id'])&&$_GET['id']!=''?$dbins->re_db_input($_GET['id']):0;
     
     $instance = new product_maintenance();
     $product_category = $instance->select_category();
     $get_sponsor = $instance->select_sponsor();
+    $get_state = $instance->select_state();
     
     if(isset($_POST['submit'])&& $_POST['submit']=='Save'){
         
@@ -76,6 +77,38 @@
         
         if($return===true){
             header("location:".CURRENT_PAGE);exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+    }
+    if(isset($_POST['sponser'])&& $_POST['sponser']=='Save'){
+        
+        $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
+        $sponser_name = isset($_POST['sponser_name'])?$instance->re_db_input($_POST['sponser_name']):'';
+        $saddress1 = isset($_POST['saddress1'])?$instance->re_db_input($_POST['saddress1']):'';
+        $saddress2 = isset($_POST['saddress2'])?$instance->re_db_input($_POST['saddress2']):'';
+        $scity = isset($_POST['scity'])?$instance->re_db_input($_POST['scity']):'';
+        $sstate = isset($_POST['sstate'])?$instance->re_db_input($_POST['sstate']):'';
+        $szip_code = isset($_POST['szip_code'])?$instance->re_db_input($_POST['szip_code']):'';
+        $semail = isset($_POST['semail'])?$instance->re_db_input($_POST['semail']):'';
+        $swebsite = isset($_POST['swebsite'])?$instance->re_db_input($_POST['swebsite']):'';
+        $sgeneral_contact = isset($_POST['sgeneral_contact'])?$instance->re_db_input($_POST['sgeneral_contact']):'';
+        $sgeneral_phone = isset($_POST['sgeneral_phone'])?$instance->re_db_input($_POST['sgeneral_phone']):'';
+        $soperations_contact = isset($_POST['soperations_contact'])?$instance->re_db_input($_POST['soperations_contact']):'';
+        $soperations_phone = isset($_POST['soperations_phone'])?$instance->re_db_input($_POST['soperations_phone']):'';
+        $sdst_system_id = isset($_POST['sdst_system_id'])?$instance->re_db_input($_POST['sdst_system_id']):'';
+        $sdst_mgmt_code = isset($_POST['sdst_mgmt_code'])?$instance->re_db_input($_POST['sdst_mgmt_code']):'';
+        $sdst_import = isset($_POST['sdst_import'])?$instance->re_db_input($_POST['sdst_import']):'';
+        $sdazl_code = isset($_POST['sdazl_code'])?$instance->re_db_input($_POST['sdazl_code']):'';
+        $sdazl_import = isset($_POST['sdazl_import'])?$instance->re_db_input($_POST['sdazl_import']):'';
+        $sdtcc_nscc = isset($_POST['sdtcc_nscc'])?$instance->re_db_input($_POST['sdtcc_nscc']):'';
+        $sclr_firm = isset($_POST['sclr_firm'])?$instance->re_db_input($_POST['sclr_firm']):'';
+        
+        $return = $instance->insert_update_sponsor($_POST);
+        
+        if($return===true){
+            header("location:".CURRENT_PAGE.'?action=view_sponsor');exit;
         }
         else{
             $error = !isset($_SESSION['warning'])?$return:'';
@@ -127,20 +160,14 @@
             header('location:'.CURRENT_PAGE);exit;
         }
     }  
-    /*else if(isset($_GET['action'])&&$_GET['action']=='delete'&&isset($_GET['id'])&&$_GET['id']>0)
-    {
-        $id = $instance->re_db_input($_GET['id']);
-        $return = $instance->delete($id);
-        if($return==true){
-            header('location:'.CURRENT_PAGE);exit;
-        }
-        else{
-            header('location:'.CURRENT_PAGE);exit;
-        }
-    }*/
     else if($action=='view_product'){
         
         $return = $instance->select_product_category();
+        
+    }
+    else if($action=='view_sponsor'){
+        
+        $return = $instance->select_sponsor();
         
     }
     $content = "product_cate";
