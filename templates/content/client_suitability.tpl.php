@@ -3,6 +3,7 @@
 <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
     <div class="col-lg-12 well">
         <ul class="nav nav-pills nav-stacked col-md-2">
+          <li <?php if((isset($_GET['action'])&& $_GET['action']=='add_new_objective') || (isset($_GET['action'])&& $_GET['action']=='view_objective') || (isset($_GET['action'])&& $_GET['action']=='edit_objective')){ ?> class="active"<?php }if($action=='view_objective'){?>class="active" <?php }?>><a href="client_suitability.php?action=view_objective" >Objective</a></li>
           <li <?php if((isset($_GET['action'])&& $_GET['action']=='add_new_income') || (isset($_GET['action'])&& $_GET['action']=='view_income') || (isset($_GET['action'])&& $_GET['action']=='edit_income')){ ?> class="active"<?php }if($action=='view_income'){?>class="active" <?php }?>><a href="client_suitability.php?action=view_income" >Income</a></li>
           <li <?php if((isset($_GET['action'])&& $_GET['action']=='add_new_horizon') || (isset($_GET['action'])&& $_GET['action']=='view_horizon') || (isset($_GET['action'])&& $_GET['action']=='edit_horizon')){ ?> class="active"<?php }?>><a href="client_suitability.php?action=view_horizon" >Goal Horizon</a></li>
           <li <?php if((isset($_GET['action'])&& $_GET['action']=='add_new_networth') || (isset($_GET['action'])&& $_GET['action']=='view_networth') || (isset($_GET['action'])&& $_GET['action']=='edit_networth')){ ?> class="active"<?php }?>><a href="client_suitability.php?action=view_networth">Net Worth</a></li>
@@ -16,6 +17,97 @@
           <li <?php if((isset($_GET['action'])&& $_GET['action']=='add_new_account_use') ||(isset($_GET['action'])&& $_GET['action']=='view_account_use') || (isset($_GET['action'])&& $_GET['action']=='edit_account_use')){ ?> class="active"<?php }?>><a href="client_suitability.php?action=view_account_use">Account Use</a></li>
         </ul>
         <div class="tab-content col-md-10">
+                <div class="tab-pane <?php if((isset($_GET['action'])&& $_GET['action']=='add_new_objective') || (isset($_GET['action'])&& $_GET['action']=='view_objective')|| $action=='view_objective' || (isset($_GET['action'])&& $_GET['action']=='edit_objective')){?>active<?php }?>" id="tab_l">
+                    
+                    <?php 
+                        if($action=='add_new_objective' || ($action=='edit_objective' && $id>0)){
+                            ?>
+                            <form method="post" enctype="multipart/form-data">
+                                <div class="panel-overlay-wrap">
+                                    <div class="panel">
+                    					<div class="panel-heading">
+                                            <div class="panel-control" style="float: right;">
+                    							<div class="btn-group dropdown">
+                    								<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
+                    								<ul class="dropdown-menu dropdown-menu-right" style="">
+                    									<li><a href="<?php echo CURRENT_PAGE; ?>?action=view_objective"><i class="fa fa-eye"></i> View List</a></li>
+                    								</ul>
+                    			 				</div>
+                    						</div>
+                                            <h3 class="panel-title"><i class="ti-pencil-alt"></i> <?php echo $action=='add_new_objective'?'Add':'Edit'; ?> Client Suitability Objective</h3>
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Option <span class="text-red">*</span></label>
+                                                            <input type="text" name="option" id="type" value="<?php if($action=='edit_objective'){echo $option ;} ?>" class="form-control" />
+                                                        </div>
+                                                    </div>
+                                               </div>
+                                            </div>
+                                            <div class="panel-overlay">
+                                                <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
+                                            </div>
+                                            
+                                            <div class="panel-footer">
+                                                <div class="selectwrap">
+                                                    <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
+                                					<input type="submit"  onclick="waitingDialog.show();" name="submit_objective" value="Save"/>	
+                                                    <a href="<?php echo CURRENT_PAGE;?>?action=view_objective"><input type="button" name="cancel" value="Cancel" /></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                                            
+                           <?php } if(isset($_GET['action'])=='' || $_GET['action']=='view_objective' || $action=='view_objective' ){ ?> 
+                        <div class="panel">
+                            <div class="panel-heading">
+                                <div class="panel-control">
+                                    <div class="btn-group dropdown" style="float: right;">
+                    					<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
+                    					<ul class="dropdown-menu dropdown-menu-right" style="">
+                    						<li><a href="<?php echo CURRENT_PAGE; ?>?action=add_new_objective"><i class="fa fa-plus"></i> Add New</a></li>
+                    					</ul>
+                    				</div>
+                    			</div>
+                                <h3 class="panel-title">Objective</h3>
+                    		</div>
+                            <div class="panel-body">
+                                <div class="table-responsive" id="register_data">
+                        			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        	            <thead>
+                        	                <tr>
+                                                <th class="text-center">#NO</th>
+                                                <th>OPTIONS</th>
+                                                <th class="text-center">ACTION</th>
+                                            </tr>
+                        	            </thead>
+                        	            <tbody>
+                        	                <?php 
+                                                $count=0  ;
+                                                foreach($return_objective as $key=>$val){
+                                                    ?>
+                                                    <tr>
+                                                        <td class="text-center"><?php echo ++$count ; ?></td>
+                                                        <td><?php echo $val['option']; ?></td>
+                                                        <td class="text-center">
+                                                            <a href="<?php echo CURRENT_PAGE; ?>?action=edit_objective&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                                                            <a onclick="return conf('<?php echo CURRENT_PAGE; ?>?action=delete_objective&id=<?php echo $val['id']; ?>');" class="btn btn-sm btn-danger confirm"><i class="fa fa-trash"></i> delete</a>
+                                                        </td>
+                                                    </tr>
+                                                    <?php
+                                                }
+                                                
+                                            ?>
+                                        </tbody>
+                                    </table>
+                                    </div>
+                        		</div>
+                          </div>
+                          <?php  }?>
+                </div>
                 <div class="tab-pane <?php if((isset($_GET['action'])&& $_GET['action']=='add_new_income') || (isset($_GET['action'])&& $_GET['action']=='view_income')|| $action=='view_income' || (isset($_GET['action'])&& $_GET['action']=='edit_income')){?>active<?php }?>" id="tab_a">
                     
                     <?php 

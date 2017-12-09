@@ -24,7 +24,7 @@
             $minimum_investment = isset($data['minimum_investment'])?$this->re_db_input($data['minimum_investment']):'';
             $minimum_offer = isset($data['minimum_offer'])?$this->re_db_input($data['minimum_offer']):'';
             $maximum_offer = isset($data['maximum_offer'])?$this->re_db_input($data['maximum_offer']):'';
-            $objective = isset($data['objective'])?$this->re_db_input($data['objective']):'';
+            $objective = isset($data['objectives'])?$this->re_db_input($data['objectives']):'';
             $non_commissionable = isset($data['non_commissionable'])?$this->re_db_input($data['non_commissionable']):'';
             $class_type = isset($data['class_type'])?$this->re_db_input($data['class_type']):'';
             $fund_code = isset($data['fund_code'])?$this->re_db_input($data['fund_code']):'';
@@ -36,14 +36,17 @@
             $based = isset($data['based_type'])?$this->re_db_input($data['based_type']):'';
             $fee_rate = isset($data['fee_rate'])?$this->re_db_input($data['fee_rate']):'';
             $st_bo = isset($data['stocks_bonds'])?$this->re_db_input($data['stocks_bonds']):'';
-            $m_date = isset($data['maturity_date'])?$this->re_db_input($data['maturity_date']):'';
+            $m_date = isset($data['maturity_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['maturity_date']))):'';
             $type = isset($data['type'])?$this->re_db_input($data['type']):'';
             $var = isset($data['variable_annuities'])?$this->re_db_input($data['variable_annuities']):'';
             $reg_type = isset($data['registration_type'])?$this->re_db_input($data['registration_type']):'';
             
 			
-			if($category==''){
-				$this->errors = 'Please enter product category.';
+			if($name==''){
+				$this->errors = 'Please enter product name.';
+			}
+            else if($category==''){
+				$this->errors = 'Please select product category.';
 			}
 			
 			if($this->errors!=''){
@@ -56,11 +59,11 @@
 				if($id>0){
 					$con = " AND `id`!='".$id."'";
 				}
-				$q = "SELECT * FROM `".$this->table."` WHERE `is_delete`='0' AND `category`='".$category."' ".$con;
+				$q = "SELECT * FROM `".$this->table."` WHERE `is_delete`='0' AND `name`='".$name."' ".$con;
 				$res = $this->re_db_query($q);
 				$return = $this->re_db_num_rows($res);
 				if($return>0){
-					$this->errors = 'This category is already exists.';
+					$this->errors = 'This product is already exists.';
 				}
 				
 				if($this->errors!=''){
@@ -101,7 +104,7 @@
 		}
         public function insert_update_sponsor($data){
             
-			$id = isset($data['id'])?$this->re_db_input($data['id']):0;
+			$id = isset($data['sponsor_id'])?$this->re_db_input($data['sponsor_id']):0;
 			$sponser_name = isset($data['sponser_name'])?$this->re_db_input($data['sponser_name']):'';
             $saddress1 = isset($data['saddress1'])?$this->re_db_input($data['saddress1']):'';
             $saddress2 = isset($data['saddress2'])?$this->re_db_input($data['saddress2']):'';
@@ -247,7 +250,7 @@
 		 * @param int id
 		 * @return array of record if success, error message if any errors
 		 * */
-		public function edit($id){
+		public function edit_product($id){
 			$return = array();
 			$q = "SELECT `at`.*
 					FROM `".$this->table."` AS `at`
@@ -258,13 +261,23 @@
             }
 			return $return;
 		}
-        
+        public function edit_sponsor($id){
+			$return = array();
+			$q = "SELECT `at`.*
+					FROM `".SPONSOR_MASTER."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`id`='".$id."'";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			$return = $this->re_db_fetch_array($res);
+            }
+			return $return;
+		}
         /**
 		 * @param id of record
 		 * @param status to update
 		 * @return true if success, false message if any errors
 		 * */
-		/*public function status($id,$status){
+		public function product_status($id,$status){
 			$id = trim($this->re_db_input($id));
 			$status = trim($this->re_db_input($status));
 			if($id>0 && ($status==0 || $status==1) ){
@@ -283,16 +296,56 @@
 			     $_SESSION['warning'] = UNKWON_ERROR;
 				return false;
 			}
-		}*/
+		}
+        public function sponsor_status($id,$status){
+			$id = trim($this->re_db_input($id));
+			$status = trim($this->re_db_input($status));
+			if($id>0 && ($status==0 || $status==1) ){
+				$q = "UPDATE `".SPONSOR_MASTER."` SET `status`='".$status."' WHERE `id`='".$id."'";
+				$res = $this->re_db_query($q);
+				if($res){
+				    $_SESSION['success'] = STATUS_MESSAGE;
+					return true;
+				}
+				else{
+				    $_SESSION['warning'] = UNKWON_ERROR;
+					return false;
+				}
+			}
+			else{
+			     $_SESSION['warning'] = UNKWON_ERROR;
+				return false;
+			}
+		}
+		
 		
 		/**
 		 * @param id of record
 		 * @return true if success, false message if any errors
 		 * */
-		public function delete($id){
+		public function product_delete($id){
 			$id = trim($this->re_db_input($id));
 			if($id>0 && ($status==0 || $status==1) ){
 				$q = "UPDATE `".$this->table."` SET `is_delete`='1' WHERE `id`='".$id."'";
+				$res = $this->re_db_query($q);
+				if($res){
+				    $_SESSION['success'] = DELETE_MESSAGE;
+					return true;
+				}
+				else{
+				    $_SESSION['warning'] = UNKWON_ERROR;
+					return false;
+				}
+			}
+			else{
+			     $_SESSION['warning'] = UNKWON_ERROR;
+				return false;
+			}
+		}
+        public function sponsor_delete($id){
+			$id = trim($this->re_db_input($id));
+			if($id>0 && ($status==0 || $status==1) ){
+				$q = "UPDATE `".SPONSOR_MASTER."` SET `is_delete`='1' WHERE `id`='".$id."'";
 				$res = $this->re_db_query($q);
 				if($res){
 				    $_SESSION['success'] = DELETE_MESSAGE;

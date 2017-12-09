@@ -103,7 +103,7 @@
               <li>
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Administration <i class="fa fa-user-plus"></i></a>
                 <ul class="dropdown-menu">
-				  <li><a href="#">Mulit-Company Maintenance</a></li>
+				  <li><a href="<?php echo SITE_URL; ?>manage_multicompany.php">Mulit-Company Maintenance</a></li>
 				  <li><a href="#">Branch Maintenance</a></li>
 				  <li><a href="<?php echo SITE_URL; ?>manage_broker.php">Broker Maintenance</a></li>
                   <li><a href="product_cate.php">Product Maintenance</a></li>

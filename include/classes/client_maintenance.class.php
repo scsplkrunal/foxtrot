@@ -20,39 +20,23 @@
             $telephone = str_replace(")", '', $telephone_brack1);
             $contact_status = isset($data['contact_status'])?$this->re_db_input($data['contact_status']):'';
             
-            $client_file = isset($_FILES['client_file'])?$_FILES['client_file']:array();//print_r($client_file);exit;
+            $client_file_number = isset($_POST['client_file'])?$_POST['client_file']:'';//print_r($client_file);exit;
             $valid_file = array('xls','pdf','zip','txt');
 			
-			if($fname==''){
-				$this->errors = 'Please enter first name.';
-			}
-            else if($lname==''){
+			if($lname==''){
 				$this->errors = 'Please enter last name.';
 			}
-            else if($account_type==''){
-				$this->errors = 'Please select account type.';
-			}
             else if($broker_name==''){
-				$this->errors = 'Please enter broker name.';
+				$this->errors = 'Please select broker name.';
 			}
-            else if($telephone==''){
-				$this->errors = 'Please enter telephone.';
-			}
-            else if(is_numeric($telephone) == false){
-                $this->errors = 'Please enter telephone number numeric.';
-            }
-            else if($contact_status==''){
-				$this->errors = 'Please select contact status.';
-			}
-			
-			else if($client_file['tmp_name']=='' && $id==0){
-				$this->errors = 'Please select client file.';
+            else if($client_file_number==''){
+				$this->errors = 'Please enter client file number.';
 			}
 			if($this->errors!=''){
 				return $this->errors;
 			}
             
-            $file_image = '';  
+            /*$file_image = '';  
             
             $file_name = isset($client_file['name'])?$client_file['name']:'';
             $tmp_name = isset($client_file['tmp_name'])?$client_file['tmp_name']:'';
@@ -77,7 +61,7 @@
             }
             if($this->errors!=''){
 				return $this->errors;
-			}
+			}*/
 			else{
 				
 				/* check duplicate record */
@@ -97,7 +81,7 @@
 				}
 				else if($id>=0){
 					if($id==0){
-						$q = "INSERT INTO `".$this->table."` SET `first_name`='".$fname."',`last_name`='".$lname."',`client_file`='".$file_image."',`account_type`='".$account_type."',`broker_name`='".$broker_name."',`telephone`='".$telephone."',`contact_status`='".$contact_status."'".$this->insert_common_sql();
+						$q = "INSERT INTO `".$this->table."` SET `first_name`='".$fname."',`last_name`='".$lname."',`client_file`='".$client_file_number."',`account_type`='".$account_type."',`broker_name`='".$broker_name."',`telephone`='".$telephone."',`contact_status`='".$contact_status."'".$this->insert_common_sql();
 						$res = $this->re_db_query($q);
                         $id = $this->re_db_insert_id();
 						if($res){
@@ -111,8 +95,8 @@
 					}
 					else if($id>0){
 					    $con = '';
-						if($file_image!=''){
-							$con .= " , `client_file`='".$file_image."' ";
+						if($client_file_number!=''){
+							$con .= " , `client_file`='".$client_file_number."' ";
 						}
 						$q = "UPDATE `".$this->table."` SET `first_name`='".$fname."',`last_name`='".$lname."',`account_type`='".$account_type."',`broker_name`='".$broker_name."',`telephone`='".$telephone."',`contact_status`='".$contact_status."' ".$con." ".$this->update_common_sql()." WHERE `id`='".$id."'";
 						$res = $this->re_db_query($q);

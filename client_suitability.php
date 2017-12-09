@@ -3,12 +3,42 @@
     
     $error = '';
     $type = '';
-    $action = isset($_GET['action'])&&$_GET['action']!=''?$dbins->re_db_input($_GET['action']):'view_income';
+    $action = isset($_GET['action'])&&$_GET['action']!=''?$dbins->re_db_input($_GET['action']):'view_objective';
     
     $id = isset($_GET['id'])&&$_GET['id']!=''?$dbins->re_db_input($_GET['id']):0;
     
     $instance = new client_suitebility_master();
     
+    if(isset($_POST['submit_objective'])&& $_POST['submit_objective']=='Save'){
+        	 
+        $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
+        $option = isset($_POST['option'])?$instance->re_db_input($_POST['option']):''; 
+        $return = $instance->insert_update_objective($_POST);       
+        if($return===true){
+            header("location:".CURRENT_PAGE."?action=view_objective");exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+    }
+    else if($action=='edit_objective' && $id>0){
+        $return = $instance->edit_objective($id);
+        $option = $instance->re_db_output($return['option']);        
+    } 
+    else if(isset($_GET['action'])&&$_GET['action']=='delete_objective'&&isset($_GET['id'])&&$_GET['id']>0)
+    {
+        $id = $instance->re_db_input($_GET['id']);
+        $return = $instance->delete_objective($id);
+        if($return==true){
+            header('location:'.CURRENT_PAGE.'?action=view_objective');exit;
+        }
+        else{
+            header('location:'.CURRENT_PAGE);exit;
+        }
+    }
+    else if($action=='view_objective'){    
+        $return_objective = $instance->select_objective();
+    }
     if(isset($_POST['submit_income'])&& $_POST['submit_income']=='Save'){
         	 
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;

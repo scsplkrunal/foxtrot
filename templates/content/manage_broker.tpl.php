@@ -91,9 +91,10 @@ var waitingDialog = waitingDialog || (function ($) {
 </script>
 <div class="container">
 <h1>Broker Maintenance</h1>
+<?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
     <div class="col-lg-12 well">
         <?php if($action!='view'){?>
-        <ul class="nav nav-pills nav-stacked col-md-2">
+        <ul class="nav nav-tabs">
           <!--<li class="active"><a href="#tab_default" data-toggle="pill">Home</a></li>-->
           <li class="<?php if($action=="general"){ echo "active"; } ?>"><a href="<?php echo CURRENT_PAGE; ?>#tab_a" data-toggle="pill">General</a></li>
           <li class=""><a href="<?php echo CURRENT_PAGE; ?>#tab_b" data-toggle="pill">Payouts</a></li>
@@ -102,10 +103,9 @@ var waitingDialog = waitingDialog || (function ($) {
           <li><a href="<?php echo CURRENT_PAGE; ?>#tab_e" data-toggle="pill">Registers</a></li>
           <li><a href="<?php echo CURRENT_PAGE; ?>#tab_f" data-toggle="pill">Required Docs</a></li>
        </ul>
-       <div class="tab-content col-md-10">
+       <div class="tab-content col-md-12">
        <?php } ?>
                 <div class="tab-pane <?php if(isset($action) && ($action=="general"||$action=="charges")){ echo ""; }else{echo "active";} ?>" id="tab_default">
-                    <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
                     <?php
                     if($action=='add_new'||($action=='edit' && $id>0)){
                         ?>
@@ -705,10 +705,10 @@ var waitingDialog = waitingDialog || (function ($) {
         								<a href="<?php echo CURRENT_PAGE;?> "><i class="fa fa-mail-forward"></i></a>
         							</div>
         						</div>
-                                <ul class="nav nav-tabs">
-                                    <li class="active"><a href="#">Payouts</a></li>
-                                    <li><a href="#">Overrides</a></li>
-                                    <li><a href="#">Splits</a></li>
+                                <ul class=" nav nav-pills nav-stacked col-md-2">
+                                    <li class="active"><a href="#" data-toggle="pill">Payouts</a></li>
+                                    <li><a href="#" data-toggle="pill">Overrides</a></li>
+                                    <li><a href="#" data-toggle="pill">Splits</a></li>
                                 </ul>
                                 <div class="panel-body">
                                     <div class="row">

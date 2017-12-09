@@ -29,4 +29,5 @@
     define('PROTFOLIO_MASTER','ft_portfolio_master');
     define('TIME_FOR_SPECIAL_EXP_MASTER','ft_time_for_exp_master');
     define('ACCOUNT_USE_MASTER','ft_account_use_master');
+    define('OBJECTIVE_MASTER','ft_objective_master');
 ?>

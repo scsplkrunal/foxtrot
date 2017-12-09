@@ -82,13 +82,14 @@ $(document).on('click','.remove-row',function(){
                         <form method="post" enctype="multipart/form-data" name="list_broker" id="list_broker">
                             <ul class="nav nav-tabs ">
                               <li class="active"><a href="#tab_aa" data-toggle="tab">Primary</a></li>
+                              <li><a href="#tab_dd" data-toggle="tab">Account No's</a></li>
                               <li><a href="#tab_bb" data-toggle="tab">Employment</a></li>
-                              <li><a href="#tab_cc" data-toggle="tab">Objectives</a></li>
-                              <li><a href="#tab_dd" data-toggle="tab">Account No</a></li>
-                              <li><a href="#tab_ee" data-toggle="tab">Documents</a></li>
                               <li><a href="#tab_ff" data-toggle="tab">Suitability</a></li>
+                              <li><a href="#tab_cc" data-toggle="tab">Objectives</a></li>
+                               
+                              <!--<li><a href="#tab_ee" data-toggle="tab">Documents</a></li>-->
                               
-    							<div class="btn-group dropdown" style="float: right;">
+                                <div class="btn-group dropdown" style="float: right;">
     								<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
     								<ul class="dropdown-menu dropdown-menu-right" style="">
     									<li><a href="<?php echo CURRENT_PAGE; ?>"><i class="fa fa-eye"></i> View List</a></li>
@@ -99,6 +100,16 @@ $(document).on('click','.remove-row',function(){
                             
                             <!-- Tab 1 is started -->
                             <div class="tab-content">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group"><br />
+                                            <a href="#client_previous" class="col-md-5"><input type="button" name="previous" value="Previous" /></a>
+                                            <a href="#client_save" class="col-md-6" ><input type="button" name="save" value="save" /></a>
+                                            <a href="#joint_next" style="float: right;" class="col-md-1"><input type="button" name="joint_next" value="Next" /></a>
+                                        </div>
+                                     </div>
+                                 </div>
+                                
                                 <div class="tab-pane active" id="tab_aa">
                                     <div class="panel-overlay-wrap">
                                             <div class="panel">
@@ -107,6 +118,28 @@ $(document).on('click','.remove-row',function(){
                                                     
                                                </div>
                                             <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>OFAC Check </label>
+                                                        <div id="demo-dp-range">
+                                                            <div class="input-daterange input-group" id="datepicker">
+                                                                <input type="text" name="ofak_check" disabled="true" id="ofak_check" class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            	<div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>FinCEN Check </label>
+                                                        <div id="demo-dp-range">
+                                                            <div class="input-daterange input-group" id="datepicker">
+                                                                <input type="text" name="fincen_check" disabled="true" id="fincen_check" class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <div class="form-group">
@@ -128,10 +161,18 @@ $(document).on('click','.remove-row',function(){
                                                 </div>
                                             </div>
                                             <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label>Long Name / Registration </label>
+                                                        <textarea name="long_name" id="long_name" class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>Client's File </label><br />
-                                                        <input type="text" name="client_file_maintain" id="client_file_maintain" maxlength="12" class="form-control" />
+                                                        <label>Client File Number </label><br />
+                                                        <input type="text" name="client_file" id="client_file" maxlength="12" class="form-control" />
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -172,7 +213,7 @@ $(document).on('click','.remove-row',function(){
                                                     <div class="form-group">
                                                         <label>Broker <span class="text-red">*</span>
                                                         </label>
-                                                        <select name="broker" id="broker" class="form-control">
+                                                        <select name="broker_name" id="broker_name" class="form-control">
                                                             <option value="0">Select Broker</option>
                                                             <option value="1">broker1</option>
                                                             <option value="2">broker2</option>
@@ -193,8 +234,8 @@ $(document).on('click','.remove-row',function(){
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label><span class="text-red"></span></label>
-                                                        <input type="number" name="spinner" id="spinner" class="form-control"  />
+                                                        <label>Split Rate<span class="text-red"></span></label>
+                                                        <input type="number" onblur="changeHandler(this.value);" name="spinner" id="split_rate" placeholder='00.0' class="form-control"  />
                                                     </div>
                                                 </div>
                                             </div>
@@ -254,14 +295,6 @@ $(document).on('click','.remove-row',function(){
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>Long Name </label>
-                                                        <textarea name="long_name" id="long_name" class="form-control"></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                            	<div class="col-md-6">
-                                                    <div class="form-group">
                                                         <label>Contact Status </label>
                                                         <select name="contact_status" id="contact_status" class="form-control">
                                                             <option value="0">Select Status</option>
@@ -270,17 +303,7 @@ $(document).on('click','.remove-row',function(){
                                                         </select>
                                                     </div>
                                                 </div>
-                                               <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Date Established </label>
-                                                        <div id="demo-dp-range">
-                                                            <div class="input-daterange input-group" id="datepicker">
-                                                                <input type="text" name="date_established" id="date_established" disabled="true" value="<?php echo date("m/d/Y"); ?>" class="form-control" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div> 
+                                            </div>
                                             <div class="row">
                                             	<div class="col-md-6">
                                                     <div class="form-group">
@@ -295,11 +318,21 @@ $(document).on('click','.remove-row',function(){
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Age </label>
-                                                        <input type="text" name="age" id="age" class="form-control"/>
+                                                        <input type="text" name="age" disabled="true" id="age" class="form-control"/>
                                                     </div>
                                                 </div>
                                             </div> 
                                             <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Date Established </label>
+                                                        <div id="demo-dp-range">
+                                                            <div class="input-daterange input-group" id="datepicker">
+                                                                <input type="text" name="date_established" id="date_established" disabled="true" value="<?php echo date("m/d/Y"); ?>" class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Open Date </label>
@@ -310,7 +343,10 @@ $(document).on('click','.remove-row',function(){
                                                         </div>
                                                     </div>
                                                 </div>
-                                            	<div class="col-md-6">
+                                            </div> 
+                                            
+                                            <div class="row">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>NAF Date </label>
                                                         <div id="demo-dp-range">
@@ -320,9 +356,7 @@ $(document).on('click','.remove-row',function(){
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                            	 <div class="col-md-6">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Last Contacted </label>
                                                         <div id="demo-dp-range">
@@ -333,29 +367,7 @@ $(document).on('click','.remove-row',function(){
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>OFAC Check </label>
-                                                        <div id="demo-dp-range">
-                                                            <div class="input-daterange input-group" id="datepicker">
-                                                                <input type="text" name="ofak_check" disabled="true" id="ofak_check" class="form-control" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            	<div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>FinCEN Check </label>
-                                                        <div id="demo-dp-range">
-                                                            <div class="input-daterange input-group" id="datepicker">
-                                                                <input type="text" name="fincen_check" disabled="true" id="fincen_check" class="form-control" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
+                                            
                                             </div>
                                             <div class="panel-overlay">
                                                 <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
@@ -377,7 +389,8 @@ $(document).on('click','.remove-row',function(){
                                         <div class="panel-overlay-wrap">
                                             <div class="panel">
                                                <div class="panel-heading">
-                                                    <h4 class="panel-title" style="font-size: 20px;">Client Marcus</h4>
+                                                    <h4 class="panel-title" style="font-size: 20px;">
+                                                    <?php echo $fname." ".$mi.". ".$lname;?></h4>
                                                </div>
                                             <div class="panel-body">
                                             <div class="row">
@@ -551,20 +564,25 @@ $(document).on('click','.remove-row',function(){
                                         <div class="panel-overlay-wrap">
                                             <div class="panel">
                                                <div class="panel-heading">
-                                                    <h4 class="panel-title" style="font-size: 20px;">Client Marcus</h4>
+                                                    <h4 class="panel-title" style="font-size: 20px;"><?php echo $fname." ".$mi.". ".$lname;?></h4>
                                                </div>
                                             <div class="panel-body">
                                             <div class="row" id="account_no_row">
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label>Account No </label><br />
+                                                        <label>Account No's </label><br />
                                                         <input type="text" name="account_no" id="account_no" class="form-control" />
                                                     </div>
                                                 </div>
                                             	<div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label>Company </label><br />
-                                                        <input type="text" name="company" id="company" class="form-control" />
+                                                        <label>Sponsor Company </label><br />
+                                                        <select class="form-control" name="sponsor">
+                                                            <option value="">Select Sponsor</option>
+                                                             <?php foreach($get_sponsor as $key=>$val){?>
+                                                            <option value="<?php echo $val['id'];?>" <?php if($sponsor_company != '' && $sponsor_company==$val['id']){echo "selected='selected'";} ?>><?php echo $val['name'];?></option>
+                                                            <?php } ?>
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-2">
@@ -589,7 +607,7 @@ $(document).on('click','.remove-row',function(){
                                     </div>
                                
                                 </div>
-                                <div class="tab-pane" id="tab_ee">
+                                <!--<div class="tab-pane" id="tab_ee">
                                     
                                         <div class="panel-overlay-wrap">
                                             <div class="panel">
@@ -622,22 +640,22 @@ $(document).on('click','.remove-row',function(){
                                                 <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
                                             </div>
                                             <!--div class="panel-footer">
-                                                <div class="selectwrap">
+                                               <!-- <div class="selectwrap">
                                                     <input type="hidden" name="id" id="id" value="" />
                                 					<input type="submit" name="submit" value="Save"/>	
                                                     <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                                                 </div>
                                            </div-->
-                                        </div>
+                                        <!--</div>
                                     </div>
                               
-                                </div>
+                                </div>-->
                                 <div class="tab-pane" id="tab_ff">
                                     
                                         <div class="panel-overlay-wrap">
                                             <div class="panel">
                                                <div class="panel-heading">
-                                                    <h4 class="panel-title" style="font-size: 20px;">Client Marcus</h4>
+                                                    <h4 class="panel-title" style="font-size: 20px;"><?php echo $fname." ".$mi.". ".$lname;?></h4>
                                                </div>
                                             <div class="panel-body">
                                             <div class="row">
@@ -645,7 +663,10 @@ $(document).on('click','.remove-row',function(){
                                                     <div class="form-group">
                                                         <label>Income </label>
                                                         <select name="income" id="income" class="form-control">
-                                                            <option value="0">Select Income</option>
+                                                            <option value="">Select Income</option>
+                                                            <?php foreach($get_income as $key=>$val){?>
+                                                            <option value="<?php echo $val['id'];?>" ><?php echo $val['option'];?></option>
+                                                            <?php } ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -653,7 +674,10 @@ $(document).on('click','.remove-row',function(){
                                                     <div class="form-group">
                                                         <label>Goal Horizon </label>
                                                         <select name="goal_horizone" id="goal_horizone" class="form-control">
-                                                            <option value="0">Select Goal Horizon</option>
+                                                            <option value="">Select Goal Horizon</option>
+                                                            <?php foreach($get_horizon as $key=>$val){?>
+                                                            <option value="<?php echo $val['id'];?>" ><?php echo $val['option'];?></option>
+                                                            <?php } ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -663,7 +687,10 @@ $(document).on('click','.remove-row',function(){
                                                     <div class="form-group">
                                                         <label>Net Worth </label>
                                                         <select name="net_worth" id="net_worth" class="form-control">
-                                                            <option value="0">Select Net Worth</option>
+                                                            <option value="">Select Net Worth</option>
+                                                            <?php foreach($get_networth as $key=>$val){?>
+                                                            <option value="<?php echo $val['id'];?>" ><?php echo $val['option'];?></option>
+                                                            <?php } ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -671,7 +698,10 @@ $(document).on('click','.remove-row',function(){
                                                     <div class="form-group">
                                                         <label>Risk Tolerance </label>
                                                         <select name="risk_tolerance" id="risk_tolerance" class="form-control">
-                                                            <option value="0">Select Risk Tolerance</option>
+                                                            <option value="">Select Risk Tolerance</option>
+                                                            <?php foreach($get_risk_tolerance as $key=>$val){?>
+                                                            <option value="<?php echo $val['id'];?>" ><?php echo $val['option'];?></option>
+                                                            <?php } ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -681,7 +711,10 @@ $(document).on('click','.remove-row',function(){
                                                     <div class="form-group">
                                                         <label>Annual Expenses </label>
                                                         <select name="annual_expenses" id="annual_expenses" class="form-control">
-                                                            <option value="0">Select Annual Expenses</option>
+                                                            <option value="">Select Annual Expenses</option>
+                                                            <?php foreach($get_annual_expenses as $key=>$val){?>
+                                                            <option value="<?php echo $val['id'];?>" ><?php echo $val['option'];?></option>
+                                                            <?php } ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -689,7 +722,10 @@ $(document).on('click','.remove-row',function(){
                                                     <div class="form-group">
                                                         <label>Liquidity Needs </label>
                                                         <select name="liquidity_needs" id="liquidity_needs" class="form-control">
-                                                            <option value="0">Select Liquidity Needs</option>
+                                                            <option value="">Select Liquidity Needs</option>
+                                                            <?php foreach($get_liqudity_needs as $key=>$val){?>
+                                                            <option value="<?php echo $val['id'];?>" ><?php echo $val['option'];?></option>
+                                                            <?php } ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -699,7 +735,10 @@ $(document).on('click','.remove-row',function(){
                                                     <div class="form-group">
                                                         <label>Liquid Net Worth </label>
                                                         <select name="liquid_net_worth" id="liquid_net_worth" class="form-control">
-                                                            <option value="0">Select Liquid Net Worth</option>
+                                                            <option value="">Select Liquid Net Worth</option>
+                                                            <?php foreach($get_liquid_net_worth as $key=>$val){?>
+                                                            <option value="<?php echo $val['id'];?>" ><?php echo $val['option'];?></option>
+                                                            <?php } ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -707,7 +746,10 @@ $(document).on('click','.remove-row',function(){
                                                     <div class="form-group">
                                                         <label>Special Expenses </label>
                                                         <select name="special_expenses" id="special_expenses" class="form-control">
-                                                            <option value="0">Select Special Expenses</option>
+                                                            <option value="">Select Special Expenses</option>
+                                                            <?php foreach($get_special_expenses as $key=>$val){?>
+                                                            <option value="<?php echo $val['id'];?>" ><?php echo $val['option'];?></option>
+                                                            <?php } ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -717,7 +759,10 @@ $(document).on('click','.remove-row',function(){
                                                     <div class="form-group">
                                                         <label>% of Portfolio </label>
                                                         <select name="per_of_portfolio" id="per_of_portfolio" class="form-control">
-                                                            <option value="0">Select % of Portfolio</option>
+                                                            <option value="">Select % of Portfolio</option>
+                                                            <?php foreach($get_portfolio as $key=>$val){?>
+                                                            <option value="<?php echo $val['id'];?>" ><?php echo $val['option'];?></option>
+                                                            <?php } ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -725,7 +770,10 @@ $(document).on('click','.remove-row',function(){
                                                     <div class="form-group">
                                                         <label>Timeframe for Special Exp </label>
                                                         <select name="timeframe_for_special_exp" id="timeframe_for_special_exp" class="form-control">
-                                                            <option value="0">Select Timeframe for Special Exp</option>
+                                                            <option value="">Select Timeframe for Special Exp</option>
+                                                            <?php foreach($get_time_for_exp as $key=>$val){?>
+                                                            <option value="<?php echo $val['id'];?>" ><?php echo $val['option'];?></option>
+                                                            <?php } ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -735,7 +783,10 @@ $(document).on('click','.remove-row',function(){
                                                     <div class="form-group">
                                                         <label>Account Use </label>
                                                         <select name="account_use" id="account_use" class="form-control">
-                                                            <option value="0">Select Account Use</option>
+                                                            <option value="">Select Account Use</option>
+                                                            <?php foreach($get_account_use as $key=>$val){?>
+                                                            <option value="<?php echo $val['id'];?>" ><?php echo $val['option'];?></option>
+                                                            <?php } ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -785,13 +836,13 @@ $(document).on('click','.remove-row',function(){
                                             <div class="panel-overlay">
                                                 <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
                                             </div>
-                                            <div class="panel-footer">
+                                            <!--<div class="panel-footer">
                                                 <div class="selectwrap">
                                                     <input type="hidden" name="id" id="id" value="" />
                                 					<input type="submit" onclick="waitingDialog.show();" name="submit" value="Save"/>	
                                                     <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                                                 </div>
-                                           </div>
+                                           </div>-->
                                         </div>
                                     </div>
                                 
@@ -1295,10 +1346,7 @@ function getAge(dateString)
 </style>
 <script>
   function changeHandler(val)
-  {
-    if (Number(val.value) > 100)
-    {
-      val.value = 100
-    }
+  {alert(parseFloat(val.toFixed(2)));
+    document.getElementById("split_rate").value = val.toFixed(2)
   }
 </script>

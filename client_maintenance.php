@@ -6,6 +6,7 @@
     $action = isset($_GET['action'])&&$_GET['action']!=''?$dbins->re_db_input($_GET['action']):'view';
     $id = isset($_GET['id'])&&$_GET['id']!=''?$dbins->re_db_input($_GET['id']):0;
     $fname = '';
+    $mi = '';
     $lname = '';
     $client_file = '';
     $account_type = '';
@@ -14,10 +15,26 @@
     $contact_status = '';
     $search_text = '';
     
+    $sponsor_company = '';
+    
     $instance = new client_maintenance();
     $instance_account_type = new account_master();
     $get_account_type = $instance_account_type->select_account_type();
     $get_state = $instance->select_state();
+    $instance_product = new product_maintenance();
+    $get_sponsor = $instance_product->select_sponsor();
+    $instance_client_suitability = new client_suitebility_master();
+    $get_income = $instance_client_suitability->select_income();
+    $get_horizon = $instance_client_suitability->select_horizon();
+    $get_networth = $instance_client_suitability->select_networth();
+    $get_risk_tolerance = $instance_client_suitability->select_risk_tolerance();
+    $get_annual_expenses = $instance_client_suitability->select_annual_expenses();
+    $get_liqudity_needs = $instance_client_suitability->select_liqudity_needs();
+    $get_liquid_net_worth = $instance_client_suitability->select_liquid_net_worth();
+    $get_special_expenses = $instance_client_suitability->select_special_expenses();
+    $get_portfolio = $instance_client_suitability->select_portfolio();
+    $get_time_for_exp = $instance_client_suitability->select_time_for_exp();
+    $get_account_use = $instance_client_suitability->select_account_use();
     
     if(isset($_POST['submit'])&& $_POST['submit']=='Save'){
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
@@ -28,7 +45,7 @@
         $broker_name = isset($_POST['broker_name'])?$instance->re_db_input($_POST['broker_name']):'';
         $telephone = isset($_POST['telephone'])?$instance->re_db_input($_POST['telephone']):'';
         $contact_status = isset($_POST['contact_status'])?$instance->re_db_input($_POST['contact_status']):'';//print_r($_POST);exit;
-        $return = $instance->insert_update($_POST);
+        $return = '';//$instance->insert_update($_POST);
         
         if($return===true){
             header("location:".CURRENT_PAGE);exit;
