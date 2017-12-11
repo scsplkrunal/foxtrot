@@ -10,13 +10,45 @@
     $get_state  = $instance->select_state();
     $get_product  = $instance->select_product_category();
     if(isset($_POST['submit'])&& $_POST['submit']=='Save'){
+        
         echo '<pre>';print_r($_POST);exit;
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
-        $type = isset($_POST['type'])?$instance->re_db_input($_POST['type']):'';
+        $company_name = isset($_POST['company_name'])?$instance->re_db_input($_POST['company_name']):'';
+        $address1 = isset($_POST['address1'])?$instance->re_db_input($_POST['address1']):'';
+        $address2 = isset($_POST['address2'])?$instance->re_db_input($_POST['address2']):'';
+        $business_city = isset($_POST['business_city'])?$instance->re_db_input($_POST['business_city']):'';
+        $state_general = isset($_POST['state_general'])?$instance->re_db_input($_POST['state_general']):'';
+        $zip = isset($_POST['zip'])?$instance->re_db_input($_POST['zip']):'';
+        $mail_address1 = isset($_POST['mail_address1'])?$instance->re_db_input($_POST['mail_address1']):'';
+        $mail_address2 = isset($_POST['mail_address2'])?$instance->re_db_input($_POST['mail_address2']):'';
+        $m_city = isset($_POST['m_city'])?$instance->re_db_input($_POST['m_city']):'';
+        $m_zip = isset($_POST['m_zip'])?$instance->re_db_input($_POST['m_zip']):'';
+        $telephone = isset($_POST['telephone'])?$instance->re_db_input($_POST['telephone']):'';
+        $facsimile = isset($_POST['facsimile'])?$instance->re_db_input($_POST['facsimile']):'';
+        $e_date = isset($_POST['e_date'])?$instance->re_db_input($_POST['e_date']):'';
+        $i_date = isset($_POST['i_date'])?$instance->re_db_input($_POST['i_date']):'';
+        $payout_level = isset($_POST['payout_level'])?$instance->re_db_input($_POST['payout_level']):'';
+        $clearing_charge_calculation = isset($_POST['clearing_charge_calculation'])?$instance->re_db_input($_POST['clearing_charge_calculation']):'';
+        $sliding_scale_commision = isset($_POST['sliding_scale_commision'])?$instance->re_db_input($_POST['sliding_scale_commision']):'';
+        $p_rate = isset($_POST['p_rate'])?$instance->re_db_input($_POST['p_rate']):'';
+        $threshold1 = isset($_POST['threshold1'])?$instance->re_db_input($_POST['threshold1']):'';
+        $l1_rate = isset($_POST['l1_rate'])?$instance->re_db_input($_POST['l1_rate']):'';
+        $threshold2 = isset($_POST['threshold2'])?$instance->re_db_input($_POST['threshold2']):'';
+        $l2_rate = isset($_POST['l2_rate'])?$instance->re_db_input($_POST['l2_rate']):'';
+        $threshold3 = isset($_POST['threshold3'])?$instance->re_db_input($_POST['threshold3']):'';
+        $l3_rate = isset($_POST['l3_rate'])?$instance->re_db_input($_POST['l3_rate']):'';
+        $threshold4 = isset($_POST['threshold4'])?$instance->re_db_input($_POST['threshold4']):'';
+        $l4_rate = isset($_POST['l4_rate'])?$instance->re_db_input($_POST['l4_rate']):'';
+        $threshold5 = isset($_POST['threshold5'])?$instance->re_db_input($_POST['threshold5']):'';
+        $l5_rate = isset($_POST['l5_rate'])?$instance->re_db_input($_POST['l5_rate']):'';
+        $threshold6 = isset($_POST['threshold6'])?$instance->re_db_input($_POST['threshold6']):'';
+        $l6_rate = isset($_POST['l6_rate'])?$instance->re_db_input($_POST['l6_rate']):'';
+        $state[] = isset($_POST['state[]'])?$instance->re_db_input($_POST['state[]']):'';
+        $foreign = isset($_POST['foreign'])?$instance->re_db_input($_POST['foreign']):'';
         $return = $instance->insert_update($_POST);
         
         if($return===true){
-            header("location:".CURRENT_PAGE);exit;
+            header("location:".CURRENT_PAGE);
         }
         else{
             $error = !isset($_SESSION['warning'])?$return:'';
@@ -24,8 +56,38 @@
     }
     else if($action=='edit' && $id>0){
         $return = $instance->edit($id);
-        $type = $instance->re_db_output($return['type']);
-        
+        $company_name = $instance->re_db_output($return['company_name']);
+        $address1 = $instance->re_db_output($return['address1']);
+        $address2 = $instance->re_db_output($return['address2']);
+        $business_city = $instance->re_db_output($return['business_city']);
+        $state_general = $instance->re_db_output($return['state_general']);
+        $zip = $instance->re_db_output($return['zip']);
+        $mail_address1 = $instance->re_db_output($return['mail_address1']);
+        $mail_address2 = $instance->re_db_output($return['mail_address2']);
+        $m_city = $instance->re_db_output($return['m_city']);
+        $m_zip = $instance->re_db_output($return['m_zip']);
+        $telephone = $instance->re_db_output($return['telephone']);
+        $facsimile = $instance->re_db_output($return['facsimile']);
+        $e_date = $instance->re_db_output($return['e_date']);
+        $i_date = $instance->re_db_output($return['i_date']);
+        $payout_level = $instance->re_db_output($return['payout_level']);
+        $clearing_charge_calculation = $instance->re_db_output($return['clearing_charge_calculation']);
+        $sliding_scale_commision = $instance->re_db_output($return['sliding_scale_commision']);
+        $p_rate = $instance->re_db_output($return['p_rate']);
+        $threshold1 = $instance->re_db_output($return['threshold1']);
+        $l1_rate = $instance->re_db_output($return['l1_rate']);
+        $threshold2 = $instance->re_db_output($return['threshold2']);
+        $l2_rate = $instance->re_db_output($return['l2_rate']);
+        $threshold3 = $instance->re_db_output($return['threshold3']);
+        $l3_rate = $instance->re_db_output($return['l3_rate']);
+        $threshold4 = $instance->re_db_output($return['threshold4']);
+        $l4_rate = $instance->re_db_output($return['l4_rate']);
+        $threshold5 = $instance->re_db_output($return['threshold5']);
+        $l5_rate = $instance->re_db_output($return['l5_rate']);
+        $threshold6 = $instance->re_db_output($return['threshold6']);
+        $l6_rate = $instance->re_db_output($return['l6_rate']);
+        $state = $instance->re_db_output($return['state']);
+        $foreign = $instance->re_db_output($return['foreign']);
     }
     else if(isset($_GET['action'])&&$_GET['action']=='status'&&isset($_GET['id'])&&$_GET['id']>0&&isset($_GET['status'])&&($_GET['status']==0 || $_GET['status']==1))
     {

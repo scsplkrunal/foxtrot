@@ -29,7 +29,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Company/Practice Name <span class="text-red">*</span></label>
-                                <input type="text" name="company name" id="company name" value="<?php //echo $company_name; ?>" class="form-control" />
+                                <input type="text" name="company_name" id="company_name" value="<?php //echo $company_name; ?>"  class="form-control" />
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -330,7 +330,7 @@
                     
                 </div>
             </div>                
-        </form>
+        </form> 
         </div>
         </div>
         <?php

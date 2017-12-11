@@ -102,14 +102,24 @@ $(document).on('click','.remove-row',function(){
                             <div class="tab-content">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div class="form-group"><br />
+                                        <div class="form-group"><br /><div class="selectwrap">
                                             <a href="#client_previous" class="col-md-5"><input type="button" name="previous" value="Previous" /></a>
                                             <a href="#client_save" class="col-md-6" ><input type="button" name="save" value="save" /></a>
                                             <a href="#joint_next" style="float: right;" class="col-md-1"><input type="button" name="joint_next" value="Next" /></a>
                                         </div>
+                                     </div></div>
+                                 </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label></label><br />
+                                            <a href="#client_notes" data-toggle="modal" class="col-md-3"><input type="button" name="notes" value="Notes" /></a>
+                                            <a href="#client_transactions" data-toggle="modal" class="col-md-4"><input type="button" name="transactions" value="Transactions" /></a>
+                                            <a href="#joint_account" data-toggle="modal" class="col-md-3"><input type="button" name="joint_account" value="Joint Account" /></a>
+                                            <a href="#client_attachment" data-toggle="modal" style="float: right;" class="col-md-1"><input type="button" name="attach" value="Attach" /></a><br />
+                                        </div>
                                      </div>
                                  </div>
-                                
                                 <div class="tab-pane active" id="tab_aa">
                                     <div class="panel-overlay-wrap">
                                             <div class="panel">
@@ -235,7 +245,7 @@ $(document).on('click','.remove-row',function(){
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Split Rate<span class="text-red"></span></label>
-                                                        <input type="number" onblur="changeHandler(this.value);" name="spinner" id="split_rate" placeholder='00.0' class="form-control"  />
+                                                        <input type="number" onblur="changeHandler(this.value);" max="100" min="0" name="spinner" id="split_rate" placeholder='00.0' class="currency1 form-control "  />
                                                     </div>
                                                 </div>
                                             </div>
@@ -847,6 +857,16 @@ $(document).on('click','.remove-row',function(){
                                     </div>
                                 
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group"><br /><div class="selectwrap">
+                                            <a href="#client_previous" class="col-md-5"><input type="button" name="previous" value="Previous" /></a>
+                                            <a href="#client_save" class="col-md-6" ><input type="button" name="save" value="save" /></a>
+                                            <a href="#joint_next" style="float: right;" class="col-md-1"><input type="button" name="joint_next" value="Next" /></a>
+                                        </div>
+                                     </div></div>
+                                 </div>
+                                 
                             </div>
                         </form>
                         <?php
@@ -1326,6 +1346,28 @@ function getAge(dateString)
     }
     document.getElementById("age").value=age;
 }
+(function($) {
+        $.fn.currencyFormat1 = function() {
+            this.each( function( i ) {
+                $(this).change( function( e ){
+                    if( isNaN( parseFloat( this.value ) ) ) return;
+                    this.value = parseFloat(this.value).toFixed(2);
+
+                });
+                $(this).change( function( e ){
+                    if(  this.value  < 101 ) return;
+                    this.value = 100.00;
+                    this.value = parseFloat(this.value).toFixed(1);
+                });
+            });
+            return this; //for chaining
+        }
+    })( jQuery );
+
+  
+    $( function() {
+        $('.currency1').currencyFormat1();
+    });
 </script>
 <style>
 .validation
