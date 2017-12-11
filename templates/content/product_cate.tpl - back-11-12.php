@@ -49,36 +49,9 @@ $(document).on('click','.remove-row',function(){
       <li <?php if((isset($_GET['action'])&& $_GET['action']=='add_sponsor')||(isset($_GET['action'])&& $_GET['action']=='edit_sponsor') || (isset($_GET['action'])&& $_GET['action']=='view_sponsor') ){ ?> class="active"<?php }?>><a href="<?php echo CURRENT_PAGE; ?>?action=view_sponsor">Sponsors</a></li>
     </ul>
     <div class="tab-content col-md-10">
-            <div class="tab-pane <?php if((isset($_GET['action'])&& $_GET['action']=='add_product') || (isset($_GET['action'])&& $_GET['action']=='view_product')|| $action=='view_product' || (isset($_GET['action'])&& $_GET['action']=='select_cat')|| $action=='select_cat' || (isset($_GET['action'])&& $_GET['action']=='edit_product')){?>active<?php }?>" id="tab_a">
-            <?php  
-            if($action=='select_cat'){
-                ?>
-                <div class="panel">            
-                <form name="frm2" method="POST">
-                    <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Product Category </label><br />
-                                <select class="form-control" name="set_category">
-                                    <option value="">Select Category</option>
-                                    <?php foreach($product_category as $key=>$val){?>
-                                    <option value="<?php echo $val['id'];?>" <?php if($category==$val['id']){echo "selected='selected'";} ?>><?php echo $val['type'];?></option>
-                                    <?php } ?>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel-footer">
-                        <div class="selectwrap">
-                            <input type="submit" name="next" value="Next" />
-                        </div>
-                   </div>
-                   </div>
-                </form>
-                </div>
-                <?php
-                    }else if($action=='add_product' || ($action=='edit_product' && $id>0)){
+            <div class="tab-pane <?php if((isset($_GET['action'])&& $_GET['action']=='add_product') || (isset($_GET['action'])&& $_GET['action']=='view_product')|| $action=='view_product' || (isset($_GET['action'])&& $_GET['action']=='edit_product')){?>active<?php }?>" id="tab_a">
+            <?php
+             if($action=='add_product' || ($action=='edit_product' && $id>0)){
                 ?>            
                 <form name="frm" method="POST" onsubmit="return validation();" enctype="multipart/form-data">
 					<div class="row">
@@ -94,19 +67,15 @@ $(document).on('click','.remove-row',function(){
 					</div><br />
                     <div class="row">
                         <div class="col-md-6">
-                            <?php if($action=='edit_product' && $id>0){?>
                             <div class="form-group">
                                 <label>Product Category </label><br />
-                                <select class="form-control" name="product_category" id="product_category" disabled="true">
+                                <select class="form-control" name="product_category">
                                     <option value="">Select Category</option>
                                     <?php foreach($product_category as $key=>$val){?>
                                     <option value="<?php echo $val['id'];?>" <?php if($category==$val['id']){echo "selected='selected'";} ?>><?php echo $val['type'];?></option>
                                     <?php } ?>
                                 </select>
                             </div>
-                            <?php } else {?>
-                            <input type="hidden" name="product_category" id="product_category1" value="<?php echo $category;?>" />
-                            <?php } ?>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
@@ -431,7 +400,7 @@ $(document).on('click','.remove-row',function(){
                             <div class="btn-group dropdown" style="float: right;">
                                 <button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
             					<ul class="dropdown-menu dropdown-menu-right" style="">
-            						<li><a href="<?php echo CURRENT_PAGE; ?>?action=select_cat"><i class="fa fa-plus"></i> Add New</a></li>
+            						<li><a href="<?php echo CURRENT_PAGE; ?>?action=add_product"><i class="fa fa-plus"></i> Add New</a></li>
             					</ul>
             				</div>
             			</div>
@@ -829,13 +798,6 @@ $(document).on('click','.remove-row',function(){
         </div>
     </div>
 </div>
-<script>
-function set_Category(val){
-    var category = val;
-    var a = document.getElementById("product_category").value;
-    alert(a);
-}
-</script>
 <script>
 //submit add product notes form data
 function formsubmitnotes()

@@ -59,7 +59,7 @@
 				if($id>0){
 					$con = " AND `id`!='".$id."'";
 				}
-				$q = "SELECT * FROM `".$this->table."` WHERE `is_delete`='0' AND `name`='".$name."' ".$con;
+				$q = "SELECT * FROM `product_category_".$category."` WHERE `is_delete`='0' AND `name`='".$name."'".$con;
 				$res = $this->re_db_query($q);
 				$return = $this->re_db_num_rows($res);
 				if($return>0){
@@ -71,7 +71,7 @@
 				}
 				else if($id>=0){
 					if($id==0){
-						$q = "INSERT INTO `".$this->table."` SET `category`='".$category."',`name`='".$name."',`sponsor`='".$sponsor."',`ticker_symbol`='".$ticker_symbol."',`cusip`='".$cusip."',`security`='".$security."',`receive`='".$receive."',`income`='".$income."',`networth`='".$networth."',`networthonly`='".$networthonly."',`minimum_investment`='".$minimum_investment."',`minimum_offer`='".$minimum_offer."',`maximum_offer`='".$maximum_offer."',`objective`='".$objective."',`non_commissionable`='".$non_commissionable."',`class_type`='".$class_type."',`fund_code`='".$fund_code."',`sweep_fee`='".$sweep_fee."',`threshold`='".$threshold."',`rate`='".$rate."',`ria_specific`='".$ria_specific."',`ria_specific_type`='".$ria_specific_type."',`based`='".$based."',`fee_rate`='".$fee_rate."',`st_bo`='".$st_bo."',`m_date`='".$m_date."',`type`='".$type."',`var`='".$var."',`reg_type`='".$reg_type."'".$this->insert_common_sql();
+						$q = "INSERT INTO `product_category_".$category."` SET `category`='".$category."',`name`='".$name."',`sponsor`='".$sponsor."',`ticker_symbol`='".$ticker_symbol."',`cusip`='".$cusip."',`security`='".$security."',`receive`='".$receive."',`income`='".$income."',`networth`='".$networth."',`networthonly`='".$networthonly."',`minimum_investment`='".$minimum_investment."',`minimum_offer`='".$minimum_offer."',`maximum_offer`='".$maximum_offer."',`objective`='".$objective."',`non_commissionable`='".$non_commissionable."',`class_type`='".$class_type."',`fund_code`='".$fund_code."',`sweep_fee`='".$sweep_fee."',`threshold`='".$threshold."',`rate`='".$rate."',`ria_specific`='".$ria_specific."',`ria_specific_type`='".$ria_specific_type."',`based`='".$based."',`fee_rate`='".$fee_rate."',`st_bo`='".$st_bo."',`m_date`='".$m_date."',`type`='".$type."',`var`='".$var."',`reg_type`='".$reg_type."'".$this->insert_common_sql();
 						$res = $this->re_db_query($q);
                         $id = $this->re_db_insert_id();
 						if($res){
@@ -84,7 +84,7 @@
 						}
 					}
 					else if($id>0){
-						$q = "UPDATE `".$this->table."` SET `category`='".$category."',`name`='".$name."',`sponsor`='".$sponsor."',`ticker_symbol`='".$ticker_symbol."',`cusip`='".$cusip."',`security`='".$security."',`receive`='".$receive."',`income`='".$income."',`networth`='".$networth."',`networthonly`='".$networthonly."',`minimum_investment`='".$minimum_investment."',`minimum_offer`='".$minimum_offer."',`maximum_offer`='".$maximum_offer."',`objective`='".$objective."',`non_commissionable`='".$non_commissionable."',`class_type`='".$class_type."',`fund_code`='".$fund_code."',`sweep_fee`='".$sweep_fee."',`threshold`='".$threshold."',`rate`='".$rate."',`ria_specific`='".$ria_specific."',`ria_specific_type`='".$ria_specific_type."',`based`='".$based."',`fee_rate`='".$fee_rate."',`st_bo`='".$st_bo."',`m_date`='".$m_date."',`type`='".$type."',`var`='".$var."',`reg_type`='".$reg_type."'".$this->update_common_sql()." WHERE `id`='".$id."'";
+						$q = "UPDATE `product_category_".$category."` SET `category`='".$category."',`name`='".$name."',`sponsor`='".$sponsor."',`ticker_symbol`='".$ticker_symbol."',`cusip`='".$cusip."',`security`='".$security."',`receive`='".$receive."',`income`='".$income."',`networth`='".$networth."',`networthonly`='".$networthonly."',`minimum_investment`='".$minimum_investment."',`minimum_offer`='".$minimum_offer."',`maximum_offer`='".$maximum_offer."',`objective`='".$objective."',`non_commissionable`='".$non_commissionable."',`class_type`='".$class_type."',`fund_code`='".$fund_code."',`sweep_fee`='".$sweep_fee."',`threshold`='".$threshold."',`rate`='".$rate."',`ria_specific`='".$ria_specific."',`ria_specific_type`='".$ria_specific_type."',`based`='".$based."',`fee_rate`='".$fee_rate."',`st_bo`='".$st_bo."',`m_date`='".$m_date."',`type`='".$type."',`var`='".$var."',`reg_type`='".$reg_type."'".$this->update_common_sql()." WHERE `id`='".$id."'";
                         $res = $this->re_db_query($q);
 						if($res){
 						    $_SESSION['success'] = UPDATE_MESSAGE;
@@ -176,11 +176,11 @@
 		 * @param int status, default all
 		 * @return array of record if success, error message if any errors
 		 * */
-		public function select_product_category(){
+		public function select_product_category($category=''){
 			$return = array();
 			
 			$q = "SELECT `at`.*,pc.type,sp.name as sponsor
-					FROM `".$this->table."` AS `at`
+					FROM `product_category_".$category."` AS `at`
                     LEFT JOIN `".PRODUCT_TYPE."` as `pc` on `pc`.`id`=`at`.`category`
                     LEFT JOIN `".SPONSOR_MASTER."` as `sp` on `sp`.`id`=`at`.`sponsor`
                     WHERE `at`.`is_delete`='0'
@@ -246,14 +246,60 @@
             }
 			return $return;
 		}
+        public function search_sponsor($search_text=''){
+			$return = array();
+			$con = '';
+            if($search_text!='' && $search_text>=0){
+				$con .= " AND `clm`.`name` LIKE '%".$search_text."%' ";
+			}
+            
+            $q = "SELECT `clm`.*
+					FROM `".SPONSOR_MASTER."` AS `clm`
+                    WHERE `clm`.`is_delete`='0' ".$con."
+                    ORDER BY `clm`.`id` ASC ";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     //print_r($row);exit;
+                     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+		}
+        public function search_product($search_text='',$search_category=''){
+			$return = array();
+			$con = '';
+            if($search_text!='' && $search_text>=0){
+				$con .= " AND `clm`.`name` LIKE '%".$search_text."%' ";
+			}
+            
+            $q = "SELECT `clm`.*,pc.type,sp.name as sponsor
+					FROM `product_category_".$search_category."` AS `clm`
+                    LEFT JOIN `".PRODUCT_TYPE."` as `pc` on `pc`.`id`=`clm`.`category`
+                    LEFT JOIN `".SPONSOR_MASTER."` as `sp` on `sp`.`id`=`clm`.`sponsor`
+                    WHERE `clm`.`is_delete`='0' ".$con."
+                    ORDER BY `clm`.`id` ASC ";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     //print_r($row);exit;
+                     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+		}
         /**
 		 * @param int id
 		 * @return array of record if success, error message if any errors
 		 * */
-		public function edit_product($id){
+		public function edit_product($id,$category=''){
 			$return = array();
 			$q = "SELECT `at`.*
-					FROM `".$this->table."` AS `at`
+					FROM `product_category_".$category."` AS `at`
                     WHERE `at`.`is_delete`='0' AND `at`.`id`='".$id."'";
 			$res = $this->re_db_query($q);
             if($this->re_db_num_rows($res)>0){
@@ -277,11 +323,11 @@
 		 * @param status to update
 		 * @return true if success, false message if any errors
 		 * */
-		public function product_status($id,$status){
+		public function product_status($id,$status,$category=''){
 			$id = trim($this->re_db_input($id));
 			$status = trim($this->re_db_input($status));
 			if($id>0 && ($status==0 || $status==1) ){
-				$q = "UPDATE `".$this->table."` SET `status`='".$status."' WHERE `id`='".$id."'";
+				$q = "UPDATE `product_category_".$category."` SET `status`='".$status."' WHERE `id`='".$id."'";
 				$res = $this->re_db_query($q);
 				if($res){
 				    $_SESSION['success'] = STATUS_MESSAGE;
@@ -323,10 +369,11 @@
 		 * @param id of record
 		 * @return true if success, false message if any errors
 		 * */
-		public function product_delete($id){
+		public function product_delete($id,$category=''){
 			$id = trim($this->re_db_input($id));
+            $category = trim($this->re_db_input($category));
 			if($id>0 && ($status==0 || $status==1) ){
-				$q = "UPDATE `".$this->table."` SET `is_delete`='1' WHERE `id`='".$id."'";
+				$q = "UPDATE `product_category_".$category."` SET `is_delete`='1' WHERE `id`='".$id."'";
 				$res = $this->re_db_query($q);
 				if($res){
 				    $_SESSION['success'] = DELETE_MESSAGE;

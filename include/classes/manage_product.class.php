@@ -42,6 +42,48 @@
 						$res = $this->re_db_query($q);
                         $id = $this->re_db_insert_id();
 						if($res){
+						    $q = "CREATE TABLE product_category_".$id."
+                                    (id INT(12) PRIMARY KEY AUTO_INCREMENT,
+                                        category INT(12),
+                                        name VARCHAR(100),
+                                        sponsor VARCHAR(100),
+                                        ticker_symbol VARCHAR(100),
+                                        cusip VARCHAR(100),
+                                        security VARCHAR(100),
+                                        receive TINYINT(1),
+                                        income VARCHAR(100),
+                                        networth VARCHAR(100),
+                                        networthonly VARCHAR(100),
+                                        minimum_investment VARCHAR(100),
+                                        minimum_offer VARCHAR(100),
+                                        maximum_offer VARCHAR(100),
+                                        objective VARCHAR(100),
+                                        non_commissionable VARCHAR(100),
+                                        class_type VARCHAR(100),
+                                        fund_code VARCHAR(100),
+                                        sweep_fee VARCHAR(100),
+                                        threshold VARCHAR(100),
+                                        rate VARCHAR(100),
+                                        ria_specific VARCHAR(100),
+                                        ria_specific_type VARCHAR(100),
+                                        based VARCHAR(100),
+                                        fee_rate VARCHAR(100),
+                                        st_bo VARCHAR(100),
+                                        m_date DATETIME,
+                                        type VARCHAR(100),
+                                        var VARCHAR(100),
+                                        reg_type VARCHAR(100),
+                                        status TINYINT(1) NOT NULL DEFAULT '1',
+                                        is_delete TINYINT(1) NOT NULL DEFAULT '0',
+                                        created_by  INT(12),
+                                        created_time DATETIME,
+                                        created_ip VARCHAR(100),
+                                        modified_by  INT(12),
+                                        modified_time DATETIME,
+                                        modified_ip VARCHAR(100)
+                                    );";
+						    $res = $this->re_db_query($q);
+                            
 						    $_SESSION['success'] = INSERT_MESSAGE;
 							return true;
 						}

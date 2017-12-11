@@ -32,7 +32,10 @@
     $type = '';
     $var = '';
     $reg_type = '';
+    $search_text_product = '';
+    $search_product_category = '';
     
+    $search_text_sponsor = '';
     $sponser_name = '';
     $saddress1 = '';
     $saddress2 = '';
@@ -56,13 +59,22 @@
     $action = isset($_GET['action'])&&$_GET['action']!=''?$dbins->re_db_input($_GET['action']):'view_product';
     $id = isset($_GET['id'])&&$_GET['id']!=''?$dbins->re_db_input($_GET['id']):0;
     $sponsor_id = isset($_GET['sponsor_id'])&&$_GET['sponsor_id']!=''?$dbins->re_db_input($_GET['sponsor_id']):0;
+    $category = isset($_GET['category'])&&$_GET['category']!=''?$dbins->re_db_input($_GET['category']):1;
     
     $instance = new product_maintenance();
     $product_category = $instance->select_category();
     $get_sponsor = $instance->select_sponsor();
     $get_state = $instance->select_state();
     
-    if(isset($_POST['product'])&& $_POST['product']=='Save'){
+    if(isset($_POST['next'])&& $_POST['next']=='Next'){
+        
+        $category = isset($_POST['set_category'])?$instance->re_db_input($_POST['set_category']):'';
+        
+        if($category!=''){
+            header("location:".CURRENT_PAGE.'?action=add_product&category='.$category.'');exit;
+        }
+    }
+    else if(isset($_POST['product'])&& $_POST['product']=='Save'){
         
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
         $category = isset($_POST['product_category'])?$instance->re_db_input($_POST['product_category']):'';
@@ -103,7 +115,7 @@
             $error = !isset($_SESSION['warning'])?$return:'';
         }
     }
-    if(isset($_POST['sponser'])&& $_POST['sponser']=='Save'){
+    else if(isset($_POST['sponser'])&& $_POST['sponser']=='Save'){
         
         $sponsor_id = isset($_POST['sponsor_id'])?$instance->re_db_input($_POST['sponsor_id']):0;
         $sponser_name = isset($_POST['sponser_name'])?$instance->re_db_input($_POST['sponser_name']):'';
@@ -151,8 +163,8 @@
         exit;
         
     }
-    else if($action=='edit_product' && $id>0){
-        $return = $instance->edit_product($id);
+    else if($action=='edit_product' && $id>0 && $category !=''){
+        $return = $instance->edit_product($id,$category);
         $id = isset($return['id'])?$instance->re_db_output($return['id']):0;
         $category = isset($return['category'])?$instance->re_db_output($return['category']):'';
         $name = isset($return['name'])?$instance->re_db_output($return['name']):'';
@@ -210,10 +222,11 @@
         
         
     }
-    else if(isset($_GET['action'])&&$_GET['action']=='product_delete'&&isset($_GET['id'])&&$_GET['id']>0)
+    else if(isset($_GET['action'])&&$_GET['action']=='product_delete' && $_GET['category']!='' &&isset($_GET['id'])&&$_GET['id']>0)
     {
         $id = $instance->re_db_input($_GET['id']);
-        $return = $instance->product_delete($id);
+        $category = $instance->re_db_input($_GET['category']);
+        $return = $instance->product_delete($id,$category);
         if($return==true){
             header('location:'.CURRENT_PAGE);exit;
         }
@@ -236,7 +249,8 @@
     {
         $id = $instance->re_db_input($_GET['id']);
         $status = $instance->re_db_input($_GET['status']);
-        $return = $instance->product_status($id,$status);
+        $category = $instance->re_db_input($_GET['category']);
+        $return = $instance->product_status($id,$status,$category);
         if($return==true){
             header('location:'.CURRENT_PAGE);exit;
         }
@@ -256,9 +270,19 @@
             header('location:'.CURRENT_PAGE.'?action=view_sponsor');exit;
         }
     }  
+    else if(isset($_POST['search_sponsor'])&&$_POST['search_sponsor']=='Search'){
+       $search_text_sponsor = isset($_POST['search_text_sponsor'])?$instance->re_db_input($_POST['search_text_sponsor']):''; 
+       $return = $instance->search_sponsor($search_text_sponsor);
+    }
+    else if(isset($_POST['search_product'])&&$_POST['search_product']=='Search'){
+        
+       $search_text_product = isset($_POST['search_text_product'])?$instance->re_db_input($_POST['search_text_product']):''; 
+       $search_product_category = isset($_POST['search_product_category'])?$instance->re_db_input($_POST['search_product_category']):'';
+       $return = $instance->search_product($search_text_product,$search_product_category);
+    }
     else if($action=='view_product'){
         
-        $return = $instance->select_product_category();
+        $return = $instance->select_product_category($category);//echo'<pre>';print_r($return);exit;
         
     }
     else if($action=='view_sponsor'){
