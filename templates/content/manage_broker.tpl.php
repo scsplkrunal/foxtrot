@@ -319,6 +319,7 @@ var waitingDialog = waitingDialog || (function ($) {
                     <form method="post">
                         <div class="panel-overlay-wrap">
                             <div class="panel">
+                                                                                       
             					<div class="panel-heading">
                                     <div class="panel-control" style="float: right;">
             							<div class="btn-group dropdown">
@@ -500,6 +501,18 @@ var waitingDialog = waitingDialog || (function ($) {
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
+                                                <label>U4 </label><br />
+                                                <div id="demo-dp-range">
+					                                <div class="input-daterange input-group" id="datepicker">
+                                                        <input type="text" name="u4_general" id="u4_general" value="<?php echo $u4; ?>" class="form-control" />
+					                                </div>
+					                            </div>
+                                            </div>
+                                        </div>
+                                   </div>
+                                   <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
                                                 <label>Reassign Broker </label>
                                                 <select name="reassign_broker_general" id="reassign_broker_general" class="form-control">
                                                     <option value="0">Select Days</option>
@@ -509,21 +522,9 @@ var waitingDialog = waitingDialog || (function ($) {
                                                  </select>
                                             </div>
                                         </div>
-                                   </div>
-                                   <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>U4 </label><br />
-                                                <div id="demo-dp-range">
-					                                <div class="input-daterange input-group" id="datepicker">
-                                                        <input type="text" name="u4_general" id="u4_general" value="<?php echo $u4; ?>" class="form-control" />
-					                                </div>
-					                            </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>U5 </label><br />
+                                                <label>U5/Termination Date </label><br />
                                                 <div id="demo-dp-range">
     				                                <div class="input-daterange input-group" id="datepicker">
                                                         <input type="text" name="u5_general" id="u5_general" value="<?php echo $u5; ?>" class="form-control" />
@@ -539,6 +540,10 @@ var waitingDialog = waitingDialog || (function ($) {
                                                 <input type="text" name="dba_name_general" id="dba_name_general" value="<?php echo $dba_name; ?>" class="form-control" />
                                             </div>
                                         </div>
+                                   </div>
+                                   <h3>EFT Information</h3>
+                                   <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
+                                   <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>EFT Information </label><br />
@@ -550,8 +555,6 @@ var waitingDialog = waitingDialog || (function ($) {
                                                 </label>
                                             </div>
                                         </div>
-                                   </div>
-                                   <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Start Date </label><br />
@@ -562,6 +565,9 @@ var waitingDialog = waitingDialog || (function ($) {
 					                            </div>
                                             </div>
                                         </div>
+                                 </div>
+                                 
+                                   <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Transaction Type </label><br />
@@ -573,50 +579,21 @@ var waitingDialog = waitingDialog || (function ($) {
                                                 </label>
                                             </div>
                                         </div>
-                                   </div>
-                                   <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Routing </label><br />
                                                 <input type="text" name="routing_general" id="routing_general" value="<?php echo $routing; ?>" class="form-control" />
                                             </div>
                                         </div>
+                                    </div>
+                                   <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Account No </label>
                                                 <input type="number" name="account_no_general" id="account_no_general" value="<?php echo $account_no; ?>" class="form-control" />
                                             </div>
                                         </div>
-                                   </div>
-                                   <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Summarize Trailers </label><br />
-                                                <input type="checkbox" class="checkbox" value="1" name="summarize_trailers_general" id="summarize_trailers_general" class="regular-checkbox big-checkbox" /><label for="checkbox-2-1"></label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Summarize Direct Imported Trades: </label><br />
-                                                <input type="checkbox" class="checkbox" value="1" name="summarize_direct_imported_trades" id="summarize_direct_imported_trades" class="regular-checkbox big-checkbox" /><label for="checkbox-2-1"></label>
-                                            </div>
-                                        </div>
-                                   </div>
-                                   <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Hold Commissions </label><br />
-                                                <div id="demo-dp-range">
-					                                <div class="input-daterange input-group" id="datepicker">
-                                                        <span class="input-group-addon">From</span>
-					                                    <input type="text" class="form-control" name="from_date_general" value="<?php echo $from_date ?>" />
-					                                    <span class="input-group-addon">To</span>
-					                                    <input type="text" class="form-control" name="to_date_general" value="<?php echo $to_date ?>" />
-					                                </div>
-					                            </div>
-                                           </div>
-                                        </div>
-                                   </div>
+                                   </div></div>
                                    <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
@@ -710,11 +687,39 @@ var waitingDialog = waitingDialog || (function ($) {
                                     <li><a href="#" data-toggle="pill">Overrides</a></li>
                                     <li><a href="#" data-toggle="pill">Splits</a></li>
                                 </ul>
+                                <div class="tab-content col-md-10">                                
                                 <div class="panel-body">
                                     <div class="row">
-                                        <?php echo 'PAyouts'; ?>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Summarize Trailers </label><br />
+                                                <input type="checkbox" class="checkbox" value="1" name="summarize_trailers_general" id="summarize_trailers_general" class="regular-checkbox big-checkbox" /><label for="checkbox-2-1"></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Summarize Adjustments: </label><br />
+                                                <input type="checkbox" class="checkbox" value="1" name="summarize_direct_imported_trades" id="summarize_direct_imported_trades" class="regular-checkbox big-checkbox" /><label for="checkbox-2-1"></label>
+                                            </div>
+                                        </div>
+                                   </div>
+                                   <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Hold Commissions </label><br />
+                                                <div id="demo-dp-range">
+					                                <div class="input-daterange input-group" id="datepicker">
+                                                        <span class="input-group-addon">From</span>
+					                                    <input type="text" class="form-control" name="from_date_general" value="<?php echo $from_date ?>" />
+					                                    <span class="input-group-addon">To</span>
+					                                    <input type="text" class="form-control" name="to_date_general" value="<?php echo $to_date ?>" />
+					                                </div>
+					                            </div>
+                                           </div>
+                                        </div>
                                    </div>
                                 </div>
+                                
                                 <div class="panel-overlay">
                                     <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
                                 </div>
@@ -725,6 +730,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                                     </div>
                                </div>
+                               </div>                               
                             </div>
                         </div>
                     </form>

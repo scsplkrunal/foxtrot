@@ -35,4 +35,6 @@
     define('CHARGE_NAME_MASTER','ft_charge_name_master');
     define('CHARGE_DETAIL','ft_charge_detail');
     define('CHARGE_VALUE','ft_charge_value');
+    define('CLIENT_EMPLOYMENT','ft_client_employment');
+    define('CLIENT_ACCOUNT','ft_client_account_no');
 ?>

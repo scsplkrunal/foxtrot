@@ -41,15 +41,10 @@ $(document).on('click','.remove-row',function(){
 });
 </script>
 <div class="container">
-<h1>Product Maintenance</h1>
+<h1>    </h1>
 <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
 <div class="col-lg-12 well">
-    <ul class="nav nav-pills nav-stacked col-md-2">
-      <li <?php if((isset($_GET['action'])&& $_GET['action']=='add_product') || (isset($_GET['action'])&& $_GET['action']=='view_product') || (isset($_GET['action'])&& $_GET['action']=='edit_product')){ ?> class="active"<?php }if($action=='view_product'){?>class="active" <?php }?>><a href="<?php echo CURRENT_PAGE; ?>?action=view_product" >Products</a></li>
-      <li <?php if((isset($_GET['action'])&& $_GET['action']=='add_sponsor')||(isset($_GET['action'])&& $_GET['action']=='edit_sponsor') || (isset($_GET['action'])&& $_GET['action']=='view_sponsor') ){ ?> class="active"<?php }?>><a href="<?php echo CURRENT_PAGE; ?>?action=view_sponsor">Sponsors</a></li>
-    </ul>
-    <div class="tab-content col-md-10">
-            <div class="tab-pane <?php if((isset($_GET['action'])&& $_GET['action']=='add_product') || (isset($_GET['action'])&& $_GET['action']=='view_product')|| $action=='view_product' || (isset($_GET['action'])&& $_GET['action']=='select_cat')|| $action=='select_cat' || (isset($_GET['action'])&& $_GET['action']=='edit_product')){?>active<?php }?>" id="tab_a">
+            
             <?php  
             if($action=='select_cat'){
                 ?>
@@ -92,8 +87,9 @@ $(document).on('click','.remove-row',function(){
 						</div>
                         <h3 class="panel-title"><i class="fa fa-pencil-square-o"></i> <?php echo $action=='add_product'?'Add':'Edit'; ?> Product</h3>
 					</div><br />
+                    <input type="hidden" name="product_category" id="product_category1" value="<?php echo $category;?>" />
                     <div class="row">
-                        <div class="col-md-6">
+                        <!--div class="col-md-6">
                             <?php if($action=='edit_product' && $id>0){?>
                             <div class="form-group">
                                 <label>Product Category </label><br />
@@ -105,9 +101,13 @@ $(document).on('click','.remove-row',function(){
                                 </select>
                             </div>
                             <?php } else {?>
-                            <input type="hidden" name="product_category" id="product_category1" value="<?php echo $category;?>" />
+                            <input type="text" name="product_category" id="product_category1" value="<?php echo $category;?>" />
                             <?php } ?>
-                        </div>
+                        </div-->
+                                                    
+                            
+                         
+                        
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Product Name </label><br />
@@ -424,15 +424,16 @@ $(document).on('click','.remove-row',function(){
                     </div>
 			    </form> 
                 <?php
-                    }if(isset($_GET['action'])=='' || $_GET['action']=='view_product' || $action =='view_product'){?>
+                    }if(isset($_GET['action']) && $_GET['action']=='view_product') {?>
                 <div class="panel">
             		<div class="panel-heading">
                         <div class="panel-control">
                             <div class="btn-group dropdown" style="float: right;">
                                 <button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
             					<ul class="dropdown-menu dropdown-menu-right" style="">
-            						<li><a href="<?php echo CURRENT_PAGE; ?>?action=select_cat"><i class="fa fa-plus"></i> Add New</a></li>
-            					</ul>
+            						<li><a href="<?php echo CURRENT_PAGE; ?>?action=add_product&category=<?php echo $category; ?>"><i class="fa fa-plus"></i> Add New</a></li>
+            					   <li><a href="<?php echo CURRENT_PAGE; ?>?action=select_cat"><i class="fa fa-minus"></i> Back To Category</a></li>
+                                </ul>
             				</div>
             			</div>
                     </div><br />
@@ -441,16 +442,18 @@ $(document).on('click','.remove-row',function(){
                          <form method="post">
                             <div class="row"> 
                             <div class="col-md-5"></div>
-                                <div class="col-md-3">
+                                <!--div class="col-md-3">
                                     <select class="form-control" name="search_product_category">
                                         <?php foreach($product_category as $key=>$val){?>
                                         <option value="<?php echo $val['id'];?>" <?php if($search_product_category==$val['id']){echo "selected='selected'";} ?>><?php echo $val['type'];?></option>
                                         <?php } ?>
                                     </select>
-                                 </div>
-                                 <div class="col-md-4" style="float: right; width: 31.33333333% !important;">   
-                                    <input type="text" name="search_text_product" id="search_text_product" value="<?php echo $search_text_product;?>"/>
+                                 </div-->
+                                 <div class="col-md-8" style="float: right; width: 31.33333333% !important;">  
+                                    <input type="hidden" name="search_product_category" value="<?php echo $category; ?>"/> 
+                                    <input type="text" name="search_text_product" style=" width:60% !important;"  placeholder="Search Name , Cusip , Ticker" id="search_text_product" value="<?php echo $search_text_product;?>"/>
                                     <button type="submit" name="search_product" id="submit" value="Search"><i class="fa fa-search"></i> Search</button>
+                                    
                                 </div>
                             </div>
                         </form>
@@ -460,8 +463,8 @@ $(document).on('click','.remove-row',function(){
             	            <thead>
             	                <tr>
                                     <th class="text-center">#NO</th>
-                                    <th>Product Category</th>
                                     <th>Product Name</th>
+                                    <th>Cusip</th>
                                     <th>Sponsor Name</th>
                                     <th>Status</th>
                                     <th class="text-center">ACTION</th>
@@ -474,8 +477,8 @@ $(document).on('click','.remove-row',function(){
                                 ?>
             	                   <tr>
                                         <td class="text-center"><?php echo ++$count; ?></td>
-                                        <td><?php echo $val['type'];?></td>
-                                        <td><?php echo $val['name']; ?></td>
+                                        <td><?php echo $val['name'];?></td>
+                                        <td><?php echo $val['cusip']; ?></td>
                                         <td><?php echo $val['sponsor']; ?></td>
                                         <td class="text-center">
                                             <?php
@@ -594,241 +597,10 @@ $(document).on('click','.remove-row',function(){
     				</div><!-- End of Modal content -->
     				</div><!-- End of Modal dialog -->
     		  </div><!-- End of Modal -->
-            <div class="tab-pane  <?php if((isset($_GET['action'])&& $_GET['action']=='add_sponsor') || (isset($_GET['action'])&& $_GET['action']=='view_sponsor') || (isset($_GET['action'])&& $_GET['action']=='edit_sponsor')){?>active<?php }?>" id="tab_b">
-            <?php  
-            if($_GET['action']=='add_sponsor' || ($_GET['action']=='edit_sponsor' && $sponsor_id>0)){
-                ?>
-                <div class="panel">            
-                <form name="frm2" method="POST">
-                    <div class="panel-heading">
-                        <div class="panel-control" style="float: right;">
-							<div class="btn-group dropdown">
-								<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
-								<ul class="dropdown-menu dropdown-menu-right" style="">
-									<li><a href="<?php echo CURRENT_PAGE; ?>?action=view_sponsor"><i class="fa fa-eye"></i> View List</a></li>
-								</ul>
-							</div>
-						</div>
-                        <h3 class="panel-title"><i class="fa fa-pencil-square-o"></i><?php echo $action=='add_sponsor'?'Add':'Edit'; ?> Sponsor</h3>
-					</div>
-                    <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Sponsor Name </label><br />
-                                <input type="text" maxlength="25" class="form-control" name="sponser_name" value="<?php echo $sponser_name;?>"  />
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Address 1 </label><br />
-                                <input type="text" maxlength="50" class="form-control" name="saddress1"  value="<?php echo $saddress1;?>" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Address 2 </label><br />
-                                <input type="text" maxlength="50" class="form-control" name="saddress2" value="<?php echo $saddress2;?>"  />
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>City </label><br />
-                                <input type="text" maxlength="25" class="form-control" name="scity" value="<?php echo $scity;?>"  />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>State </label><br />
-                                <select class="form-control" name="sstate">
-                                    <option value="">Select State</option>
-                                    <?php foreach($get_state as $key=>$val){ ?>
-                                        <option value="<?php echo $val['id'];?>" <?php if($sstate == $val['id']){echo "selected='selected'";}?>><?php echo $val['name'];?></option>
-                                    <?php } ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Zip Code </label><br />
-                                <input type="text" maxlength="10" class="form-control" name="szip_code" value="<?php echo $szip_code;?>"  />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>E-Mail </label><br />
-                                <input type="text" maxlength="50" class="form-control" name="semail" value="<?php echo $semail;?>"  />
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Web Site </label><br />
-                                <input type="text" maxlength="50" class="form-control" name="swebsite" value="<?php echo $swebsite;?>" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>General Contact </label><br />
-                                <input type="text"  class="form-control" maxlength="30" name="sgeneral_contact" value="<?php echo $sgeneral_contact;?>" />
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>General Phone </label><br />
-                                <input type="text"  class="form-control" maxlength="13" name="sgeneral_phone" value="<?php echo $sgeneral_phone;?>" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Operations Contact </label><br />
-                                <input type="text"  class="form-control" maxlength="30" name="soperations_contact" value="<?php echo $soperations_contact;?>" />
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Operations Phone </label><br />
-                                <input type="text"  class="form-control" maxlength="13" name="soperations_phone" value="<?php echo $soperations_phone;?>" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>DST System ID </label><br />
-                                <input type="text" maxlength="15" class="form-control" name="sdst_system_id" value="<?php echo $sdst_system_id;?>"  />
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>DST Mgmt Code </label><br />
-                                <input type="text" maxlength="15" class="form-control" name="sdst_mgmt_code" value="<?php echo $sdst_mgmt_code;?>"  />
-                            </div>
-                        </div>
-                    </div>
-                   <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Exclude from DST Importing </label><br />
-                                <input type="checkbox" class="checkbox"  name="sdst_import" id="cpa" value="1" style="display: inline;" <?php if($sdst_import>0){echo "checked='checked'"; }?> />
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>DAZL Code </label><br />
-                                <input type="text" maxlength="15" class="form-control" name="sdazl_code" value="<?php echo $sdazl_code;?>"  />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Exclude from DAZL Importing </label><br />
-                                <input type="checkbox" class="checkbox"  name="sdazl_import" id="" value="1" style="display: inline;" <?php if($sdazl_import>0){echo "checked='checked'"; }?> />
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>DTCC/NSCC ID </label><br />
-                                <input type="text" maxlength="15" class="form-control" name="sdtcc_nscc" value="<?php echo $sdtcc_nscc;?>"  />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Clearing Firm ID </label><br />
-                                <input type="text" class="form-control"  name="sclr_firm" value="<?php echo $sclr_firm;?>"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel-footer">
-                        <div class="selectwrap">
-                            <input type="hidden" name="sponsor_id" id="sponsor_id" value="<?php echo $sponsor_id; ?>" />
-        					<input type="submit" name="sponser" onclick="waitingDialog.show();" value="Save"/>	
-                            <a href="<?php echo CURRENT_PAGE.'?action=view_sponsor';?>"><input type="button" name="cancel" value="Cancel" /></a>
-                        </div>
-                   </div>
-                   </div>
-                </form>
-                </div>
-                <?php
-                    }if($_GET['action']=='view_sponsor'){?>
-                <div class="panel">
-            		<div class="panel-heading">
-                        <div class="panel-control">
-                            <div class="btn-group dropdown" style="float: right;">
-                                <button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
-            					<ul class="dropdown-menu dropdown-menu-right" style="">
-            						<li><a href="<?php echo CURRENT_PAGE; ?>?action=add_sponsor"><i class="fa fa-plus"></i> Add New</a></li>
-            					</ul>
-            				</div>
-            			</div>
-                    </div><br />
-            		<div class="panel-body">
-                    <div class="panel-control" style="float: right;">
-                     <form method="post">
-                        <input type="text" name="search_text_sponsor" id="search_text_sponsor" value="<?php echo $search_text_sponsor;?>"/>
-                        <button type="submit" name="search_sponsor" id="submit" value="Search"><i class="fa fa-search"></i> Search</button>
-                    </form>
-                    </div><br /><br />
-                        <div class="table-responsive">
-            			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
-            	            <thead>
-            	                <tr>
-                                    <th class="text-center">#NO</th>
-                                    <th>Sponsor Name</th>
-                                    <th>Status</th>
-                                    <th class="text-center">ACTION</th>
-                                </tr>
-            	            </thead>
-            	            <tbody>
-                            <?php
-                            $count = 0;
-                            foreach($return as $key=>$val){
-                                ?>
-            	                   <tr>
-                                        <td class="text-center"><?php echo ++$count; ?></td>
-                                        <td><?php echo $val['name'];?></td>
-                                        <td class="text-center">
-                                            <?php
-                                                if($val['status']==1){
-                                                    ?>
-                                                    <a href="<?php echo CURRENT_PAGE; ?>?action=sponsor_status&sponsor_id=<?php echo $val['id']; ?>&status=0" class="btn btn-sm btn-success"><i class="fa fa-check-square-o"></i> Enabled</a>
-                                                    <?php
-                                                }
-                                                else{
-                                                    ?>
-                                                    <a href="<?php echo CURRENT_PAGE; ?>?action=sponsor_status&sponsor_id=<?php echo $val['id']; ?>&status=1" class="btn btn-sm btn-warning"><i class="fa fa-warning"></i> Disabled</a>
-                                                    <?php
-                                                }
-                                            ?>
-                                        </td>
-                                        <td class="text-center">
-                                            <a href="<?php echo CURRENT_PAGE; ?>?action=edit_sponsor&sponsor_id=<?php echo $val['id']; ?>" class="btn btn-md btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                                            <a onclick="return conf('<?php echo CURRENT_PAGE; ?>?action=sponsor_delete&sponsor_id=<?php echo $val['id']; ?>');" class="btn btn-md btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
-                                        </td>
-                                    </tr>
-                            <?php } ?>
-                            </tbody>
-                        </table>
-                        </div>
-            		</div>
-            	</div>
-                <?php } ?>                                    
-            </div>
+            
         </div>
-    </div>
-</div>
+    
+
 <script>
 function set_Category(val){
     var category = val;

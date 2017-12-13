@@ -106,8 +106,9 @@
 				  <li><a href="<?php echo SITE_URL; ?>manage_multicompany.php">Mulit-Company Maintenance</a></li>
 				  <li><a href="#">Branch Maintenance</a></li>
 				  <li><a href="<?php echo SITE_URL; ?>manage_broker.php">Broker Maintenance</a></li>
-                  <li><a href="product_cate.php">Product Maintenance</a></li>
-                  <li><a href="client_maintenance.php">Client Maintenance</a></li>
+                  <li><a href="<?php echo SITE_URL; ?>manage_Sponsor.php">Sponsor Maintenance</a></li>
+                  <li><a href="<?php echo SITE_URL; ?>product_cate.php">Product Maintenance</a></li>
+                  <li><a href="<?php echo SITE_URL; ?>client_maintenance.php">Client Maintenance</a></li>
 				</ul>
               </li>		  
 			  <li>
@@ -122,15 +123,15 @@
 				<a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">Supervisor
 				<i class="fa fa-angle-down"></i></a>
 				<ul class="dropdown-menu">
-				  <li><a href="user_profile.php">User Profiles</a></li>
-				  <li><a href="data_interface.php">Data Interfaces</a></li>
-				  <li><a href="of_fi.php">OFAC / FINCEN</a></li>
-                  <li><a href="client_ress.php">Client Reassignment</a></li>
-                  <li><a href="client_suitability.php">Client Suitability</a></li>
-				  <li><a href="account_type.php">Account Type Maintenance</a></li>
-				  <li><a href="product_category_maintenance.php">Product Category Maintenance</a></li>
-                  <li><a href="payroll_adjustment.php">Payroll Adjustment Category Maintenance</a></li>
-                  <li><a href="system_config.php">System Configuration</a></li>
+				  <li><a href="<?php echo SITE_URL; ?>user_profile.php">User Profiles</a></li>
+				  <li><a href="<?php echo SITE_URL; ?>data_interface.php">Data Interfaces</a></li>
+				  <li><a href="<?php echo SITE_URL; ?>of_fi.php">OFAC / FINCEN</a></li>
+                  <li><a href="<?php echo SITE_URL; ?>client_ress.php">Client Reassignment</a></li>
+                  <li><a href="<?php echo SITE_URL; ?>client_suitability.php">Client Suitability</a></li>
+				  <li><a href="<?php echo SITE_URL; ?>account_type.php">Account Type Maintenance</a></li>
+				  <li><a href="<?php echo SITE_URL; ?>product_category_maintenance.php">Product Category Maintenance</a></li>
+                  <li><a href="<?php echo SITE_URL; ?>payroll_adjustment.php">Payroll Adjustment Category Maintenance</a></li>
+                  <li><a href="<?php echo SITE_URL; ?>system_config.php">System Configuration</a></li>
 				</ul>
 			  </li>
 			</ul>
