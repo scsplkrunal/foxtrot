@@ -29,13 +29,27 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Company/Practice Name <span class="text-red">*</span></label>
-                                <input type="text" name="company_name" id="company_name" value="<?php //echo $company_name; ?>"  class="form-control" />
+                                <input type="text" name="company_name" id="company_name" value="<?php if($action=='edit'){echo $company_name;} ?>"  class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Company/Practice Type </label>
+                                <input type="text" name="company_type" id="company_type" value="<?php if($action=='edit'){echo $company_type;} ?>"  class="form-control" />
+                            </div>
+                        </div>
+                   </div>
+                   <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Manager Name </label>
+                                <input type="text" name="manager_name" id="manager_name" value="<?php if($action=='edit'){echo $manager_name;} ?>"  class="form-control" />
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Business Address 1 <span class="text-red">*</span></label>
-                                <input type="text" name="address1" id="address1" value="<?php //echo $address1; ?>" class="form-control" />
+                                <input type="text" name="address1" id="address1" value="<?php if($action=='edit'){echo $address1;} ?>" class="form-control" />
                             </div>
                         </div>
                    </div>
@@ -43,13 +57,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Business Address 2 </label>
-                                <input type="text" name="address2" id="address2" value="<?php //echo $address2; ?>" class="form-control" />
+                                <input type="text" name="address2" id="address2" value="<?php if($action=='edit'){echo $address2;} ?>" class="form-control" />
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Business City <span class="text-red">*</span></label>
-                                <input type="text" name="business_city" id="business_city" value="<?php //echo $business_city; ?>" class="form-control" />
+                                <input type="text" name="business_city" id="business_city" value="<?php if($action=='edit'){echo $business_city;} ?>" class="form-control" />
                             </div>
                         </div>
                    </div>
@@ -60,7 +74,7 @@
                                 <select name="state_general" id="state_general" class="form-control">
                                     <option value="">Select State</option>
                                     <?php foreach($get_state as $statekey=>$stateval){?>
-                                    <option value="<?php echo $stateval['id']; ?>"><?php echo $stateval['name']; ?></option>
+                                    <option  <?php if($state_general == $stateval['id']){ ?>selected="true" <?php } ?> value="<?php echo $stateval['id']; ?>"><?php echo $stateval['name']; ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
@@ -68,7 +82,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Business Zipcode <span class="text-red">*</span></label>
-                                <input type="text" name="zip" id="zip" value="<?php //echo $zip; ?>" class="form-control" />
+                                <input type="text" name="zip" id="zip" value="<?php if($action=='edit'){echo $zip;} ?>" class="form-control" />
                             </div>
                         </div>
                    </div>
@@ -76,13 +90,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Mailing Address1 </label>
-                                <input type="text" name="mail_address1" id="mail_address1" value="<?php //echo $mail_address1; ?>" class="form-control" />
+                                <input type="text" name="mail_address1" id="mail_address1" value="<?php if($action=='edit'){echo $mail_address1;} ?>" class="form-control" />
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Mailing Address2 </label>
-                                <input type="text" name="mail_address2" id="mail_address2" value="<?php //echo $mail_address2; ?>" class="form-control" />
+                                <input type="text" name="mail_address2" id="mail_address2" value="<?php if($action=='edit'){echo $mail_address2;} ?>" class="form-control" />
                             </div>
                         </div>
                    </div>
@@ -90,16 +104,16 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Mailing City </label>
-                                <input type="text" name="m_city" id="m_city" value="<?php //echo $m_city; ?>" class="form-control" />
+                                <input type="text" name="m_city" id="m_city" value="<?php if($action=='edit'){echo $m_city;} ?>" class="form-control" />
                             </div>
                         </div>
                          <div class="col-md-6">
                             <div class="form-group">
                                 <label>Mailing State </label>
-                                <select name="state_general" id="state_general" class="form-control">
+                                <select name="state_mailing" id="state_mailing" class="form-control">
                                     <option value="">Select State</option>
                                     <?php foreach($get_state as $statekey=>$stateval){?>
-                                    <option value="<?php echo $stateval['id']; ?>"><?php echo $stateval['name']; ?></option>
+                                    <option <?php if($state_mailing == $stateval['id']){ ?>selected="true" <?php } ?> value="<?php echo $stateval['id']; ?>"><?php  echo $stateval['name']; ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
@@ -109,13 +123,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Mailing Zipcode</label>
-                                <input type="text" name="m_zip" id="m_zip" value="<?php //echo $m_zip; ?>" class="form-control" />
+                                <input type="text" name="m_zip" id="m_zip" value="<?php if($action=='edit'){echo $m_zip;} ?>" class="form-control" />
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Telephone </label>
-                                <input type="text" name="telephone" id="telephone" value="<?php //echo $telephone; ?>" class="form-control" />
+                                <input type="text" name="telephone" id="telephone" value="<?php if($action=='edit'){echo $telephone;} ?>" class="form-control" />
                             </div>
                         </div>
                    </div>
@@ -123,7 +137,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Facsimile </label>
-                                <input type="text" name="facsimile" id="facsimile" value="<?php //echo $facsimile; ?>" class="form-control" />
+                                <input type="text" name="facsimile" id="facsimile" value="<?php if($action=='edit'){echo $facsimile;} ?>" class="form-control" />
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -131,7 +145,7 @@
                                 <label>Date Established <span class="text-red">*</span> </label><br />
                                 <div id="demo-dp-range">
 	                                <div class="input-daterange input-group" id="datepicker">
-                                        <input type="text" name="e_date" id="e_date" value="<?php //echo $prospect_date; ?>" class="form-control" />
+                                        <input type="text" name="e_date" id="e_date" value="<?php if($action=='edit'){echo $e_date;} ?>" class="form-control" />
 	                                </div>
 	                            </div>
                             </div>
@@ -143,7 +157,7 @@
                                 <label>Inactive Date </label><br />
                                 <div id="demo-dp-range">
                                     <div class="input-daterange input-group" id="datepicker">
-                                        <input type="text" name="i_date" id="i_date" value="<?php //echo $prospect_date; ?>" class="form-control" />
+                                        <input type="text" name="i_date" id="i_date" value="<?php if($action=='edit'){echo $i_date;} ?>" class="form-control" />
                                     </div>
                                 </div>
                             </div>
@@ -157,10 +171,10 @@
                             <div class="form-group">
                                 <label>Payout Level </label><br />
                                 <label class="radio-inline">
-                                  <input type="radio" class="radio" name="payout_level" id="payout_level" value="1" />Company/Practice Level
+                                  <input type="radio" class="radio" name="payout_level" id="payout_level" value="1" <?php if($action=='edit'){if($payout_level==1){ ?>checked="true"<?php }} ?>/>Company/Practice Level
                                 </label>
                                 <label class="radio-inline">
-                                  <input type="radio" class="radio" name="payout_level" id="payout_level" value="2" />Broker Level
+                                  <input type="radio" class="radio" name="payout_level" id="payout_level" value="2" <?php if($action=='edit'){if($payout_level==2){ ?>checked="true"<?php }} ?>/>Broker Level
                                 </label>
                             </div>
                         </div>
@@ -168,10 +182,10 @@
                             <div class="form-group">
                                 <label>Clearing Charge Calculation </label><br />
                                 <label class="radio-inline">
-                                  <input type="radio" class="radio" name="clearing_charge_calculation" id="clearing_charge_calculation" value="1" />Gross Payout
+                                  <input type="radio" class="radio" name="clearing_charge_calculation" id="clearing_charge_calculation" value="1" <?php if($action=='edit'){if($clearing_charge_calculation==1){ ?>checked="true"<?php }} ?>/>Gross Payout
                                 </label>
                                 <label class="radio-inline">
-                                  <input type="radio" class="radio" name="clearing_charge_calculation" id="clearing_charge_calculation" value="2" />Net Payout
+                                  <input type="radio" class="radio" name="clearing_charge_calculation" id="clearing_charge_calculation" value="2" <?php if($action=='edit'){if($clearing_charge_calculation==2){ ?>checked="true"<?php }} ?>/>Net Payout
                                 </label>
                             </div>
                         </div>
@@ -181,13 +195,13 @@
                             <div class="form-group">
                                 <label>Sliding Scale Commission Basis </label><br />
                                 <label class="radio-inline">
-                                  <input type="radio" class="radio" name="sliding_scale_commision" id="sliding_scale_commision" value="1" />Payroll-to-Date Concession
+                                  <input type="radio" class="radio" name="sliding_scale_commision" id="sliding_scale_commision" value="1" <?php if($action=='edit'){if($sliding_scale_commision==1){ ?>checked="true"<?php }} ?>/>Payroll-to-Date Concession
                                 </label>
                                 <label class="radio-inline">
-                                  <input type="radio" class="radio" name="sliding_scale_commision" id="sliding_scale_commision" value="2" />Year-to-Date Concession
+                                  <input type="radio" class="radio" name="sliding_scale_commision" id="sliding_scale_commision" value="2" <?php if($action=='edit'){if($sliding_scale_commision==2){ ?>checked="true"<?php }} ?>/>Year-to-Date Concession
                                 </label>
                                 <label class="radio-inline">
-                                  <input type="radio" class="radio" name="sliding_scale_commision" id="sliding_scale_commision" value="3" />Year-to-Date Earnings
+                                  <input type="radio" class="radio" name="sliding_scale_commision" id="sliding_scale_commision" value="3" <?php if($action=='edit'){if($sliding_scale_commision==3){ ?>checked="true"<?php }} ?>/>Year-to-Date Earnings
                                 </label>
                             </div>
                         </div>
@@ -196,10 +210,10 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Product Category </label>
-                                <select name="state_general" id="state_general" class="form-control">
+                                <select name="product_category" id="product_category" class="form-control">
                                     <option value="">Select Product category</option>
                                     <?php foreach($get_product as $key=>$val){?>
-                                    <option value="<?php echo $val['id']; ?>"><?php echo $val['type']; ?></option>
+                                    <option <?php if($product_category == $val['id']){ ?> selected="true" <?php } ?> value="<?php echo $val['id']; ?>"><?php echo $val['type']; ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
@@ -207,7 +221,7 @@
                          <div class="col-md-6">
                             <div class="form-group">
                                 <label>Rate (in percentage) </label>
-                                <input type="text" name="p_rate" id="p_rate" value="<?php //echo $p_rate; ?>" class="form-control" />
+                                <input type="text" name="p_rate" id="p_rate" value="<?php if($action=='edit'){echo $p_rate;} ?>" class="form-control" />
                             </div>
                         </div>
                     </div><h3>Level 1:</h3>
@@ -215,13 +229,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Threshold(in $ Price) </label>
-                                <input type="text" name="threshold1" id="threshold1" value="<?php //echo $threshold1; ?>" class="form-control" />
+                                <input type="text" name="threshold1" id="threshold1" value="<?php if($action=='edit'){ echo $threshold1;} ?>" class="form-control" />
                             </div>
                         </div>
                          <div class="col-md-6">
                             <div class="form-group">
                                 <label>Rate (in percentage) </label>
-                                <input type="text" name="l1_rate" id="l1_rate" value="<?php //echo $l1_rate; ?>" class="form-control" />
+                                <input type="text" name="l1_rate" id="l1_rate" value="<?php if($action=='edit'){echo $l1_rate;} ?>" class="form-control" />
                             </div>
                         </div>
                     </div><h3>Level 2:</h3>
@@ -229,13 +243,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Threshold(in $ Price) </label>
-                                <input type="text" name="threshold2" id="threshold2" value="<?php //echo $threshold2; ?>" class="form-control" />
+                                <input type="text" name="threshold2" id="threshold2" value="<?php if($action=='edit'){echo $threshold2;} ?>" class="form-control" />
                             </div>
                         </div>
                          <div class="col-md-6">
                             <div class="form-group">
                                 <label>Rate (in percentage) </label>
-                                <input type="text" name="l2_rate" id="l2_rate" value="<?php //echo $l2_rate; ?>" class="form-control" />
+                                <input type="text" name="l2_rate" id="l2_rate" value="<?php if($action=='edit'){echo $l2_rate;} ?>" class="form-control" />
                             </div>
                         </div>
                     </div><h3>Level 3:</h3>
@@ -243,13 +257,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Threshold(in $ Price) </label>
-                                <input type="text" name="threshold3" id="threshold3" value="<?php //echo $threshold3; ?>" class="form-control" />
+                                <input type="text" name="threshold3" id="threshold3" value="<?php if($action=='edit'){echo $threshold3;} ?>" class="form-control" />
                             </div>
                         </div>
                          <div class="col-md-6">
                             <div class="form-group">
                                 <label>Rate (in percentage) </label>
-                                <input type="text" name="l3_rate" id="l3_rate" value="<?php //echo $l3_rate; ?>" class="form-control" />
+                                <input type="text" name="l3_rate" id="l3_rate" value="<?php if($action=='edit'){echo $l3_rate;} ?>" class="form-control" />
                             </div>
                         </div>
                     </div><h3>Level 4:</h3>
@@ -257,13 +271,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Threshold(in $ Price) </label>
-                                <input type="text" name="threshold4" id="threshold4" value="<?php //echo $threshold4; ?>" class="form-control" />
+                                <input type="text" name="threshold4" id="threshold4" value="<?php if($action=='edit'){echo $threshold4;} ?>" class="form-control" />
                             </div>
                         </div>
                          <div class="col-md-6">
                             <div class="form-group">
                                 <label>Rate (in percentage) </label>
-                                <input type="text" name="l4_rate" id="l4_rate" value="<?php //echo $l4_rate; ?>" class="form-control" />
+                                <input type="text" name="l4_rate" id="l4_rate" value="<?php if($action=='edit'){echo $l4_rate;} ?>" class="form-control" />
                             </div>
                         </div>
                     </div><h3>Level 5:</h3>
@@ -271,13 +285,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Threshold(in $ Price) </label>
-                                <input type="text" name="threshold5" id="threshold5" value="<?php //echo $threshold5; ?>" class="form-control" />
+                                <input type="text" name="threshold5" id="threshold5" value="<?php if($action=='edit'){echo $threshold5;} ?>" class="form-control" />
                             </div>
                         </div>
                          <div class="col-md-6">
                             <div class="form-group">
                                 <label>Rate (in percentage) </label>
-                                <input type="text" name="l5_rate" id="l5_rate" value="<?php //echo $l5_rate; ?>" class="form-control" />
+                                <input type="text" name="l5_rate" id="l5_rate" value="<?php if($action=='edit'){echo $l5_rate;} ?>" class="form-control" />
                             </div>
                         </div>
                     </div><h3>Level 6:</h3>
@@ -285,13 +299,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Threshold(in $ Price) </label>
-                                <input type="text" name="threshold6" id="threshold6" value="<?php //echo $threshold6; ?>" class="form-control" />
+                                <input type="text" name="threshold6" id="threshold6" value="<?php if($action=='edit'){echo $threshold6;} ?>" class="form-control" />
                             </div>
                         </div>
                          <div class="col-md-6">
                             <div class="form-group">
                                 <label>Rate (in percentage) </label>
-                                <input type="text" name="l6_rate" id="l6_rate" value="<?php //echo $l6_rate; ?>" class="form-control" />
+                                <input type="text" name="l6_rate" id="l6_rate" value="<?php if($action=='edit'){echo $l6_rate;} ?>" class="form-control" />
                             </div>
                         </div>
                     </div>
@@ -301,13 +315,14 @@
                         <div class="form-group">
                             <label class="col-md-12"><h3>State</h3> </label>
                            
-                                <?php foreach($get_state as $statekey=>$stateval){?>
+                                <?php  $mystate = explode(',', isset($state));
+                                foreach($get_state as $statekey=>$stateval){?>
                                 <label class="check-inline col-md-2">
-                                    <input type="checkbox" class="checkbox" name="state[<?php echo $stateval['id']; ?>]" id="<?php echo $stateval['name']; ?>" value="<?php echo $stateval['id']; ?>" /><?php echo $stateval['name']; ?>
+                                    <input type="checkbox" class="checkbox" <?php if(in_array($stateval['id'],$mystate)){ ?>checked="true" <?php } ?> name="state[<?php echo $stateval['id']; ?>]" id="<?php echo $stateval['name']; ?>" value="<?php echo $stateval['id']; ?>" /><?php echo $stateval['name']; ?>
                                 </label>
                                 <?php } ?>
                                 <label class="check-inline col-md-12">
-                                    <br /><input type="checkbox" class="checkbox" name="foreign" id="foreign" value="Foreign" />Foreign
+                                    <br /><input type="checkbox" class="checkbox" name="foreign" <?php if($action=='edit'){if($foreign == 1){ ?> checked="true" <?php }} ?> id="foreign" value="Foreign" />Foreign
                                 </label>
                         </div>
                     </div>
@@ -355,10 +370,10 @@
                                 <div class="col-md-2">
                                 <select name="active_search" class="form-control" id="active_search" style="size: auto;">
                                     <option value="" style="size: auto;"> Select </option>
-                                    <option <?php if(isset($active_search) && $active_search == 1){echo "selected='selected'";}?> value="1"> Compnay  Name</option>
-                                    <option <?php if(isset($active_search) && $active_search == 2){echo "selected='selected'";}?> value="2"> Maneger  Name</option>
-                                    <option <?php if(isset($active_search) && $active_search == 3){echo "selected='selected'";}?> value="3"> Company  Type</option>
-                                    <option <?php if(isset($active_search) && $active_search == 4){echo "selected='selected'";}?> value="4"> Establish  Date</option>
+                                    <option <?php if(isset($active_search) && $active_search == 'company_name'){?> selected="selected"<?php }?> value="company_name"> Compnay  Name</option>
+                                    <option <?php if(isset($active_search) && $active_search == 'manager_name'){?> selected="selected"<?php }?> value="manager_name"> Maneger  Name</option>
+                                    <option <?php if(isset($active_search) && $active_search == 'company_type'){?> selected="selected"<?php }?> value="company_type"> Company  Type</option>
+                                    <option <?php if(isset($active_search) && $active_search == 'i_date'){?> selected="selected"<?php }?> value="i_date"> Establish  Date</option>
                                 </select>
                                 </div>
                                 <input type="text" name="search_text" id="search_text" value="<?php //echo $search_text;?>"/>
@@ -376,17 +391,22 @@
                         <th>Practice Type</th>
                         <th>Establish Date</th>
                         <th>Termination Date</th>
+                        <th class="text-center">STATUS</th>
                         <th class="text-center">ACTION</th>
                     </tr>
 	            </thead>
 	            <tbody>
 	                <?php
-                        /*$count = 0;
+                        $count = 0;
                         foreach($return as $key=>$val){
                             ?>
                             <tr>
                                 <td class="text-center"><?php echo ++$count; ?></td>
-                                <td><?php echo $val['type']; ?></td>
+                                <td><?php echo $val['company_name']; ?></td>
+                                <td><?php echo $val['manager_name']; ?></td>
+                                <td><?php echo $val['company_type']; ?></td>
+                                <td><?php echo $val['e_date']; ?></td>
+                                <td><?php echo $val['i_date']; ?></td>
                                 <td class="text-center">
                                     <?php
                                         if($val['status']==1){
@@ -406,7 +426,7 @@
                                 </td>
                             </tr>
                             <?php
-                        }*/
+                        }
                     ?>
                 </tbody>
             </table>
@@ -566,9 +586,6 @@ var waitingDialog = waitingDialog || (function ($) {
 			// Opening dialog
 			$dialog.modal();
 		},
-		/**
-		 * Closes dialog
-		 */
 	
 	};
 
@@ -618,7 +635,7 @@ $(document).on('click','.remove-row',function(){
 </script>
 <script>
 $('#demo-dp-range .input-daterange').datepicker({
-        format: "mm/dd/yyyy",
+        format: "yyyy-mm-dd",
         todayBtn: "linked",
         autoclose: true,
         todayHighlight: true

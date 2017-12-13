@@ -31,4 +31,8 @@
     define('ACCOUNT_USE_MASTER','ft_account_use_master');
     define('OBJECTIVE_MASTER','ft_objective_master');
     define('COMPANY_MASTER','ft_company_master');
+    define('CHARGE_TYPE_MASTER','ft_charge_type_master');
+    define('CHARGE_NAME_MASTER','ft_charge_name_master');
+    define('CHARGE_DETAIL','ft_charge_detail');
+    define('CHARGE_VALUE','ft_charge_value');
 ?>

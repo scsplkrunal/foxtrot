@@ -297,7 +297,7 @@
 			/*}*/
 		}
         /** Insert update charges data for broker. **/
-        public function insert_update_charges($data){
+        public function insert_update_charges1231321564($data){
         $id = isset($data['id'])?$this->re_db_input($data['id']):0;
 				if($id==0){
 				    
@@ -324,6 +324,47 @@
 					$_SESSION['warning'] = UNKWON_ERROR;
 					return false;
 				}
+		}
+        /** Insert update charges data for broker. **/
+        public function insert_update_charges($data){
+        $id = isset($data['id'])?$this->re_db_input($data['id']):0;
+            if($id>0){
+			    foreach($data['inp_type'] as $type_id=>$type_vale)
+                {
+                    foreach($type_vale as $name_id=>$name_val)
+                    {
+                        foreach($name_val as $accout_type=>$account_val)
+                        {
+                            foreach($account_val as $account_process=>$value)
+                            {
+                                $res=$this->re_db_query("SELECT cd.charge_detail_id, cv.value FROM ft_charge_detail cd left join ft_charge_value cv on cd.charge_detail_id=cv.charge_detail_id and cv.broker_id='".$id."' WHERE cd.charge_type_id='".$type_id."' AND cd.charge_name_id='".$name_id."' AND account_type='".$accout_type."' AND account_process='".$account_process."'");
+                                $row=$this->re_db_fetch_array($res);
+                                if($row['value']!='')
+                                {
+                                    $r=$this->re_db_query("update ft_charge_value set value='".$value."' where charge_detail_id='".$row['charge_detail_id']."' and broker_id='".$id."'");                           
+                                } 
+                                else
+                                {
+                                    $r=$this->re_db_query("INSERT INTO ft_charge_value set charge_detail_id='".$row['charge_detail_id']."',broker_id='".$id."',value='".$value."'");
+                                }   
+                            }   
+                        }
+                         
+                    }
+                }
+                if($r){
+				    $_SESSION['success'] = INSERT_MESSAGE;
+					return true;
+				}
+				else{
+					$_SESSION['warning'] = UNKWON_ERROR;
+					return false;
+				}
+			}
+			else{
+				$_SESSION['warning'] = UNKWON_ERROR;
+				return false;
+			}
 		}
         /**
 		 * @param int status, default all
@@ -452,6 +493,62 @@
 			     $_SESSION['warning'] = UNKWON_ERROR;
 				return false;
 			}
+		}
+        public function select_charge_type(){
+			$return = array();
+			
+			$q = "SELECT * FROM `".CHARGE_TYPE_MASTER."`";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+		}
+        public function select_charge_name($charge_type_id){
+			$return = array();
+			
+			$q = "SELECT cnm.* FROM `".CHARGE_NAME_MASTER."` cnm, `".CHARGE_DETAIL."` cd 
+                WHERE cnm.charge_name_id=cd.charge_name_id and cd.charge_type_id='".$charge_type_id."' group by cnm.charge_name_id";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+		}
+        public function select_charge_detail($charge_type_id,$charge_name_id){
+			$return = array();
+			
+			$q = "SELECT cd.* FROM `".CHARGE_DETAIL."` cd 
+                WHERE cd.charge_type_id='".$charge_type_id."' and cd.charge_name_id='".$charge_name_id."'";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+		}
+        public function select_broker_charge($id){
+			$return = array();
+			$q="SELECT ctm.charge_type_id,cnm.charge_name_id,cd.account_type,cd.account_process,cv.value FROM `".CHARGE_TYPE_MASTER."` ctm, `".CHARGE_NAME_MASTER."` cnm, `".CHARGE_DETAIL."` cd, `".CHARGE_VALUE."` cv WHERE ctm.charge_type_id=cd.charge_type_id and cnm.charge_name_id=cd.charge_name_id and cd.charge_detail_id=cv.charge_detail_id and cv.broker_id='".$id."'";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     $return[$row['charge_type_id']][$row['charge_name_id']][$row['account_type']][$row['account_process']]=$row['value'];
+    			}
+            }
+			return $return;
 		}
         
     }

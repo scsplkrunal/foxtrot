@@ -276,7 +276,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         <td class="text-center"><?php echo ++$count; ?></td>
                                         <td><?php echo $val['first_name']." ".$val['last_name']; ?></td>
                                         <td><?php echo $val['fund']; ?></td>
-                                        <td><?php echo $val['internal']; ?></td>
+                                        <!--td><?php echo $val['internal']; ?></td-->
                                         <td><?php echo $val['ssn']; ?></td>
                                         <td><?php echo $val['tax_id']; ?></td>
                                         <td><?php echo $val['crd']; ?></td>
@@ -787,520 +787,98 @@ var waitingDialog = waitingDialog || (function ($) {
                                            </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                         <div class="col-md-12">
-                                            <div class="form-group">
-                                                <h4><b>Equities</b></h4>
+                                    <?php 
+                                    $broker_charge=$instance->select_broker_charge($id);
+                                    //echo "<pre>"; print_r($broker_charge);
+                                    $charge_type_arr=$instance->select_charge_type();
+                                    foreach($charge_type_arr as $charge_type){
+                                        ?>
+                                        <div class="row">
+                                             <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <h4><b><?php echo $charge_type['charge_type']; ?></b></h4>
+                                                </div>
+                                             </div>
+                                        </div>
+                                        <?php
+                                        $charge_name_arr=$instance->select_charge_name($charge_type['charge_type_id']);
+                                        foreach($charge_name_arr as $charge_name){
+                                        ?>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <h4 style="float: right;"><?php echo $charge_name['charge_name']; ?></h4>
+                                                </div>
                                             </div>
-                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <h4 style="float: right;">Listed</h4>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="3.22" name="Equities[Listed][non_clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <input class="form-control" value="0.000" name="Equities[Listed][non_execution]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="25.5" name="Equities[Listed][clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                            <input class="form-control" value="4.50" name="Equities[Listed][execution]" type="text" />
-                                           </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <h4 style="float: right;">OTC</h4>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <input class="form-control" value="25.4" name="Equities[OTC][non_clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
+                                            <?php
+                                            $charge_detail_arr=$instance->select_charge_detail($charge_type['charge_type_id'],$charge_name['charge_name_id']);
+                                            foreach($charge_detail_arr as $charge_detail){
                                                 
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <input class="form-control" value="40.5" name="Equities[OTC][clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                               
-                                           </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                         <div class="col-md-12">
-                                            <div class="form-group">
-                                                <h4><b>Options</b></h4>
+                                                if($charge_detail['account_type']=='1' && $charge_detail['account_process']=='1')
+                                                {
+                                                    ?>
+                                                    <div class="col-md-2">
+                                                        <div class="form-group">
+                                                          <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="<?php echo (isset($broker_charge[$charge_type['charge_type_id']][$charge_name['charge_name_id']]['1']['1']) && $broker_charge[$charge_type['charge_type_id']][$charge_name['charge_name_id']]['1']['1']!='')?$broker_charge[$charge_type['charge_type_id']][$charge_name['charge_name_id']]['1']['1']:'0.00'; ?>" name="inp_type[<?php echo $charge_type['charge_type_id']; ?>][<?php echo $charge_name['charge_name_id']; ?>][1][1]" type="text" />
+                                                       </div>
+                                                    </div>
+                                                    <?php
+                                                    if(count($charge_detail_arr)=='2')
+                                                    {
+                                                        ?>
+                                                        <div class="col-md-2">
+                                                            <div class="form-group">
+                                                           </div>
+                                                        </div>
+                                                        <?php
+                                                    }
+                                                }
+                                                else if($charge_detail['account_type']=='1' && $charge_detail['account_process']=='2')
+                                                {
+                                                    ?>
+                                                    <div class="col-md-2">
+                                                        <div class="form-group">
+                                                          <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="<?php echo (isset($broker_charge[$charge_type['charge_type_id']][$charge_name['charge_name_id']]['1']['2']) && $broker_charge[$charge_type['charge_type_id']][$charge_name['charge_name_id']]['1']['2']!='')?$broker_charge[$charge_type['charge_type_id']][$charge_name['charge_name_id']]['1']['2']:'0.00'; ?>" name="inp_type[<?php echo $charge_type['charge_type_id']; ?>][<?php echo $charge_name['charge_name_id']; ?>][1][2]" type="text" />
+                                                       </div>
+                                                    </div>
+                                                    <?php
+                                                }
+                                                else if($charge_detail['account_type']=='2' && $charge_detail['account_process']=='1')
+                                                {
+                                                    ?>
+                                                    <div class="col-md-2">
+                                                        <div class="form-group">
+                                                          <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="<?php echo (isset($broker_charge[$charge_type['charge_type_id']][$charge_name['charge_name_id']]['2']['1']) && $broker_charge[$charge_type['charge_type_id']][$charge_name['charge_name_id']]['2']['1']!='')?$broker_charge[$charge_type['charge_type_id']][$charge_name['charge_name_id']]['2']['1']:'0.00'; ?>" name="inp_type[<?php echo $charge_type['charge_type_id']; ?>][<?php echo $charge_name['charge_name_id']; ?>][2][1]" type="text" />
+                                                       </div>
+                                                    </div>
+                                                    <?php
+                                                }
+                                                else if($charge_detail['account_type']=='2' && $charge_detail['account_process']=='2')
+                                                {
+                                                    ?>
+                                                    <div class="col-md-2">
+                                                        <div class="form-group">
+                                                          <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="<?php echo (isset($broker_charge[$charge_type['charge_type_id']][$charge_name['charge_name_id']]['2']['2']) && $broker_charge[$charge_type['charge_type_id']][$charge_name['charge_name_id']]['2']['2']!='')?$broker_charge[$charge_type['charge_type_id']][$charge_name['charge_name_id']]['2']['2']:'0.00'; ?>" name="inp_type[<?php echo $charge_type['charge_type_id']; ?>][<?php echo $charge_name['charge_name_id']; ?>][2][2]" type="text" />
+                                                       </div>
+                                                    </div>
+                                                    <?php
+                                                }
+                                                else
+                                                {
+                                                    ?>
+                                                    <div class="col-md-2">
+                                                        <div class="form-group">
+                                                       </div>
+                                                    </div>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
                                             </div>
-                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <h4 style="float: right;">Up to $1 Premium</h4>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="3.22" name="Options[Up to $1 Premium][non_clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <input class="form-control" value="0.000" name="Options[Up to $1 Premium][non_execution]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="25.5" name="Options[Up to $1 Premium][clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                            <input class="form-control" value="4.50" name="Options[Up to $1 Premium][execution]" type="text" />
-                                           </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <h4 style="float: right;">$1 Premium & Greater</h4>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="3.22" name="Options[$1 Premium & Greater][non_clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <input class="form-control" value="0.000" name="Options[$1 Premium & Greater][non_execution]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="25.5" name="Options[$1 Premium & Greater][clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                            <input class="form-control" value="4.50" name="Options[$1 Premium & Greater][execution]" type="text" />
-                                           </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                         <div class="col-md-12">
-                                            <div class="form-group">
-                                                <h4><b>Fixed Income</b></h4>
-                                            </div>
-                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <h4 style="float: right;">Listed Corporate</h4>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="3.22" name="Fixed Income[Listed Corporate][non_clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <input class="form-control" value="0.000" name="Fixed Income[Listed Corporate][non_execution]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="25.5" name="Fixed Income[Listed Corporate][clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                            <input class="form-control" value="4.50" name="Fixed Income[Listed Corporate][execution]" type="text" />
-                                           </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <h4 style="float: right;">OTC</h4>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="3.22" name="Fixed Income[OTC][non_clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="25.5" name="Fixed Income[OTC][clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                            
-                                           </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <h4 style="float: right;">Goverment Securities</h4>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="3.22" name="Fixed Income[Goverment Securities][non_clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="25.5" name="Fixed Income[Goverment Securities][clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                            
-                                           </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <h4 style="float: right;">CMOs</h4>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="3.22" name="Fixed Income[CMOs][[non_clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="25.5" name="Fixed Income[CMOs][clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                            
-                                           </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <h4 style="float: right;">Money Market/CDs</h4>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="3.22" name="Fixed Income[Money Market/CDs][non_clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="25.5" name="Fixed Income[Money Market/CDs][clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                            
-                                           </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <h4 style="float: right;">Mortgage Backed Securities</h4>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="3.22" name="Fixed Income[Mortgage Backed Securities][non_clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="25.5" name="Fixed Income[Mortgage Backed Securities][clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                            
-                                           </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <h4 style="float: right;">Municipal Bonds</h4>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="3.22" name="Fixed Income[Municipal Bonds][non_clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="25.5" name="Fixed Income[Municipal Bonds][clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                            
-                                           </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <h4 style="float: right;">UITs</h4>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="3.22" name="Fixed Income[UITs][non_clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="25.5" name="Fixed Income[UITs][clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                            
-                                           </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <h4 style="float: right;">Zero Coupon Bonds</h4>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="3.22" name="Fixed Income[Zero Coupon Bonds][non_clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="25.5" name="Fixed Income[Zero Coupon Bonds][clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                            
-                                           </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                         <div class="col-md-12">
-                                            <div class="form-group">
-                                                <h4><b>Mutual Funds</b></h4>
-                                            </div>
-                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <h4 style="float: right;">Buys/Sells</h4>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="3.22" name="Mutual Funds[Buys/Sells][non_clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="25.5" name="Mutual Funds[Buys/Sells][clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                            
-                                           </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <h4 style="float: right;">Exchanges</h4>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="3.22" name="Mutual Funds[Exchanges][non_clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="25.5" name="Mutual Funds[Exchanges][clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                            
-                                           </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <h4 style="float: right;">PIPs/SWPs</h4>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="3.22" name="Mutual Funds[PIPs/SWPs][non_clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="25.5" name="Mutual Funds[PIPs/SWPs][clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                            
-                                           </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <h4 style="float: right;">Transaction Surcharge</h4>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="3.22" name="Mutual Funds[Transaction Surcharge][non_clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="25.5" name="Mutual Funds[Transaction Surcharge][clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                            
-                                           </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <h4 style="float: right;">Postage/Transaction</h4>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="3.22" name="Mutual Funds[Postage/Transaction][non_clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                              <input class="form-control" value="25.5" name="Mutual Funds[Postage/Transaction][clearing]" type="text" />
-                                           </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                            
-                                           </div>
-                                        </div>
-                                    </div>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
                                 </div>
                                 <div class="panel-overlay">
                                     <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
@@ -2658,5 +2236,21 @@ $("#home_general").on("change", function () {
     document.getElementById("city_general").value='';
     document.getElementById("state_general").value='';
     document.getElementById("zip_code_general").value='';
+});
+(function($) {
+$.fn.chargeFormat = function() {
+    this.each( function( i ) {
+        $(this).change( function( e ){
+            if( isNaN( parseFloat( this.value ) ) ) return;
+            this.value = parseFloat(this.value).toFixed(2);
+        });
+    });
+    return this; //for chaining
+}
+})( jQuery );
+
+
+$( function() {
+$('.charge').chargeFormat();
 });
 </script>

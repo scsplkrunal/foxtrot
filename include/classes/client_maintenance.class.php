@@ -7,23 +7,45 @@
         /**
 		 * @param post array
 		 * @return true if success, error message if any errors
-		 * */
+		 * */ 
+         
 		public function insert_update($data){//echo '<pre>';print_r($data);exit;
 			$id = isset($data['id'])?$this->re_db_input($data['id']):0;
 			$fname = isset($data['fname'])?$this->re_db_input($data['fname']):'';
             $lname = isset($data['lname'])?$this->re_db_input($data['lname']):'';
+            $mi = isset($data['mi'])?$this->re_db_input($data['mi']):'';
+            $do_not_contact = isset($data['do_not_contact'])?$this->re_db_input($data['do_not_contact']):'';
+            $active = isset($data['active'])?$this->re_db_input($data['active']):'';
+            $long_name = isset($data['long_name'])?$this->re_db_input($data['long_name']):'';
+            $client_file_number = isset($data['client_file_number'])?$this->re_db_input($data['client_file_number']):'';
+            $clearing_account = isset($data['clearing_account'])?$this->re_db_input($data['clearing_account']):'';
+            $client_ssn = isset($data['client_ssn'])?$this->re_db_input($data['client_ssn']):'';
             $account_type = isset($data['account_type'])?$this->re_db_input($data['account_type']):'';
+            $household = isset($data['household'])?$this->re_db_input($data['household']):'';
             $broker_name = isset($data['broker_name'])?$this->re_db_input($data['broker_name']):'';
+            $split_broker = isset($data['split_broker'])?$this->re_db_input($data['split_broker']):'';
+            $split_rate = isset($data['split_rate'])?$this->re_db_input($data['split_rate']):'';
+            $address1 = isset($data['address1'])?$this->re_db_input($data['address1']):'';
+            $address2 = isset($data['address2'])?$this->re_db_input($data['address2']):'';
+            $city = isset($data['city'])?$this->re_db_input($data['city']):'';
+            $state = isset($data['state'])?$this->re_db_input($data['state']):'';
+            $zip_code = isset($data['zip_code'])?$this->re_db_input($data['zip_code']):'';
+            $age = isset($data['age'])?$this->re_db_input($data['age']):0;
+            $ofak_check = isset($data['ofak_check'])?$this->re_db_input($data['ofak_check']):'';
+            $fincen_check = isset($data['fincen_check'])?$this->re_db_input($data['fincen_check']):'';
+            $citizenship = isset($data['citizenship'])?$this->re_db_input($data['citizenship']):'';
             $telephone_mask = isset($data['telephone'])?$this->re_db_input($data['telephone']):'';
             $telephone_no = str_replace("-", '', $telephone_mask);
             $telephone_brack1 = str_replace("(", '', $telephone_no);
             $telephone = str_replace(")", '', $telephone_brack1);
             $contact_status = isset($data['contact_status'])?$this->re_db_input($data['contact_status']):'';
+            $birth_date = isset($data['birth_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['birth_date']))):'';
+            $date_established = isset($data['date_established'])?$this->re_db_input(date('Y-m-d',strtotime($data['date_established']))):'';
+            $open_date = isset($data['open_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['open_date']))):'';
+            $naf_date = isset($data['naf_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['naf_date']))):'';
+            $last_contacted = isset($data['last_contacted'])?$this->re_db_input(date('Y-m-d',strtotime($data['last_contacted']))):'';
             
-            $client_file_number = isset($_POST['client_file'])?$_POST['client_file']:'';//print_r($client_file);exit;
-            $valid_file = array('xls','pdf','zip','txt');
-			
-			if($lname==''){
+            if($lname==''){
 				$this->errors = 'Please enter last name.';
 			}
             else if($broker_name==''){
@@ -35,33 +57,6 @@
 			if($this->errors!=''){
 				return $this->errors;
 			}
-            
-            /*$file_image = '';  
-            
-            $file_name = isset($client_file['name'])?$client_file['name']:'';
-            $tmp_name = isset($client_file['tmp_name'])?$client_file['tmp_name']:'';
-            $error = isset($client_file['error'])?$client_file['error']:0;
-            $size = isset($client_file['size'])?$client_file['size']:'';
-            $type = isset($client_file['type'])?$client_file['type']:'';
-            $target_dir = DIR_FS."upload/";
-            $ext = strtolower(end(explode('.',$file_name)));
-            if($file_name!='')
-            {
-                if(!in_array($ext,$valid_file))
-                {
-                    $this->errors = 'Please select valid file.';
-                }
-                else
-                {
-                    $attachment_file = time().rand(100000,999999).'.'.$ext;
-                    move_uploaded_file($tmp_name,$target_dir.$attachment_file);
-                    $file_image = $attachment_file;
-                }
-                
-            }
-            if($this->errors!=''){
-				return $this->errors;
-			}*/
 			else{
 				
 				/* check duplicate record */
@@ -81,7 +76,7 @@
 				}
 				else if($id>=0){
 					if($id==0){
-						$q = "INSERT INTO `".$this->table."` SET `first_name`='".$fname."',`last_name`='".$lname."',`client_file`='".$client_file_number."',`account_type`='".$account_type."',`broker_name`='".$broker_name."',`telephone`='".$telephone."',`contact_status`='".$contact_status."'".$this->insert_common_sql();
+						$q = "INSERT INTO `".$this->table."` SET `first_name`='".$fname."',`last_name`='".$lname."',`mi`='".$mi."',`do_not_contact`='".$do_not_contact."',`active`='".$active."',`ofac_check`='".$ofak_check."',`fincen_check`='".$fincen_check."',`long_name`='".$long_name."',`client_file_number`='".$client_file_number."',`clearing_account`='".$clearing_account."',`client_ssn`='".$client_ssn."',`house_hold`='".$household."',`split_broker`='".$split_broker."',`split_rate`='".$split_rate."',`address1`='".$address1."',`address2`='".$address2."',`city`='".$city."',`state`='".$state."',`zip_code`='".$zip_code."',`citizenship`='".$citizenship."',`birth_date`='".$birth_date."',`date_established`='".$date_established."',`age`='".$age."',`open_date`='".$open_date."',`naf_date`='".$naf_date."',`last_contacted`='".$last_contacted."',`account_type`='".$account_type."',`broker_name`='".$broker_name."',`telephone`='".$telephone."',`contact_status`='".$contact_status."'".$this->insert_common_sql();
 						$res = $this->re_db_query($q);
                         $id = $this->re_db_insert_id();
 						if($res){
