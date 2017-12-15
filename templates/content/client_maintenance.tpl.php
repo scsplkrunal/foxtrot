@@ -43,10 +43,14 @@ function addMoreNotes(){
     var html = '<tr class="add_row_notes">'+
                     '<td>2</td>'+
                     '<td><?php echo date('d/m/Y');?></td>'+
+                    '<input type="hidden" name="date" id="date" value="<?php echo date('d/m/Y');?>"/>'+
                     '<td><?php echo $_SESSION['user_name'];?></td>'+
+                    '<input type="hidden" name="user_id" id="user_id" value="<?php echo $_SESSION['user_id'];?>"/>'+
                     '<td><input type="text" name="client_note" class="form-control" id="client_note"/></td>'+
                     '<td class="text-center">'+
-                    '<a href="<?php echo CURRENT_PAGE; ?>?action=add" class="btn btn-sm btn-warning"><i class="fa fa-save"></i> Save</a>&nbsp;'+
+                    '<input type="hidden" name="notes_id" id="notes_id" value=""/>'+
+                    '<input type="hidden" name="add_notes" value="Add Notes" />'+
+                    '<button type="submit" class="btn btn-sm btn-warning" name="add_notes" value="Add Notes"><i class="fa fa-save"></i> Save</button>&nbsp;'+
                     '<a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>&nbsp;'+
                     '<a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>'+
                     '</td>'+
@@ -577,8 +581,76 @@ $(document).on('click','.remove-row',function(){
                                 </form>
                                 </div>
                                 <div class="tab-pane" id="tab_cc">
-                                   Objectives
+                                   <form method="post">
+                                        <div class="panel-overlay-wrap">
+                                            <div class="panel">
+                                               <div class="panel-heading">
+                                                    <h4 class="panel-title" style="font-size: 20px;"><?php if($fname != ''){ echo $fname." ".$mi.". ".$lname;}?></h4>
+                                               </div>
+                                            <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                       <h4 class="panel-title" style="font-size: 20px;">Source Objectives</h4>
+                                                    </div>
+                                                </div>
+                                            	<div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <h4 class="panel-title" style="font-size: 20px;">Selected Objectives</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div style="display: block; border: 1px solid #ddd;">
+                                                        <div class="transitionactions">
+                                            				<div class="transdetail">
+                                            					<div class="transrow transrowtop">
+                                            						<div class="transcol transcol01">Translations</div>
+                                            						<div class="transcol">Action</div>
+                                            					</div>
+                                                                <div class="transrow">
+                                            						<div class="transcol transcol01">sdfdsfdf</div>
+                                            						<div class="transcol">
+                                                                    </div>
+                                            					</div>
+                                                                <?php //foreach($current_return as $key=>$data){?>
+                                            					<div class="transrow">
+                                            						<div class="transcol transcol01">sadfsdf</div>
+                                            						<div class="transcol">
+                                                                    <span><a href=""><i class="fa fa-trash-o"></i></a></span>
+                                                                    </div>
+                                            					</div>
+                                                                <?php //} ?>
+                                            					
+                                            				</div>
+                                            			</div>
+                                                    </div>
+                                                </div>
+                                            	<div class="col-md-6">
+                                                    <div style="display: block; border: 1px solid #ddd;">
+                                                        <span><a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=<?php echo $data['id']; ?>">sdfhdklsfhkjsfhk</i></a></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                            <div class="panel-overlay">
+                                                <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
+                                            </div>
+                                            <div class="panel-footer">
+                                                <div class="selectwrap">
+                                                    <input type="hidden" name="account_id" id="account_id" value="<?php echo $id;?>" />
+                                					<input type="submit" name="account" value="Save"/>	
+                                                    <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
+                                                </div>
+                                           </div>
+                                        </div>
+                                    </div>
+                                </form>
                                 </div>
+                                <style>
+  
+                                </style>
                                 <div class="tab-pane" id="tab_dd">
                                    <form method="post">
                                         <div class="panel-overlay-wrap">
@@ -671,7 +743,7 @@ $(document).on('click','.remove-row',function(){
                               
                                 </div>-->
                                 <div class="tab-pane" id="tab_ff">
-                                    
+                                    <form method="post">
                                         <div class="panel-overlay-wrap">
                                             <div class="panel">
                                                <div class="panel-heading">
@@ -685,7 +757,7 @@ $(document).on('click','.remove-row',function(){
                                                         <select name="income" id="income" class="form-control">
                                                             <option value="">Select Income</option>
                                                             <?php foreach($get_income as $key=>$val){?>
-                                                            <option value="<?php echo $val['id'];?>" ><?php echo $val['option'];?></option>
+                                                            <option value="<?php echo $val['id'];?>" <?php if($income != '' && $income==$val['id']){echo "selected='selected'";} ?>><?php echo $val['option'];?></option>
                                                             <?php } ?>
                                                         </select>
                                                     </div>
@@ -696,7 +768,7 @@ $(document).on('click','.remove-row',function(){
                                                         <select name="goal_horizone" id="goal_horizone" class="form-control">
                                                             <option value="">Select Goal Horizon</option>
                                                             <?php foreach($get_horizon as $key=>$val){?>
-                                                            <option value="<?php echo $val['id'];?>" ><?php echo $val['option'];?></option>
+                                                            <option value="<?php echo $val['id'];?>" <?php if($goal_horizone != '' && $goal_horizone==$val['id']){echo "selected='selected'";} ?>><?php echo $val['option'];?></option>
                                                             <?php } ?>
                                                         </select>
                                                     </div>
@@ -709,7 +781,7 @@ $(document).on('click','.remove-row',function(){
                                                         <select name="net_worth" id="net_worth" class="form-control">
                                                             <option value="">Select Net Worth</option>
                                                             <?php foreach($get_networth as $key=>$val){?>
-                                                            <option value="<?php echo $val['id'];?>" ><?php echo $val['option'];?></option>
+                                                            <option value="<?php echo $val['id'];?>" <?php if($net_worth != '' && $net_worth==$val['id']){echo "selected='selected'";} ?>><?php echo $val['option'];?></option>
                                                             <?php } ?>
                                                         </select>
                                                     </div>
@@ -720,7 +792,7 @@ $(document).on('click','.remove-row',function(){
                                                         <select name="risk_tolerance" id="risk_tolerance" class="form-control">
                                                             <option value="">Select Risk Tolerance</option>
                                                             <?php foreach($get_risk_tolerance as $key=>$val){?>
-                                                            <option value="<?php echo $val['id'];?>" ><?php echo $val['option'];?></option>
+                                                            <option value="<?php echo $val['id'];?>" <?php if($risk_tolerance != '' && $risk_tolerance==$val['id']){echo "selected='selected'";} ?>><?php echo $val['option'];?></option>
                                                             <?php } ?>
                                                         </select>
                                                     </div>
@@ -733,7 +805,7 @@ $(document).on('click','.remove-row',function(){
                                                         <select name="annual_expenses" id="annual_expenses" class="form-control">
                                                             <option value="">Select Annual Expenses</option>
                                                             <?php foreach($get_annual_expenses as $key=>$val){?>
-                                                            <option value="<?php echo $val['id'];?>" ><?php echo $val['option'];?></option>
+                                                            <option value="<?php echo $val['id'];?>" <?php if($annual_expenses != '' && $annual_expenses==$val['id']){echo "selected='selected'";} ?>><?php echo $val['option'];?></option>
                                                             <?php } ?>
                                                         </select>
                                                     </div>
@@ -744,7 +816,7 @@ $(document).on('click','.remove-row',function(){
                                                         <select name="liquidity_needs" id="liquidity_needs" class="form-control">
                                                             <option value="">Select Liquidity Needs</option>
                                                             <?php foreach($get_liqudity_needs as $key=>$val){?>
-                                                            <option value="<?php echo $val['id'];?>" ><?php echo $val['option'];?></option>
+                                                            <option value="<?php echo $val['id'];?>" <?php if($liquidity_needs != '' && $liquidity_needs==$val['id']){echo "selected='selected'";} ?>><?php echo $val['option'];?></option>
                                                             <?php } ?>
                                                         </select>
                                                     </div>
@@ -757,7 +829,7 @@ $(document).on('click','.remove-row',function(){
                                                         <select name="liquid_net_worth" id="liquid_net_worth" class="form-control">
                                                             <option value="">Select Liquid Net Worth</option>
                                                             <?php foreach($get_liquid_net_worth as $key=>$val){?>
-                                                            <option value="<?php echo $val['id'];?>" ><?php echo $val['option'];?></option>
+                                                            <option value="<?php echo $val['id'];?>" <?php if($liquid_net_worth != '' && $liquid_net_worth==$val['id']){echo "selected='selected'";} ?>><?php echo $val['option'];?></option>
                                                             <?php } ?>
                                                         </select>
                                                     </div>
@@ -768,7 +840,7 @@ $(document).on('click','.remove-row',function(){
                                                         <select name="special_expenses" id="special_expenses" class="form-control">
                                                             <option value="">Select Special Expenses</option>
                                                             <?php foreach($get_special_expenses as $key=>$val){?>
-                                                            <option value="<?php echo $val['id'];?>" ><?php echo $val['option'];?></option>
+                                                            <option value="<?php echo $val['id'];?>" <?php if($special_expenses != '' && $special_expenses==$val['id']){echo "selected='selected'";} ?>><?php echo $val['option'];?></option>
                                                             <?php } ?>
                                                         </select>
                                                     </div>
@@ -781,7 +853,7 @@ $(document).on('click','.remove-row',function(){
                                                         <select name="per_of_portfolio" id="per_of_portfolio" class="form-control">
                                                             <option value="">Select % of Portfolio</option>
                                                             <?php foreach($get_portfolio as $key=>$val){?>
-                                                            <option value="<?php echo $val['id'];?>" ><?php echo $val['option'];?></option>
+                                                            <option value="<?php echo $val['id'];?>" <?php if($per_of_portfolio != '' && $per_of_portfolio==$val['id']){echo "selected='selected'";} ?>><?php echo $val['option'];?></option>
                                                             <?php } ?>
                                                         </select>
                                                     </div>
@@ -792,7 +864,7 @@ $(document).on('click','.remove-row',function(){
                                                         <select name="timeframe_for_special_exp" id="timeframe_for_special_exp" class="form-control">
                                                             <option value="">Select Timeframe for Special Exp</option>
                                                             <?php foreach($get_time_for_exp as $key=>$val){?>
-                                                            <option value="<?php echo $val['id'];?>" ><?php echo $val['option'];?></option>
+                                                            <option value="<?php echo $val['id'];?>" <?php if($timeframe_for_special_exp != '' && $timeframe_for_special_exp==$val['id']){echo "selected='selected'";} ?>><?php echo $val['option'];?></option>
                                                             <?php } ?>
                                                         </select>
                                                     </div>
@@ -805,7 +877,7 @@ $(document).on('click','.remove-row',function(){
                                                         <select name="account_use" id="account_use" class="form-control">
                                                             <option value="">Select Account Use</option>
                                                             <?php foreach($get_account_use as $key=>$val){?>
-                                                            <option value="<?php echo $val['id'];?>" ><?php echo $val['option'];?></option>
+                                                            <option value="<?php echo $val['id'];?>" <?php if($account_use != '' && $account_use==$val['id']){echo "selected='selected'";} ?>><?php echo $val['option'];?></option>
                                                             <?php } ?>
                                                         </select>
                                                     </div>
@@ -813,7 +885,7 @@ $(document).on('click','.remove-row',function(){
                                             	<div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Signed By </label>
-                                                        <input type="text" name="signed_by" id="signed_by" class="form-control"/>
+                                                        <input type="text" name="signed_by" id="signed_by" class="form-control" value="<?php echo $signed_by;?>"/>
                                                     </div>
                                                 </div>
                                              </div>
@@ -823,7 +895,7 @@ $(document).on('click','.remove-row',function(){
                                                         <label>Sign Date </label>
                                                         <div id="demo-dp-range">
         					                                <div class="input-daterange input-group" id="datepicker">
-                                                                <input type="text" name="sign_date" id="sign_date" value="" class="form-control" />
+                                                                <input type="text" name="sign_date" id="sign_date" value="<?php echo $sign_date;?>" class="form-control" />
         					                                </div>
         				                                </div>
                                                     </div>
@@ -831,7 +903,7 @@ $(document).on('click','.remove-row',function(){
                                             	<div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Tax Bracket </label>
-                                                        <input type="number" name="tax_bracket" id="tax_bracket" class="form-control"/>
+                                                        <input type="number" name="tax_bracket" id="tax_bracket" class="form-control" value="<?php echo $tax_bracket;?>"/>
                                                     </div>
                                                 </div>
                                              </div>
@@ -839,16 +911,7 @@ $(document).on('click','.remove-row',function(){
                                                   <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Tax ID </label>
-                                                        <input type="text" name="tax_id" id="tax_id" class="form-control"/>
-                                                    </div>
-                                                 </div>
-                                                 <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label></label><br />
-                                                        <a href="#client_notes" data-toggle="modal"><input type="button" name="notes" value="Notes" /></a>
-                                                        <a href="#client_transactions" data-toggle="modal"><input type="button" name="transactions" value="Transactions" /></a>
-                                                        <a href="#joint_account" data-toggle="modal"><input type="button" name="joint_account" value="Joint Account" /></a>
-                                                        <a href="#client_attachment" data-toggle="modal"><input type="button" name="attach" value="Attach" /></a>
+                                                        <input type="text" name="tax_id" id="tax_id" class="form-control" <?php echo $tax_id;?>/>
                                                     </div>
                                                  </div>
                                              </div>
@@ -856,16 +919,16 @@ $(document).on('click','.remove-row',function(){
                                             <div class="panel-overlay">
                                                 <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
                                             </div>
-                                            <!--<div class="panel-footer">
+                                            <div class="panel-footer">
                                                 <div class="selectwrap">
-                                                    <input type="hidden" name="id" id="id" value="" />
-                                					<input type="submit" onclick="waitingDialog.show();" name="submit" value="Save"/>	
+                                                    <input type="hidden" name="suitability_id" id="suitability_id" value="" />
+                                					<input type="submit" onclick="waitingDialog.show();" name="suitability" value="Save"/>	
                                                     <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                                                 </div>
-                                           </div>-->
+                                           </div>
                                         </div>
                                     </div>
-                                
+                                  </form>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
@@ -974,10 +1037,16 @@ $(document).on('click','.remove-row',function(){
 					<h4 class="modal-title">Client's Notes</h4>
 				</div>
 				<div class="modal-body">
-                <form method="post">
+                <form method="post" id="add_client_notes" name="add_client_notes" onsubmit="return notessubmit();">
                 <div class="inputpopup">
                     <a class="btn btn-sm btn-success" style="float: right !important; margin-right: 5px !important;" onclick="addMoreNotes();"><i class="fa fa-plus"></i> Add New</a></li>
     			</div>
+                
+                <div class="col-md-12">
+                    <div id="msg">
+                    </div>
+                </div>
+                
                 <div class="inputpopup">
                     <div class="table-responsive" id="table-scroll" style="margin: 0px 5px 0px 5px;">
                         <table class="table table-bordered table-stripped table-hover">
@@ -989,17 +1058,23 @@ $(document).on('click','.remove-row',function(){
                                 <th class="text-center">Action</th>
                             </thead>
                             <tbody>
+                            <?php foreach($get_notes as $key=>$val){?>
                                 <tr id="add_row_notes">
                                     <td>1</td>
-                                    <td><?php echo date('d/m/Y');?></td>
-                                    <td><?php echo $_SESSION['user_name'];?></td>
-                                    <td><input type="text" name="client_note" class="form-control" id="client_note"/></td>
+                                    <td><?php echo date('d/m/Y',strtotime($val['date']));?></td>
+                                    <input type="hidden" name="date" id="date" value="<?php echo date('d/m/Y');?>"/>
+                                    <td><?php echo $val['user_id'];?></td>
+                                    <input type="hidden" name="user_id" id="user_id" value="<?php echo $_SESSION['user_id'];?>"/>
+                                    <td><input type="text" name="client_note" class="form-control" id="client_note" value="<?php echo $val['notes'];?>"/></td>
                                     <td class="text-center">
-                                       <a href="<?php echo CURRENT_PAGE; ?>?action=add" class="btn btn-sm btn-warning"><i class="fa fa-save"></i> Save</a>
+                                       <input type="hidden" name="notes_id" id="notes_id" value=""/>
+                                       <input type="hidden" name="add_notes" value="Add Notes" />
+							           <button type="submit" class="btn btn-sm btn-warning" name="add_notes" value="Add Notes"><i class="fa fa-save"></i> Save</button>
                                        <a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=" class="btn btn-sm btn-primary" ><i class="fa fa-edit"></i> Edit</a>
                                        <a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
                                     </td>
                                 </tr>
+                            <?php } ?>
                           </tbody>
                         </table>
                     </div>
@@ -1407,6 +1482,48 @@ function getAge(dateString)
         $('.currency1').currencyFormat1();
     });
 </script>
+
+<script>
+//submit share form data
+function notessubmit()
+{
+   $('#msg').html('<div class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Please wait...</div>');
+
+   var url = "client_maintenance.php"; // the script where you handle the form input.
+   //alert($("#add_notebook").serialize());
+   $.ajax({
+      type: "POST",
+      url: url,
+      data: $("#add_client_notes").serialize(), // serializes the form's elements.
+      success: function(data){
+          if(data=='1'){
+            $('#msg').html('<div class="alert alert-success">Data Successfully Saved.</div>');
+               /*window.location.href = "client_maintenance.php";
+               
+               /*$('#msg').html('<div class="alert alert-success">Thank you.</div>');
+               $('#add_notebook')[0].reset();
+               setTimeout(function(){
+    $('#myModalShare').modal('hide');	
+   	}, 2000);*/
+               
+          }
+          else{
+               $('#msg').html('<div class="alert alert-danger">'+data+'</div>');
+          }
+          
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+           $('#msg').html('<div class="alert alert-danger">Something went wrong, Please try again.</div>')
+      }
+      
+   });
+
+   //e.preventDefault(); // avoid to execute the actual submit of the form.
+   return false;
+       
+}
+</script>
+
 <style>
 .validation
 {

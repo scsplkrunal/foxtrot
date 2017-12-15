@@ -162,7 +162,7 @@
         $category = $instance->re_db_input($_GET['category']);
         $return = $instance->product_status($id,$status,$category);
         if($return==true){
-            header('location:'.CURRENT_PAGE);exit;
+            header('location:'.CURRENT_PAGE.'?view_product&category='.$category);exit;
         }
         else{
             header('location:'.CURRENT_PAGE);exit;

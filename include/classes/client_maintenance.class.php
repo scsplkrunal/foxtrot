@@ -197,6 +197,95 @@
 				}
 			}
 		}
+        public function insert_update_suitability($data){
+            $id = isset($data['suitability_id'])?$this->re_db_input($data['suitability_id']):0;
+            $income = isset($data['income'])?$this->re_db_input($data['income']):'';
+            $goal_horizone = isset($data['goal_horizone'])?$this->re_db_input($data['goal_horizone']):'';
+            $net_worth = isset($data['net_worth'])?$this->re_db_input($data['net_worth']):'';
+            $risk_tolerance = isset($data['risk_tolerance'])?$this->re_db_input($data['risk_tolerance']):'';
+            $annual_expenses = isset($data['annual_expenses'])?$this->re_db_input($data['annual_expenses']):'';
+            $liquidity_needs = isset($data['liquidity_needs'])?$this->re_db_input($data['liquidity_needs']):'';
+            $liquid_net_worth = isset($data['liquid_net_worth'])?$this->re_db_input($data['liquid_net_worth']):'';
+            $special_expenses = isset($data['special_expenses'])?$this->re_db_input($data['special_expenses']):'';
+            $per_of_portfolio = isset($data['per_of_portfolio'])?$this->re_db_input($data['per_of_portfolio']):'';
+            $timeframe_for_special_exp = isset($data['timeframe_for_special_exp'])?$this->re_db_input($data['timeframe_for_special_exp']):'';
+            $account_use = isset($data['account_use'])?$this->re_db_input($data['account_use']):'';
+            $signed_by = isset($data['signed_by'])?$this->re_db_input($data['signed_by']):'';
+            $sign_date = isset($data['sign_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['sign_date']))):'';
+            $tax_bracket = isset($data['tax_bracket'])?$this->re_db_input($data['tax_bracket']):'';
+            $tax_id = isset($data['tax_id'])?$this->re_db_input($data['tax_id']):'';
+            
+            
+            if($id==0){
+				$q = "INSERT INTO `".CLIENT_SUITABILITY."` SET `client_id`='".$_SESSION['client_id']."',`income`='".$income."',`goal_horizon`='".$goal_horizone."',`net_worth`='".$net_worth."',`risk_tolerance`='".$risk_tolerance."',`annual_expenses`='".$annual_expenses."',`liquidity_needs`='".$liquidity_needs."',`liquid_net_worth`='".$liquid_net_worth."',`special_expenses`='".$special_expenses."',`per_of_portfolio`='".$per_of_portfolio."',`time_frame_for_special_exp`='".$timeframe_for_special_exp."',`account_use`='".$account_use."',`signed_by`='".$signed_by."',`sign_date`='".$sign_date."',`tax_bracket`='".$tax_bracket."',`tax_id`='".$tax_id."'".$this->insert_common_sql();
+				$res = $this->re_db_query($q);
+                $id = $this->re_db_insert_id();
+				if($res){
+				    $_SESSION['success'] = INSERT_MESSAGE;
+					return true;
+				}
+				else{
+					$_SESSION['warning'] = UNKWON_ERROR;
+					return false;
+				}
+			}
+			else if($id>0){
+			    
+				$q = "UPDATE `".CLIENT_SUITABILITY."` SET `client_id`='".$_SESSION['client_id']."',`income`='".$income."',`goal_horizon`='".$goal_horizone."',`net_worth`='".$net_worth."',`risk_tolerance`='".$risk_tolerance."',`annual_expenses`='".$annual_expenses."',`liquidity_needs`='".$liquidity_needs."',`liquid_net_worth`='".$liquid_net_worth."',`special_expenses`='".$special_expenses."',`per_of_portfolio`='".$per_of_portfolio."',`time_frame_for_special_exp`='".$timeframe_for_special_exp."',`account_use`='".$account_use."',`signed_by`='".$signed_by."',`sign_date`='".$sign_date."',`tax_bracket`='".$tax_bracket."',`tax_id`='".$tax_id."'".$this->update_common_sql()." WHERE `client_id`='".$id."'";
+				$res = $this->re_db_query($q);
+				if($res){
+				    $_SESSION['success'] = UPDATE_MESSAGE;
+					return true;
+				}
+				else{
+					$_SESSION['warning'] = UNKWON_ERROR;
+					return false;
+				}
+			}
+		}
+        public function insert_update_client_notes($data){
+			$notes_id = isset($data['notes_id'])?$this->re_db_input($data['notes_id']):0;
+			$date = isset($data['date'])?$this->re_db_input($data['date']):'';
+            $user_id = isset($data['user_id'])?$this->re_db_input($data['user_id']):'';
+            $client_note = isset($data['client_note'])?$this->re_db_input($data['client_note']):'';
+            
+            if($client_note==''){
+				$this->errors = 'Please enter notes.';
+			}
+			if($this->errors!=''){
+				return $this->errors;
+			}
+			else{
+                if($notes_id==0){
+                    $q = "INSERT INTO `".CLIENT_NOTES."` SET `date`='".$date."',`user_id`='".$user_id."',`notes`='".$client_note."'".$this->insert_common_sql();
+			        $res = $this->re_db_query($q);
+                    
+                    $notes_id = $this->re_db_insert_id();
+    				if($res){
+    				    $_SESSION['success'] = INSERT_MESSAGE;
+    					return true;
+    				}
+    				else{
+    					$_SESSION['warning'] = UNKWON_ERROR;
+    					return false;
+    				}
+    			}
+    			else if($notes_id>0){
+    			    
+                    $q = "UPDATE `".CLIENT_NOTES."` SET `date`='".$date."',`user_id`='".$user_id."',`notes`='".$client_note."'".$this->update_common_sql()." WHERE `id`='".$notes_id."'";
+       				$res = $this->re_db_query($q);
+                    
+                    if($res){
+    				    $_SESSION['success'] = UPDATE_MESSAGE;
+    					return true;
+    				}
+    				else{
+    					$_SESSION['warning'] = UNKWON_ERROR;
+    					return false;
+    				}
+    			}
+            }
+		}
         /**
 		 * @param int status, default all
 		 * @return array of record if success, error message if any errors
@@ -224,6 +313,23 @@
 			
 			$q = "SELECT `s`.*
 					FROM `".STATE_MASTER."` AS `s`
+                    WHERE `s`.`is_delete`='0'
+                    ORDER BY `s`.`id` ASC";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+		}
+        public function select_notes(){
+			$return = array();
+			
+			$q = "SELECT `s`.*
+					FROM `".CLIENT_NOTES."` AS `s`
                     WHERE `s`.`is_delete`='0'
                     ORDER BY `s`.`id` ASC";
 			$res = $this->re_db_query($q);

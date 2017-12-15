@@ -59,10 +59,34 @@
     $state_employe = '';
     $date_verified = '';
     
+    //account variable
+    
+    $account_no = '';
+    $sponsor_company = '';
+    
+    //suitability variables
+    
+    $income = '';
+    $goal_horizone = '';
+    $net_worth = '';
+    $risk_tolerance = '';
+    $annual_expenses = '';
+    $liquidity_needs = '';
+    $liquid_net_worth = '';
+    $special_expenses = '';
+    $per_of_portfolio = '';
+    $timeframe_for_special_exp = '';
+    $account_use = '';
+    $signed_by = '';
+    $sign_date = '';
+    $tax_bracket = '';
+    $tax_id = '';
+    
     $instance = new client_maintenance();
     $instance_account_type = new account_master();
     $get_account_type = $instance_account_type->select_account_type();
     $get_state = $instance->select_state();
+    $get_notes = $instance->select_notes();
     $instance_product = new product_maintenance();
     $get_sponsor = $instance_product->select_sponsor();
     $instance_client_suitability = new client_suitebility_master();
@@ -165,6 +189,47 @@
             $error = !isset($_SESSION['warning'])?$return:'';
         }
     }
+    else if(isset($_POST['suitability'])&& $_POST['suitability']=='Save'){
+        $id = isset($_POST['suitability_id'])?$instance->re_db_input($_POST['suitability_id']):0;
+        $income = isset($_POST['income'])?$instance->re_db_input($_POST['income']):'';
+        $goal_horizone = isset($_POST['goal_horizone'])?$instance->re_db_input($_POST['goal_horizone']):'';
+        $net_worth = isset($_POST['net_worth'])?$instance->re_db_input($_POST['net_worth']):'';
+        $risk_tolerance = isset($_POST['risk_tolerance'])?$instance->re_db_input($_POST['risk_tolerance']):'';
+        $annual_expenses = isset($_POST['annual_expenses'])?$instance->re_db_input($_POST['annual_expenses']):'';
+        $liquidity_needs = isset($_POST['liquidity_needs'])?$instance->re_db_input($_POST['liquidity_needs']):'';
+        $liquid_net_worth = isset($_POST['liquid_net_worth'])?$instance->re_db_input($_POST['liquid_net_worth']):'';
+        $special_expenses = isset($_POST['special_expenses'])?$instance->re_db_input($_POST['special_expenses']):'';
+        $per_of_portfolio = isset($_POST['per_of_portfolio'])?$instance->re_db_input($_POST['per_of_portfolio']):'';
+        $timeframe_for_special_exp = isset($_POST['timeframe_for_special_exp'])?$instance->re_db_input($_POST['timeframe_for_special_exp']):'';
+        $account_use = isset($_POST['account_use'])?$instance->re_db_input($_POST['account_use']):'';
+        $signed_by = isset($_POST['signed_by'])?$instance->re_db_input($_POST['signed_by']):'';
+        $sign_date = isset($_POST['sign_date'])?$instance->re_db_input($_POST['sign_date']):'';
+        $tax_bracket = isset($_POST['tax_bracket'])?$instance->re_db_input($_POST['tax_bracket']):'';
+        $tax_id = isset($_POST['tax_id'])?$instance->re_db_input($_POST['tax_id']):'';
+        
+        $return = $instance->insert_update_suitability($_POST);
+        
+        if($return===true){
+            header("location:".CURRENT_PAGE);exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+    }
+    else if(isset($_POST['add_notes'])&& $_POST['add_notes']=='Add Notes'){
+        
+        $return = $instance->insert_update_client_notes($_POST);
+        
+        if($return===true){
+            echo '1';exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+        echo $error;
+        exit;
+    }
+    
     else if(isset($_POST['submit'])&&$_POST['submit']=='Search'){
         
        $search_text = isset($_POST['search_text'])?$instance->re_db_input($_POST['search_text']):''; 

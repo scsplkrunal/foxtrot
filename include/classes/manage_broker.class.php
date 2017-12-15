@@ -370,6 +370,7 @@
 		 * @param int status, default all
 		 * @return array of record if success, error message if any errors
 		 * */
+         
 		public function select(){
 			$return = array();
 			
@@ -387,17 +388,13 @@
             }
 			return $return;
 		}
-        /**
-		 * @param int status, default all
-		 * @return get state for general information
-		 * */
         public function select_state(){
 			$return = array();
 			
-			$q = "SELECT `st`.*
-					FROM `".STATE_MASTER."` AS `st`
-                    WHERE `st`.`is_delete`='0'
-                    ORDER BY `st`.`id` ASC";
+			$q = "SELECT `s`.*
+					FROM `".STATE_MASTER."` AS `s`
+                    WHERE `s`.`is_delete`='0'
+                    ORDER BY `s`.`id` ASC";
 			$res = $this->re_db_query($q);
             if($this->re_db_num_rows($res)>0){
                 $a = 0;
@@ -408,6 +405,11 @@
             }
 			return $return;
 		}
+        /**
+		 * @param int status, default all
+		 * @return get state for general information
+		 * */
+      
         /**
 		 * @param int id
 		 * @return array of record if success, error message if any errors

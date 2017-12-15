@@ -582,7 +582,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Routing </label><br />
-                                                <input type="text" name="routing_general" id="routing_general" value="<?php echo $routing; ?>" class="form-control" />
+                                                <input type="text" name="routing_general" onkeypress='return event.charCode >= 48 && event.charCode <= 57' onblur="return chech()" id="routing_general" value="<?php echo $routing; ?>" class="form-control" />
                                             </div>
                                         </div>
                                     </div>
@@ -968,27 +968,30 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                </div>
                                                             </div>
                                                         </div>
+                                                        <?php foreach($get_state as $statekey=>$stateval){?>
+                                                        <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
                                                         <div class="row">
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
-                                                                  <input type="checkbox" name="active_check" id="active_check" class="checkbox"  />
+                                                                  <input type="checkbox" name="active_check_<?php echo $stateval['id'] ?>" id="active_check_<?php echo $stateval['id'] ?>" class="checkbox"  />
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
-                                                                    <label>Alaska</label>
+                                                                        <label><?php echo $stateval['name']; ?></label>
+                                                                    
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
-                                                                  <input class="form-control" value="120.00" name="fee" type="text" />
+                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="" name="fee_<?php echo $stateval['id'] ?>" type="text" />
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
                                                                     <div id="demo-dp-range">
                     					                                <div class="input-daterange input-group" id="datepicker">
-                                                                            <input type="text" name="received" id="received" value="" class="form-control" />
+                                                                            <input type="text" name="received_<?php echo $stateval['id'] ?>" id="received_<?php echo $stateval['id'] ?>" value="" class="form-control" />
                     					                                </div>
                     					                            </div>
                                                                </div>
@@ -997,17 +1000,104 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                 <div class="form-group">
                                                                   <div id="demo-dp-range">
                 					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="terminated" id="terminated" value="" class="form-control" />
+                                                                        <input type="text" name="terminated_<?php echo $stateval['id'] ?>" id="terminated_<?php echo $stateval['id'] ?>" value="" class="form-control" />
                 					                                </div>
                 					                              </div>
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
-                                                                    <input class="form-control" value="" name="reason" id="reason" type="text" />
+                                                                    <input class="form-control" value="" name="reason_<?php echo $stateval['id'] ?>" id="reason_<?php echo $stateval['id'] ?>" type="text" />
                                                                </div>
                                                             </div>
                                                         </div>
+                                                        </div>
+                                                        <?php } ?>
+                                                        <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
+                                                        <div class="row">
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                  <input type="checkbox" name="active_check_washington_dc" id="active_check_washington_dc" class="checkbox"  />
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                        <label>Washington DC</label>
+                                                                    
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="" name="fee_washington_dc" type="text" />
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                    <div id="demo-dp-range">
+                    					                                <div class="input-daterange input-group" id="datepicker">
+                                                                            <input type="text" name="received_washington_dc" id="received_washington_dc" value="" class="form-control" />
+                    					                                </div>
+                    					                            </div>
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                  <div id="demo-dp-range">
+                					                                <div class="input-daterange input-group" id="datepicker">
+                                                                        <input type="text" name="terminated_washington_dc" id="terminated_washington_dc" value="" class="form-control" />
+                					                                </div>
+                					                              </div>
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                    <input class="form-control" value="" name="reason_washington_dc" id="reason_washington_dc" type="text" />
+                                                               </div>
+                                                            </div>
+                                                        </div>
+                                                        </div>
+                                                        <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
+                                                        <div class="row">
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                    <input type="checkbox" name="active_check_foreign" id="active_check_foreign" class="checkbox"  />
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                    <label>Foreign</label>
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="" name="fee_foreign" type="text" />
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                    <div id="demo-dp-range">
+                    					                                <div class="input-daterange input-group" id="datepicker">
+                                                                            <input type="text" name="received_foreign" id="received_foreign" value="" class="form-control" />
+                    					                                </div>
+                    					                            </div>
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                  <div id="demo-dp-range">
+                					                                <div class="input-daterange input-group" id="datepicker">
+                                                                        <input type="text" name="terminated_foreign" id="terminated_foreign" value="" class="form-control" />
+                					                                </div>
+                					                              </div>
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                    <input class="form-control" value="" name="reason_foreign" id="reason_foreign" type="text" />
+                                                               </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     </div>
                                                     <div class="panel-overlay">
                                                         <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
@@ -1068,27 +1158,30 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                </div>
                                                             </div>
                                                         </div>
+                                                        <?php foreach($get_state as $statekey=>$stateval){?>
+                                                        <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
                                                         <div class="row">
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
-                                                                  <input type="checkbox" name="active_check" id="active_check" class="checkbox"  />
+                                                                  <input type="checkbox" name="active_check_<?php echo $stateval['id'] ?>" id="active_check_<?php echo $stateval['id'] ?>" class="checkbox"  />
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
-                                                                    <label>Alaska</label>
+                                                                        <label><?php echo $stateval['name']; ?></label>
+                                                                    
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
-                                                                  <input class="form-control" value="120.00" name="fee" type="text" />
+                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="" name="fee_<?php echo $stateval['id'] ?>" type="text" />
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
                                                                     <div id="demo-dp-range">
                     					                                <div class="input-daterange input-group" id="datepicker">
-                                                                            <input type="text" name="received" id="received" value="" class="form-control" />
+                                                                            <input type="text" name="received_<?php echo $stateval['id'] ?>" id="received_<?php echo $stateval['id'] ?>" value="" class="form-control" />
                     					                                </div>
                     					                            </div>
                                                                </div>
@@ -1097,18 +1190,102 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                 <div class="form-group">
                                                                   <div id="demo-dp-range">
                 					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="terminated" id="terminated" value="" class="form-control" />
+                                                                        <input type="text" name="terminated_<?php echo $stateval['id'] ?>" id="terminated_<?php echo $stateval['id'] ?>" value="" class="form-control" />
                 					                                </div>
                 					                              </div>
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
-                                                                    <input class="form-control" value="" name="reason" id="reason" type="text" />
+                                                                    <input class="form-control" value="" name="reason_<?php echo $stateval['id'] ?>" id="reason_<?php echo $stateval['id'] ?>" type="text" />
+                                                               </div>
+                                                            </div>
+                                                        </div></div>
+                                                        <?php } ?><div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
+                                                        <div class="row">
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                  <input type="checkbox" name="active_check_washington_dc" id="active_check_washington_dc" class="checkbox"  />
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                        <label>Washington DC</label>
+                                                                    
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="" name="fee_washington_dc" type="text" />
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                    <div id="demo-dp-range">
+                    					                                <div class="input-daterange input-group" id="datepicker">
+                                                                            <input type="text" name="received_washington_dc" id="received_washington_dc" value="" class="form-control" />
+                    					                                </div>
+                    					                            </div>
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                  <div id="demo-dp-range">
+                					                                <div class="input-daterange input-group" id="datepicker">
+                                                                        <input type="text" name="terminated_washington_dc" id="terminated_washington_dc" value="" class="form-control" />
+                					                                </div>
+                					                              </div>
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                    <input class="form-control" value="" name="reason_washington_dc" id="reason_washington_dc" type="text" />
+                                                               </div>
+                                                            </div>
+                                                        </div></div>
+                                                        <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
+                                                        <div class="row">
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                  <input type="checkbox" name="active_check_foreign" id="active_check_foreign" class="checkbox"  />
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                        <label>Foreign</label>
+                                                                    
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="" name="fee_foreign" type="text" />
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                    <div id="demo-dp-range">
+                    					                                <div class="input-daterange input-group" id="datepicker">
+                                                                            <input type="text" name="received_foreign" id="received_foreign" value="" class="form-control" />
+                    					                                </div>
+                    					                            </div>
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                  <div id="demo-dp-range">
+                					                                <div class="input-daterange input-group" id="datepicker">
+                                                                        <input type="text" name="terminated_foreign" id="terminated_foreign" value="" class="form-control" />
+                					                                </div>
+                					                              </div>
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                    <input class="form-control" value="" name="reason_foreign" id="reason_foreign" type="text" />
                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div></div>
                                                     <div class="panel-overlay">
                                                         <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
                                                     </div>
@@ -1163,27 +1340,30 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                </div>
                                                             </div>
                                                         </div>
+                                                        <?php foreach($get_state as $statekey=>$stateval){?>
+                                                        <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
                                                         <div class="row">
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
-                                                                  <input type="checkbox" name="active_check" id="active_check" class="checkbox"  />
+                                                                  <input type="checkbox" name="active_check_<?php echo $stateval['id'] ?>" id="active_check_<?php echo $stateval['id'] ?>" class="checkbox"  />
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
-                                                                    <label>Alaska</label>
+                                                                        <label><?php echo $stateval['name']; ?></label>
+                                                                    
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
-                                                                  <input class="form-control" value="120.00" name="fee" type="text" />
+                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="" name="fee_<?php echo $stateval['id'] ?>" type="text" />
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
                                                                     <div id="demo-dp-range">
                     					                                <div class="input-daterange input-group" id="datepicker">
-                                                                            <input type="text" name="received" id="received" value="" class="form-control" />
+                                                                            <input type="text" name="received_<?php echo $stateval['id'] ?>" id="received_<?php echo $stateval['id'] ?>" value="" class="form-control" />
                     					                                </div>
                     					                            </div>
                                                                </div>
@@ -1192,38 +1372,41 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                 <div class="form-group">
                                                                   <div id="demo-dp-range">
                 					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="terminated" id="terminated" value="" class="form-control" />
+                                                                        <input type="text" name="terminated_<?php echo $stateval['id'] ?>" id="terminated_<?php echo $stateval['id'] ?>" value="" class="form-control" />
                 					                                </div>
                 					                              </div>
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
-                                                                    <input class="form-control" value="" name="reason" id="reason" type="text" />
+                                                                    <input class="form-control" value="" name="reason_<?php echo $stateval['id'] ?>" id="reason_<?php echo $stateval['id'] ?>" type="text" />
                                                                </div>
                                                             </div>
-                                                        </div>
+                                                        </div></div>
+                                                        <?php } ?>
+                                                        <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
                                                         <div class="row">
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
-                                                                  <input type="checkbox" name="active_check" id="active_check" class="checkbox"  />
+                                                                  <input type="checkbox" name="active_check_washington_dc" id="active_check_washington_dc" class="checkbox"  />
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
-                                                                    <label>Alaska</label>
+                                                                        <label>Washington DC</label>
+                                                                    
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
-                                                                  <input class="form-control" value="120.00" name="fee" type="text" />
+                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="" name="fee_washington_dc" type="text" />
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
                                                                     <div id="demo-dp-range">
                     					                                <div class="input-daterange input-group" id="datepicker">
-                                                                            <input type="text" name="received" id="received" value="" class="form-control" />
+                                                                            <input type="text" name="received_washington_dc" id="received_washington_dc" value="" class="form-control" />
                     					                                </div>
                     					                            </div>
                                                                </div>
@@ -1232,18 +1415,60 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                 <div class="form-group">
                                                                   <div id="demo-dp-range">
                 					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="terminated" id="terminated" value="" class="form-control" />
+                                                                        <input type="text" name="terminated_washington_dc" id="terminated_washington_dc" value="" class="form-control" />
                 					                                </div>
                 					                              </div>
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
-                                                                    <input class="form-control" value="" name="reason" id="reason" type="text" />
+                                                                    <input class="form-control" value="" name="reason_washington_dc" id="reason_washington_dc" type="text" />
+                                                               </div>
+                                                            </div>
+                                                        </div></div>
+                                                        <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
+                                                        <div class="row">
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                  <input type="checkbox" name="active_check_foreign" id="active_check_foreign" class="checkbox"  />
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                        <label>Foreign</label>
+                                                                    
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="" name="fee_foreign" type="text" />
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                    <div id="demo-dp-range">
+                    					                                <div class="input-daterange input-group" id="datepicker">
+                                                                            <input type="text" name="received_foreign" id="received_foreign" value="" class="form-control" />
+                    					                                </div>
+                    					                            </div>
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                  <div id="demo-dp-range">
+                					                                <div class="input-daterange input-group" id="datepicker">
+                                                                        <input type="text" name="terminated_foreign" id="terminated_foreign" value="" class="form-control" />
+                					                                </div>
+                					                              </div>
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                    <input class="form-control" value="" name="reason_foreign" id="reason_foreign" type="text" />
                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div></div>
                                                     <div class="panel-overlay">
                                                         <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
                                                     </div>
@@ -2243,6 +2468,15 @@ $("#home_general").on("change", function () {
     document.getElementById("state_general").value='';
     document.getElementById("zip_code_general").value='';
 });
+function chech(){
+    var ro=document.getElementById('routing_general').value;
+    if (ro != '' && ro.length < 9)
+    {
+        alert("Enter nine digits.");
+        document.getElementById('routing_general').value='';
+    return false;
+    }
+}
 (function($) {
 $.fn.chargeFormat = function() {
     this.each( function( i ) {

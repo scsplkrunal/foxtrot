@@ -7,7 +7,6 @@
     define('ACCOUNT_TYPE','ft_account_type');
     define('PRODUCT_TYPE','ft_product_type');
     define('PAYROLL_TYPE','ft_payroll_master');
-    define('CLIENT_SUITABILITY','ft_client_suitability');
     define('CLIENT_MASTER','ft_client_master');
     define('BROKER_MASTER','ft_broker_master');
     define('BROKER_GENERAL','ft_broker_general');
@@ -37,4 +36,6 @@
     define('CHARGE_VALUE','ft_charge_value');
     define('CLIENT_EMPLOYMENT','ft_client_employment');
     define('CLIENT_ACCOUNT','ft_client_account_no');
+    define('CLIENT_NOTES','ft_client_notes');
+    define('CLIENT_SUITABILITY','ft_client_suitability');
 ?>
