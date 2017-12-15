@@ -79,6 +79,8 @@
 						$q = "INSERT INTO `".$this->table."` SET `first_name`='".$fname."',`last_name`='".$lname."',`mi`='".$mi."',`do_not_contact`='".$do_not_contact."',`active`='".$active."',`ofac_check`='".$ofak_check."',`fincen_check`='".$fincen_check."',`long_name`='".$long_name."',`client_file_number`='".$client_file_number."',`clearing_account`='".$clearing_account."',`client_ssn`='".$client_ssn."',`house_hold`='".$household."',`split_broker`='".$split_broker."',`split_rate`='".$split_rate."',`address1`='".$address1."',`address2`='".$address2."',`city`='".$city."',`state`='".$state."',`zip_code`='".$zip_code."',`citizenship`='".$citizenship."',`birth_date`='".$birth_date."',`date_established`='".$date_established."',`age`='".$age."',`open_date`='".$open_date."',`naf_date`='".$naf_date."',`last_contacted`='".$last_contacted."',`account_type`='".$account_type."',`broker_name`='".$broker_name."',`telephone`='".$telephone."',`contact_status`='".$contact_status."'".$this->insert_common_sql();
 						$res = $this->re_db_query($q);
                         $_SESSION['client_id'] = $this->re_db_insert_id();
+                        $get_name = $this->get_client_name($_SESSION['client_id']);//print_r($get_name);exit;
+                        $_SESSION['client_full_name'] = $get_name[0]['first_name'].' '.$get_name[0]['mi'].'.'.$get_name[0]['last_name'];
 						if($res){
 						    $_SESSION['success'] = INSERT_MESSAGE;
 							return true;
@@ -293,10 +295,28 @@
 		public function select(){
 			$return = array();
 			
-			$q = "SELECT `at`.*,ac.type as account_type
+			$q = "SELECT `at`.*,ac.type as account_type,bm.first_name as broker
 					FROM `".$this->table."` AS `at`
                     LEFT JOIN `".ACCOUNT_TYPE."` as ac on ac.id=at.account_type
+                    LEFT JOIN `".BROKER_MASTER."` as bm on bm.id=at.broker_name
                     WHERE `at`.`is_delete`='0'
+                    ORDER BY `at`.`id` ASC";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+		} 
+        public function get_client_name($id){
+			$return = array();
+			
+			$q = "SELECT `at`.*
+					FROM `".$this->table."` AS `at`
+                    WHERE `at`.`is_delete`='0' and `at`.`id`=".$id."
                     ORDER BY `at`.`id` ASC";
 			$res = $this->re_db_query($q);
             if($this->re_db_num_rows($res)>0){
@@ -334,11 +354,8 @@
                     ORDER BY `s`.`id` ASC";
 			$res = $this->re_db_query($q);
             if($this->re_db_num_rows($res)>0){
-                $a = 0;
-    			while($row = $this->re_db_fetch_array($res)){
-    			     array_push($return,$row);
-                     
-    			}
+                
+                $return = $this->re_db_fetch_array($res);
             }
 			return $return;
 		}

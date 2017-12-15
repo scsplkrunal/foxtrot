@@ -94,11 +94,11 @@ $(document).on('click','.remove-row',function(){
                     if($action=='add_new'||($action=='edit' && $id>0)){
                         ?>
                             <ul class="nav nav-tabs ">
-                              <li class="active"><a href="#tab_aa" data-toggle="tab">Primary</a></li>
-                              <li><a href="#tab_dd" data-toggle="tab">Account No's</a></li>
-                              <li><a href="#tab_bb" data-toggle="tab">Employment</a></li>
-                              <li><a href="#tab_ff" data-toggle="tab">Suitability</a></li>
-                              <li><a href="#tab_cc" data-toggle="tab">Objectives</a></li>
+                              <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="primary"){ echo "active"; }else if(!isset($_GET['tab'])){echo "active";}else{ echo '';} ?>"><a href="#tab_aa" data-toggle="tab">Primary</a></li>
+                              <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="account_no"){ echo "active"; } ?>"><a href="#tab_dd" data-toggle="tab">Account No's</a></li>
+                              <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="employment"){ echo "active"; } ?>"><a href="#tab_bb" data-toggle="tab">Employment</a></li>
+                              <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="suitability"){ echo "active"; } ?>"><a href="#tab_ff" data-toggle="tab">Suitability</a></li>
+                              <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="objectives"){ echo "active"; } ?>"><a href="<?php echo CURRENT_PAGE; ?>#tab_cc" data-toggle="tab">Objectives</a></li>
                                
                               <!--<li><a href="#tab_ee" data-toggle="tab">Documents</a></li>-->
                                 <div class="btn-group dropdown" style="float: right;">
@@ -130,7 +130,7 @@ $(document).on('click','.remove-row',function(){
                                      </div>
                                  </div>
                                 
-                                <div class="tab-pane active" id="tab_aa">
+                                <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="primary"){ echo "active"; }else if(!isset($_GET['tab'])){echo "active";}else{ echo '';} ?>" id="tab_aa">
                                 <form method="post">
                                     <div class="panel-overlay-wrap">
                                             <div class="panel">
@@ -342,7 +342,7 @@ $(document).on('click','.remove-row',function(){
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Age </label>
-                                                        <input type="text" name="age1" id="age1" class="form-control" value="<?php echo $age; ?>"/>
+                                                        <input type="text" name="age1" id="age1" class="form-control" disabled="true" value="<?php echo $age; ?>"/>
                                                         <input type="hidden" name="age" id="age" class="form-control" value="<?php echo $age; ?>"/>
                                                     </div>
                                                 </div>
@@ -407,18 +407,13 @@ $(document).on('click','.remove-row',function(){
                                 </div>
                                 
                                 <!-- Tab 1 is ends -->
-                                <div class="tab-pane" id="tab_bb">
+                                <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="employment"){ echo "active"; } ?>" id="tab_bb">
                                 <form method="post">
                                         <div class="panel-overlay-wrap">
                                             <div class="panel">
                                                <div class="panel-heading">
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <h4><b>Employment Information</b></h4><br />
-                                                        </div>
-                                                    </div>
                                                     <h4 class="panel-title" style="font-size: 20px;">
-                                                    <?php if($fname != ''){ echo $fname." ".$mi.". ".$lname;}?></h4>
+                                                    <?php if(isset($_SESSION['client_full_name'])){echo $_SESSION['client_full_name'];}?></h4>
                                                </div>
                                             <div class="panel-body">
                                             
@@ -572,7 +567,7 @@ $(document).on('click','.remove-row',function(){
                                             <div class="panel-footer">
                                                 <div class="selectwrap">
                                                     <input type="hidden" name="employment_id" id="employment_id" value="<?php echo $id;?>" />
-                                					<input type="submit" name="employment" value="Save"/>	
+                                					<input type="submit" name="employment" onclick="waitingDialog.show();" value="Save"/>	
                                                     <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                                                 </div>
                                            </div>
@@ -580,56 +575,61 @@ $(document).on('click','.remove-row',function(){
                                     </div>
                                 </form>
                                 </div>
-                                <div class="tab-pane" id="tab_cc">
+                                <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="objectives"){ echo "active"; } ?>" id="tab_cc">
                                    <form method="post">
                                         <div class="panel-overlay-wrap">
                                             <div class="panel">
+                                            <div id="msg"></div>
                                                <div class="panel-heading">
-                                                    <h4 class="panel-title" style="font-size: 20px;"><?php if($fname != ''){ echo $fname." ".$mi.". ".$lname;}?></h4>
+                                                    <h4 class="panel-title" style="font-size: 20px;"><?php if(isset($_SESSION['client_full_name'])){echo $_SESSION['client_full_name'];}?></h4>
                                                </div>
                                             <div class="panel-body">
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                       <h4 class="panel-title" style="font-size: 20px;">Source Objectives</h4>
+                                                       <h4 class="panel-title" style="font-size: 20px;">Source Objectives <a href="<?php echo CURRENT_PAGE; ?>?action=add_all&id=<?php echo $data['id']; ?>"><i class="fa fa-angle-double-right"></i></a></h4>
                                                     </div>
                                                 </div>
                                             	<div class="col-md-6">
                                                     <div class="form-group">
-                                                        <h4 class="panel-title" style="font-size: 20px;">Selected Objectives</h4>
+                                                        <h4 class="panel-title" style="font-size: 20px;"><a href="<?php echo CURRENT_PAGE; ?>?action=delete_all&id=<?php echo $data['id']; ?>"><i class="fa fa-angle-double-left"></i></a> Selected Objectives</h4>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div style="display: block; border: 1px solid #ddd;">
-                                                        <div class="transitionactions">
-                                            				<div class="transdetail">
-                                            					<div class="transrow transrowtop">
-                                            						<div class="transcol transcol01">Translations</div>
-                                            						<div class="transcol">Action</div>
-                                            					</div>
-                                                                <div class="transrow">
-                                            						<div class="transcol transcol01">sdfdsfdf</div>
-                                            						<div class="transcol">
-                                                                    </div>
-                                            					</div>
-                                                                <?php //foreach($current_return as $key=>$data){?>
-                                            					<div class="transrow">
-                                            						<div class="transcol transcol01">sadfsdf</div>
-                                            						<div class="transcol">
-                                                                    <span><a href=""><i class="fa fa-trash-o"></i></a></span>
-                                                                    </div>
-                                            					</div>
-                                                                <?php //} ?>
-                                            					
-                                            				</div>
-                                            			</div>
+                                                        <div class="table-responsive" style="padding: 5px !important;">
+                                            			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                            	            <tbody>
+                                                                <?php foreach($get_objectives as $key=>$val){?>
+                                                                   <tr>
+                                                                        <td class="text-center"><a href="#" onclick="return add_objectives(<?php echo $val['id'];?>)" style="color: black !important;"><?php echo $val['option'];?>  <i class="fa fa-angle-right"></i></a></td>
+                                                                   </tr>
+                                                                <?php } ?>
+                                                            </tbody>
+                                                        </table>
+                                                        </div>
+                                                        <form id="add_objectives_<?php echo $val['id'];?>" name="add_objectives_<?php echo $val['id'];?>" method="post" onsubmit="return formsubmit(<?php echo $val['id'];?>);">
+                                                        <input type="hidden" name="objectives" id="objectives" value="<?php echo $val['id'];?>" />
+                                                        <input type="hidden" name="objectives_id" id="objectives_id" value="<?php echo $id; ?>" />
+                                                        <input type="hidden" name="add_objectives"  value="Add_Objectives" id="submit"/>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             	<div class="col-md-6">
                                                     <div style="display: block; border: 1px solid #ddd;">
-                                                        <span><a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=<?php echo $data['id']; ?>">sdfhdklsfhkjsfhk</i></a></span>
+                                                    <div class="table-responsive" style="padding: 5px !important;">
+                                            			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                            	            <tbody>
+                                                                 <?php foreach($get_objectives as $key=>$val){?>
+                                                                   <tr>
+                                                                        <td class="text-center"><a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=<?php echo $data['id']; ?>" style="color: black !important;"><i class="fa fa-angle-left"></i>  <?php echo $val['option'];?></a></td>
+                                                                   </tr>
+                                                                 <?php } ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -640,7 +640,7 @@ $(document).on('click','.remove-row',function(){
                                             <div class="panel-footer">
                                                 <div class="selectwrap">
                                                     <input type="hidden" name="account_id" id="account_id" value="<?php echo $id;?>" />
-                                					<input type="submit" name="account" value="Save"/>	
+                                					<input type="submit" name="objectives" onclick="waitingDialog.show();" value="Save"/>	
                                                     <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                                                 </div>
                                            </div>
@@ -651,12 +651,12 @@ $(document).on('click','.remove-row',function(){
                                 <style>
   
                                 </style>
-                                <div class="tab-pane" id="tab_dd">
+                                <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="account_no"){ echo "active"; } ?>" id="tab_dd">
                                    <form method="post">
                                         <div class="panel-overlay-wrap">
                                             <div class="panel">
                                                <div class="panel-heading">
-                                                    <h4 class="panel-title" style="font-size: 20px;"><?php if($fname != ''){ echo $fname." ".$mi.". ".$lname;}?></h4>
+                                                    <h4 class="panel-title" style="font-size: 20px;"><?php if(isset($_SESSION['client_full_name'])){echo $_SESSION['client_full_name'];}?></h4>
                                                </div>
                                             <div class="panel-body">
                                             <div class="row" id="account_no_row">
@@ -691,7 +691,7 @@ $(document).on('click','.remove-row',function(){
                                             <div class="panel-footer">
                                                 <div class="selectwrap">
                                                     <input type="hidden" name="account_id" id="account_id" value="<?php echo $id;?>" />
-                                					<input type="submit" name="account" value="Save"/>	
+                                					<input type="submit" name="account" onclick="waitingDialog.show();" value="Save"/>	
                                                     <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                                                 </div>
                                            </div>
@@ -699,7 +699,7 @@ $(document).on('click','.remove-row',function(){
                                     </div>
                                 </form>
                                 </div>
-                                <!--<div class="tab-pane" id="tab_ee">
+                                <!--<div class="tab-pane " id="tab_ee">
                                     
                                         <div class="panel-overlay-wrap">
                                             <div class="panel">
@@ -742,12 +742,12 @@ $(document).on('click','.remove-row',function(){
                                     </div>
                               
                                 </div>-->
-                                <div class="tab-pane" id="tab_ff">
+                                <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="suitability"){ echo "active"; } ?>" id="tab_ff">
                                     <form method="post">
                                         <div class="panel-overlay-wrap">
                                             <div class="panel">
                                                <div class="panel-heading">
-                                                    <h4 class="panel-title" style="font-size: 20px;"><?php echo $fname." ".$mi.". ".$lname;?></h4>
+                                                    <h4 class="panel-title" style="font-size: 20px;"><?php if(isset($_SESSION['client_full_name'])){echo $_SESSION['client_full_name'];}?></h4>
                                                </div>
                                             <div class="panel-body">
                                             <div class="row">
@@ -986,7 +986,7 @@ $(document).on('click','.remove-row',function(){
                                         <td><?php echo $val['first_name']." ".$val['last_name']; ?></td>
                                         <td><?php echo $val['client_file_number']; ?></td>
                                         <td><?php echo $val['account_type']; ?></td>
-                                        <td><?php echo $val['broker_name']; ?></td>
+                                        <td><?php echo $val['broker']; ?></td>
                                         <td><?php echo '('.substr($val['telephone'], 0, 3).')'.'-'.substr($val['telephone'], 3, 3).'-'.substr($val['telephone'],6); //echo $val['telephone']; ?></td>
                                         <td>
                                         <?php 
@@ -1014,7 +1014,7 @@ $(document).on('click','.remove-row',function(){
                                             ?>
                                         </td>
                                         <td class="text-center">
-                                            <a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                                            <a href="<?php /*echo CURRENT_PAGE; ?>?action=edit&id=<?php echo $val['id'];*/ ?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
                                             <a onclick="return conf('<?php echo CURRENT_PAGE; ?>?action=delete&id=<?php echo $val['id']; ?>');" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
                                         </td>
                                     </tr>
@@ -1546,4 +1546,34 @@ function notessubmit()
   {alert(parseFloat(val.toFixed(2)));
     document.getElementById("split_rate").value = val.toFixed(2)
   }
+</script>
+<script>
+function formsubmit(objectives_id)
+{//alert($("#add_translation_"+translation_id).serialize());
+    $('#msg').html('<div class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Please wait...</div>');
+
+    var url = "client_maintenance.php"; // the script where you handle the form input.
+  
+    $.ajax({
+       type: "POST",
+       url: url,
+       data: $("#add_translation_"+translation_id).serialize(), // serializes the form's elements.
+       success: function(data){
+           if(data=='1'){
+                window.location.href = "client_maintenance.php";
+           }
+           else{
+               $('#msg').html('<div class="alert alert-danger">Something went wrong.</div>');
+           }
+           
+       },
+       error: function(XMLHttpRequest, textStatus, errorThrown) {
+            $('#msg').html('<div class="alert alert-danger">Something went wrong, Please try again.</div>')
+       }
+       
+    });
+    return false;
+        
+}
+
 </script>

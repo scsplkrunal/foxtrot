@@ -90,6 +90,7 @@
     $instance_product = new product_maintenance();
     $get_sponsor = $instance_product->select_sponsor();
     $instance_client_suitability = new client_suitebility_master();
+    $get_objectives = $instance_client_suitability->select_objective();
     $get_income = $instance_client_suitability->select_income();
     $get_horizon = $instance_client_suitability->select_horizon();
     $get_networth = $instance_client_suitability->select_networth();
@@ -140,7 +141,7 @@
         $return = $instance->insert_update($_POST);
         
         if($return===true){
-            header("location:".CURRENT_PAGE);exit;
+            header("location:".CURRENT_PAGE."?action=".$action."&tab=account_no");exit;
         }
         else{
             $error = !isset($_SESSION['warning'])?$return:'';
@@ -169,7 +170,7 @@
         $return = $instance->insert_update_employment($_POST);
         
         if($return===true){
-            header("location:".CURRENT_PAGE);exit;
+            header("location:".CURRENT_PAGE."?action=".$action."&tab=suitability");exit;
         }
         else{
             $error = !isset($_SESSION['warning'])?$return:'';
@@ -183,7 +184,7 @@
         $return = $instance->insert_update_account($_POST);
         
         if($return===true){
-            header("location:".CURRENT_PAGE);exit;
+            header("location:".CURRENT_PAGE."?action=".$action."&tab=employment");exit;
         }
         else{
             $error = !isset($_SESSION['warning'])?$return:'';
@@ -208,6 +209,18 @@
         $tax_id = isset($_POST['tax_id'])?$instance->re_db_input($_POST['tax_id']):'';
         
         $return = $instance->insert_update_suitability($_POST);
+        
+        if($return===true){
+            header("location:".CURRENT_PAGE."?action=".$action."&tab=objectives");exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+    }
+    else if(isset($_POST['objectives'])&& $_POST['objectives']=='Save'){
+        
+        
+        $return = true;//$instance->//insert_update_suitability($_POST);
         
         if($return===true){
             header("location:".CURRENT_PAGE);exit;
