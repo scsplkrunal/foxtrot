@@ -86,10 +86,10 @@ $(document).on('click','.remove-row',function(){
 </script>
 <div class="container">
 <h1>Client Maintenance</h1>
+<?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
     <div class="col-lg-12 well">
         <div class="tab-content col-md-12">
             <div class="tab-pane active" id="tab_a">
-                    <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
                     <?php
                     if($action=='add_new'||($action=='edit' && $id>0)){
                         ?>
@@ -193,7 +193,7 @@ $(document).on('click','.remove-row',function(){
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>Client File Number </label><br />
+                                                        <label>Client File Number <span class="text-red">*</span></label><br />
                                                         <input type="text" name="client_file_number" id="client_file_number" maxlength="12" class="form-control" value="<?php echo $client_file_number; ?>" />
                                                     </div>
                                                 </div>
@@ -259,7 +259,7 @@ $(document).on('click','.remove-row',function(){
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Split Rate<span class="text-red"></span></label>
-                                                        <input type="number" onblur="changeHandler(this.value);" max="100" min="0" name="split_rate" id="split_rate" placeholder='00.0' class="currency1 form-control" value="<?php echo $split_rate; ?>" />
+                                                        <input type="number" onblur="round(this.value);" min="0" name="split_rate" id="split_rate" placeholder='00.0' class="currency1 form-control" value="<?php echo $split_rate; ?>" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -576,7 +576,7 @@ $(document).on('click','.remove-row',function(){
                                 </form>
                                 </div>
                                 <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="objectives"){ echo "active"; } ?>" id="tab_cc">
-                                   <form method="post">
+                                   
                                         <div class="panel-overlay-wrap">
                                             <div class="panel">
                                             <div id="msg"></div>
@@ -602,19 +602,29 @@ $(document).on('click','.remove-row',function(){
                                                         <div class="table-responsive" style="padding: 5px !important;">
                                             			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                             	            <tbody>
-                                                                <?php foreach($get_objectives as $key=>$val){?>
+                                                                <?php foreach($get_objectives as $key=>$val){
+                                                                    ?>
+                                                                    
+                                                                    <?php
+                                                                    $obj_id = $val['id'];//echo '<pre>';print_r($trans_check_id);
+                                                                    if(!in_array($obj_id, $objectives_check_id)){?>
+                                                                    
                                                                    <tr>
-                                                                        <td class="text-center"><a href="#" onclick="return add_objectives(<?php echo $val['id'];?>)" style="color: black !important;"><?php echo $val['option'];?>  <i class="fa fa-angle-right"></i></a></td>
+                                                                   <td class="text-center">
+                                                                   <form id="add_objectives_<?php echo $val['id'];?>" name="add_objectives_<?php echo $val['id'];?>" method="post" onsubmit="return formsubmit_objectives(<?php echo $val['id'];?>);">
+                                                                        <a href="#" onclick="return add_objectives(<?php echo $val['id'];?>)" style="color: black !important;"><?php echo $val['option'];?>  <i class="fa fa-angle-right"></i></a>
+                                                                       
+                                                                       
+                                                                        <input type="hidden" name="objectives" id="objectives" value="<?php echo $val['id'];?>" />
+                                                                        <input type="hidden" name="objectives_id" id="objectives_id" value="<?php echo $id; ?>" />
+                                                                        <input type="hidden" name="add_objective"  value="Add_Objectives" id="add_objective"/>
+                                                                   </form>
+                                                                   </td>
                                                                    </tr>
-                                                                <?php } ?>
+                                                                <?php }} ?>
                                                             </tbody>
                                                         </table>
                                                         </div>
-                                                        <form id="add_objectives_<?php echo $val['id'];?>" name="add_objectives_<?php echo $val['id'];?>" method="post" onsubmit="return formsubmit(<?php echo $val['id'];?>);">
-                                                        <input type="hidden" name="objectives" id="objectives" value="<?php echo $val['id'];?>" />
-                                                        <input type="hidden" name="objectives_id" id="objectives_id" value="<?php echo $id; ?>" />
-                                                        <input type="hidden" name="add_objectives"  value="Add_Objectives" id="submit"/>
-                                                        </form>
                                                     </div>
                                                 </div>
                                             	<div class="col-md-6">
@@ -622,9 +632,9 @@ $(document).on('click','.remove-row',function(){
                                                     <div class="table-responsive" style="padding: 5px !important;">
                                             			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                             	            <tbody>
-                                                                 <?php foreach($get_objectives as $key=>$val){?>
+                                                                 <?php foreach($get_current_objectives as $key=>$val){?>
                                                                    <tr>
-                                                                        <td class="text-center"><a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=<?php echo $data['id']; ?>" style="color: black !important;"><i class="fa fa-angle-left"></i>  <?php echo $val['option'];?></a></td>
+                                                                        <td class="text-center"><a href="<?php echo CURRENT_PAGE; ?>?action=delete_objectives&objectives_id=<?php echo $val['id']; ?>" style="color: black !important;"><i class="fa fa-angle-left"></i>  <?php echo $val['oname'];?></a></td>
                                                                    </tr>
                                                                  <?php } ?>
                                                             </tbody>
@@ -637,16 +647,9 @@ $(document).on('click','.remove-row',function(){
                                             <div class="panel-overlay">
                                                 <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
                                             </div>
-                                            <div class="panel-footer">
-                                                <div class="selectwrap">
-                                                    <input type="hidden" name="account_id" id="account_id" value="<?php echo $id;?>" />
-                                					<input type="submit" name="objectives" onclick="waitingDialog.show();" value="Save"/>	
-                                                    <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
-                                                </div>
-                                           </div>
                                         </div>
                                     </div>
-                                </form>
+                                
                                 </div>
                                 <style>
   
@@ -1547,9 +1550,17 @@ function notessubmit()
     document.getElementById("split_rate").value = val.toFixed(2)
   }
 </script>
+
 <script>
-function formsubmit(objectives_id)
-{//alert($("#add_translation_"+translation_id).serialize());
+//submit share form data
+function add_objectives(objectives_id)
+{
+    $('form[name=add_objectives_'+objectives_id+']').submit();/*$('form[name=add_objectives_'objectives_id+']').submit();*/
+    
+     return false;   
+}
+function formsubmit_objectives(objectives_id,action)
+{
     $('#msg').html('<div class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Please wait...</div>');
 
     var url = "client_maintenance.php"; // the script where you handle the form input.
@@ -1557,13 +1568,14 @@ function formsubmit(objectives_id)
     $.ajax({
        type: "POST",
        url: url,
-       data: $("#add_translation_"+translation_id).serialize(), // serializes the form's elements.
+       data: $("#add_objectives_"+objectives_id).serialize(), // serializes the form's elements.
        success: function(data){
            if(data=='1'){
-                window.location.href = "client_maintenance.php";
+            //$('#msg').html('<div class="alert alert-success">Data Successfully Saved.</div>');
+            window.location.href = "client_maintenance.php?action=add_new&tab=objectives";
            }
            else{
-               $('#msg').html('<div class="alert alert-danger">Something went wrong.</div>');
+               $('#msg').html('<div class="alert alert-danger">'+data+'Something went wrong.</div>');
            }
            
        },
@@ -1576,4 +1588,20 @@ function formsubmit(objectives_id)
         
 }
 
+</script>
+<script>
+function round(feerate)
+{
+    if(feerate>100)
+    {
+        var rounded = 99.9;
+    }
+    else
+    {
+        var round = Math.round( feerate * 10 ) / 10;
+        var rounded = round.toFixed(1);
+    }
+    document.getElementById("split_rate").value = rounded;
+    
+}
 </script>

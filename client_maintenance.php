@@ -81,6 +81,7 @@
     $sign_date = '';
     $tax_bracket = '';
     $tax_id = '';
+    $objectives_check_id = array();
     
     $instance = new client_maintenance();
     $instance_account_type = new account_master();
@@ -104,6 +105,11 @@
     $get_account_use = $instance_client_suitability->select_account_use();
     $instance_broker = new broker_master();
     $get_broker = $instance_broker->select();
+    $get_current_objectives = $instance->select_objectives();
+    foreach($get_current_objectives as $key=>$val)
+    {
+        $objectives_check_id[$val['objectives']]=$val['objectives'];
+    }
     
     if(isset($_POST['submit'])&& $_POST['submit']=='Save'){
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
@@ -217,18 +223,20 @@
             $error = !isset($_SESSION['warning'])?$return:'';
         }
     }
-    else if(isset($_POST['objectives'])&& $_POST['objectives']=='Save'){
+    else if(isset($_POST['add_objective'])&& $_POST['add_objective']=='Add_Objectives'){
         
-        
-        $return = true;//$instance->//insert_update_suitability($_POST);
+        $return = $instance->insert_update_objectives($_POST);
         
         if($return===true){
-            header("location:".CURRENT_PAGE);exit;
+            echo '1';exit;
         }
         else{
             $error = !isset($_SESSION['warning'])?$return:'';
         }
+        echo $error;
+            exit;
     }
+    
     else if(isset($_POST['add_notes'])&& $_POST['add_notes']=='Add Notes'){
         
         $return = $instance->insert_update_client_notes($_POST);
@@ -293,7 +301,18 @@
         else{
             header('location:'.CURRENT_PAGE);exit;
         }
-    }  
+    } 
+    else if(isset($_GET['action'])&&$_GET['action']=='delete_objectives'&&isset($_GET['objectives_id'])&&$_GET['objectives_id']>0)
+    {
+        $id = $instance->re_db_input($_GET['objectives_id']);
+        $return = $instance->delete_objectives($id);
+        if($return==true){
+            header("location:".CURRENT_PAGE."?action=add_new&tab=objectives");exit;
+        }
+        else{
+            header("location:".CURRENT_PAGE."?action=add_new&tab=objectives");exit;
+        }
+    } 
     else if(isset($_GET['action'])&&$_GET['action']=='delete'&&isset($_GET['id'])&&$_GET['id']>0)
     {
         $id = $instance->re_db_input($_GET['id']);

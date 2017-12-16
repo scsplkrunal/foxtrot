@@ -31,7 +31,14 @@
             $sdtcc_nscc = isset($data['sdtcc_nscc'])?$this->re_db_input($data['sdtcc_nscc']):'';
             $sclr_firm = isset($data['sclr_firm'])?$this->re_db_input($data['sclr_firm']):'';
             
-			/* check duplicate record */
+			if($sponser_name==''){
+				$this->errors = 'Please enter sponsor name.';
+			}
+            if($this->errors!=''){
+				return $this->errors;
+			}
+            else{
+            /* check duplicate record */
 			$con = '';
 			if($id>0){
 				$con = " AND `id`!='".$id."'";
@@ -77,6 +84,7 @@
 				$_SESSION['warning'] = UNKWON_ERROR;
 				return false;
 			}
+            }
 		}
         /**
 		 * @param int status, default all

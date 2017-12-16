@@ -245,6 +245,23 @@
 				}
 			}
 		}
+        public function insert_update_objectives($data){
+            
+            $objectives = isset($data['objectives'])?$this->re_db_input($data['objectives']):'';
+            
+            $q = "INSERT INTO `".CLIENT_OBJECTIVES."` SET `client_id`='".$_SESSION['client_id']."',`objectives`='".$objectives."'".$this->insert_common_sql();
+			$res = $this->re_db_query($q);
+            $id = $this->re_db_insert_id();
+			if($res){
+			    return true;
+			}
+			else{
+				$_SESSION['warning'] = UNKWON_ERROR;
+				return false;
+			}
+			
+			
+		}
         public function insert_update_client_notes($data){
 			$notes_id = isset($data['notes_id'])?$this->re_db_input($data['notes_id']):0;
 			$date = isset($data['date'])?$this->re_db_input($data['date']):'';
@@ -301,6 +318,24 @@
                     LEFT JOIN `".BROKER_MASTER."` as bm on bm.id=at.broker_name
                     WHERE `at`.`is_delete`='0'
                     ORDER BY `at`.`id` ASC";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+		} 
+        public function select_objectives(){
+			$return = array();
+			
+			$q = "SELECT `o`.*,co.option as oname
+					FROM `".CLIENT_OBJECTIVES."` AS `o`
+                    LEFT JOIN `".OBJECTIVE_MASTER."` as co on co.id=o.objectives
+                    WHERE `o`.`is_delete`='0'
+                    ORDER BY `o`.`id` ASC";
 			$res = $this->re_db_query($q);
             if($this->re_db_num_rows($res)>0){
                 $a = 0;
@@ -438,6 +473,23 @@
 		 * @param id of record
 		 * @return true if success, false message if any errors
 		 * */
+         public function delete_objectives($id){
+			$id = trim($this->re_db_input($id));
+			if($id>0 && ($status==0 || $status==1) ){
+				$q = "UPDATE `".CLIENT_OBJECTIVES."` SET `is_delete`='1' WHERE `id`='".$id."'";
+				$res = $this->re_db_query($q);
+				if($res){
+				    return true;
+				}
+				else{
+				    return false;
+				}
+			}
+			else{
+			     $_SESSION['warning'] = UNKWON_ERROR;
+				return false;
+			}
+		}
 		public function delete($id){
 			$id = trim($this->re_db_input($id));
 			if($id>0 && ($status==0 || $status==1) ){

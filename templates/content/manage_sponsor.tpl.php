@@ -141,6 +141,13 @@ $(document).on('click','.remove-row',function(){
         ?>
         <div class="panel">            
         <form name="frm2" method="POST">
+            <div class="panel-footer">
+                <div class="selectwrap" style="float: right;">
+                    <input type="hidden" name="sponsor_id" id="sponsor_id" value="<?php echo $sponsor_id; ?>" />
+    				<input type="submit" name="sponser" onclick="waitingDialog.show();" value="Save"/>	
+                    <a href="<?php echo CURRENT_PAGE.'?action=view_sponsor';?>"><input type="button" name="cancel" value="Cancel" /></a>
+                </div><br />
+           </div>
             <div class="panel-heading">
                 <div class="panel-control" style="float: right;">
     				<div class="btn-group dropdown">
@@ -156,33 +163,33 @@ $(document).on('click','.remove-row',function(){
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Sponsor Name </label><br />
+                        <label>Sponsor Name <span class="text-red">*</span></label><br />
                         <input type="text" maxlength="25" class="form-control" name="sponser_name" value="<?php echo $sponser_name;?>"  />
                     </div>
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Address 1 </label><br />
                         <input type="text" maxlength="50" class="form-control" name="saddress1"  value="<?php echo $saddress1;?>" />
                     </div>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Address 2 </label><br />
                         <input type="text" maxlength="50" class="form-control" name="saddress2" value="<?php echo $saddress2;?>"  />
                     </div>
                 </div>
-                <div class="col-md-6">
+            </div>
+            <div class="row">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label>City </label><br />
                         <input type="text" maxlength="25" class="form-control" name="scity" value="<?php echo $scity;?>"  />
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label>State </label><br />
                         <select class="form-control" name="sstate">
@@ -193,7 +200,7 @@ $(document).on('click','.remove-row',function(){
                         </select>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label>Zip Code </label><br />
                         <input type="text" maxlength="10" class="form-control" name="szip_code" value="<?php echo $szip_code;?>"  />
@@ -265,16 +272,16 @@ $(document).on('click','.remove-row',function(){
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>DAZL Code </label><br />
-                        <input type="text" maxlength="15" class="form-control" name="sdazl_code" value="<?php echo $sdazl_code;?>"  />
+                        <label>Exclude from DAZL Importing </label><br />
+                        <input type="checkbox" class="checkbox"  name="sdazl_import" id="" value="1" style="display: inline;" <?php if($sdazl_import>0){echo "checked='checked'"; }?> />
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Exclude from DAZL Importing </label><br />
-                        <input type="checkbox" class="checkbox"  name="sdazl_import" id="" value="1" style="display: inline;" <?php if($sdazl_import>0){echo "checked='checked'"; }?> />
+                        <label>DAZL Code </label><br />
+                        <input type="text" maxlength="15" class="form-control" name="sdazl_code" value="<?php echo $sdazl_code;?>"  />
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -292,13 +299,13 @@ $(document).on('click','.remove-row',function(){
                     </div>
                 </div>
             </div>
-            <div class="panel-footer">
+           </div>
+           <div class="panel-footer">
                 <div class="selectwrap">
                     <input type="hidden" name="sponsor_id" id="sponsor_id" value="<?php echo $sponsor_id; ?>" />
     				<input type="submit" name="sponser" onclick="waitingDialog.show();" value="Save"/>	
                     <a href="<?php echo CURRENT_PAGE.'?action=view_sponsor';?>"><input type="button" name="cancel" value="Cancel" /></a>
-                </div>
-           </div>
+                </div><br />
            </div>
         </form>
         </div>

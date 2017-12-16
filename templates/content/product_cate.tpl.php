@@ -157,14 +157,17 @@ $(document).on('click','.remove-row',function(){
                 <?php
                     }else if($action=='add_product' || ($action=='edit_product' && $id>0)){
                 ?>          
-                
+                 <div class="row">
+                    <div class="col-md-4" style="float: right;">
+                        <div class="form-group" style="float: right;">
+                            <a href="#client_notes" data-toggle="modal"><input type="button" name="notes" value="Notes" /></a>
+                            <a href="#client_attachment" data-toggle="modal"><input type="button" name="attach" value="Attachments" /></a><br />
+                        </div>
+                     </div>
+                 </div>
                 <ul class="nav nav-tabs ">
                   <li class="active"><a href="#tab_aa" data-toggle="tab">General</a></li>
                   <li><a href="#tab_bb" data-toggle="tab">Suitability</a></li>
-                  <a href="#client_notes" data-toggle="modal"><input type="button"  name="notes" value="Notes" /></a>
-                  <a href="#client_attachment" data-toggle="modal"><input type="button"  name="attach" value="Attach" /></a>
-               
-                   
                   <!--<li><a href="#tab_ee" data-toggle="tab">Documents</a></li>-->
                     <div class="btn-group dropdown" style="float: right;">
 						<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
@@ -174,6 +177,13 @@ $(document).on('click','.remove-row',function(){
 					</div>
 				</ul>
                  <form name="frm" method="POST" onsubmit="return validation();" enctype="multipart/form-data">    
+                 <div class="panel-footer">
+                        <div class="selectwrap" style="float: right;">
+                            <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
+        					<input type="submit" name="product" onclick="waitingDialog.show();" value="Save"/>	
+                            <a href="<?php echo CURRENT_PAGE.'?action=view_product';?>"><input type="button" name="cancel" value="Cancel" /></a>
+                        </div>
+                 </div><br /><br />
                  <div class="tab-content col-md-12">
                     
                     <div class="tab-pane active" id="tab_aa"> 
@@ -256,16 +266,21 @@ $(document).on('click','.remove-row',function(){
                                         <input type="checkbox" class="checkbox" name="allowable_receivable" id="allowable_receivable" value="1" style="display: inline;" <?php if($receive>0){echo "checked='checked'";}?>  />
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Non-Commissionable </label><br />
+                                        <input type="checkbox"  class="checkbox" name="non_commissionable" id="non_commissionable" value="1" style="display: inline;" <?php if($non_commissionable>0){echo "checked='checked'";}?>/>
+                                    </div>
+                                </div>
                             </div>
                            
-                            
-                           <div class="row">
+                           <div style="display: block; border: 1px solid #ddd;">
+                           <div class="row" style="padding: 5px;"> 
                                 <div class="col-md-12">
                                     <h4><b>Mutual Funds</b></h4><br />
                                 </div>
                            </div>
-                           
-                           <div class="row">
+                           <div class="row" style="padding: 5px;">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Class Type </label><br />
@@ -282,27 +297,45 @@ $(document).on('click','.remove-row',function(){
                                     </div>
                                 </div>
                             </div>
-                           <div class="row">
+                            <div class="row" style="padding: 5px;">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Rate </label><br />
+                                        <input type="text" value="<?php echo $min_rate; ?>" onblur="minrate(this.value)"   maxlength="5" class="form-control" name="min_rate" id="min_rate" placeholder="0.0%"  />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label></label><br />
+                                        <input type="text" value="<?php echo $max_rate; ?>"  onblur="maxrate(this.value)"  maxlength="5" class="form-control" name="max_rate" id="max_rate" placeholder="99.9%" />
+                                    </div>
+                                </div>
+                           </div>
+                           <div class="row" style="padding: 5px;">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Threshold </label><br />
+                                        <input type="number" onblur="minthreshold(this.value)" value="<?php echo $min_threshold; ?>"  maxlength="9" class="form-control" id="min_threshold" name="min_threshold" placeholder="$0"  />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label> </label><br />
+                                        <input type="number" onblur="maxthreshold(this.value)" value="<?php echo $max_threshold; ?>"  maxlength="9" class="form-control" id="max_threshold" name="max_threshold" placeholder="$99,999,999"  />
+                                    </div>
+                                </div>
+                           </div>
+                           <div class="row" style="padding: 5px;">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Waive Sweep Fee </label><br />
                                         <input type="checkbox" class="checkbox" name="sweep_fee" id="sweep_fee" value="1" style="display: inline;" <?php if($sweep_fee>0){echo "checked='checked'";}?>/>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Threshold </label><br />
-                                        <input type="text" value="<?php echo $threshold; ?>"  maxlength="9" class="form-control" name="threshold"  />
-                                    </div>
-                                </div>
-                            </div>
-                           <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Rate </label><br />
-                                        <input type="text" value="<?php echo $rate; ?>"   maxlength="5" class="form-control" name="rate"  />
-                                    </div>
-                                </div>
+                           </div>
+                           </div><br />
+                           <div style="display: block; border: 1px solid #ddd;">
+                           <div class="row" style="padding: 5px;">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Investment Banking Type </label><br />
@@ -317,10 +350,12 @@ $(document).on('click','.remove-row',function(){
                                     </div>
                                 </div>
                             </div>
-                           <div class="row">
+                            </div><br />
+                           <div style="display: block; border: 1px solid #ddd;">
+                           <div class="row" style="padding: 5px;">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>RIA specific Type </label><br />
+                                        <label>RIA Type </label><br />
                                         <select class="form-control" name="ria_specific_type">
                                             <option value="">Select Type</option>
                                             <option value="1" <?php if($ria_specific_type==1){echo "selected='selected'";} ?>>Fee Based Mutual Funds</option>
@@ -334,28 +369,30 @@ $(document).on('click','.remove-row',function(){
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Based Type </label><br />
+                                        <label></label><br />
                                         <input type="radio"  name="based_type" class="radio"  value="1" style="display: inline;" <?php if($based==1){echo "checked='checked'";}?>/>&nbsp;<label>Asset Based</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         <input type="radio"  name="based_type" class="radio"  value="2" style="display: inline;" <?php if($based==2){echo "checked='checked'";}?>/>&nbsp;<label>Fee Based</label>
                                     </div>
                                 </div>
                             </div>   
-                            <div class="row">
+                            <div class="row" style="padding: 5px;">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Fee Rate </label><br />
-                                        <input type="text" value="<?php echo $fee_rate; ?>"  maxlength="5"   class="form-control" name="fee_rate"  />
+                                        <input type="number" value="<?php echo $fee_rate; ?>" onblur="round(this.value);"  maxlength="5"   class="form-control" name="fee_rate" id="fee_rate" placeholder="0.00"  />
                                     </div>
                                 </div>
-                            </div><br />   
-                           
-                           <div class="row">
+                            </div>
+                            </div>
+                            <br />   
+                           <div style="display: block; border: 1px solid #ddd;">
+                           <div class="row" style="padding: 5px;">
                                 <div class="col-md-12">
                                     <h4><b>Stocks, Bonds</b></h4><br />
                                 </div>
                            </div>
                            
-                           <div class="row">
+                           <div class="row" style="padding: 5px;">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <input type="radio" class="radio" name="stocks_bonds" value="1" style="display: inline;" <?php if($st_bo==1){echo "checked='checked'";}?>/>&nbsp;<label>Listed </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -363,15 +400,18 @@ $(document).on('click','.remove-row',function(){
                                         <input type="radio" class="radio" name="stocks_bonds"  value="2" style="display: inline;" <?php if($st_bo==2){echo "checked='checked'";}?>/>&nbsp;<label>OTC </label>
                                     </div>
                                 </div>
-                            </div><br />
+                            </div>
+                            </div>
+                            <br />
+                           <div style="display: block; border: 1px solid #ddd;">
+                            <div class="row" style="padding: 5px;">
                             
-                            <div class="row">
                                 <div class="col-md-12">
                                     <h4><b>CDs, UITs, Bonds</b></h4><br />
                                 </div>
                             </div>
                            
-                            <div class="row">
+                            <div class="row" style="padding: 5px;">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Maturity Date </label><br />
@@ -394,15 +434,17 @@ $(document).on('click','.remove-row',function(){
                                         </select>
                                     </div>
                                 </div>
-                            </div> <br />  
+                            </div>
+                            </div>
+                            <br />  
+                           <div style="display: block; border: 1px solid #ddd;">
+                            <div class="row" style="padding: 5px;">
                            
-                           <div class="row">
                                 <div class="col-md-12">
                                     <h4><b>Variable Annuities</b></h4><br />
                                 </div>
-                           </div>
-                           
-                           <div class="row">
+                            </div>
+                           <div class="row" style="padding: 5px;">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <input type="radio" class="radio" name="variable_annuities" value="1" style="display: inline;" <?php if($var==1){echo "checked='checked'";}?>/>&nbsp;<label>Single </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -410,18 +452,20 @@ $(document).on('click','.remove-row',function(){
                                         <input type="radio" class="radio" name="variable_annuities"  value="2" style="display: inline;" <?php if($var==2){echo "checked='checked'";}?>/>&nbsp;<label>Recurring </label>
                                     </div>
                                 </div>
-                            </div><br />
-                           
-                           <div class="row">
+                            </div>
+                            </div>
+                            <br />
+                           <div style="display: block; border: 1px solid #ddd;">
+                            <div class="row" style="padding: 5px;">
                                 <div class="col-md-12">
                                     <h4><b>Agency Tax Credits, Alternative Investments, Hedge Funds, Secondary Limited Partnerships</b></h4><br />
                                 </div>
-                           </div>
+                            </div>
                            
-                           <div class="row">
+                            <div class="row" style="padding: 5px;">
                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Registrtion Type </label><br />
+                                        <label>Registration Type </label><br />
                                         <select class="form-control" name="registration_type">
                                             <option value="">Select Registration Type</option>
                                             <option value="1" <?php if($reg_type==1){echo "selected='selected'";} ?>>Public Real Estate</option>
@@ -440,7 +484,7 @@ $(document).on('click','.remove-row',function(){
                                     </div>
                                 </div>
                             </div>
-                             
+                          </div><br />
                          </div>  
                     <div class="tab-pane" id="tab_bb"> 
                         <div class="row">
@@ -504,24 +548,18 @@ $(document).on('click','.remove-row',function(){
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Non-Commissionable </label><br />
-                                        <input type="checkbox"  class="checkbox" name="non_commissionable" id="non_commissionable" value="1" style="display: inline;" <?php if($non_commissionable>0){echo "checked='checked'";}?>/>
-                                    </div>
-                                </div>
                             </div>
                     </div>
                    
                 </div>
                 <div class="panel-footer">
-                                <div class="selectwrap">
-                                    <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-                					<input type="submit" name="product" onclick="waitingDialog.show();" value="Save"/>	
-                                    <a href="<?php echo CURRENT_PAGE.'?action=view_product';?>"><input type="button" name="cancel" value="Cancel" /></a>
-                                </div>
-                            </div>
-        			    </form>
+                        <div class="selectwrap">
+                            <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
+        					<input type="submit" name="product" onclick="waitingDialog.show();" value="Save"/>	
+                            <a href="<?php echo CURRENT_PAGE.'?action=view_product';?>"><input type="button" name="cancel" value="Cancel" /></a>
+                        </div>
+                    </div>
+			    </form>
                 <?php
                     }
                 ?> 
@@ -624,6 +662,82 @@ function set_Category(val){
     var category = val;
     var a = document.getElementById("product_category").value;
     alert(a);
+}
+</script>
+<script>
+function round(feerate)
+{
+    if(feerate>100)
+    {
+        var rounded = 99.9;
+    }
+    else
+    {
+        var round = Math.round( feerate * 10 ) / 10;
+        var rounded = round.toFixed(1);
+    }
+    document.getElementById("fee_rate").value = rounded;
+    
+}
+function minrate(feerate)
+{
+    if(feerate>100)
+    {
+        var rounded = 99.9;
+    }
+    else
+    {
+        var round = Math.round( feerate * 10 ) / 10;
+        var rounded = round.toFixed(1);
+    }
+    document.getElementById("min_rate").value = rounded;
+    
+}
+function maxrate(feerate)
+{
+    if(feerate>100)
+    {
+        var rounded = 99.9;
+    }
+    else
+    {
+        var round = Math.round( feerate * 10 ) / 10;
+        var rounded = round.toFixed(1);
+    }
+    document.getElementById("max_rate").value = rounded;
+    
+}
+function minthreshold(feerate)
+{
+    if(feerate>99999999)
+    {
+        var rounded = 99999999;
+    }
+    else if(feerate == '')
+    {
+        var rounded = 0;
+    }
+    else{
+        var rounded = feerate;
+    }
+    document.getElementById("min_threshold").value = rounded;
+    
+}
+function maxthreshold(feerate)
+{
+    if(feerate>99999999)
+    {
+        var rounded = 99999999;
+    }
+    else if(feerate == '')
+    {
+        var rounded = 0;
+    }
+    else{
+        var rounded = feerate;
+    }
+    document.getElementById("max_threshold").value = rounded;
+    
 }
 </script>
 <script>
