@@ -23,123 +23,139 @@
     			</div>
     		  
             </ul>
-            <div class="tab-content">           
+            <div class="tab-content">  
+                <div class="panel-footer">
+                <div class="selectwrap" style="float: right;">
+                    <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
+        					<input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
+                            <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
+                </div><br />
+           </div>         
                 <div class="tab-pane active" id="tab_aa">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label>Company/Practice Name <span class="text-red">*</span></label>
                                 <input type="text" name="company_name" id="company_name" value="<?php if($action=='edit'){echo $company_name;} ?>"  class="form-control" />
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Company/Practice Type </label>
                                 <input type="text" name="company_type" id="company_type" value="<?php if($action=='edit'){echo $company_type;} ?>"  class="form-control" />
                             </div>
                         </div>
-                   </div>
-                   <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Manager Name </label>
-                                <input type="text" name="manager_name" id="manager_name" value="<?php if($action=='edit'){echo $manager_name;} ?>"  class="form-control" />
+                                <!--input type="text" name="manager_name" id="manager_name" value="<?php if($action=='edit'){echo $manager_name;} ?>"  class="form-control" /-->
+                                <select name="manager_name" id="manager_name" class="form-control">
+                                    <option value="0">Select Manager</option>
+                                    <?php foreach($get_manager as $statekey=>$stateval){?>
+                                    <option  <?php if($action=='edit'){if($manager_name == $stateval['id']){ ?>selected="true" <?php }} ?> value="<?php echo $stateval['id']; ?>"><?php echo $stateval['first_name'].' '.$stateval['middle_name'].' '.$stateval['last_name']; ?></option>
+                                    <?php } ?>
+                                </select>
+                                </select>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Business Address 1 <span class="text-red">*</span></label>
                                 <input type="text" name="address1" id="address1" value="<?php if($action=='edit'){echo $address1;} ?>" class="form-control" />
                             </div>
                         </div>
-                   </div>
-                   <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Business Address 2 </label>
                                 <input type="text" name="address2" id="address2" value="<?php if($action=='edit'){echo $address2;} ?>" class="form-control" />
                             </div>
                         </div>
+                   </div>
+                   <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Business City <span class="text-red">*</span></label>
                                 <input type="text" name="business_city" id="business_city" value="<?php if($action=='edit'){echo $business_city;} ?>" class="form-control" />
                             </div>
                         </div>
-                   </div>
-                   <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>State <span class="text-red">*</span></label>
                                 <select name="state_general" id="state_general" class="form-control">
                                     <option value="">Select State</option>
                                     <?php foreach($get_state as $statekey=>$stateval){?>
-                                    <option  <?php if($state_general == $stateval['id']){ ?>selected="true" <?php } ?> value="<?php echo $stateval['id']; ?>"><?php echo $stateval['name']; ?></option>
+                                    <option  <?php if(isset($state_general) && $state_general == $stateval['id']){ ?>selected="true" <?php } ?> value="<?php echo $stateval['id']; ?>"><?php echo $stateval['name']; ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
                         </div>
+                   </div>
+                   <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Business Zipcode <span class="text-red">*</span></label>
                                 <input type="text" name="zip" id="zip" value="<?php if($action=='edit'){echo $zip;} ?>" class="form-control" />
                             </div>
                         </div>
-                   </div>
-                   <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Mailing Address1 </label>
                                 <input type="text" name="mail_address1" id="mail_address1" value="<?php if($action=='edit'){echo $mail_address1;} ?>" class="form-control" />
                             </div>
                         </div>
+                   </div>
+                   <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Mailing Address2 </label>
                                 <input type="text" name="mail_address2" id="mail_address2" value="<?php if($action=='edit'){echo $mail_address2;} ?>" class="form-control" />
                             </div>
                         </div>
-                   </div>
-                   <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Mailing City </label>
                                 <input type="text" name="m_city" id="m_city" value="<?php if($action=='edit'){echo $m_city;} ?>" class="form-control" />
                             </div>
                         </div>
+                   </div>
+                   <div class="row">
                          <div class="col-md-6">
                             <div class="form-group">
                                 <label>Mailing State </label>
                                 <select name="state_mailing" id="state_mailing" class="form-control">
                                     <option value="">Select State</option>
                                     <?php foreach($get_state as $statekey=>$stateval){?>
-                                    <option <?php if($state_mailing == $stateval['id']){ ?>selected="true" <?php } ?> value="<?php echo $stateval['id']; ?>"><?php  echo $stateval['name']; ?></option>
+                                    <option <?php if(isset($state_mailing) && $state_mailing == $stateval['id']){ ?>selected="true" <?php }  ?> value="<?php echo $stateval['id']; ?>"><?php  echo $stateval['name']; ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
                         </div>
-                   </div>
-                   <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Mailing Zipcode</label>
                                 <input type="text" name="m_zip" id="m_zip" value="<?php if($action=='edit'){echo $m_zip;} ?>" class="form-control" />
                             </div>
                         </div>
+                   </div>
+                   <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Telephone </label>
                                 <input type="text" name="telephone" id="telephone" value="<?php if($action=='edit'){echo $telephone;} ?>" class="form-control" />
                             </div>
                         </div>
-                   </div>
-                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Facsimile </label>
                                 <input type="text" name="facsimile" id="facsimile" value="<?php if($action=='edit'){echo $facsimile;} ?>" class="form-control" />
                             </div>
                         </div>
+                   </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Date Established <span class="text-red">*</span> </label><br />
@@ -150,8 +166,6 @@
 	                            </div>
                             </div>
                         </div>
-                   </div>
-                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Inactive Date </label><br />
@@ -220,7 +234,7 @@
                         </div>
                          <div class="col-md-6">
                             <div class="form-group">
-                                <label>Rate (in percentage) </label>
+                                <label>Rate </label>
                                 <input type="text" name="p_rate" id="p_rate" value="<?php if($action=='edit'){echo $p_rate;} ?>" class="form-control" />
                             </div>
                         </div>
@@ -228,7 +242,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Threshold(in $ Price) </label>
+                                <label>Threshold </label>
                                 <input type="text" name="threshold1" id="threshold1" value="<?php if($action=='edit'){ echo $threshold1;} ?>" class="form-control" />
                             </div>
                         </div>
@@ -335,15 +349,16 @@
                             </div>
                          </div>
                     </div>
-                    <div class="panel-footer">
+                    
+                    
+                </div>
+                <div class="panel-footer">
                         <div class="selectwrap">
                             <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
         					<input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
                             <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                         </div>
                    </div>
-                    
-                </div>
             </div>                
         </form> 
         </div>
@@ -367,15 +382,7 @@
            
                          <form method="post">
                             <div class="row">
-                                <div class="col-md-2">
-                                <select name="active_search" class="form-control" id="active_search" style="size: auto;">
-                                    <option value="" style="size: auto;"> Select </option>
-                                    <option <?php if(isset($active_search) && $active_search == 'company_name'){?> selected="selected"<?php }?> value="company_name"> Compnay  Name</option>
-                                    <option <?php if(isset($active_search) && $active_search == 'manager_name'){?> selected="selected"<?php }?> value="manager_name"> Maneger  Name</option>
-                                    <option <?php if(isset($active_search) && $active_search == 'company_type'){?> selected="selected"<?php }?> value="company_type"> Company  Type</option>
-                                    <option <?php if(isset($active_search) && $active_search == 'i_date'){?> selected="selected"<?php }?> value="i_date"> Establish  Date</option>
-                                </select>
-                                </div>
+                                <input type="hidden" name="active_search" value="company_name"/>  
                                 <input type="text" name="search_text" id="search_text" value="<?php //echo $search_text;?>"/>
                             <button type="submit" name="submit" id="submit" value="Search"><i class="fa fa-search"></i> Search</button>
                          </div>

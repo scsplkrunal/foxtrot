@@ -188,7 +188,7 @@
 			
 			$q = "SELECT `st`.*
 					FROM `".STATE_MASTER."` AS `st`
-                    WHERE `st`.`is_delete`='0'
+                    WHERE `st`.`is_delete`='0' AND `st`.`status`='1'
                     ORDER BY `st`.`id` ASC";
 			$res = $this->re_db_query($q);
             if($this->re_db_num_rows($res)>0){
@@ -200,6 +200,24 @@
             }
 			return $return;
 		}
+        
+        public function select_manager(){
+            $return = array();
+			
+			$q = "SELECT `st`.*
+					FROM `".BROKER_MASTER."` AS `st`
+                    WHERE `st`.`is_delete`='0'
+                    ORDER BY `st`.`id` ASC";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+        }
         
         public function select_product_category(){
 			$return = array();

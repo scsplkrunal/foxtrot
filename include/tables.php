@@ -39,4 +39,7 @@
     define('CLIENT_NOTES','ft_client_notes');
     define('CLIENT_SUITABILITY','ft_client_suitability');
     define('CLIENT_OBJECTIVES','ft_client_objectives');
+    define('BROKER_LICENCES_SECURITIES','ft_broker_licences_securities');
+    define('BROKER_LICENCES_RIA','ft_broker_licences_ria');
+    define('BROKER_LICENCES_INSURANCE','ft_broker_licences_insurance');
 ?>

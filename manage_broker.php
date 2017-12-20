@@ -45,12 +45,15 @@
     $summarize_direct_imported_trades = '';
     $from_date = '';
     $to_date = '';
+    $sponsor_company = '';
     
     $action = isset($_GET['action'])&&$_GET['action']!=''?$dbins->re_db_input($_GET['action']):'view';
     $id = isset($_GET['id'])&&$_GET['id']!=''?$dbins->re_db_input($_GET['id']):0;
     
     $instance = new broker_master();
     $get_state  = $instance->select_state();
+    $get_state_new = $instance->select_state_new();
+    $get_sponsor = $instance->select_sponsor();
     
     if(isset($_POST['submit'])&& $_POST['submit']=='Save'){
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
@@ -66,17 +69,118 @@
         $active_status_cdd = isset($_POST['active_status_cdd'])?$instance->re_db_input($_POST['active_status_cdd']):'';
     	$pay_method = isset($_POST['pay_method'])?$instance->re_db_input($_POST['pay_method']):'';
     	$branch_manager = isset($_POST['branch_manager'])?$instance->re_db_input($_POST['branch_manager']):'';//echo '<pre>';print_r($_POST);exit;
+        
+        $home_general = isset($_POST['home_general'])?$instance->re_db_input($_POST['home_general']):'';
+		$address1_general = isset($_POST['address1_general'])?$instance->re_db_input($_POST['address1_general']):'';
+		$address2_general = isset($_POST['address2_general'])?$instance->re_db_input($_POST['address2_general']):'';
+		$city_general = isset($_POST['city_general'])?$instance->re_db_input($_POST['city_general']):'';
+		$state_general = isset($_POST['state_general'])?$instance->re_db_input($_POST['state_general']):'';
+		$zip_code_general = isset($_POST['zip_code_general'])?$instance->re_db_input($_POST['zip_code_general']):'';
+        $telephone_general = isset($_POST['telephone_general'])?$instance->re_db_input($_POST['telephone_general']):'';
+        $cell_general = isset($_POST['cell_general'])?$instance->re_db_input($_POST['cell_general']):'';
+		$fax_general = isset($_POST['fax_general'])?$instance->re_db_input($_POST['fax_general']):'';
+        $gender_general = isset($_POST['gender_general'])?$instance->re_db_input($_POST['gender_general']):'';
+		$status_general = isset($_POST['status_general'])?$instance->re_db_input($_POST['status_general']):'';
+		$spouse_general = isset($_POST['spouse_general'])?$instance->re_db_input($_POST['spouse_general']):'';
+        $children_general = isset($_POST['children_general'])?$instance->re_db_input($_POST['children_general']):'';
+		$email1_general = isset($_POST['email1_general'])?$instance->re_db_input($_POST['email1_general']):'';
+		$email2_general = isset($_POST['email2_general'])?$instance->re_db_input($_POST['email2_general']):'';
+		$web_id_general = isset($_POST['web_id_general'])?$instance->re_db_input($_POST['web_id_general']):'';
+		$web_password_general = isset($_POST['web_password_general'])?$instance->re_db_input($_POST['web_password_general']):'';
+		$dob_general = isset($_POST['dob_general'])?$instance->re_db_input($_POST['dob_general']):'';
+		$prospect_date_general = isset($_POST['prospect_date_general'])?$instance->re_db_input($_POST['prospect_date_general']):'';
+		$reassign_broker_general = isset($_POST['reassign_broker_general'])?$instance->re_db_input($_POST['reassign_broker_general']):'';
+		$u4_general = isset($_POST['u4_general'])?$instance->re_db_input($_POST['u4_general']):'';
+        $u5_general = isset($_POST['u5_general'])?$instance->re_db_input($_POST['u5_general']):'';
+		$dba_name_general = isset($_POST['dba_name_general'])?$instance->re_db_input($_POST['dba_name_general']):'';
+		$eft_info_general = isset($_POST['eft_info_general'])?$instance->re_db_input($_POST['eft_info_general']):'';
+        $start_date_general = isset($_POST['start_date_general'])?$instance->re_db_input($_POST['start_date_general']):'';
+		$transaction_type_general = isset($_POST['transaction_type_general'])?$instance->re_db_input($_POST['transaction_type_general']):'';
+		$routing_general = isset($_POST['routing_general'])?$instance->re_db_input($_POST['routing_general']):'';
+		$account_no_general = isset($_POST['account_no_general'])?$instance->re_db_input($_POST['account_no_general']):'';
+		$summarize_trailers_general = isset($_POST['summarize_trailers_general'])?$instance->re_db_input($_POST['summarize_trailers_general']):0;
+		$summarize_direct_imported_trades = isset($_POST['summarize_direct_imported_trades'])?$instance->re_db_input($_POST['summarize_direct_imported_trades']):0;
+		$from_date_general = isset($_POST['from_date_general'])?$instance->re_db_input($_POST['from_date_general']):'';
+		$to_date_general = isset($_POST['to_date_general'])?$instance->re_db_input($_POST['to_date_general']):'';
+		$cfp_general = isset($_POST['cfp_general'])?$instance->re_db_input($_POST['cfp_general']):0;
+        $chfp_general = isset($_POST['chfp_general'])?$instance->re_db_input($_POST['chfp_general']):0;
+		$cpa_general = isset($_POST['cpa_general'])?$instance->re_db_input($_POST['cpa_general']):0;
+		$clu_general = isset($_POST['clu_general'])?$instance->re_db_input($_POST['clu_general']):0;
+        $cfa_general = isset($_POST['cfa_general'])?$instance->re_db_input($_POST['cfa_general']):0;
+        $ria_general = isset($_POST['ria_general'])?$instance->re_db_input($_POST['ria_general']):0;
+		$insurance_general = isset($_POST['insurance_general'])?$instance->re_db_input($_POST['insurance_general']):0;//echo '<pre>';print_r($_POST);exit;
+    
+        
         $return = $instance->insert_update($_POST);
         
+        $return = $instance->insert_update_general($_POST);
+        
         if($return===true){
-            header('location:'.CURRENT_PAGE.'?action=general');exit;
-            
+            if($action == 'edit')
+            {
+                header("location:".CURRENT_PAGE."?action=".$action."&id=".$id."&tab=payouts");exit;
+            }
+            else
+            {
+                header("location:".CURRENT_PAGE."?action=".$action."&tab=payouts");exit;
+            }
         }
         else{
             $error = !isset($_SESSION['warning'])?$return:'';
         }
     }
-    else if(isset($_POST['general'])&& $_POST['general']=='Save'){
+    else if(isset($_POST['securities'])&& $_POST['securities']=='Save'){
+       //echo '<pre>';print_r($_POST);exit();
+        $return = $instance->insert_update_licences($_POST);   
+        if($return===true){
+            if($action == 'edit')
+            {
+                header("location:".CURRENT_PAGE."?action=".$action."&id=".$id."&tab=registers");exit;
+            }
+            else
+            {
+                header("location:".CURRENT_PAGE."?action=".$action."&tab=registers");exit;
+            }
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+    }
+    else if(isset($_POST['insurance'])&& $_POST['insurance']=='Save'){
+       //echo '<pre>';print_r($_POST);exit();
+        $return = $instance->insert_update_licences1($_POST);   
+        if($return===true){
+            if($action == 'edit')
+            {
+                header("location:".CURRENT_PAGE."?action=".$action."&id=".$id."&tab=registers");exit;
+            }
+            else
+            {
+                header("location:".CURRENT_PAGE."?action=".$action."&tab=registers");exit;
+            }
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+    }
+    else if(isset($_POST['ria'])&& $_POST['ria']=='Save'){
+       //echo '<pre>';print_r($_POST);exit();
+        $return = $instance->insert_update_licences2($_POST);   
+        if($return===true){
+            if($action == 'edit')
+            {
+                header("location:".CURRENT_PAGE."?action=".$action."&id=".$id."&tab=registers");exit;
+            }
+            else
+            {
+                header("location:".CURRENT_PAGE."?action=".$action."&tab=registers");exit;
+            }
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+    }
+    /*else if(isset($_POST['general'])&& $_POST['general']=='Save'){
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
         $home_general = isset($_POST['home_general'])?$instance->re_db_input($_POST['home_general']):'';
 		$address1_general = isset($_POST['address1_general'])?$instance->re_db_input($_POST['address1_general']):'';
@@ -120,12 +224,12 @@
         $return = $instance->insert_update_general($_POST);
         
         if($return===true){
-            header('location:'.CURRENT_PAGE.'?action=charges');exit;
+            header('location:'.CURRENT_PAGE.'?action=view');exit;
         }
         else{
             $error = !isset($_SESSION['warning'])?$return:'';
         }
-    }
+    }*/
     else if(isset($_POST['charges'])&& $_POST['charges']=='Save'){
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
         //echo '<pre>';print_r($_POST);exit;
@@ -133,7 +237,6 @@
         
         if($return===true){
             header('location:'.CURRENT_PAGE.'?action=general');exit;
-            
         }
         else{
             $error = !isset($_SESSION['warning'])?$return:'';
@@ -141,7 +244,8 @@
     }
     else if($action=='edit' && $id>0){
         $return = $instance->edit($id);
-        
+        $return1 = $instance->edit_general($id);
+        $_SESSION['last_insert_id']=$id;
         $fname = $instance->re_db_output($return['first_name']);
     	$lname = $instance->re_db_output($return['last_name']);
     	$mname = $instance->re_db_output($return['middle_name']);
@@ -154,7 +258,41 @@
         $active_status_cdd = $instance->re_db_output($return['active_status']);
     	$pay_method = $instance->re_db_output($return['pay_method']);
     	$branch_manager = $instance->re_db_output($return['branch_manager']);
-        
+        $home = $instance->re_db_output($return1['home/business']);
+        $address1 = $instance->re_db_output($return1['address1']);
+        $address2 = $instance->re_db_output($return1['address2']);
+        $city = $instance->re_db_output($return1['city']);
+        $state_id = $instance->re_db_output($return1['state_id']);
+        $zip_code = $instance->re_db_output($return1['zip_code']);
+        $telephone = $instance->re_db_output($return1['telephone']);
+        $cell = $instance->re_db_output($return1['cell']);
+        $fax = $instance->re_db_output($return1['fax']);
+        $gender = $instance->re_db_output($return1['gender']);
+        $marital_status = $instance->re_db_output($return1['marital_status']);
+        $spouse = $instance->re_db_output($return1['spouse']);
+        $children = $instance->re_db_output($return1['children']);
+        $email1 = $instance->re_db_output($return1['email1']);
+        $email2 = $instance->re_db_output($return1['email2']);
+        $web_id = $instance->re_db_output($return1['web_id']);
+        $web_password = $instance->re_db_output($return1['web_password']);
+        $dob = $instance->re_db_output($return1['dob']);
+        $prospect_date = $instance->re_db_output($return1['prospect_date']);
+        $reassign_broker = $instance->re_db_output($return1['reassign_broker']);
+        $u4 = $instance->re_db_output($return1['u4']);
+        $u5 = $instance->re_db_output($return1['u5']);
+        $dba_name = $instance->re_db_output($return1['dba_name']);
+        $eft_information = $instance->re_db_output($return1['eft_information']);
+        $start_date = $instance->re_db_output($return1['start_date']);
+        $transaction_type = $instance->re_db_output($return1['transaction_type']);  
+        $routing = $instance->re_db_output($return1['routing']);
+        $account_no = $instance->re_db_output($return1['account_no']);
+        $cfp = $instance->re_db_output($return1['cfp']);
+        $chfp = $instance->re_db_output($return1['chfp']);
+        $cpa = $instance->re_db_output($return1['cpa']);
+        $clu = $instance->re_db_output($return1['clu']);
+        $cfa = $instance->re_db_output($return1['cfa']);
+        $ria = $instance->re_db_output($return1['ria']);  
+        $insurance = $instance->re_db_output($return1['insurance']);    
     }
     else if(isset($_POST['submit'])&&$_POST['submit']=='Search'){
         
@@ -186,6 +324,7 @@
     }
     else if($action=='view'){
         
+        $_SESSION['last_insert_id']='';
         $return = $instance->select();
         
     }

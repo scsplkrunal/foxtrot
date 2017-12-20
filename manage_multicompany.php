@@ -8,6 +8,7 @@
     
     $instance = new manage_company();
     $get_state  = $instance->select_state();
+    $get_manager  = $instance->select_manager();
     $get_product  = $instance->select_product_category();
     if(isset($_POST['submit'])&& $_POST['submit']=='Save'){
         

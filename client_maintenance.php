@@ -3,8 +3,10 @@
     require_once(DIR_FS."islogin.php");
 	
     $error = '';
+    $return_account = array();
     $action = isset($_GET['action'])&&$_GET['action']!=''?$dbins->re_db_input($_GET['action']):'view';
     $id = isset($_GET['id'])&&$_GET['id']!=''?$dbins->re_db_input($_GET['id']):0;
+    
     $fname = '';
     $mi = '';
     $lname = '';
@@ -81,13 +83,17 @@
     $sign_date = '';
     $tax_bracket = '';
     $tax_id = '';
+    
     $objectives_check_id = array();
+    $allobjectives = array();
     
     $instance = new client_maintenance();
     $instance_account_type = new account_master();
     $get_account_type = $instance_account_type->select_account_type();
     $get_state = $instance->select_state();
     $get_notes = $instance->select_notes();
+    $notes_id = 0;
+    
     $instance_product = new product_maintenance();
     $get_sponsor = $instance_product->select_sponsor();
     $instance_client_suitability = new client_suitebility_master();
@@ -105,11 +111,6 @@
     $get_account_use = $instance_client_suitability->select_account_use();
     $instance_broker = new broker_master();
     $get_broker = $instance_broker->select();
-    $get_current_objectives = $instance->select_objectives();
-    foreach($get_current_objectives as $key=>$val)
-    {
-        $objectives_check_id[$val['objectives']]=$val['objectives'];
-    }
     
     if(isset($_POST['submit'])&& $_POST['submit']=='Save'){
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
@@ -147,7 +148,14 @@
         $return = $instance->insert_update($_POST);
         
         if($return===true){
-            header("location:".CURRENT_PAGE."?action=".$action."&tab=account_no");exit;
+            if($action == 'edit')
+            {
+                header("location:".CURRENT_PAGE."?action=".$action."&id=".$id."&tab=account_no");exit;
+            }
+            else
+            {
+                header("location:".CURRENT_PAGE."?action=".$action."&tab=account_no");exit;
+            }
         }
         else{
             $error = !isset($_SESSION['warning'])?$return:'';
@@ -176,7 +184,14 @@
         $return = $instance->insert_update_employment($_POST);
         
         if($return===true){
-            header("location:".CURRENT_PAGE."?action=".$action."&tab=suitability");exit;
+            if($action == 'edit')
+            {
+                header("location:".CURRENT_PAGE."?action=".$action."&id=".$id."&tab=suitability");exit;
+            }
+            else
+            {
+                header("location:".CURRENT_PAGE."?action=".$action."&tab=suitability");exit;
+            }
         }
         else{
             $error = !isset($_SESSION['warning'])?$return:'';
@@ -190,7 +205,14 @@
         $return = $instance->insert_update_account($_POST);
         
         if($return===true){
-            header("location:".CURRENT_PAGE."?action=".$action."&tab=employment");exit;
+            if($action == 'edit')
+            {
+                header("location:".CURRENT_PAGE."?action=".$action."&id=".$id."&tab=employment");exit;
+            }
+            else
+            {
+                header("location:".CURRENT_PAGE."?action=".$action."&tab=employment");exit;
+            }
         }
         else{
             $error = !isset($_SESSION['warning'])?$return:'';
@@ -217,7 +239,14 @@
         $return = $instance->insert_update_suitability($_POST);
         
         if($return===true){
-            header("location:".CURRENT_PAGE."?action=".$action."&tab=objectives");exit;
+            if($action == 'edit')
+            {
+                header("location:".CURRENT_PAGE."?action=".$action."&id=".$id."&tab=objectives");exit;
+            }
+            else
+            {
+                header("location:".CURRENT_PAGE."?action=".$action."&tab=objectives");exit;
+            }
         }
         else{
             $error = !isset($_SESSION['warning'])?$return:'';
@@ -228,15 +257,38 @@
         $return = $instance->insert_update_objectives($_POST);
         
         if($return===true){
-            echo '1';exit;
+            if($action == 'edit')
+            {
+                header("location:".CURRENT_PAGE."?action=".$action."&id=".$id."&tab=objectives");exit;
+            }
+            else
+            {
+                header("location:".CURRENT_PAGE."?action=".$action."&tab=objectives");exit;
+            }
         }
         else{
             $error = !isset($_SESSION['warning'])?$return:'';
         }
-        echo $error;
-            exit;
     }
-    
+    else if(isset($_POST['add_allobjectives'])&& $_POST['add_allobjectives']=='Add_AllObjectives'){
+        $id = isset($_POST['allobjectives_id'])?$instance->re_db_input($_POST['allobjectives_id']):0;
+        $allobjectives = isset($_POST['allobjectives'])?$_POST['allobjectives']:array();
+        $return = $instance->insert_update_allobjectives($_POST);
+        
+        if($return===true){
+            if($action == 'edit')
+            {
+                header("location:".CURRENT_PAGE."?action=".$action."&id=".$id."&tab=objectives");exit;
+            }
+            else
+            {
+                header("location:".CURRENT_PAGE."?action=".$action."&tab=objectives");exit;
+            }
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+    }
     else if(isset($_POST['add_notes'])&& $_POST['add_notes']=='Add Notes'){
         
         $return = $instance->insert_update_client_notes($_POST);
@@ -288,6 +340,45 @@
         $broker_name = isset($return['broker_name'])?$instance->re_db_output($return['broker_name']):'';
         $telephone = isset($return['telephone'])?$instance->re_db_output($return['telephone']):'';
         $contact_status = isset($return['contact_status'])?$instance->re_db_output($return['contact_status']):'';
+        $_SESSION['client_full_name'] = $return['first_name'].' '.$return['mi'].'.'.$return['last_name'];
+        $_SESSION['client_id'] = $id;
+        $return_account = $instance->edit_account($id);
+        
+        $return_employment = $instance->edit_employment($id);
+        $occupation = isset($return_employment['occupation'])?$instance->re_db_output($return_employment['occupation']):'';
+        $employer = isset($return_employment['employer'])?$instance->re_db_output($return_employment['employer']):'';
+        $address_employement = isset($return_employment['address'])?$instance->re_db_output($return_employment['address']):'';
+        $position = isset($return_employment['position'])?$instance->re_db_output($return_employment['position']):'';
+        $telephone_employment = isset($return_employment['telephone'])?$instance->re_db_output($return_employment['telephone']):'';
+        $security_related_firm = isset($return_employment['security_related_firm'])?$instance->re_db_output($return_employment['security_related_firm']):'';
+        $finra_affiliation = isset($return_employment['finra_affiliation'])?$instance->re_db_output($return_employment['finra_affiliation']):'';
+        $spouse_name = isset($return_employment['spouse_name'])?$instance->re_db_output($return_employment['spouse_name']):'';
+        $spouse_ssn = isset($return_employment['spouse_ssn'])?$instance->re_db_output($return_employment['spouse_ssn']):'';
+        $dependents = isset($return_employment['dependents'])?$instance->re_db_output($return_employment['dependents']):'';
+        $salutation = isset($return_employment['salutation'])?$instance->re_db_output($return_employment['salutation']):'';
+        $options = isset($return_employment['options'])?$instance->re_db_output($return_employment['options']):'';
+        $other = isset($return_employment['other'])?$instance->re_db_output($return_employment['other']):'';
+        $number = isset($return_employment['number'])?$instance->re_db_output($return_employment['number']):'';
+        $expiration = isset($return_employment['expiration'])?$instance->re_db_output($return_employment['expiration']):'';
+        $state_employe = isset($return_employment['state'])?$instance->re_db_output($return_employment['state']):'';
+        $date_verified = isset($return_employment['date_verified'])?$instance->re_db_output($return_employment['date_verified']):'';
+        
+        $return_suitability = $instance->edit_suitability($id);
+        $income = isset($return_suitability['income'])?$instance->re_db_output($return_suitability['income']):'';
+        $goal_horizone = isset($return_suitability['goal_horizon'])?$instance->re_db_output($return_suitability['goal_horizon']):'';
+        $net_worth = isset($return_suitability['net_worth'])?$instance->re_db_output($return_suitability['net_worth']):'';
+        $risk_tolerance = isset($return_suitability['risk_tolerance'])?$instance->re_db_output($return_suitability['risk_tolerance']):'';
+        $annual_expenses = isset($return_suitability['annual_expenses'])?$instance->re_db_output($return_suitability['annual_expenses']):'';
+        $liquidity_needs = isset($return_suitability['liquidity_needs'])?$instance->re_db_output($return_suitability['liquidity_needs']):'';
+        $liquid_net_worth = isset($return_suitability['liquid_net_worth'])?$instance->re_db_output($return_suitability['liquid_net_worth']):'';
+        $special_expenses = isset($return_suitability['special_expenses'])?$instance->re_db_output($return_suitability['special_expenses']):'';
+        $per_of_portfolio = isset($return_suitability['per_of_portfolio'])?$instance->re_db_output($return_suitability['per_of_portfolio']):'';
+        $timeframe_for_special_exp = isset($return_suitability['time_frame_for_special_exp'])?$instance->re_db_output($return_suitability['time_frame_for_special_exp']):'';
+        $account_use = isset($return_suitability['account_use'])?$instance->re_db_output($return_suitability['account_use']):'';
+        $signed_by = isset($return_suitability['signed_by'])?$instance->re_db_output($return_suitability['signed_by']):'';
+        $sign_date = isset($return_suitability['sign_date'])?$instance->re_db_output($return_suitability['sign_date']):'';
+        $tax_bracket = isset($return_suitability['tax_bracket'])?$instance->re_db_output($return_suitability['tax_bracket']):'';
+        $tax_id = isset($return_suitability['tax_id'])?$instance->re_db_output($return_suitability['tax_id']):'';
         
     }
     else if(isset($_GET['action'])&&$_GET['action']=='status'&&isset($_GET['id'])&&$_GET['id']>0&&isset($_GET['status'])&&($_GET['status']==0 || $_GET['status']==1))
@@ -301,16 +392,74 @@
         else{
             header('location:'.CURRENT_PAGE);exit;
         }
-    } 
-    else if(isset($_GET['action'])&&$_GET['action']=='delete_objectives'&&isset($_GET['objectives_id'])&&$_GET['objectives_id']>0)
+    }
+    else if(isset($_GET['send'])&&$_GET['send']=='previous' && isset($_GET['id'])&&$_GET['id']>0 && $_GET['id']!='')
     {
-        $id = $instance->re_db_input($_GET['objectives_id']);
-        $return = $instance->delete_objectives($id);
-        if($return==true){
-            header("location:".CURRENT_PAGE."?action=add_new&tab=objectives");exit;
+        $id = $instance->re_db_input($_GET['id']);
+        
+        $return = $instance->get_previous_client($id);
+            
+        if($return!=false){
+            $id=$return['id'];
+            header("location:".CURRENT_PAGE."?action=edit&id=".$id."");exit;
         }
         else{
-            header("location:".CURRENT_PAGE."?action=add_new&tab=objectives");exit;
+            header("location:".CURRENT_PAGE."?action=edit&id=".$id."");exit;
+        }
+        
+    }
+    else if(isset($_GET['send'])&&$_GET['send']=='next' && isset($_GET['id'])&&$_GET['id']>0 && $_GET['id']!='')
+    {
+        $id = $instance->re_db_input($_GET['id']);
+        
+        $return = $instance->get_next_client($id);
+            
+        if($return!=false){
+            $id=$return['id'];
+            header("location:".CURRENT_PAGE."?action=edit&id=".$id."");exit;
+        }
+        else{
+            header("location:".CURRENT_PAGE."?action=edit&id=".$id."");exit;
+        }
+        
+    }    
+    else if(isset($_GET['delete_action'])&&$_GET['delete_action']=='delete_objectives'&&isset($_GET['objectives_id'])&&$_GET['objectives_id']>0)
+    {
+        $objectives_id = $instance->re_db_input($_GET['objectives_id']);
+        $return = $instance->delete_objectives($objectives_id);
+        if($return==true){
+            if($id>0)
+            {
+                header("location:".CURRENT_PAGE."?action=edit&id=".$id."&tab=objectives");exit;
+            }
+            else
+            {
+                header("location:".CURRENT_PAGE."?action=add_new&tab=objectives");exit;
+            }
+         }
+        else{
+            
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+    }
+    else if(isset($_GET['delete_action'])&&$_GET['delete_action']=='delete_allobjectives' &&isset($_GET['delete_id'])&&$_GET['delete_id']>0)
+    {
+        $delete_id = $_GET['delete_id'];
+        $return = $instance->delete_allobjectives($delete_id);
+        if($return==true){ 
+           
+            if($id>0)
+            {
+                header("location:".CURRENT_PAGE."?action=edit&id=".$id."&tab=objectives");exit;
+            }
+            else
+            {
+                header("location:".CURRENT_PAGE."?action=add_new&tab=objectives");exit;
+            }
+        }
+        else{ 
+                        
+           $error = !isset($_SESSION['warning'])?$return:'';
         }
     } 
     else if(isset($_GET['action'])&&$_GET['action']=='delete'&&isset($_GET['id'])&&$_GET['id']>0)
@@ -324,12 +473,30 @@
             header('location:'.CURRENT_PAGE);exit;
         }
     }
+    else if(isset($_GET['delete_action'])&&$_GET['delete_action']=='delete_notes'&&isset($_GET['note_id'])&&$_GET['note_id']>0)
+    {
+        $note_id = $instance->re_db_input($_GET['note_id']);
+        $return = $instance->delete_notes($note_id);
+        if($return===true){
+            echo '1';exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+        echo $error;
+        exit;
+    }
     else if($action=='view'){
         
+        $_SESSION['client_id']='';
         $return = $instance->select();
         
     }
-    
+    $get_current_objectives = $instance->select_objectives(isset($_SESSION['client_id'])?$_SESSION['client_id']:0);
+    foreach($get_current_objectives as $key=>$val)
+    {
+        $objectives_check_id[$val['objectives']]=$val['objectives'];
+    }
     $content = "client_maintenance";
     include(DIR_WS_TEMPLATES."main_page.tpl.php");
 ?>

@@ -95,7 +95,7 @@
 			
 			$q = "SELECT `s`.*
 					FROM `".STATE_MASTER."` AS `s`
-                    WHERE `s`.`is_delete`='0'
+                    WHERE `s`.`is_delete`='0' AND `s`.`status`='1'
                     ORDER BY `s`.`id` ASC";
 			$res = $this->re_db_query($q);
             if($this->re_db_num_rows($res)>0){

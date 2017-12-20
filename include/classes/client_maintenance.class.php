@@ -44,7 +44,7 @@
             $open_date = isset($data['open_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['open_date']))):'';
             $naf_date = isset($data['naf_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['naf_date']))):'';
             $last_contacted = isset($data['last_contacted'])?$this->re_db_input(date('Y-m-d',strtotime($data['last_contacted']))):'';
-            
+            //print_r($last_contacted);exit;
             if($lname==''){
 				$this->errors = 'Please enter last name.';
 			}
@@ -184,9 +184,11 @@
 			}
 			else if($id>0){
 			    
+                $q = "UPDATE `".CLIENT_ACCOUNT."` SET `is_delete`='1' WHERE `client_id`='".$id."'";
+				$res = $this->re_db_query($q);
                 foreach($account_no as $key_acc=>$val_acc)
                 {
-    				$q = "UPDATE ``".CLIENT_ACCOUNT."` SET `client_id`='".$_SESSION['client_id']."',`account_no`='".$val_acc."',`sponsor_company`='".$sponsor[$key_acc]."'".$this->update_common_sql()." WHERE `client_id`='".$id."'";
+    				$q = "INSERT INTO `".CLIENT_ACCOUNT."` SET `client_id`='".$id."',`account_no`='".$val_acc."',`sponsor_company`='".$sponsor[$key_acc]."'".$this->insert_common_sql();
     				$res = $this->re_db_query($q);
                 }
 				if($res){
@@ -233,7 +235,7 @@
 			}
 			else if($id>0){
 			    
-				$q = "UPDATE `".CLIENT_SUITABILITY."` SET `client_id`='".$_SESSION['client_id']."',`income`='".$income."',`goal_horizon`='".$goal_horizone."',`net_worth`='".$net_worth."',`risk_tolerance`='".$risk_tolerance."',`annual_expenses`='".$annual_expenses."',`liquidity_needs`='".$liquidity_needs."',`liquid_net_worth`='".$liquid_net_worth."',`special_expenses`='".$special_expenses."',`per_of_portfolio`='".$per_of_portfolio."',`time_frame_for_special_exp`='".$timeframe_for_special_exp."',`account_use`='".$account_use."',`signed_by`='".$signed_by."',`sign_date`='".$sign_date."',`tax_bracket`='".$tax_bracket."',`tax_id`='".$tax_id."'".$this->update_common_sql()." WHERE `client_id`='".$id."'";
+				$q = "UPDATE `".CLIENT_SUITABILITY."` SET `client_id`='".$id."',`income`='".$income."',`goal_horizon`='".$goal_horizone."',`net_worth`='".$net_worth."',`risk_tolerance`='".$risk_tolerance."',`annual_expenses`='".$annual_expenses."',`liquidity_needs`='".$liquidity_needs."',`liquid_net_worth`='".$liquid_net_worth."',`special_expenses`='".$special_expenses."',`per_of_portfolio`='".$per_of_portfolio."',`time_frame_for_special_exp`='".$timeframe_for_special_exp."',`account_use`='".$account_use."',`signed_by`='".$signed_by."',`sign_date`='".$sign_date."',`tax_bracket`='".$tax_bracket."',`tax_id`='".$tax_id."'".$this->update_common_sql()." WHERE `client_id`='".$id."'";
 				$res = $this->re_db_query($q);
 				if($res){
 				    $_SESSION['success'] = UPDATE_MESSAGE;
@@ -262,7 +264,26 @@
 			
 			
 		}
-        public function insert_update_client_notes($data){
+        public function insert_update_allobjectives($data){
+
+			$allobjectives = isset($data['allobjectives'])?$data['allobjectives']:array();
+            
+            
+                foreach($allobjectives as $key=>$val)
+                {
+    				$q = "INSERT INTO `".CLIENT_OBJECTIVES."` SET `client_id`='".$_SESSION['client_id']."',`objectives`='".$val."'".$this->insert_common_sql();
+			        $res = $this->re_db_query($q);
+                }
+                $id = $this->re_db_insert_id();
+				if($res){
+    			    return true;
+    			}
+    			else{
+    				$_SESSION['warning'] = UNKWON_ERROR;
+    				return false;
+    			}
+        }
+        public function insert_update_client_notes($data){//print_r($data);
 			$notes_id = isset($data['notes_id'])?$this->re_db_input($data['notes_id']):0;
 			$date = isset($data['date'])?$this->re_db_input($data['date']):'';
             $user_id = isset($data['user_id'])?$this->re_db_input($data['user_id']):'';
@@ -328,21 +349,24 @@
             }
 			return $return;
 		} 
-        public function select_objectives(){
+        public function select_objectives($id){
 			$return = array();
 			
-			$q = "SELECT `o`.*,co.option as oname
-					FROM `".CLIENT_OBJECTIVES."` AS `o`
-                    LEFT JOIN `".OBJECTIVE_MASTER."` as co on co.id=o.objectives
-                    WHERE `o`.`is_delete`='0'
-                    ORDER BY `o`.`id` ASC";
-			$res = $this->re_db_query($q);
-            if($this->re_db_num_rows($res)>0){
-                $a = 0;
-    			while($row = $this->re_db_fetch_array($res)){
-    			     array_push($return,$row);
-                     
-    			}
+            if($id>0)
+            {
+    			$q = "SELECT `o`.*,co.option as oname
+    					FROM `".CLIENT_OBJECTIVES."` AS `o`
+                        LEFT JOIN `".OBJECTIVE_MASTER."` as co on co.id=o.objectives
+                        WHERE `o`.`is_delete`='0' and `o`.`client_id`=".$id."
+                        ORDER BY `o`.`id` ASC";
+    			$res = $this->re_db_query($q);
+                if($this->re_db_num_rows($res)>0){
+                    $a = 0;
+        			while($row = $this->re_db_fetch_array($res)){
+        			     array_push($return,$row);
+                         
+        			}
+                }
             }
 			return $return;
 		} 
@@ -363,12 +387,46 @@
             }
 			return $return;
 		} 
+        public function get_previous_client($id){
+			$return = array();
+			
+            $q = "SELECT `at`.*
+					FROM `".$this->table."` AS `at`
+                    WHERE `at`.`is_delete`='0' and `at`.`id`<".$id."
+                    ORDER BY `at`.`id` DESC LIMIT 1";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $return = $this->re_db_fetch_array($res);
+            }
+            else
+            {
+                return false;
+            }
+			return $return;
+		} 
+        public function get_next_client($id){
+			$return = array();
+			
+            $q = "SELECT `at`.*
+					FROM `".$this->table."` AS `at`
+                    WHERE `at`.`is_delete`='0' and `at`.`id`>".$id."
+                    ORDER BY `at`.`id` ASC LIMIT 1";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $return = $this->re_db_fetch_array($res);
+            }
+            else
+            {
+                return false;
+            }
+			return $return;
+		}
 		public function select_state(){
 			$return = array();
 			
 			$q = "SELECT `s`.*
 					FROM `".STATE_MASTER."` AS `s`
-                    WHERE `s`.`is_delete`='0'
+                    WHERE `s`.`is_delete`='0' AND `s`.`status`='1'
                     ORDER BY `s`.`id` ASC";
 			$res = $this->re_db_query($q);
             if($this->re_db_num_rows($res)>0){
@@ -390,7 +448,11 @@
 			$res = $this->re_db_query($q);
             if($this->re_db_num_rows($res)>0){
                 
-                $return = $this->re_db_fetch_array($res);
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                     
+    			}
             }
 			return $return;
 		}
@@ -442,7 +504,44 @@
             }
 			return $return;
 		}
-        
+        public function edit_account($id){
+			$return = array();
+			$q = "SELECT `at`.*
+					FROM `".CLIENT_ACCOUNT."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`client_id`='".$id."'";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			while($row = $this->re_db_fetch_array($res)){
+    			     //print_r($row);exit;
+                     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+		}
+        public function edit_employment($id){
+			$return = array();
+			$q = "SELECT `at`.*
+					FROM `".CLIENT_EMPLOYMENT."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`client_id`='".$id."'";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			$return = $this->re_db_fetch_array($res);
+            }
+			return $return;
+		}
+        public function edit_suitability($id){
+			$return = array();
+            $q = "SELECT `at`.*
+					FROM `".CLIENT_SUITABILITY."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`client_id`='".$id."'";
+			
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			$return = $this->re_db_fetch_array($res);
+            }
+			return $return;
+		}
         /**
 		 * @param id of record
 		 * @param status to update
@@ -482,12 +581,25 @@
 				    return true;
 				}
 				else{
+				    $_SESSION['warning'] = UNKWON_ERROR;
 				    return false;
 				}
 			}
 			else{
 			     $_SESSION['warning'] = UNKWON_ERROR;
 				return false;
+			}
+		}
+        public function delete_allobjectives($id){
+			
+			$q = "UPDATE `".CLIENT_OBJECTIVES."` SET `is_delete`='1' WHERE `client_id`='".$id."'";
+			$res = $this->re_db_query($q);
+			if($res){
+			    return true;
+			}
+			else{
+			    $_SESSION['warning'] = UNKWON_ERROR;
+			    return false;
 			}
 		}
 		public function delete($id){
@@ -502,6 +614,24 @@
 				else{
 				    $_SESSION['warning'] = UNKWON_ERROR;
 					return false;
+				}
+			}
+			else{
+			     $_SESSION['warning'] = UNKWON_ERROR;
+				return false;
+			}
+		}
+        public function delete_notes($id){
+			$id = trim($this->re_db_input($id));
+			if($id>0){
+				$q = "UPDATE `".CLIENT_NOTES."` SET `is_delete`='1' WHERE `id`='".$id."'";
+				$res = $this->re_db_query($q);
+				if($res){
+				    return true;
+				}
+				else{
+				    $_SESSION['warning'] = UNKWON_ERROR;
+				    return false;
 				}
 			}
 			else{

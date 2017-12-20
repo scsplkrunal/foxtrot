@@ -41,7 +41,6 @@ $(document).on('click','.remove-row',function(){
 <script>
 function addMoreNotes(){
     var html = '<tr class="add_row_notes">'+
-                    '<td>2</td>'+
                     '<td><?php echo date('d/m/Y');?></td>'+
                     '<input type="hidden" name="date" id="date" value="<?php echo date('d/m/Y');?>"/>'+
                     '<td><?php echo $_SESSION['user_name'];?></td>'+
@@ -57,7 +56,7 @@ function addMoreNotes(){
                 '</tr>';
                 
             
-    $(html).insertBefore('#add_row_notes');
+    $(html).insertAfter('#add_row_notes');
 }
 $(document).on('click','.remove-row',function(){
     $(this).closest('tr').remove();
@@ -95,11 +94,17 @@ $(document).on('click','.remove-row',function(){
                         ?>
                             <ul class="nav nav-tabs ">
                               <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="primary"){ echo "active"; }else if(!isset($_GET['tab'])){echo "active";}else{ echo '';} ?>"><a href="#tab_aa" data-toggle="tab">Primary</a></li>
+                              <?php if(isset($_SESSION['client_id']) && $_SESSION['client_id']!=''){?>
                               <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="account_no"){ echo "active"; } ?>"><a href="#tab_dd" data-toggle="tab">Account No's</a></li>
                               <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="employment"){ echo "active"; } ?>"><a href="#tab_bb" data-toggle="tab">Employment</a></li>
                               <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="suitability"){ echo "active"; } ?>"><a href="#tab_ff" data-toggle="tab">Suitability</a></li>
                               <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="objectives"){ echo "active"; } ?>"><a href="<?php echo CURRENT_PAGE; ?>#tab_cc" data-toggle="tab">Objectives</a></li>
-                               
+                              <?php }else{ ?> 
+                              <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="account_no"){ echo "active"; } ?>" style="pointer-events: none;"><a href="#tab_dd" data-toggle="tab">Account No's</a></li>
+                              <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="employment"){ echo "active"; } ?>" style="pointer-events: none;"><a href="#tab_bb" data-toggle="tab">Employment</a></li>
+                              <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="suitability"){ echo "active"; } ?>" style="pointer-events: none;"><a href="#tab_ff" data-toggle="tab">Suitability</a></li>
+                              <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="objectives"){ echo "active"; } ?>" style="pointer-events: none;"><a href="<?php echo CURRENT_PAGE; ?>#tab_cc" data-toggle="tab">Objectives</a></li>
+                              <?php } ?>
                               <!--<li><a href="#tab_ee" data-toggle="tab">Documents</a></li>-->
                                 <div class="btn-group dropdown" style="float: right;">
     								<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
@@ -111,14 +116,18 @@ $(document).on('click','.remove-row',function(){
                             
                             <!-- Tab 1 is started -->
                             <div class="tab-content">
+                                <?php if($action=='edit' && $id>0){?>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group"><br /><div class="selectwrap">
-                                            <a href="#joint_previous" class="previous next_previous_a" style="float: left;">&laquo; Previous</a>
-                                            <a href="#joint_next" class="next next_previous_a" style="float: right;">Next &raquo;</a>
+                                            <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;">&laquo; Previous</a>
+                                            <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a" style="float: right;">Next &raquo;</a>
                                         </div>
-                                     </div></div>
-                                 </div><br />
+                                     </div>
+                                     </div>
+                                 </div>
+                                <?php } ?>
+                                <br />
                                 <div class="row">
                                     <div class="col-md-4" style="float: right;">
                                         <div class="form-group">
@@ -259,7 +268,7 @@ $(document).on('click','.remove-row',function(){
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Split Rate<span class="text-red"></span></label>
-                                                        <input type="number" onblur="round(this.value);" min="0" name="split_rate" id="split_rate" placeholder='00.0' class="currency1 form-control" value="<?php echo $split_rate; ?>" />
+                                                        <input type="text" onblur="round(this.value);" min="0" name="split_rate" id="split_rate" placeholder='00.0' class="currency1 form-control" value="<?php echo $split_rate; ?>" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -334,7 +343,7 @@ $(document).on('click','.remove-row',function(){
                                                         <label>Birth Date </label>
                                                         <div id="demo-dp-range">
                                                             <div class="input-daterange input-group" id="datepicker">
-                                                                <input type="text" name="birth_date" onchange="getAge(this.value);" id="birth_date" class="form-control" value="<?php echo $birth_date; ?>"/>
+                                                                <input type="text" name="birth_date" onchange="getAge(this.value);" id="birth_date" class="form-control" value="<?php if($birth_date !=''){ echo date('m/d/Y',strtotime($birth_date));} ?>"/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -351,7 +360,7 @@ $(document).on('click','.remove-row',function(){
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Date Established </label>
-                                                        <input type="text" name="date_established1" id="date_established1" disabled="true" value="<?php if($date_established !=''){ echo $date_established; }else{ echo date("m/d/Y"); }?>" class="form-control" />
+                                                        <input type="text" name="date_established1" id="date_established1" disabled="true" value="<?php if($date_established !=''){ echo date('m/d/Y',strtotime($date_established)); }else{ echo date("m/d/Y"); }?>" class="form-control" />
                                                         <input type="hidden" name="date_established" id="date_established" value="<?php if($date_established !=''){ echo $date_established; }else{ echo date("m/d/Y"); }?>" class="form-control" />
                                                     </div>
                                                 </div>
@@ -360,20 +369,19 @@ $(document).on('click','.remove-row',function(){
                                                         <label>Open Date </label>
                                                         <div id="demo-dp-range">
                                                             <div class="input-daterange input-group" id="datepicker">
-                                                                <input type="text" name="open_date" id="open_date" class="form-control" value="<?php echo $open_date; ?>"/>
+                                                                <input type="text" name="open_date" id="open_date" class="form-control" value="<?php if($open_date !=''){ echo date('m/d/Y',strtotime($open_date)); } ?>"/>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div> 
-                                            
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>NAF Date </label>
                                                         <div id="demo-dp-range">
                                                             <div class="input-daterange input-group" id="datepicker">
-                                                                <input type="text" name="naf_date" id="naf_date" class="form-control" value="<?php echo $naf_date; ?>"/>
+                                                                <input type="text" name="naf_date" id="naf_date" class="form-control" value="<?php if($naf_date !=''){ echo date('m/d/Y',strtotime($naf_date)); } ?>"/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -383,7 +391,7 @@ $(document).on('click','.remove-row',function(){
                                                         <label>Last Contacted </label>
                                                         <div id="demo-dp-range">
                                                             <div class="input-daterange input-group" id="datepicker">
-                                                                <input type="text" name="last_contacted" id="last_contacted" class="form-control" value="<?php echo $last_contacted; ?>" />
+                                                                <input type="text" name="last_contacted" id="last_contacted" class="form-control" value="<?php if($last_contacted !=''){ echo date('m/d/Y',strtotime($last_contacted)); } ?>" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -531,7 +539,7 @@ $(document).on('click','.remove-row',function(){
                                                         <label>Expiration </label>
                                                         <div id="demo-dp-range">
                                                             <div class="input-daterange input-group" id="datepicker">
-                                                               <input type="text" name="expiration" id="expiration" class="form-control" value="<?php echo $expiration; ?>"/>
+                                                               <input type="text" name="expiration" id="expiration" class="form-control" value="<?php echo date('m/d/Y',strtotime($expiration)); ?>"/>
                                                             </div>
                                                         </div>                                                        
                                                     </div>
@@ -554,7 +562,7 @@ $(document).on('click','.remove-row',function(){
                                                         <label>Date Verified </label>
                                                         <div id="demo-dp-range">
                                                             <div class="input-daterange input-group" id="datepicker">
-                                                                <input type="text" name="date_verified" id="date_verified" class="form-control" value="<?php echo $date_verified; ?>"/>
+                                                                <input type="text" name="date_verified" id="date_verified" class="form-control" value="<?php echo date('m/d/Y',strtotime($date_verified)); ?>"/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -587,12 +595,24 @@ $(document).on('click','.remove-row',function(){
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                       <h4 class="panel-title" style="font-size: 20px;">Source Objectives <a href="<?php echo CURRENT_PAGE; ?>?action=add_all&id=<?php echo $data['id']; ?>"><i class="fa fa-angle-double-right"></i></a></h4>
+                                                       <h4 class="panel-title" style="font-size: 20px;">Source Objectives <a href="#" onclick="return add_allobjectives()"><i class="fa fa-angle-double-right"></i></a></h4>
+                                                        <form id="add_all_objectives" name="add_all_objectives" method="post">
+                                                        <?php foreach($get_objectives as $key=>$val){
+                                                            ?>
+                                                            <?php
+                                                            $obj_id = $val['id'];//echo '<pre>';print_r($trans_check_id);
+                                                            if(!in_array($obj_id, $objectives_check_id)){?>
+                                                           
+                                                                <input type="hidden" name="allobjectives[]" id="allobjectives" value="<?php echo $val['id'];?>" />
+                                                                <input type="hidden" name="allobjectives_id" id="allobjectives_id" value="<?php echo $id; ?>" />
+                                                                <input type="hidden" name="add_allobjectives"  value="Add_AllObjectives" id="add_allobjective"/>
+                                                        <?php }} ?>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             	<div class="col-md-6">
                                                     <div class="form-group">
-                                                        <h4 class="panel-title" style="font-size: 20px;"><a href="<?php echo CURRENT_PAGE; ?>?action=delete_all&id=<?php echo $data['id']; ?>"><i class="fa fa-angle-double-left"></i></a> Selected Objectives</h4>
+                                                        <h4 class="panel-title" style="font-size: 20px;"><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&delete_action=delete_allobjectives&delete_id=<?php echo $_SESSION['client_id'];?>"><i class="fa fa-angle-double-left"></i></a> Selected Objectives</h4>
                                                     </div>
                                                 </div>
                                             </div>
@@ -611,10 +631,8 @@ $(document).on('click','.remove-row',function(){
                                                                     
                                                                    <tr>
                                                                    <td class="text-center">
-                                                                   <form id="add_objectives_<?php echo $val['id'];?>" name="add_objectives_<?php echo $val['id'];?>" method="post" onsubmit="return formsubmit_objectives(<?php echo $val['id'];?>);">
+                                                                   <form id="add_objectives_<?php echo $val['id'];?>" name="add_objectives_<?php echo $val['id'];?>" method="post">
                                                                         <a href="#" onclick="return add_objectives(<?php echo $val['id'];?>)" style="color: black !important;"><?php echo $val['option'];?>  <i class="fa fa-angle-right"></i></a>
-                                                                       
-                                                                       
                                                                         <input type="hidden" name="objectives" id="objectives" value="<?php echo $val['id'];?>" />
                                                                         <input type="hidden" name="objectives_id" id="objectives_id" value="<?php echo $id; ?>" />
                                                                         <input type="hidden" name="add_objective"  value="Add_Objectives" id="add_objective"/>
@@ -634,7 +652,7 @@ $(document).on('click','.remove-row',function(){
                                             	            <tbody>
                                                                  <?php foreach($get_current_objectives as $key=>$val){?>
                                                                    <tr>
-                                                                        <td class="text-center"><a href="<?php echo CURRENT_PAGE; ?>?action=delete_objectives&objectives_id=<?php echo $val['id']; ?>" style="color: black !important;"><i class="fa fa-angle-left"></i>  <?php echo $val['oname'];?></a></td>
+                                                                        <td class="text-center"><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&delete_action=delete_objectives&objectives_id=<?php echo $val['id']; ?>" style="color: black !important;"><i class="fa fa-angle-left"></i>  <?php echo $val['oname'];?></a></td>
                                                                    </tr>
                                                                  <?php } ?>
                                                             </tbody>
@@ -647,6 +665,11 @@ $(document).on('click','.remove-row',function(){
                                             <div class="panel-overlay">
                                                 <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
                                             </div>
+                                            <div class="panel-footer">
+                                                <div class="selectwrap">
+                                                    <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="complete" value="Complete" /></a>
+                                                </div>
+                                           </div>
                                         </div>
                                     </div>
                                 
@@ -666,7 +689,7 @@ $(document).on('click','.remove-row',function(){
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Account No's </label><br />
-                                                        <input type="text" name="account_no[]" id="account_no" class="form-control" />
+                                                        <input type="text" name="account_no[]" id="account_no" class="form-control" value="<?php //echo //$valedit['account_no'];?>" />
                                                     </div>
                                                 </div>
                                             	<div class="col-md-4">
@@ -687,6 +710,38 @@ $(document).on('click','.remove-row',function(){
                                                     </div>
                                                 </div>
                                             </div>
+                                            <?php 
+                                            if($return_account != '')
+                                            {
+                                            foreach($return_account as $key=>$valedit){
+                                                $sponsor_company = $valedit['sponsor_company'];?>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label></label><br />
+                                                        <input type="text" name="account_no[]" id="account_no" class="form-control" value="<?php echo $valedit['account_no'];?>" />
+                                                    </div>
+                                                </div>
+                                            	<div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label></label><br />
+                                                        <select class="form-control" name="sponsor[]">
+                                                            <option value="">Select Sponsor</option>
+                                                             <?php foreach($get_sponsor as $key=>$val){?>
+                                                            <option value="<?php echo $val['id'];?>" <?php if($sponsor_company != '' && $sponsor_company==$val['id']){echo "selected='selected'";} ?>><?php echo $val['name'];?></option>
+                                                            <?php } ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <label></label><br />
+                                                        <button type="button" tabindex="-1" class="btn remove-row btn-icon btn-circle"><i class="fa fa-minus"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <?php } }?>
+                                            
                                             </div>
                                             <div class="panel-overlay">
                                                 <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
@@ -898,7 +953,7 @@ $(document).on('click','.remove-row',function(){
                                                         <label>Sign Date </label>
                                                         <div id="demo-dp-range">
         					                                <div class="input-daterange input-group" id="datepicker">
-                                                                <input type="text" name="sign_date" id="sign_date" value="<?php echo $sign_date;?>" class="form-control" />
+                                                                <input type="text" name="sign_date" id="sign_date" value="<?php echo date('m/d/Y',strtotime($sign_date));?>" class="form-control" />
         					                                </div>
         				                                </div>
                                                     </div>
@@ -914,7 +969,7 @@ $(document).on('click','.remove-row',function(){
                                                   <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Tax ID </label>
-                                                        <input type="text" name="tax_id" id="tax_id" class="form-control" <?php echo $tax_id;?>/>
+                                                        <input type="text" name="tax_id" id="tax_id" class="form-control" value="<?php echo $tax_id;?>"/>
                                                     </div>
                                                  </div>
                                              </div>
@@ -924,7 +979,7 @@ $(document).on('click','.remove-row',function(){
                                             </div>
                                             <div class="panel-footer">
                                                 <div class="selectwrap">
-                                                    <input type="hidden" name="suitability_id" id="suitability_id" value="" />
+                                                    <input type="hidden" name="suitability_id" id="suitability_id" value="<?php echo $id;?>" />
                                 					<input type="submit" onclick="waitingDialog.show();" name="suitability" value="Save"/>	
                                                     <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                                                 </div>
@@ -933,14 +988,17 @@ $(document).on('click','.remove-row',function(){
                                     </div>
                                   </form>
                                 </div>
+                                <?php if($action=='edit' && $id>0){?>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group"><br /><div class="selectwrap">
-                                            <a href="#joint_previous" class="previous next_previous_a" style="float: left;">&laquo; Previous</a>
-                                            <a href="#joint_next" class="next next_previous_a" style="float: right;">Next &raquo;</a>
+                                            <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;">&laquo; Previous</a>
+                                            <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a" style="float: right;">Next &raquo;</a>
                                         </div>
-                                     </div></div>
+                                     </div>
+                                     </div>
                                  </div>
+                                <?php } ?>
                                  
                             </div>
                         <?php
@@ -1017,7 +1075,7 @@ $(document).on('click','.remove-row',function(){
                                             ?>
                                         </td>
                                         <td class="text-center">
-                                            <a href="<?php /*echo CURRENT_PAGE; ?>?action=edit&id=<?php echo $val['id'];*/ ?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                                            <a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=<?php echo $val['id'];?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
                                             <a onclick="return conf('<?php echo CURRENT_PAGE; ?>?action=delete&id=<?php echo $val['id']; ?>');" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
                                         </td>
                                     </tr>
@@ -1040,13 +1098,13 @@ $(document).on('click','.remove-row',function(){
 					<h4 class="modal-title">Client's Notes</h4>
 				</div>
 				<div class="modal-body">
-                <form method="post" id="add_client_notes" name="add_client_notes" onsubmit="return notessubmit();">
+                
                 <div class="inputpopup">
                     <a class="btn btn-sm btn-success" style="float: right !important; margin-right: 5px !important;" onclick="addMoreNotes();"><i class="fa fa-plus"></i> Add New</a></li>
     			</div>
                 
                 <div class="col-md-12">
-                    <div id="msg">
+                    <div id="msg_notes">
                     </div>
                 </div>
                 
@@ -1054,30 +1112,47 @@ $(document).on('click','.remove-row',function(){
                     <div class="table-responsive" id="table-scroll" style="margin: 0px 5px 0px 5px;">
                         <table class="table table-bordered table-stripped table-hover">
                             <thead>
-                                <th>#NO</th>
                                 <th>Date</th>
                                 <th>User</th>
                                 <th>Notes</th>
                                 <th class="text-center">Action</th>
                             </thead>
                             <tbody>
-                            <?php foreach($get_notes as $key=>$val){?>
-                                <tr id="add_row_notes">
-                                    <td>1</td>
+                            <?php foreach($get_notes as $key=>$val){
+                                $notes_id = $val['id'];?>
+                                <tr>
+                                <form method="post" id="add_client_notes_<?php echo $notes_id;?>" name="add_client_notes_<?php echo $notes_id;?>" onsubmit="return notessubmit(<?php echo $notes_id;?>);">
                                     <td><?php echo date('d/m/Y',strtotime($val['date']));?></td>
-                                    <input type="hidden" name="date" id="date" value="<?php echo date('d/m/Y');?>"/>
-                                    <td><?php echo $val['user_id'];?></td>
+                                    <input type="hidden" name="date" id="date" value="<?php echo date('Y-m-d',strtotime($val['date']));?>"/>
+                                    <td><?php echo $_SESSION['user_id'];?></td>
                                     <input type="hidden" name="user_id" id="user_id" value="<?php echo $_SESSION['user_id'];?>"/>
-                                    <td><input type="text" name="client_note" class="form-control" id="client_note" value="<?php echo $val['notes'];?>"/></td>
+                                    <td><input type="text" name="client_note" class="form-control" id="client_note" disabled="true" value="<?php echo $val['notes'];?>"/></td>
                                     <td class="text-center">
-                                       <input type="hidden" name="notes_id" id="notes_id" value=""/>
+                                       <input type="hidden" name="notes_id" id="notes_id" value="<?php echo $notes_id;?>"/>
+                                       <input type="hidden" name="add_notes" value="Add Notes"  />
+							           <button type="submit" class="btn btn-sm btn-warning" name="add_notes" value="Add Notes"><i class="fa fa-save"></i> Save</button>
+                                       <a href="#" onclick="openedit(<?php echo $notes_id;?>);" class="btn btn-sm btn-primary" ><i class="fa fa-edit"></i> Edit</a>
+                                       <a href="#" onclick="delete_notes(<?php echo $notes_id;?>);" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
+                                    </td>
+                                </form>
+                                </tr>
+                            <?php } $notes_id++;?>
+                            <tr id="add_row_notes">
+                                <form method="post" id="add_client_notes_<?php echo $notes_id;?>" name="add_client_notes_<?php echo $notes_id;?>" onsubmit="return notessubmit(<?php echo $notes_id;?>);">
+                                    <td><?php echo date('d/m/Y');?></td>
+                                    <input type="hidden" name="date" id="date" value="<?php echo date('Y-m-d');?>"/>
+                                    <td><?php echo $_SESSION['user_name'];?></td>
+                                    <input type="hidden" name="user_id" id="user_id" value="<?php echo $_SESSION['user_id'];?>"/>
+                                    <td><input type="text" name="client_note" class="form-control" id="client_note" value=""/></td>
+                                    <td class="text-center">
+                                       <input type="hidden" name="notes_id" id="notes_id" value="0"/>
                                        <input type="hidden" name="add_notes" value="Add Notes" />
 							           <button type="submit" class="btn btn-sm btn-warning" name="add_notes" value="Add Notes"><i class="fa fa-save"></i> Save</button>
                                        <a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=" class="btn btn-sm btn-primary" ><i class="fa fa-edit"></i> Edit</a>
                                        <a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
                                     </td>
-                                </tr>
-                            <?php } ?>
+                                </form>
+                             </tr>
                           </tbody>
                         </table>
                     </div>
@@ -1485,29 +1560,27 @@ function getAge(dateString)
         $('.currency1').currencyFormat1();
     });
 </script>
-
+<script>
+function openedit(note_id){
+    var a = document.getElementById("add_client_notes_"+note_id+ "client_note").value;
+    alert(a);
+}
+</script>
 <script>
 //submit share form data
-function notessubmit()
+function notessubmit(note_id)
 {
    $('#msg').html('<div class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Please wait...</div>');
 
    var url = "client_maintenance.php"; // the script where you handle the form input.
-   //alert($("#add_notebook").serialize());
+   //alert("#add_client_notes_"+note_id);
    $.ajax({
       type: "POST",
       url: url,
-      data: $("#add_client_notes").serialize(), // serializes the form's elements.
+      data: $("#add_client_notes_"+note_id).serialize(), // serializes the form's elements.
       success: function(data){
           if(data=='1'){
-            $('#msg').html('<div class="alert alert-success">Data Successfully Saved.</div>');
-               /*window.location.href = "client_maintenance.php";
-               
-               /*$('#msg').html('<div class="alert alert-success">Thank you.</div>');
-               $('#add_notebook')[0].reset();
-               setTimeout(function(){
-    $('#myModalShare').modal('hide');	
-   	}, 2000);*/
+            $('#msg_notes').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Data Successfully Saved.</div>');
                
           }
           else{
@@ -1525,6 +1598,58 @@ function notessubmit()
    return false;
        
 }
+function delete_notes(note_id){
+    
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var data = this.responseText;
+                if(data=='1'){
+                    //$("#add_client_notes_"+note_id :"input").prop("disabled", true);
+                    var elem = document.getElementById("add_client_notes_"+note_id);
+                    //alert("add_client_notes_"+note_id);
+                   // elem.remove();
+                   $('#msg_notes').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Note deleted Successfully.</div>');
+                       
+                  }
+                  else{
+                       $('#msg').html('<div class="alert alert-danger">'+data+'</div>');
+                  }
+                
+            }
+        };
+        xmlhttp.open("GET", "client_maintenance.php?delete_action=delete_notes&note_id="+note_id, true);
+        xmlhttp.send();
+}
+/*{
+   $('#msg').html('<div class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Please wait...</div>');
+
+   var url = "client_maintenance.php"; // the script where you handle the form input.
+   //alert("#add_client_notes_"+note_id);
+   $.ajax({
+      type: "POST",
+      url: url,
+      data: $("#add_client_notes_"+note_id).serialize(), // serializes the form's elements.
+      success: function(data){
+          if(data=='1'){
+            $('#msg_notes').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Note deleted Successfully.</div>');
+               
+          }
+          else{
+               $('#msg').html('<div class="alert alert-danger">'+data+'</div>');
+          }
+          
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+           $('#msg').html('<div class="alert alert-danger">Something went wrong, Please try again.</div>')
+      }
+      
+   });
+
+   //e.preventDefault(); // avoid to execute the actual submit of the form.
+   return false;
+       
+}*/
 </script>
 
 <style>
@@ -1559,7 +1684,11 @@ function add_objectives(objectives_id)
     
      return false;   
 }
-function formsubmit_objectives(objectives_id,action)
+function add_allobjectives()
+{
+    $('form[name=add_all_objectives]').submit();
+}
+/*function formsubmit_objectives(objectives_id,action)
 {
     $('#msg').html('<div class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Please wait...</div>');
 
@@ -1586,7 +1715,7 @@ function formsubmit_objectives(objectives_id,action)
     });
     return false;
         
-}
+}*/
 
 </script>
 <script>
