@@ -1,21 +1,28 @@
+
 <script>
 function addMoreDocs(){
+    $('#demo-dp-range .input-daterange').datepicker({
+        format: "mm/dd/yyyy",
+        todayBtn: "linked",
+        autoclose: true,
+        todayHighlight: true
+    });
     var html = '<tr class="tr">'+
                     '<td>'+
-                        '<input type="checkbox" name="docs_receive" class="checkbox" id="docs_receive"/>'+
+                        '<input type="checkbox" name="data[docs_receive][]" class="checkbox" value="1" id="docs_receive"/>'+
                     '</td>'+
                     '<td>'+
-                        '<input class="form-control" value="" name="docs_description" id="docs_description" type="text" />'+
+                        '<input class="form-control" value="" name="data[docs_description][]" id="docs_description" type="text" />'+
                     '</td>'+
                     '<td>'+
                         '<div id="demo-dp-range">'+
                             '<div class="input-daterange input-group" id="datepicker">'+
-                                '<input type="text" name="docs_date" id="docs_date" value="" class="form-control" />'+
+                                '<input type="text" name="data[docs_date][]" id="docs_date" value="" class="form-control" />'+
                             '</div>'+
                         '</div>'+
                     '</td>'+
                     '<td>'+
-                        '<input type="checkbox" name="docs_required" class="checkbox" id="docs_required"/>'+
+                        '<input type="checkbox" name="data[docs_required][]" class="checkbox" value="1" id="docs_required"/>'+
                     '</td>'+
                     '<td>'+
                         '<button type="button" tabindex="-1" class="btn remove-row btn-icon btn-circle"><i class="fa fa-minus"></i></button>'+
@@ -186,7 +193,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>SSN </label>
-                                                    <input type="text" name="ssn" id="ssn" value="<?php echo $ssn; ?>" class="form-control" />
+                                                    <input type="text" name="ssn" value="<?php echo $ssn; ?>" class="form-control" />
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -453,10 +460,10 @@ var waitingDialog = waitingDialog || (function ($) {
                                             <div class="form-group">
                                                 <label>EFT Information </label><br />
                                                 <label class="radio-inline">
-                                                  <input type="radio" class="radio" name="eft_info_general" <?php if(isset($eft_information) && $eft_information==1){ echo'checked="true"'; }?>  id="eft_info_general" value="1" checked="checked" />Pre-Notes
+                                                  <input type="radio" class="radio" name="eft_info_general" <?php if(isset($eft_information) && $eft_information==1){ echo'checked="true"'; }?>   value="1" checked="checked" />Pre-Notes
                                                 </label>
                                                 <label class="radio-inline">
-                                                  <input type="radio" class="radio" name="eft_info_general" <?php if(isset($eft_information) && $eft_information==2){ echo'checked="true"'; }?> id="eft_info_general" value="2" />Direct Deposit
+                                                  <input type="radio" class="radio" name="eft_info_general" <?php if(isset($eft_information) && $eft_information==2){ echo'checked="true"'; }?> value="2" />Direct Deposit
                                                 </label>
                                             </div>
                                         </div>
@@ -477,10 +484,10 @@ var waitingDialog = waitingDialog || (function ($) {
                                             <div class="form-group">
                                                 <label>Transaction Type </label><br />
                                                 <label class="radio-inline">
-                                                  <input type="radio" class="radio" name="transaction_type_general" <?php if($transaction_type==1){ echo'checked="true"'; }?> value="1" id="transaction_type_general" checked="checked" /> Checking
+                                                  <input type="radio" class="radio" name="transaction_type_general" <?php if($transaction_type==1){ echo'checked="true"'; }?> value="1"  checked="checked" /> Checking
                                                 </label>
                                                 <label class="radio-inline">
-                                                  <input type="radio" class="radio" name="transaction_type_general" <?php if($transaction_type==2){ echo'checked="true"'; }?> value="2" id="transaction_type_general" /> Savings
+                                                  <input type="radio" class="radio" name="transaction_type_general" <?php if($transaction_type==2){ echo'checked="true"'; }?> value="2" /> Savings
                                                 </label>
                                             </div>
                                         </div>
@@ -569,7 +576,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                     </div>
                                     <div class="panel-footer">
                                         <div class="selectwrap">
-                                            <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
+                                            <input type="hidden" name="id"  value="<?php echo $id; ?>" />
                         					<input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
                                             <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                                         </div>
@@ -712,7 +719,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                 </div>
                                 <div class="panel-footer">
                                     <div class="selectwrap">
-                                        <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
+                                        <input type="hidden" name="id" value="<?php echo $id; ?>" />
                     					<input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
                                         <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                                     </div>
@@ -733,7 +740,7 @@ var waitingDialog = waitingDialog || (function ($) {
             								<a href="<?php echo CURRENT_PAGE;?> "><i class="fa fa-mail-forward"></i></a>
             							</div>
             						</div>
-                                    <h2 class="panel-title" style="font-size: 25px;"><input type="checkbox" class="checkbox" name="pass_through" id="pass_through" style="display: inline !important;"/><b> None (Pass Through)</b></h2>
+                                    <h2 class="panel-title" style="font-size: 25px;"><input type="checkbox" class="checkbox" name="pass_through" style="display: inline !important;"/><b> None (Pass Through)</b></h2>
                                 </div>
             					<div class="panel-body">
                                     <div class="row">
@@ -878,7 +885,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                 </div>
                                 <div class="panel-footer">
                                     <div class="selectwrap">
-                                        <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
+                                        <input type="hidden" name="id"  value="<?php echo $id; ?>" />
                     					<input type="submit" name="charges" onclick="waitingDialog.show();" value="Save"/>	
                                         <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                                     </div>
@@ -908,7 +915,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                             <div class="panel-overlay-wrap">
                                                 <div class="panel">
                                                    <div class="panel-heading">
-                                                        <h4 class="panel-title" style="font-size: 20px;"><input type="checkbox" class="checkbox" name="pass_through" id="pass_through" style="display: inline !important;"/> Waive Home State Fee</h4>
+                                                        <h4 class="panel-title" style="font-size: 20px;"><input type="checkbox" class="checkbox" name="pass_through" style="display: inline !important;"/> Waive Home State Fee</h4>
                                                     </div>
                                                     <div class="panel-body">
                                                         <div class="row">
@@ -963,7 +970,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                         <div class="row">
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
-                                                                  <input type="checkbox" name="data[<?php echo $stateval['id'] ?>][active_check]" value="1" id="data[<?php echo $stateval['id'] ?>][active_check]" class="checkbox"  />
+                                                                  <input type="checkbox" name="data1[<?php echo $stateval['id'] ?>][active_check]" value="1" id="data1[<?php echo $stateval['id'] ?>][active_check]" class="checkbox"  />
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
@@ -974,14 +981,14 @@ var waitingDialog = waitingDialog || (function ($) {
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
-                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="" name="data[<?php echo $stateval['id'] ?>][fee]" type="text" />
+                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="" name="data1[<?php echo $stateval['id'] ?>][fee]" type="text" />
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
                                                                     <div id="demo-dp-range">
                     					                                <div class="input-daterange input-group" id="datepicker">
-                                                                            <input type="text" name="data[<?php echo $stateval['id'] ?>][received]" id="data[<?php echo $stateval['id'] ?>][received]" value="" class="form-control" />
+                                                                            <input type="text" name="data1[<?php echo $stateval['id'] ?>][received]" id="data1[<?php echo $stateval['id'] ?>][received]" value="" class="form-control" />
                     					                                </div>
                     					                            </div>
                                                                </div>
@@ -990,14 +997,14 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                 <div class="form-group">
                                                                   <div id="demo-dp-range">
                 					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="data[<?php echo $stateval['id'] ?>][terminated]" id="data[<?php echo $stateval['id'] ?>][terminated]" value="" class="form-control" />
+                                                                        <input type="text" name="data1[<?php echo $stateval['id'] ?>][terminated]" id="data1[<?php echo $stateval['id'] ?>][terminated]" value="" class="form-control" />
                 					                                </div>
                 					                              </div>
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
-                                                                    <input class="form-control" value="" name="data[<?php echo $stateval['id'] ?>][reason]" id="data[<?php echo $stateval['id'] ?>][reason]" type="text" />
+                                                                    <input class="form-control" value="" name="data1[<?php echo $stateval['id'] ?>][reason]" id="data1[<?php echo $stateval['id'] ?>][reason]" type="text" />
                                                                </div>
                                                             </div>
                                                         </div>
@@ -1011,7 +1018,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                     </div>
                                                     <div class="panel-footer">
                                                         <div class="selectwrap">
-                                                            <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
+                                                            <input type="hidden" name="id"  value="<?php echo $id; ?>" />
                                         					<input type="submit" name="securities" onclick="waitingDialog.show();" value="Save"/>	
                                                             <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                                                         </div>
@@ -1025,7 +1032,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                             <div class="panel-overlay-wrap">
                                                 <div class="panel">
                                                    <div class="panel-heading">
-                                                        <h4 class="panel-title" style="font-size: 20px;"><input type="checkbox" class="checkbox" name="pass_through" id="pass_through" style="display: inline !important;"/> Waive Home State Fee</h4>
+                                                        <h4 class="panel-title" style="font-size: 20px;"><input type="checkbox" class="checkbox" name="pass_through" style="display: inline !important;"/> Waive Home State Fee</h4>
                                                     </div>
                                                     <input type="hidden" name="type" value="2"/>
                                                     <div class="panel-body">
@@ -1066,7 +1073,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                         <div class="row">
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
-                                                                  <input type="checkbox" name="data[<?php echo $stateval['id'] ?>][active_check]" value="1" id="data[<?php echo $stateval['id'] ?>][active_check]" class="checkbox"  />
+                                                                  <input type="checkbox" name="data2[<?php echo $stateval['id'] ?>][active_check]" value="1" id="data2[<?php echo $stateval['id'] ?>][active_check]" class="checkbox"  />
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
@@ -1077,14 +1084,14 @@ var waitingDialog = waitingDialog || (function ($) {
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
-                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="" name="data[<?php echo $stateval['id'] ?>][fee]" type="text" />
+                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="" name="data2[<?php echo $stateval['id'] ?>][fee]" type="text" />
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
                                                                     <div id="demo-dp-range">
                     					                                <div class="input-daterange input-group" id="datepicker">
-                                                                            <input type="text" name="data[<?php echo $stateval['id'] ?>][received]" id="data[<?php echo $stateval['id'] ?>][received]" value="" class="form-control" />
+                                                                            <input type="text" name="data2[<?php echo $stateval['id'] ?>][received]" id="data2[<?php echo $stateval['id'] ?>][received]" value="" class="form-control" />
                     					                                </div>
                     					                            </div>
                                                                </div>
@@ -1093,14 +1100,14 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                 <div class="form-group">
                                                                   <div id="demo-dp-range">
                 					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="data[<?php echo $stateval['id'] ?>][terminated]" id="data[<?php echo $stateval['id'] ?>][terminated]" value="" class="form-control" />
+                                                                        <input type="text" name="data2[<?php echo $stateval['id'] ?>][terminated]" id="data2[<?php echo $stateval['id'] ?>][terminated]" value="" class="form-control" />
                 					                                </div>
                 					                              </div>
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
-                                                                    <input class="form-control" value="" name="data[<?php echo $stateval['id'] ?>][reason]" id="data[<?php echo $stateval['id'] ?>][reason]" type="text" />
+                                                                    <input class="form-control" value="" name="data2[<?php echo $stateval['id'] ?>][reason]" id="data2[<?php echo $stateval['id'] ?>][reason]" type="text" />
                                                                </div>
                                                             </div>
                                                         </div></div>
@@ -1111,7 +1118,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                     </div>
                                                     <div class="panel-footer">
                                                         <div class="selectwrap">
-                                                            <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
+                                                            <input type="hidden" name="id"  value="<?php echo $id; ?>" />
                                         					<input type="submit" name="insurance" onclick="waitingDialog.show();" value="Save"/>	
                                                             <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                                                         </div>
@@ -1125,7 +1132,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                             <div class="panel-overlay-wrap">
                                                 <div class="panel">
                                                    <div class="panel-heading">
-                                                        <h4 class="panel-title" style="font-size: 20px;"><input type="checkbox" class="checkbox" name="pass_through" id="pass_through" style="display: inline !important;"/> Waive Home State Fee</h4>
+                                                        <h4 class="panel-title" style="font-size: 20px;"><input type="checkbox" class="checkbox" name="pass_through"  style="display: inline !important;"/> Waive Home State Fee</h4>
                                                     </div>
                                                     <input type="hidden" name="type" value="3"/>
                                                     <div class="panel-body">
@@ -1166,7 +1173,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                         <div class="row">
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
-                                                                  <input type="checkbox" name="active_check_<?php echo $stateval['id'] ?>" id="active_check_<?php echo $stateval['id'] ?>" class="checkbox"  />
+                                                                  <input type="checkbox" name="data3[<?php echo $stateval['id'] ?>][active_check]" value="1" id="data3[<?php echo $stateval['id'] ?>][active_check]" class="checkbox"  />
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
@@ -1177,14 +1184,14 @@ var waitingDialog = waitingDialog || (function ($) {
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
-                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="" name="fee_<?php echo $stateval['id'] ?>" type="text" />
+                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="" name="data3[<?php echo $stateval['id'] ?>][fee]" type="text" />
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
                                                                     <div id="demo-dp-range">
                     					                                <div class="input-daterange input-group" id="datepicker">
-                                                                            <input type="text" name="received_<?php echo $stateval['id'] ?>" id="received_<?php echo $stateval['id'] ?>" value="" class="form-control" />
+                                                                            <input type="text" name="data3[<?php echo $stateval['id'] ?>][received]" id="data3[<?php echo $stateval['id'] ?>][received]" value="" class="form-control" />
                     					                                </div>
                     					                            </div>
                                                                </div>
@@ -1193,14 +1200,14 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                 <div class="form-group">
                                                                   <div id="demo-dp-range">
                 					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="terminated_<?php echo $stateval['id'] ?>" id="terminated_<?php echo $stateval['id'] ?>" value="" class="form-control" />
+                                                                        <input type="text" name="data3[<?php echo $stateval['id'] ?>][terminated]" id="data3[<?php echo $stateval['id'] ?>][terminated]" value="" class="form-control" />
                 					                                </div>
                 					                              </div>
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
-                                                                    <input class="form-control" value="" name="reason_<?php echo $stateval['id'] ?>" id="reason_<?php echo $stateval['id'] ?>" type="text" />
+                                                                    <input class="form-control" value="" name="data3[<?php echo $stateval['id'] ?>][reason]" id="data3[<?php echo $stateval['id'] ?>][reason]" type="text" />
                                                                </div>
                                                             </div>
                                                         </div></div>
@@ -1212,7 +1219,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                     </div>
                                                     <div class="panel-footer">
                                                         <div class="selectwrap">
-                                                            <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
+                                                            <input type="hidden" name="id"  value="<?php echo $id; ?>" />
                                         					<input type="submit" name="ria" onclick="waitingDialog.show();" value="Save"/>	
                                                             <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                                                         </div>
@@ -1252,823 +1259,28 @@ var waitingDialog = waitingDialog || (function ($) {
                                                         <th>Reason</th>
                                                     </thead>
                                                     <tbody>
+                                                    <?php foreach($get_register as $regkey=>$regval){?>
                                                         <tr>
-                                                            <td>1</td>
-                                                            <td>Series 1</td>
+                                                            <td><?php echo $regval['id'];?></a></td>
+                                                            <td><?php echo $regval['type'];?></td>
                                                             <td>
                                                                 <div id="demo-dp-range">
                 					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
+                                                                        <input type="text" name="data4[<?php echo $regval['id'];?>][approval_date]"  value="" class="form-control" />
                 					                                </div>
              					                                </div>
                                                             </td>
                                                             <td>
                                                                 <div id="demo-dp-range">
                 					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
+                                                                        <input type="text" name="data4[<?php echo $regval['id'];?>][expiration_date]" value="" class="form-control" />
                 					                                </div>
              					                                </div>
                                                             </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
+                                                            <td><input class="form-control" value="" name="data4[<?php echo $regval['id'];?>][register_reason]"  type="text" /></td>
+                                                            <input type="hidden" name="data4[<?php echo $regval['id'];?>][type]" value="<?php echo $regval['type'];?>"/>
                                                         </tr>
-                                                        <tr>
-                                                            <td>2</td>
-                                                            <td>Series 2</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>4</td>
-                                                            <td>Series 4</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>5</td>
-                                                            <td>Series 5</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>6</td>
-                                                            <td>Series 6</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>7</td>
-                                                            <td>Series 7</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>9</td>
-                                                            <td>Series 9</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>10</td>
-                                                            <td>Series 10</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>11</td>
-                                                            <td>Series 11</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>14</td>
-                                                            <td>Series 14</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>15</td>
-                                                            <td>Series 15</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>16</td>
-                                                            <td>Series 16</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>17</td>
-                                                            <td>Series 17</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>22</td>
-                                                            <td>Series 22</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>23</td>
-                                                            <td>Series 23</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>24</td>
-                                                            <td>Series 24</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>26</td>
-                                                            <td>Series 26</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>27</td>
-                                                            <td>Series 27</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>28</td>
-                                                            <td>Series 28</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>30</td>
-                                                            <td>Series 30</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>31</td>
-                                                            <td>Series 31</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>32</td>
-                                                            <td>Series 32</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>33</td>
-                                                            <td>Series 33</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>37</td>
-                                                            <td>Series 37</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>38</td>
-                                                            <td>Series 38</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>39</td>
-                                                            <td>Series 39</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>42</td>
-                                                            <td>Series 42</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>51</td>
-                                                            <td>Series 51</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>52</td>
-                                                            <td>Series 52</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>53</td>
-                                                            <td>Series 53</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>55</td>
-                                                            <td>Series 55</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>62</td>
-                                                            <td>Series 62</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>63</td>
-                                                            <td>Series 63</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>64</td>
-                                                            <td>Series 64</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>65</td>
-                                                            <td>Series 65</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>66</td>
-                                                            <td>Series 66</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>72</td>
-                                                            <td>Series 72</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>82</td>
-                                                            <td>Series 82</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>86</td>
-                                                            <td>Series 86</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>87</td>
-                                                            <td>Series 87</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td></td>
-                                                            <td>Variable Annuities</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td></td>
-                                                            <td>Variable Life</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td></td>
-                                                            <td>Life Insurance</td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="approval_date" id="approval_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div id="demo-dp-range">
-                					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="expiration_date" id="expiration_date" value="" class="form-control" />
-                					                                </div>
-             					                                </div>
-                                                            </td>
-                                                            <td><input class="form-control" value="" name="register_reason" id="register_reason" type="text" /></td>
-                                                        </tr>
+                                                        <?php } ?>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -2080,8 +1292,8 @@ var waitingDialog = waitingDialog || (function ($) {
                                 </div>
                                 <div class="panel-footer">
                                     <div class="selectwrap">
-                                        <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-                    					<input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
+                                        <input type="hidden" name="id"  value="<?php echo $id; ?>" />
+                    					<input type="submit" name="register" onclick="waitingDialog.show();" value="Save"/>	
                                         <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                                     </div>
                                </div>
@@ -2117,18 +1329,18 @@ var waitingDialog = waitingDialog || (function ($) {
                                                     <tbody>
                                                         <tr id="add_row_docs">
                                                             <td>
-                                                                <input type="checkbox" name="docs_receive" class="checkbox" id="docs_receive"/>
+                                                                <input type="checkbox" name="data[docs_receive][]" class="checkbox" id="docs_receive"/>
                                                             </td>
-                                                            <td><input class="form-control" value="" name="docs_description" id="docs_description" type="text" /></td>
+                                                            <td><input class="form-control" value="" name="data[docs_description][]" id="docs_description" type="text" /></td>
                                                             <td>
                                                                 <div id="demo-dp-range">
                 					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="docs_date" id="docs_date" value="" class="form-control" />
+                                                                        <input type="text" name="data[docs_date][]" id="docs_date" value="" class="form-control" />
                 					                                </div>
              					                                </div>
                                                             </td>
                                                             <td>
-                                                                <input type="checkbox" name="docs_required" class="checkbox" id="docs_required"/>
+                                                                <input type="checkbox" name="data[docs_required][]" class="checkbox" id="docs_required"/>
                                                             </td>
                                                             <td>
                                                                 <button type="button" onclick="addMoreDocs();" class="btn btn-purple btn-icon btn-circle"><i class="fa fa-plus"></i></button>
@@ -2136,6 +1348,13 @@ var waitingDialog = waitingDialog || (function ($) {
                                                         </tr>
                                                   </tbody>
                                                 </table>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <div class="selectwrap">
+                                                <input type="hidden" name="id"  value="<?php echo $id; ?>" />
+                            					<input type="submit" name="req_doc" onclick="waitingDialog.show();" value="Save"/>	
+                                                <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                                             </div>
                                         </div>
                                     </div>
@@ -2268,7 +1487,7 @@ var waitingDialog = waitingDialog || (function ($) {
     				</div>
                     <div class="inputpopup">
     					<label>SSN:<span>*</span></label>
-                        <input type="text" name="ssn" id="ssn" class="form-control" />
+                        <input type="text" name="ssn"  class="form-control" />
     				</div>
                     <div class="inputpopup">
     					<label>DOB:<span>*</span></label>
@@ -2374,7 +1593,7 @@ var waitingDialog = waitingDialog || (function ($) {
 }
 </style>
 <script>
-function addMoreDocs(){
+/*function addMoreDocs(){
     var html = '<div class="row">'+
                     '<div class="col-md-4">'+
                         '<div class="form-group">'+
@@ -2397,7 +1616,7 @@ function addMoreDocs(){
                             '<label></label><br />'+
                             '<input type="text" name="company" id="company" class="form-control" />'+
                         '</div>'+*/
-                    '</div>'+
+                    /*'</div>'+
                     '<div class="col-md-2">'+
                         '<div class="form-group">'+
                             '<label></label><br />'+
@@ -2411,7 +1630,7 @@ function addMoreDocs(){
 }
 $(document).on('click','.remove-row',function(){
     $(this).closest('.row').remove();
-});
+});*/
 </script>
 <script>
 function addMoreNotes(){

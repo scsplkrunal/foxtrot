@@ -318,7 +318,7 @@
             $product_category = isset($data['product_category'])?$this->re_db_input($data['product_category']):'0';
             if($id>=0){
 				if($id==0){
-				    foreach($data['data'] as $key=>$val)
+				    foreach($data['data1'] as $key=>$val)
                     {        
                         $active_check=isset($val['active_check'])?$this->re_db_input($val['active_check']):'0';
                         $fee=isset($val['fee'])?$this->re_db_input($val['fee']):'';
@@ -344,7 +344,7 @@
                     
     			}
                 else if($id>0){
-                    foreach($data['data'] as $key=>$val)
+                    foreach($data['data1'] as $key=>$val)
                     {
                         $active_check=isset($val['active_check'])?$this->re_db_input($val['active_check']):'0';
                         $fee=isset($val['fee'])?$this->re_db_input($val['fee']):'';
@@ -382,7 +382,7 @@
             $product_category = isset($data['product_category'])?$this->re_db_input($data['product_category']):'0';
             if($id>=0){
 				if($id==0){
-				    foreach($data['data'] as $key=>$val)
+				    foreach($data['data2'] as $key=>$val)
                     {        
                         $active_check=isset($val['active_check'])?$this->re_db_input($val['active_check']):'0';
                         $fee=isset($val['fee'])?$this->re_db_input($val['fee']):'';
@@ -408,7 +408,7 @@
                     
     			}
                 else if($id>0){
-                    foreach($data['data'] as $key=>$val)
+                    foreach($data['data2'] as $key=>$val)
                     {
                         $active_check=isset($val['active_check'])?$this->re_db_input($val['active_check']):'0';
                         $fee=isset($val['fee'])?$this->re_db_input($val['fee']):'';
@@ -446,7 +446,7 @@
             $product_category = isset($data['product_category'])?$this->re_db_input($data['product_category']):'0';
             if($id>=0){
 				if($id==0){
-				    foreach($data['data'] as $key=>$val)
+				    foreach($data['data3'] as $key=>$val)
                     {        
                         $active_check=isset($val['active_check'])?$this->re_db_input($val['active_check']):'0';
                         $fee=isset($val['fee'])?$this->re_db_input($val['fee']):'';
@@ -472,7 +472,7 @@
                     
     			}
                 else if($id>0){
-                    foreach($data['data'] as $key=>$val)
+                    foreach($data['data3'] as $key=>$val)
                     {
                         $active_check=isset($val['active_check'])?$this->re_db_input($val['active_check']):'0';
                         $fee=isset($val['fee'])?$this->re_db_input($val['fee']):'';
@@ -500,6 +500,100 @@
             }
             //echo $id;
             //exit;
+        }
+        public function reArrayFiles($file_post){
+               $file_ary = array();
+               //echo '<pre>';print_R($file_post);exit;
+               $file_count = count($file_post['docs_description']);
+               $file_keys = array_keys($file_post);
+               for ($i=0; $i<$file_count; $i++) {
+                   foreach ($file_keys as $key) {
+                       $file_ary[$i][$key] = $file_post[$key][$i];
+                   }
+               }
+               return $file_ary;
+           }
+           
+        public function insert_update_req_doc($data){
+           //echo '<pre>';print_r($data);exit;
+           $id = isset($data['id'])?$this->re_db_input($data['id']):0;
+           
+			    foreach($data as $key=>$val)
+                {        
+                    $docs_receive=isset($val['docs_receive'])?$this->re_db_input($val['docs_receive']):'';
+                    $docs_description=isset($val['docs_description'])?$this->re_db_input($val['docs_description']):'';
+                    $docs_date=isset($val['docs_date'])?$this->re_db_input($val['docs_date']):'';
+                    $docs_required = isset($val['docs_required'])?$this->re_db_input($val['docs_required']):'';
+                    $q = "INSERT INTO `".BROKER_REQ_DOC."` SET `broker_id`='".$_SESSION['last_insert_id']."' ,`received`='".$docs_receive."' ,`description`='".$docs_description."' , 
+                    `date`='".$docs_date."' , `required`='".$docs_required."' ".$this->insert_common_sql();
+					$res = $this->re_db_query($q);
+                }   
+                      
+                if($res){
+				      
+                    $_SESSION['success'] = INSERT_MESSAGE;
+					return true;
+				}
+				else{
+					$_SESSION['warning'] = UNKWON_ERROR;
+					return false;
+				}
+           
+        }
+        
+        
+        public function insert_update_register($data){
+           $id = isset($data['id'])?$this->re_db_input($data['id']):0;
+           
+            if($id>=0){
+				if($id==0){
+				    foreach($data['data'] as $key=>$val)
+                    {        
+                        $approval_date=isset($val['approval_date'])?$this->re_db_input($val['approval_date']):'';
+                        $expiration_date=isset($val['expiration_date'])?$this->re_db_input($val['expiration_date']):'';
+                        $register_reason=isset($val['register_reason'])?$this->re_db_input($val['register_reason']):'';
+                        $type = isset($val['type'])?$this->re_db_input($val['type']):'';
+                        $q = "INSERT INTO `".BROKER_REQ_DOC."` SET `broker_id`='".$_SESSION['last_insert_id']."' ,`license_id`='".$key."' ,`license_name`='".$type."' , 
+                        `approval_date`='".$approval_date."' , `expiration_date`='".$expiration_date."' ,`reason`='".$register_reason."' ".$this->insert_common_sql();
+    					$res = $this->re_db_query($q);
+                    }   
+                          
+                    if($res){
+					      
+                        $_SESSION['success'] = INSERT_MESSAGE;
+						return true;
+					}
+					else{
+						$_SESSION['warning'] = UNKWON_ERROR;
+						return false;
+					}
+                    
+    			}
+                else if($id>0){
+                    
+                    foreach($data['data4'] as $key=>$val)
+                    {
+                        $approval_date=isset($val['approval_date'])?$this->re_db_input($val['approval_date']):'';
+                        $expiration_date=isset($val['expiration_date'])?$this->re_db_input($val['expiration_date']):'';
+                        $register_reason=isset($val['register_reason'])?$this->re_db_input($val['register_reason']):'';
+                        $type = isset($val['type'])?$this->re_db_input($val['type']):'';
+                                            
+    				    $q = "UPDATE `".BROKER_REQ_DOC."` SET `license_id`='".$key."' ,`license_name`='".$type."' , 
+                        `approval_date`='".$approval_date."' , `expiration_date`='".$expiration_date."' ,`reason`='".$register_reason."' ".$this->update_common_sql()." WHERE `license_id`='".$key."' and `broker_id`='".$id."'";
+  					
+                        $res = $this->re_db_query($q);
+		          }
+                    	if($res){
+    					      
+                            $_SESSION['success'] = UPDATE_MESSAGE;
+    						return true;
+    					}
+    					else{
+    						$_SESSION['warning'] = UNKWON_ERROR;
+    						return false;
+    					}
+    				}
+            }
         }
         /** Insert update charges data for broker. **/
         public function insert_update_charges1231321564($data){
@@ -598,6 +692,23 @@
 			
 			$q = "SELECT `at`.*
 					FROM `".SPONSOR_MASTER."` AS `at`
+                    WHERE `at`.`is_delete`='0'
+                    ORDER BY `at`.`id` ASC";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+		}
+        public function select_register(){
+			$return = array();
+			
+			$q = "SELECT `at`.*
+					FROM `".REGISTER_MASTER."` AS `at`
                     WHERE `at`.`is_delete`='0'
                     ORDER BY `at`.`id` ASC";
 			$res = $this->re_db_query($q);

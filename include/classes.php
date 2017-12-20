@@ -12,4 +12,5 @@
     include_once(DIR_FS_CLASSES."date_interfaces.class.php");
     include_once(DIR_FS_CLASSES."manage_company.class.php");
     include_once(DIR_FS_CLASSES."manage_sponsor.class.php");
+    include_once(DIR_FS_CLASSES."branch_maintenance.class.php");
 ?>

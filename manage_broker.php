@@ -53,6 +53,7 @@
     $instance = new broker_master();
     $get_state  = $instance->select_state();
     $get_state_new = $instance->select_state_new();
+    $get_register=$instance->select_register();
     $get_sponsor = $instance->select_sponsor();
     
     if(isset($_POST['submit'])&& $_POST['submit']=='Save'){
@@ -179,6 +180,17 @@
         else{
             $error = !isset($_SESSION['warning'])?$return:'';
         }
+    }
+    else if(isset($_POST['register'])&& $_POST['register']=='Save'){
+        
+            //echo '<pre>';print_r($_POST);exit();
+            $return = $instance->insert_update_register($_POST); 
+    }
+     else if(isset($_POST['req_doc'])&& $_POST['req_doc']=='Save'){
+            $return = $instance->insert_update_req_doc($instance->reArrayFiles($_POST['data'])); 
+            //$return = $instance->insert_update_register($_POST); 
+            //echo '<pre>';print_r($_POST);exit();
+            //  $return = $instance->insert_update_register($_POST); 
     }
     /*else if(isset($_POST['general'])&& $_POST['general']=='Save'){
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;

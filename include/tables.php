@@ -42,4 +42,8 @@
     define('BROKER_LICENCES_SECURITIES','ft_broker_licences_securities');
     define('BROKER_LICENCES_RIA','ft_broker_licences_ria');
     define('BROKER_LICENCES_INSURANCE','ft_broker_licences_insurance');
+    define('REGISTER_MASTER','ft_register_master');
+    define('BROKER_REGISTER_MASTER','ft_broker_register_master');
+    define('BRANCH_MASTER','ft_branch_master');
+    define('BROKER_REQ_DOC','ft_broker_req_doc_master');
 ?>

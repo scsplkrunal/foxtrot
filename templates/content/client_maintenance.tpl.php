@@ -1126,7 +1126,7 @@ $(document).on('click','.remove-row',function(){
                                     <input type="hidden" name="date" id="date" value="<?php echo date('Y-m-d',strtotime($val['date']));?>"/>
                                     <td><?php echo $_SESSION['user_id'];?></td>
                                     <input type="hidden" name="user_id" id="user_id" value="<?php echo $_SESSION['user_id'];?>"/>
-                                    <td><input type="text" name="client_note" class="form-control" id="client_note" disabled="true" value="<?php echo $val['notes'];?>"/></td>
+                                    <td><input type="text" name="client_note" class="form-control" id="client_note" value="<?php echo $val['notes'];?>"/></td>
                                     <td class="text-center">
                                        <input type="hidden" name="notes_id" id="notes_id" value="<?php echo $notes_id;?>"/>
                                        <input type="hidden" name="add_notes" value="Add Notes"  />
@@ -1562,8 +1562,18 @@ function getAge(dateString)
 </script>
 <script>
 function openedit(note_id){
-    var a = document.getElementById("add_client_notes_"+note_id+ "client_note").value;
-    alert(a);
+    /*var frm_element = document.getElementById("add_client_notes_"+note_id);
+    var ele = frm_element.getElementById("client_note");
+    console.log(ele);*/
+    var vis = frm_element.style;
+     
+    
+        vis.display = 'none';
+    
+   // var a = $("#add_client_notes_"+note_id+":input");
+     //var b = a["client_note"];
+
+    
 }
 </script>
 <script>
@@ -1605,8 +1615,12 @@ function delete_notes(note_id){
             if (this.readyState == 4 && this.status == 200) {
                 var data = this.responseText;
                 if(data=='1'){
-                    //$("#add_client_notes_"+note_id :"input").prop("disabled", true);
-                    var elem = document.getElementById("add_client_notes_"+note_id);
+                    
+                      $("add_client_notes_"+note_id).remove();
+                      //$("add_client_notes_"+note_id).prop("disabled", true);
+                    
+                    //$("#add_client_notes_"+note_id :"input").prop("disabled", true));
+                    //document.getElementById("add_client_notes_"+note_id :"input").prop("disabled", true);
                     //alert("add_client_notes_"+note_id);
                    // elem.remove();
                    $('#msg_notes').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Note deleted Successfully.</div>');
