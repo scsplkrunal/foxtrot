@@ -9,11 +9,15 @@
 		 * */
 		
         public function insert_update($data){
-            
+            $data['date_established'] = date('Y-m-d',strtotime($data['date_established']));
+            $data['date_terminated'] = date('Y-m-d',strtotime($data['date_terminated']));
+            $data['finra_start_date'] = date('Y-m-d',strtotime($data['finra_start_date']));
+            $data['finra_end_date'] = date('Y-m-d',strtotime($data['finra_end_date']));
+            $data['last_audit_date'] = date('Y-m-d',strtotime($data['last_audit_date']));
 			$id = isset($data['id'])?$this->re_db_input($data['id']):0;
-            $name = isset($data['branch_name'])?$this->re_db_input($data['branch_name']):'';
-            $broker = isset($data['manager'])?$this->re_db_input($data['manager']):'';
-            $b_status = isset($data['status'])?$this->re_db_input($data['status']):'';
+            $name = isset($data['name'])?$this->re_db_input($data['name']):'';
+            $broker = isset($data['broker'])?$this->re_db_input($data['broker']):'';
+            $b_status = isset($data['b_status'])?$this->re_db_input($data['b_status']):'';
             $contact = isset($data['contact'])?$this->re_db_input($data['contact']):'';
             $osj = isset($data['osj'])?$this->re_db_input($data['osj']):'';
             $non_registered = isset($data['non_registered'])?$this->re_db_input($data['non_registered']):'';
@@ -32,11 +36,11 @@
             $website = isset($data['website'])?$this->re_db_input($data['website']):'';
             $phone = isset($data['phone'])?$this->re_db_input($data['phone']):'';
             $facsimile = isset($data['facsimile'])?$this->re_db_input($data['facsimile']):'';
-            $date_established = isset($data['date_established'])?$this->re_db_input(date('Y-m-d',strtotime($data['date_established']))):'';
-            $date_terminated = isset($data['date_terminated'])?$this->re_db_input(date('Y-m-d',strtotime($data['date_terminated']))):'';
-            $finra_start_date = isset($data['finra_start_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['finra_start_date']))):'';
-            $finra_end_date = isset($data['finra_end_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['finra_end_date']))):'';
-            $last_audit_date = isset($data['last_audit_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['last_audit_date']))):'';
+            $date_established = isset($data['date_established'])?$this->re_db_input($data['date_established']):'';
+            $date_terminated = isset($data['date_terminated'])?$this->re_db_input($data['date_terminated']):'';
+            $finra_start_date = isset($data['finra_start_date'])?$this->re_db_input($data['finra_start_date']):'';
+            $finra_end_date = isset($data['finra_end_date'])?$this->re_db_input($data['finra_end_date']):'';
+            $last_audit_date = isset($data['last_audit_date'])?$this->re_db_input($data['last_audit_date']):'';
 			
             
 			if($name==''){
@@ -76,7 +80,20 @@
 					}
 				}
 				else if($id>0){
-					$q = "UPDATE `".$this->table."` SET `name`='".$name."',`broker`='".$broker."',`b_status`='".$b_status."',`contact`='".$contact."',`osj`='".$osj."',`non_registered`='".$non_registered."',`finra_fee`='".$finra_fee."',`business_address1`='".$business_address1."',`business_address2`='".$business_address2."',`business_city`='".$business_city."',`business_state`='".$business_state."',`business_zipcode`='".$business_zipcode."',`mailing_address1`='".$mailing_address1."',`mailing_address2`='".$mailing_address2."',`mailing_city`='".$mailing_city."',`mailing_state`='".$mailing_state."',`mailing_zipcode`='".$mailing_zipcode."',`email`='".$email."',`website`='".$website."',`phone`='".$phone."',`facsimile`='".$facsimile."',`date_established`='".$date_established."',`date_terminated`='".$date_terminated."',`finra_start_date`='".$finra_start_date."',`finra_end_date`='".$finra_end_date."',`last_audit_date`='".$last_audit_date."'".$this->update_common_sql()." WHERE `id`='".$id."'";
+				    unset($data['submit']);
+				    $current_data = $this->get_dataview($id);
+                    if(count($data)>0 && count($current_data)>0)
+                    {
+                      $new_list=array_diff($data,$current_data);
+                      foreach($new_list as $key=>$val)
+                      {
+                          $old_data = $current_data[$key];
+                          $q = "INSERT INTO `".BRANCH_CHANGES."` SET `branch_id`='".$id."',`user_initial`='".$_SESSION['user_name']."',`feild_changed`='".$key."',`previous_value`='".$old_data."',`new_value`='".$val."'".$this->insert_common_sql();
+    					  $res = $this->re_db_query($q);
+                      }
+                    }
+
+				    $q = "UPDATE `".$this->table."` SET `name`='".$name."',`broker`='".$broker."',`b_status`='".$b_status."',`contact`='".$contact."',`osj`='".$osj."',`non_registered`='".$non_registered."',`finra_fee`='".$finra_fee."',`business_address1`='".$business_address1."',`business_address2`='".$business_address2."',`business_city`='".$business_city."',`business_state`='".$business_state."',`business_zipcode`='".$business_zipcode."',`mailing_address1`='".$mailing_address1."',`mailing_address2`='".$mailing_address2."',`mailing_city`='".$mailing_city."',`mailing_state`='".$mailing_state."',`mailing_zipcode`='".$mailing_zipcode."',`email`='".$email."',`website`='".$website."',`phone`='".$phone."',`facsimile`='".$facsimile."',`date_established`='".$date_established."',`date_terminated`='".$date_terminated."',`finra_start_date`='".$finra_start_date."',`finra_end_date`='".$finra_end_date."',`last_audit_date`='".$last_audit_date."'".$this->update_common_sql()." WHERE `id`='".$id."'";
                     $res = $this->re_db_query($q);
 					if($res){
 					    $_SESSION['success'] = UPDATE_MESSAGE;
@@ -197,6 +214,31 @@
 			$q = "SELECT `at`.*,`b`.first_name as broker_name
 					FROM `".$this->table."` AS `at`
                     LEFT JOIN `".BROKER_MASTER."` as `b` on `b`.`id`=`at`.`broker` 
+                    WHERE `at`.`is_delete`='0' AND `at`.`id`='".$id."'";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			$return = $this->re_db_fetch_array($res);
+            }
+			return $return;
+		}
+        public function get_branch_changes($id){
+			$return = array();
+			$q = "SELECT `at`.*
+					FROM `".BRANCH_CHANGES."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`branch_id`='".$id."'";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+		}
+        public function get_dataview($id){
+			$return = array();
+			$q = "SELECT `at`.*
+					FROM `".$this->table."` AS `at`
                     WHERE `at`.`is_delete`='0' AND `at`.`id`='".$id."'";
 			$res = $this->re_db_query($q);
             if($this->re_db_num_rows($res)>0){

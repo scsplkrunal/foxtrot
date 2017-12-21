@@ -64,13 +64,13 @@ if($action=='add_new'||($action=='edit' && $id>0)){
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Branch Name <span class="text-red">*</span></label><br />
-                    <input type="text" maxlength="40" class="form-control" name="branch_name" value="<?php echo $name;?>"  />
+                    <input type="text" maxlength="40" class="form-control" name="name" value="<?php echo $name;?>"  />
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Manager </label><br />
-                    <select class="form-control" name="manager">
+                    <select class="form-control" name="broker">
                         <option value="">Select Manager</option>
                         <?php foreach($get_broker as $key=>$val){?>
                         <option value="<?php echo $val['id'];?>" <?php if($broker != '' && $broker==$val['id']){echo "selected='selected'";} ?>><?php echo $val['first_name'];?></option>
@@ -83,7 +83,7 @@ if($action=='add_new'||($action=='edit' && $id>0)){
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Status </label><br />
-                    <select class="form-control" name="status">
+                    <select class="form-control" name="b_status">
                         <option value="0">Select Status</option>
                         <option value="1" <?php if($b_status==1){echo "selected='selected'";} ?>>FINRA - OSJ</option>
                         <option value="2" <?php if($b_status==2){echo "selected='selected'";} ?>>FINRA - Branch</option>
@@ -281,7 +281,7 @@ if($action=='add_new'||($action=='edit' && $id>0)){
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>Last Audit date </label>
+                    <label>Last Audit Date </label>
                     <div id="demo-dp-range">
                         <div class="input-daterange input-group" id="datepicker">
                             <input type="text" name="last_audit_date" id="last_audit_date" class="form-control" value="<?php if($last_audit_date !=''){ echo date('m/d/Y',strtotime($last_audit_date)); } ?>" />
@@ -296,6 +296,9 @@ if($action=='add_new'||($action=='edit' && $id>0)){
                 <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
 				<input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
                 <a href="<?php echo CURRENT_PAGE.'?action=view';?>"><input type="button" name="cancel" value="Cancel" /></a>
+                <?php if($action=='edit' && $id>0){?>
+                <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="float: right;"/></a>
+                <?php } ?>
             </div><br />
        </div>
     </form>
@@ -422,6 +425,57 @@ if($action=='add_new'||($action=='edit' && $id>0)){
         </div><!-- End of Modal body -->
 		</div><!-- End of Modal content -->
 		</div><!-- End of Modal dialog -->
+</div><!-- End of Modal -->
+<!-- Lightbox strart -->							
+<!-- Modal for transaction list -->
+<div id="view_changes" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+	<div class="modal-content">
+	<div class="modal-header" style="margin-bottom: 0px !important;">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+		<h4 class="modal-title">View Changes</h4>
+	</div>
+	<div class="modal-body">
+    <form method="post">
+    <div class="inputpopup">
+        <div class="table-responsive" id="table-scroll" style="margin: 0px 5px 0px 5px;">
+            <table class="table table-bordered table-stripped table-hover">
+                <thead>
+                    <th>#NO</th>
+                    <th>User Initials</th>
+                    <th>Date of Change</th>
+                    <th>Field Changed</th>
+                    <th>Previous Value</th>
+                    <th>New Value</th>
+                </thead>
+                <tbody>
+                <?php 
+                $count = 0;
+                /*$lable_array = array();
+                $lable_array[] = array('name' => 'Branch Name','broker' => 'Manager','b_status' => 'Status','contact' => 'Contact','osj' => 'OSJ',
+                'non_registered' => 'Non-Registered','finra_fee' => 'FINRA Fee','business_address1' => 'Business Address1','business_address2' => 'Business Address2','business_city' => 'Business City',
+                'business_state' => 'Business State','business_zipcode' => 'Business Zipcode','mailing_address1' => 'Mailing Address1','mailing_address2' => 'Mailing Address2','mailing_city' => 'Mailing City','mailing_state' => 'Mailing State','mailing_zipcode' => 'Mailing Zipcode',
+                'email' => 'Email','website' => 'Website','phone' => 'Phone','facsimile' => 'Facsimile','date_established' => 'Date Established
+','date_terminated' => 'Date Terminated','finra_start_date' => 'FINRA Start Date','finra_end_date' => 'FINRA End Date','last_audit_date' => 'Last Audit Date');
+                echo '<pre>';print_r($lable_array);*/
+                foreach($branch_data as $key=>$val){?>
+                    <tr>
+                        <td><?php echo ++$count; ?></td>
+                        <td><?php echo $val['user_initial'];?></td>
+                        <td><?php echo date('m/d/Y',strtotime($val['created_time']));?></td>
+                        <td><?php echo $val['feild_changed'];?></td>
+                        <td><?php echo $val['previous_value'];?></td>
+                        <td><?php echo $val['new_value'];?></td>
+                    </tr>
+                <?php } ?>
+              </tbody>
+            </table>
+        </div>
+	</div>
+    </form>
+    </div><!-- End of Modal body -->
+	</div><!-- End of Modal content -->
+	</div><!-- End of Modal dialog -->
 </div><!-- End of Modal -->
 <script>
 //submit add product notes form data

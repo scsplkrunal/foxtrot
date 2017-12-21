@@ -1,5 +1,105 @@
 
 <script>
+function add_split(){
+    $('#demo-dp-range .input-daterange').datepicker({
+        format: "mm/dd/yyyy",
+        todayBtn: "linked",
+        autoclose: true,
+        todayHighlight: true
+    });
+    var html = '<div id="add_more_split">'+
+                    '<div class="row">'+
+                        '<div class="col-md-6">'+
+                            '<div class="form-group">'+
+                                '<label>Receiving Rep </label>'+
+                                '<select name="broker" id="broker" class="form-control">'+
+                                '<option value="">Select Broker</option>'+
+                                '<option value="1">Broker1</option>'+
+                                '<option value="1">Broker2</option>'+
+                                '</select>'+
+                            '</div>'+
+                        '</div>'+
+                        '<div class="col-md-6">'+
+                            '<div class="form-group">'+
+                                '<label>Rate  </label>'+
+                                '<input type="text" name="rate" class="form-control" value=""/>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'+
+                    '<div class="row">'+
+                        '<div class="col-md-6">'+
+                            '<div class="form-group">'+
+                                '<label>Start </label>'+
+                                '<div id="demo-dp-range">'+
+                                    '<div class="input-daterange input-group" id="datepicker">'+
+                                        '<input type="text" name="" id="" value="" class="form-control" />'+
+                                    '</div>'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>'+
+                        '<div class="col-md-6">'+
+                            '<div class="form-group">'+
+                                '<label>Until </label>'+
+                                '<div id="demo-dp-range">'+
+                                    '<div class="input-daterange input-group" id="datepicker">'+
+                                        '<input type="text" name="" id="" value="" class="form-control" />'+
+                                    '</div>'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'+
+                '</div>';
+                
+            
+    $(html).insertAfter('#add_more_split');
+}
+$(document).on('click','.remove-row',function(){
+    $(this).closest('.tr').remove();
+});
+function add_rate(){
+    var html = '<tr class="tr">'+
+                    '<td>'+
+                        '<input type="text" name="from" class="form-control" id="from"/>'+
+                    '</td>'+
+                    '<td>'+
+                        '<input type="text" name="to" class="form-control" id="to"/>'+
+                    '</td>'+
+                    '<td>'+
+                        '<input type="text" name="per" class="form-control" id="per"/>'+
+                    '</td>'+
+                    '<td>'+
+                        '<button type="button" tabindex="-1" class="btn remove-row btn-icon btn-circle"><i class="fa fa-minus"></i></button>'+
+                    '</td>'+
+                '</tr>';
+                
+            
+    $(html).insertAfter('#add_rate');
+}
+$(document).on('click','.remove-row',function(){
+    $(this).closest('.tr').remove();
+});
+function addlevel(){
+    var html = '<tr class="tr">'+
+                    '<td>'+
+                        '<input type="text" name="from" class="form-control" id="from"/>'+
+                    '</td>'+
+                    '<td>'+
+                        '<input type="text" name="to" class="form-control" id="to"/>'+
+                    '</td>'+
+                    '<td>'+
+                        '<input type="text" name="per" class="form-control" id="per"/>'+
+                    '</td>'+
+                    '<td>'+
+                        '<button type="button" tabindex="-1" class="btn remove-row btn-icon btn-circle"><i class="fa fa-minus"></i></button>'+
+                    '</td>'+
+                '</tr>';
+                
+            
+    $(html).insertAfter('#add_level');
+}
+$(document).on('click','.remove-row',function(){
+    $(this).closest('.tr').remove();
+});
 function addMoreDocs(){
     $('#demo-dp-range .input-daterange').datepicker({
         format: "mm/dd/yyyy",
@@ -671,61 +771,313 @@ var waitingDialog = waitingDialog || (function ($) {
                     <form method="post">
                         <div class="panel-overlay-wrap">
                             <div class="panel">
-                                <div class="panel-control" style="float: right;">
-        							<div class="btn-group dropdown">
-        								<a href="<?php echo CURRENT_PAGE;?> "><i class="fa fa-mail-forward"></i></a>
-        							</div>
-        						</div>
-                                <ul class=" nav nav-pills nav-stacked col-md-2">
-                                    <li class="active"><a href="#" data-toggle="pill">Payouts</a></li>
-                                    <li><a href="#" data-toggle="pill">Overrides</a></li>
-                                    <li><a href="#" data-toggle="pill">Splits</a></li>
-                                </ul>
-                                <div class="tab-content col-md-10">                                
-                                <div class="panel-body">
+            					<div class="panel-body">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Summarize Trailers </label><br />
-                                                <input type="checkbox" class="checkbox" value="1" name="summarize_trailers_general" id="summarize_trailers_general" class="regular-checkbox big-checkbox" /><label for="checkbox-2-1"></label>
+                                                <label>Description </label>
+                                                <input type="text" name="description" id="description" disabled="true" value="" class="form-control" />
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Summarize Adjustments: </label><br />
-                                                <input type="checkbox" class="checkbox" value="1" name="summarize_direct_imported_trades" id="summarize_direct_imported_trades" class="regular-checkbox big-checkbox" /><label for="checkbox-2-1"></label>
+                                                <label>Payout on </label><br />
+                                                <label class="radio-inline">
+                                                  <input type="radio" class="radio" name="transaction_type_general" value="1"  checked="checked" /> Amount
+                                                </label>
+                                                <label class="radio-inline">
+                                                  <input type="radio" class="radio" name="transaction_type_general" value="2" /> Percentage
+                                                </label>
+                                            </div>
+                                        </div>
+                                   </div>
+                                   <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Payout Grid </label>
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered table-stripped table-hover">
+                                                        <thead>
+                                                            <th>From</th>
+                                                            <th>To</th>
+                                                            <th>Percentage</th>
+                                                            <th>Add Level</th>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr id="add_level">
+                                                                <td>
+                                                                    <input type="text" name="from" class="form-control" id="from"/>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" name="to" class="form-control" id="to"/>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" name="per" class="form-control" id="per"/>
+                                                                </td>
+                                                                <td>
+                                                                    <button type="button" onclick="addlevel();" class="btn btn-purple btn-icon btn-circle"><i class="fa fa-plus"></i></button>
+                                                                </td>
+                                                            </tr>
+                                                      </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                    </div>
                                    <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Hold Commissions </label><br />
-                                                <div id="demo-dp-range">
-					                                <div class="input-daterange input-group" id="datepicker">
-                                                        <span class="input-group-addon">From</span>
-					                                    <input type="text" class="form-control" name="from_date_general" value="<?php echo $from_date ?>" />
-					                                    <span class="input-group-addon">To</span>
-					                                    <input type="text" class="form-control" name="to_date_general" value="<?php echo $to_date ?>" />
-					                                </div>
-					                            </div>
-                                           </div>
+                                                <label>Product Categories </label><br />
+                                                <input type="checkbox" name="product_category" id="product_category" class="checkbox" style="display: inline;"/>&nbsp;<label>Mutual Funds</label>&nbsp;&nbsp;
+                                                <input type="checkbox" name="product_category" id="product_category" class="checkbox" style="display: inline;"/>&nbsp;<label>Mutual Fund Trials</label>&nbsp;&nbsp;
+                                                <input type="checkbox" name="product_category" id="product_category" class="checkbox" style="display: inline;"/>&nbsp;<label>Stocks</label>&nbsp;&nbsp;
+                                                <input type="checkbox" name="product_category" id="product_category" class="checkbox" style="display: inline;"/>&nbsp;<label>Bonds</label>&nbsp;&nbsp;
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Basis </label><br />
+                                                <input type="radio" name="options" id="options" class="radio" style="display: inline;" value="1"/>&nbsp;<label>Net Earnings</label>&nbsp;&nbsp;
+                                                <input type="radio" name="options" id="options" class="radio" style="display: inline;" value="2"/>&nbsp;<label>Gross Concessions</label>&nbsp;&nbsp;
+                                                <input type="radio" name="options" id="options" class="radio" style="display: inline;" value="3"/>&nbsp;<label>Principal</label>&nbsp;&nbsp;
+                                            </div>
                                         </div>
                                    </div>
-                                </div>
-                                
-                                <div class="panel-overlay">
-                                    <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
-                                </div>
-                                <div class="panel-footer">
-                                    <div class="selectwrap">
-                                        <input type="hidden" name="id" value="<?php echo $id; ?>" />
-                    					<input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
-                                        <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
+                                   <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Cumulative </label><br />
+                                                <input type="radio" name="options" id="options" class="radio" style="display: inline;" value="1"/>&nbsp;<label>Payroll-To-Date</label>&nbsp;&nbsp;
+                                                <input type="radio" name="options" id="options" class="radio" style="display: inline;" value="2"/>&nbsp;<label>Month-To-Date</label>&nbsp;&nbsp;
+                                                <input type="radio" name="options" id="options" class="radio" style="display: inline;" value="3"/>&nbsp;<label>Year-To-Date</label>&nbsp;&nbsp;
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Year </label><br />
+                                                <input type="radio" name="options" id="options" class="radio" style="display: inline;" value="1"/>&nbsp;<label>Calendar</label>&nbsp;&nbsp;
+                                                <input type="radio" name="options" id="options" class="radio" style="display: inline;" value="2"/>&nbsp;<label>Rolling</label>&nbsp;&nbsp;
+                                                <input type="radio" name="options" id="options" class="radio" style="display: inline;" value="3"/>&nbsp;<label>Year-To-Date</label>&nbsp;&nbsp;
+                                            </div>
+                                        </div>
+                                   </div>
+                                   <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Calculation Detail </label><br />
+                                                <input type="radio" name="net" id="net" class="radio" style="display: inline;" value="1"/>&nbsp;<label>Intra-Trade</label>&nbsp;&nbsp;
+                                                <input type="radio" name="gross" id="gross" class="radio" style="display: inline;" value="2"/>&nbsp;<label>Inter-Trade</label>&nbsp;&nbsp;
+                                                <input type="radio" name="gross" id="gross" class="radio" style="display: inline;" value="2"/>&nbsp;<label>Payroll-Period</label>&nbsp;&nbsp;
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Clearing Charge Deducted From</label><br />
+                                                <input type="radio" name="net" id="net" class="radio" style="display: inline;" value="1"/>&nbsp;<label>Net</label>&nbsp;&nbsp;
+                                                <input type="radio" name="gross" id="gross" class="radio" style="display: inline;" value="2"/>&nbsp;<label>Gross</label>&nbsp;&nbsp;
+                                            </div>
+                                        </div>
+                                   </div>
+                                   <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Reset </label>
+                                                <div id="demo-dp-range">
+                                                    <div class="input-daterange input-group" id="datepicker">
+                                                        <input type="text" name="reset" id="reset" class="form-control" value="" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                   </div>
+                                  <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Description</label>
+                                                <select name="home_general" id="home_general" class="form-control">
+                                                    <option value="">Select Option</option>
+                                                    <option value="1">This is product type</option>
+                                                    <option value="2">This is product type</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Team Members </label>
+                                                <select name="broker" id="broker" class="form-control">
+                                                    <option value="">Select Broker</option>
+                                                    <option value="1">Broker1</option>
+                                                    <option value="2">Broker2</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div><br />
+                                    
+                                    <h4>Override </h4>
+                                    <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Receiving Rep </label>
+                                                <select name="broker" id="broker" class="form-control">
+                                                    <option value="">Select Broker</option>
+                                                    <option value="1">Broker1</option>
+                                                    <option value="2">Broker2</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Rate </label>
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered table-stripped table-hover">
+                                                        <thead>
+                                                            <th>From</th>
+                                                            <th>To</th>
+                                                            <th>Percentage</th>
+                                                            <th>Add More</th>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr id="add_rate">
+                                                                <td>
+                                                                    <input type="text" name="from" class="form-control" id="from"/>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" name="to" class="form-control" id="to"/>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" name="per" class="form-control" id="per"/>
+                                                                </td>
+                                                                <td>
+                                                                    <button type="button" onclick="add_rate();" class="btn btn-purple btn-icon btn-circle"><i class="fa fa-plus"></i></button>
+                                                                </td>
+                                                            </tr>
+                                                      </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                               </div><br />
+                               <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Start </label>
+                                            <div id="demo-dp-range">
+                                                <div class="input-daterange input-group" id="datepicker">
+                                                    <input type="text" name="reset" id="reset" class="form-control" value="" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Until </label>
+                                            <div id="demo-dp-range">
+                                                <div class="input-daterange input-group" id="datepicker">
+                                                    <input type="text" name="reset" id="reset" class="form-control" value="" />
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                </div>
-                               </div>                               
+                               <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Apply to </label><br />
+                                            <input type="radio" name="net" id="net" class="radio" style="display: inline;" value="1"/>&nbsp;<label>Apply Unpaid Trades</label>&nbsp;&nbsp;
+                                            <input type="radio" name="gross" id="gross" class="radio" style="display: inline;" value="2"/>&nbsp;<label>Only Going Forward</label>&nbsp;&nbsp;
+                                        </div>
+                                    </div>
+                               </div>
+                               <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Product Categories </label><br />
+                                            <input type="checkbox" name="product_category" id="product_category" class="checkbox" style="display: inline;"/>&nbsp;<label>All</label><br />
+                                            <input type="checkbox" name="product_category" id="product_category" class="checkbox" style="display: inline;"/>&nbsp;<label>Mutual Funds</label>&nbsp;&nbsp;
+                                            <input type="checkbox" name="product_category" id="product_category" class="checkbox" style="display: inline;"/>&nbsp;<label>Mutual Fund Trials</label>&nbsp;&nbsp;
+                                            <input type="checkbox" name="product_category" id="product_category" class="checkbox" style="display: inline;"/>&nbsp;<label>Stocks</label>&nbsp;&nbsp;
+                                            <input type="checkbox" name="product_category" id="product_category" class="checkbox" style="display: inline;"/>&nbsp;<label>Bonds</label>&nbsp;&nbsp;
+                                        </div>
+                                    </div>
+                               </div>
+                               <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Calculate On  </label><br />
+                                            <input type="radio" name="net" id="net" class="radio" style="display: inline;" value="1"/>&nbsp;<label>Gross</label>&nbsp;&nbsp;
+                                            <input type="radio" name="gross" id="gross" class="radio" style="display: inline;" value="2"/>&nbsp;<label>Net</label>&nbsp;&nbsp;
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>  </label><br />
+                                            <input type="radio" name="net" id="net" class="radio" style="display: inline;" value="1"/>&nbsp;<label>Deduct from Rep</label>&nbsp;&nbsp;
+                                            <input type="radio" name="gross" id="gross" class="radio" style="display: inline;" value="2"/>&nbsp;<label>Deduct from ....</label>&nbsp;&nbsp;
+                                        </div>
+                                    </div>
+                               </div><br />
+                               <h4>Split </h4>
+                               <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
+                                    <button type="button" onclick="add_split();"  style="float: right;" class="btn btn-purple btn-icon btn-circle"><i class="fa fa-plus"></i></button><br />
+                                    <div id="add_more_split">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Receiving Rep </label>
+                                                <select name="broker" id="broker" class="form-control">
+                                                    <option value="">Select Broker</option>
+                                                    <option value="1">Broker1</option>
+                                                    <option value="2">Broker2</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Rate  </label>
+                                                <input type="text" name="rate" class="form-control" value=""/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Start </label>
+                                                <div id="demo-dp-range">
+                                                    <div class="input-daterange input-group" id="datepicker">
+                                                        <input type="text" name="reset" id="reset" class="form-control" value="" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Until </label>
+                                                <div id="demo-dp-range">
+                                                    <div class="input-daterange input-group" id="datepicker">
+                                                        <input type="text" name="reset" id="reset" class="form-control" value="" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div><br />
+                               </div>
                             </div>
+                            <div class="panel-overlay">
+                                <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="selectwrap">
+                                    <input type="hidden" name="id"  value="<?php echo $id; ?>" />
+                					<input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
+                                    <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
+                                </div>
+                           </div>
                         </div>
                     </form>
                  </div>
@@ -905,17 +1257,19 @@ var waitingDialog = waitingDialog || (function ($) {
         							</div>
         						</div>
                                 <ul class="nav nav-tabs">
-                                    <li class="active"><a href="<?php echo CURRENT_PAGE; ?>#tab_securities" data-toggle="tab">Securities</a></li>
-                                    <li><a href="<?php echo CURRENT_PAGE; ?>#tab_insurance" data-toggle="tab">Insurance</a></li>
-                                    <li><a href="<?php echo CURRENT_PAGE; ?>#tab_ria" data-toggle="tab">RIA</a></li>
+                                    <li class="<?php if(!isset($_GET['sub_tab'])){echo "active";}else{ echo '';} ?>"><a href="<?php echo CURRENT_PAGE; ?>#tab_securities" data-toggle="tab">Securities</a></li>
+                                    <li class="<?php if(isset($_GET['sub_tab'])&&$_GET['sub_tab']=="insurance"){ echo "active"; } ?>"><a href="<?php echo CURRENT_PAGE; ?>#tab_insurance" data-toggle="tab">Insurance</a></li>
+                                    <li class="<?php if(isset($_GET['sub_tab'])&&$_GET['sub_tab']=="ria"){ echo "active"; } ?>"><a href="<?php echo CURRENT_PAGE; ?>#tab_ria" data-toggle="tab">RIA</a></li>
                                 </ul>
                                 <div id="my-tab-content" class="tab-content">
-                                    <div class="tab-pane active" id="tab_securities">
+                                    <div class="tab-pane <?php if(!isset($_GET['sub_tab'])){echo "active";}else{ echo '';} ?>" id="tab_securities">
                                         <form method="post">
                                             <div class="panel-overlay-wrap">
                                                 <div class="panel">
+                                                <?php if(isset($edit_licences_securities )){foreach($edit_licences_securities as $key=>$val)
+                                                {   $row1 = $val['waive_home_state_fee']; $row2 = $val['product_category']; }}  ?>
                                                    <div class="panel-heading">
-                                                        <h4 class="panel-title" style="font-size: 20px;"><input type="checkbox" class="checkbox" name="pass_through" style="display: inline !important;"/> Waive Home State Fee</h4>
+                                                        <h4 class="panel-title" style="font-size: 20px;"><input type="checkbox" class="checkbox" <?php if(isset($_GET['action']) && $_GET['action'] == 'edit' && (isset($row1) && $row1 == '1'))    { ?>checked="true"<?php }?> name="pass_through" value="1" style="display: inline !important;"/> Waive Home State Fee</h4>
                                                     </div>
                                                     <div class="panel-body">
                                                         <div class="row">
@@ -923,11 +1277,11 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                 <div class="form-group">
                                                                     <label>Product Category </label>
                                                                     <select name="product_category" id="product_category" class="form-control">
-                                                                        <option value="0">Select Category</option>
-                                                                        <option value="1">Active</option>
-                                                                        <option value="2">Received</option>
-                                                                        <option value="1">Terminated</option>
-                                                                        <option value="2">Reason</option>
+                                                                        <option <?php if(isset($_GET['action'])&&$_GET['action']=='edit'){if(isset($row2) && $row2==0){ ?> selected="true"<?php } } ?> value="0">Select Category</option>
+                                                                        <option <?php if(isset($_GET['action'])&&$_GET['action']=='edit'){if(isset($row2) && $row2==1){ ?> selected="true"<?php } } ?> value="1">Active</option>
+                                                                        <option <?php if(isset($_GET['action'])&&$_GET['action']=='edit'){if(isset($row2) && $row2==2){ ?> selected="true"<?php } } ?> value="2">Received</option>
+                                                                        <option <?php if(isset($_GET['action'])&&$_GET['action']=='edit'){if(isset($row2) && $row2==3){ ?> selected="true"<?php } } ?> value="3">Terminated</option>
+                                                                        <option <?php if(isset($_GET['action'])&&$_GET['action']=='edit'){if(isset($row2) && $row2==4){ ?> selected="true"<?php } } ?> value="4">Reason</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -965,6 +1319,54 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                </div>
                                                             </div>
                                                         </div>
+                                                        <?php if(isset($_GET['action']) && $_GET['action']=='edit' && isset($edit_licences_securities )){
+                                                                foreach($edit_licences_securities as $key=>$val){ //echo '<pre>'; print_r($row);
+                                                             foreach($get_state_new as $statekey=>$stateval) { if($val['state_id']== $stateval['id']) {?>
+                                                        <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
+                                                        <div class="row">
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                  <input type="checkbox" name="data1[<?php echo $stateval['id'] ?>][active_check]"  value="1" <?php if($val['active_check']==1){ ?>checked="true"<?php }?> id="data1[<?php echo $stateval['id'] ?>][active_check]" class="checkbox"  />
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                        <label><?php echo $stateval['name']; ?></label>
+                                                                    
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="<?php echo $val['fee']; ?>" name="data1[<?php echo $stateval['id'] ?>][fee]" type="text" />
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                    <div id="demo-dp-range">
+                    					                                <div class="input-daterange input-group" id="datepicker">
+                                                                            <input type="text" name="data1[<?php echo $stateval['id'] ?>][received]" id="data1[<?php echo $stateval['id'] ?>][received]" value="<?php echo $val['received']; ?>" class="form-control" />
+                    					                                </div>
+                    					                            </div>
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                  <div id="demo-dp-range">
+                					                                <div class="input-daterange input-group" id="datepicker">
+                                                                        <input type="text" name="data1[<?php echo $stateval['id'] ?>][terminated]" id="data1[<?php echo $stateval['id'] ?>][terminated]" value="<?php echo $val['terminated']; ?>" class="form-control" />
+                					                                </div>
+                					                              </div>
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                    <input class="form-control" name="data1[<?php echo $stateval['id'] ?>][reason]" id="data1[<?php echo $stateval['id'] ?>][reason]" value="<?php echo $val['reson']; ?>" type="text" />
+                                                               </div>
+                                                            </div>
+                                                        </div>
+                                                        </div>
+                                                        <?php } } } } else{?>
+                                                        
                                                         <?php foreach($get_state_new   as $statekey=>$stateval){?>
                                                         <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
                                                         <div class="row">
@@ -1009,7 +1411,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                             </div>
                                                         </div>
                                                         </div>
-                                                        <?php } ?>
+                                                        <?php } }?>
                                                         
                                                        
                                                     </div>
@@ -1027,12 +1429,14 @@ var waitingDialog = waitingDialog || (function ($) {
                                             </div>
                                         </form>     
                                      </div>
-                                     <div class="tab-pane" id="tab_insurance">
+                                     <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="licences" && $_GET['sub_tab'] == "insurance"){ echo "active"; } ?>" id="tab_insurance">
                                         <form method="post">
                                             <div class="panel-overlay-wrap">
                                                 <div class="panel">
                                                    <div class="panel-heading">
-                                                        <h4 class="panel-title" style="font-size: 20px;"><input type="checkbox" class="checkbox" name="pass_through" style="display: inline !important;"/> Waive Home State Fee</h4>
+                                                    <?php  foreach($edit_licences_insurance as $key=>$val)
+                                                {   $row1 = $val['waive_home_state_fee'];  }  ?>
+                                                        <h4 class="panel-title" style="font-size: 20px;"><input type="checkbox" <?php if(isset($_GET['action'])&&$_GET['action']=='edit' && (isset($row1) && $row1==1 )){ ?>checked="true"<?php } ?> value="1 "  class="checkbox" name="pass_through" style="display: inline !important;"/> Waive Home State Fee</h4>
                                                     </div>
                                                     <input type="hidden" name="type" value="2"/>
                                                     <div class="panel-body">
@@ -1068,6 +1472,52 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                </div>
                                                             </div>
                                                         </div>
+                                                        <?php if(isset($_GET['action']) && $_GET['action']=='edit'){
+                                                                foreach($edit_licences_insurance as $key=>$val){ 
+                                                             foreach($get_state_new as $statekey=>$stateval) { if($val['state_id']== $stateval['id']) {?>
+                                                        <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
+                                                        <div class="row">
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                  <input type="checkbox" name="data2[<?php echo $stateval['id'] ?>][active_check]" <?php if($val['active_check']==1){ ?>checked="true"<?php }?> value="1" id="data2[<?php echo $stateval['id'] ?>][active_check]" class="checkbox"  />
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                        <label><?php echo $stateval['name']; ?></label>
+                                                                    
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="<?php echo $val['fee']; ?>" name="data2[<?php echo $stateval['id'] ?>][fee]"  type="text" />
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                    <div id="demo-dp-range">
+                    					                                <div class="input-daterange input-group" id="datepicker">
+                                                                            <input type="text" name="data2[<?php echo $stateval['id'] ?>][received]" id="data2[<?php echo $stateval['id'] ?>][received]" value="<?php echo $val['received']; ?>" class="form-control" />
+                    					                                </div>
+                    					                            </div>
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                  <div id="demo-dp-range">
+                					                                <div class="input-daterange input-group" id="datepicker">
+                                                                        <input type="text" name="data2[<?php echo $stateval['id'] ?>][terminated]" id="data2[<?php echo $stateval['id'] ?>][terminated]" value="<?php echo $val['terminated']?>" class="form-control" />
+                					                                </div>
+                					                              </div>
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                    <input class="form-control" value="<?php echo $val['reason']?>" name="data2[<?php echo $stateval['id'] ?>][reason]" id="data2[<?php echo $stateval['id'] ?>][reason]" type="text" />
+                                                               </div>
+                                                            </div>
+                                                        </div></div>
+                                                        <?php } } } } else{ ?>
                                                         <?php foreach($get_state_new as $statekey=>$stateval){?>
                                                         <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
                                                         <div class="row">
@@ -1111,7 +1561,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                </div>
                                                             </div>
                                                         </div></div>
-                                                        <?php } ?>
+                                                        <?php } }?>
                                                         </div>
                                                     <div class="panel-overlay">
                                                         <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
@@ -1127,12 +1577,14 @@ var waitingDialog = waitingDialog || (function ($) {
                                             </div>
                                         </form>
                                      </div>
-                                     <div class="tab-pane" id="tab_ria">
+                                     <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="licences" && $_GET['sub_tab'] == "ria"){ echo "active"; } ?>" id="tab_ria">
                                         <form method="post">
                                             <div class="panel-overlay-wrap">
                                                 <div class="panel">
                                                    <div class="panel-heading">
-                                                        <h4 class="panel-title" style="font-size: 20px;"><input type="checkbox" class="checkbox" name="pass_through"  style="display: inline !important;"/> Waive Home State Fee</h4>
+                                                         <?php foreach($edit_licences_ria as $key=>$val)
+                                                        {   $row1 = $val['waive_home_state_fee'];  }  ?>
+                                                        <h4 class="panel-title" style="font-size: 20px;"><input type="checkbox" value="1" <?php if(isset($_GET['action'])&&$_GET['action']=='edit'&& (isset($row1) && $row1==1 )){ ?>checked="true"<?php } ?>  class="checkbox" name="pass_through"  style="display: inline !important;"/> Waive Home State Fee</h4>
                                                     </div>
                                                     <input type="hidden" name="type" value="3"/>
                                                     <div class="panel-body">
@@ -1168,6 +1620,52 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                </div>
                                                             </div>
                                                         </div>
+                                                        <?php if(isset($_GET['action']) && $_GET['action']=='edit'){
+                                                                foreach($edit_licences_insurance as $key=>$val){ 
+                                                             foreach($get_state_new as $statekey=>$stateval) { if($val['state_id']== $stateval['id']) {?>
+                                                        <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
+                                                        <div class="row">
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                  <input type="checkbox" name="data3[<?php echo $stateval['id'] ?>][active_check]" <?php if($val['active_check']==1){ ?>checked="true"<?php }?> value="1" id="data3[<?php echo $stateval['id'] ?>][active_check]" class="checkbox"  />
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                        <label><?php echo $stateval['name']; ?></label>
+                                                                    
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="<?php echo $val['fee'] ?>" name="data3[<?php echo $stateval['id'] ?>][fee]" type="text" />
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                    <div id="demo-dp-range">
+                    					                                <div class="input-daterange input-group" id="datepicker">
+                                                                            <input type="text" name="data3[<?php echo $stateval['id'] ?>][received]" id="data3[<?php echo $stateval['id'] ?>][received]" value="<?php echo $val['received'] ?>" class="form-control" />
+                    					                                </div>
+                    					                            </div>
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                  <div id="demo-dp-range">
+                					                                <div class="input-daterange input-group" id="datepicker">
+                                                                        <input type="text" name="data3[<?php echo $stateval['id'] ?>][terminated]" id="data3[<?php echo $stateval['id'] ?>][terminated]" value="<?php echo $val['terminated'] ?>" class="form-control" />
+                					                                </div>
+                					                              </div>
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                    <input class="form-control" value="<?php echo $val['reason'] ?>" name="data3[<?php echo $stateval['id'] ?>][reason]" id="data3[<?php echo $stateval['id'] ?>][reason]" type="text" />
+                                                               </div>
+                                                            </div>
+                                                        </div></div>
+                                                        <?php } } } } else{?>
                                                         <?php foreach($get_state_new as $statekey=>$stateval){?>
                                                         <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
                                                         <div class="row">
@@ -1211,7 +1709,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                </div>
                                                             </div>
                                                         </div></div>
-                                                        <?php } ?>
+                                                        <?php } } ?>
                                                         
                                                         </div>
                                                     <div class="panel-overlay">
@@ -1259,6 +1757,33 @@ var waitingDialog = waitingDialog || (function ($) {
                                                         <th>Reason</th>
                                                     </thead>
                                                     <tbody>
+                                                    <?php 
+                                                    if(isset($_GET['action']) && $_GET['action']=='edit'){
+                                                    foreach($get_register as $regkey=>$regval){
+                                                        foreach($edit_registers as $key=>$val){ 
+                                                            if($regval['id'] == $val['license_id']) {
+                                                            ?>
+                                                        <tr>
+                                                            <td><?php echo $regval['id'];?></a></td>
+                                                            <td><?php echo $regval['type'];?></td>
+                                                            <td>
+                                                                <div id="demo-dp-range">
+                					                                <div class="input-daterange input-group" id="datepicker">
+                                                                        <input type="text" name="data4[<?php echo $regval['id'];?>][approval_date]"  value="<?php echo $val['approval_date'];?>" class="form-control" />
+                					                                </div>
+             					                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div id="demo-dp-range">
+                					                                <div class="input-daterange input-group" id="datepicker">
+                                                                        <input type="text" name="data4[<?php echo $regval['id'];?>][expiration_date]" value="<?php echo $val['expiration_date'];?>" class="form-control" />
+                					                                </div>
+             					                                </div>
+                                                            </td>
+                                                            <td><input class="form-control" value="<?php echo $val['reason'];?>" name="data4[<?php echo $regval['id'];?>][register_reason]"  type="text" /></td>
+                                                            <input type="hidden" name="data4[<?php echo $regval['id'];?>][type]" value="<?php echo $regval['type'];?>"/>
+                                                        </tr>
+                                                        <?php } } } } else{ ?>
                                                     <?php foreach($get_register as $regkey=>$regval){?>
                                                         <tr>
                                                             <td><?php echo $regval['id'];?></a></td>
@@ -1280,7 +1805,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                             <td><input class="form-control" value="" name="data4[<?php echo $regval['id'];?>][register_reason]"  type="text" /></td>
                                                             <input type="hidden" name="data4[<?php echo $regval['id'];?>][type]" value="<?php echo $regval['type'];?>"/>
                                                         </tr>
-                                                        <?php } ?>
+                                                        <?php } } ?>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -1329,7 +1854,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                     <tbody>
                                                         <tr id="add_row_docs">
                                                             <td>
-                                                                <input type="checkbox" name="data[docs_receive][]" class="checkbox" id="docs_receive"/>
+                                                                <input type="checkbox" value="1" name="data[docs_receive][]" class="checkbox" id="docs_receive"/>
                                                             </td>
                                                             <td><input class="form-control" value="" name="data[docs_description][]" id="docs_description" type="text" /></td>
                                                             <td>
@@ -1346,6 +1871,29 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                 <button type="button" onclick="addMoreDocs();" class="btn btn-purple btn-icon btn-circle"><i class="fa fa-plus"></i></button>
                                                             </td>
                                                         </tr>
+                                                        <?php  //echo '<pre>';print_r($edit_required_docs);
+                                                        if(isset($_GET['action']) && $_GET['action']=='edit'){  
+                                                        foreach($edit_required_docs as $key=>$val){?>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="checkbox" name="data[docs_receive][]" <?php if($val['received']==1){ ?>checked="true"<?php } ?> value="1" class="checkbox" id="docs_receive"/>
+                                                                </td>
+                                                                <td><input class="form-control" value="<?php echo $val['description']?>" name="data[docs_description][]" id="docs_description" type="text" /></td>
+                                                                <td>
+                                                                    <div id="demo-dp-range">
+                    					                                <div class="input-daterange input-group" id="datepicker">
+                                                                            <input type="text" name="data[docs_date][]" id="docs_date" value="<?php echo $val['date']?>" class="form-control" />
+                    					                                </div>
+                 					                                </div>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="checkbox" name="data[docs_required][]" class="checkbox" id="docs_required"/>
+                                                                </td>
+                                                                <td>
+                                                                    <button type="button" tabindex="-1" class="btn remove-row btn-icon btn-circle"><i class="fa fa-minus"></i></button>
+                                                                </td>
+                                                            </tr>
+                                                      <?php } }?>
                                                   </tbody>
                                                 </table>
                                             </div>

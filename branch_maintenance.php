@@ -41,9 +41,9 @@
     if(isset($_POST['submit'])&& $_POST['submit']=='Save'){
         
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
-        $name = isset($_POST['branch_name'])?$instance->re_db_input($_POST['branch_name']):'';
-        $broker = isset($_POST['manager'])?$instance->re_db_input($_POST['manager']):'';
-        $b_status = isset($_POST['status'])?$instance->re_db_input($_POST['status']):'';
+        $name = isset($_POST['name'])?$instance->re_db_input($_POST['name']):'';
+        $broker = isset($_POST['broker'])?$instance->re_db_input($_POST['broker']):'';
+        $b_status = isset($_POST['b_status'])?$instance->re_db_input($_POST['b_status']):'';
         $contact = isset($_POST['contact'])?$instance->re_db_input($_POST['contact']):'';
         $osj = isset($_POST['osj'])?$instance->re_db_input($_POST['osj']):'';
         $non_registered = isset($_POST['non_registered'])?$instance->re_db_input($_POST['non_registered']):'';
@@ -79,6 +79,7 @@
     }
     else if($action=='edit' && $id>0){
         $return = $instance->edit($id);
+        $branch_data = $instance->get_branch_changes($id);
         $id = isset($return['id'])?$instance->re_db_output($return['id']):0;
         $name = isset($return['name'])?$instance->re_db_output($return['name']):'';
         $broker = isset($return['broker'])?$instance->re_db_output($return['broker']):'';

@@ -46,4 +46,5 @@
     define('BROKER_REGISTER_MASTER','ft_broker_register_master');
     define('BRANCH_MASTER','ft_branch_master');
     define('BROKER_REQ_DOC','ft_broker_req_doc_master');
+    define('BRANCH_CHANGES','ft_branch_changes');
 ?>

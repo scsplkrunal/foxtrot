@@ -451,7 +451,6 @@
                 $a = 0;
     			while($row = $this->re_db_fetch_array($res)){
     			     array_push($return,$row);
-                     
     			}
             }
 			return $return;

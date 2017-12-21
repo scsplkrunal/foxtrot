@@ -311,14 +311,14 @@
 		}
         public function insert_update_licences($data)
         {
-            //echo '<pre>';print_r($data);
+            //echo '<pre>';print_r($data);exit;
             $id = isset($data['id'])?$this->re_db_input($data['id']):0;
             $type_of_licences =isset($data['type'])?$this->re_db_input($data['type']):'';
             $waive_home_state_fee = isset($data['pass_through'])?$this->re_db_input($data['pass_through']):'0';
             $product_category = isset($data['product_category'])?$this->re_db_input($data['product_category']):'0';
             if($id>=0){
 				if($id==0){
-				    foreach($data['data1'] as $key=>$val)
+				    foreach($data as $key=>$val)
                     {        
                         $active_check=isset($val['active_check'])?$this->re_db_input($val['active_check']):'0';
                         $fee=isset($val['fee'])?$this->re_db_input($val['fee']):'';
@@ -344,7 +344,7 @@
                     
     			}
                 else if($id>0){
-                    foreach($data['data1'] as $key=>$val)
+                    foreach($data as $key=>$val)
                     {
                         $active_check=isset($val['active_check'])?$this->re_db_input($val['active_check']):'0';
                         $fee=isset($val['fee'])?$this->re_db_input($val['fee']):'';
@@ -514,33 +514,59 @@
                return $file_ary;
            }
            
-        public function insert_update_req_doc($data){
-           //echo '<pre>';print_r($data);exit;
-           $id = isset($data['id'])?$this->re_db_input($data['id']):0;
+        public function insert_update_req_doc($data ,$id1){
+          // echo '<pre>';print_r($id1);exit;
+           $id = isset($id1)?$this->re_db_input($id1):0;
            
-			    foreach($data as $key=>$val)
-                {        
-                    $docs_receive=isset($val['docs_receive'])?$this->re_db_input($val['docs_receive']):'';
-                    $docs_description=isset($val['docs_description'])?$this->re_db_input($val['docs_description']):'';
-                    $docs_date=isset($val['docs_date'])?$this->re_db_input($val['docs_date']):'';
-                    $docs_required = isset($val['docs_required'])?$this->re_db_input($val['docs_required']):'';
-                    $q = "INSERT INTO `".BROKER_REQ_DOC."` SET `broker_id`='".$_SESSION['last_insert_id']."' ,`received`='".$docs_receive."' ,`description`='".$docs_description."' , 
-                    `date`='".$docs_date."' , `required`='".$docs_required."' ".$this->insert_common_sql();
-					$res = $this->re_db_query($q);
-                }   
-                      
-                if($res){
-				      
-                    $_SESSION['success'] = INSERT_MESSAGE;
-					return true;
-				}
-				else{
-					$_SESSION['warning'] = UNKWON_ERROR;
-					return false;
-				}
+           if($id>=0){
+				if($id==0){
+    			    foreach($data as $key=>$val)
+                    {        
+                        $docs_receive=isset($val['docs_receive'])?$this->re_db_input($val['docs_receive']):'';
+                        $docs_description=isset($val['docs_description'])?$this->re_db_input($val['docs_description']):'';
+                        $docs_date=isset($val['docs_date'])?$this->re_db_input($val['docs_date']):'';
+                        $docs_required = isset($val['docs_required'])?$this->re_db_input($val['docs_required']):'';
+                        $q = "INSERT INTO `".BROKER_REQ_DOC."` SET `broker_id`='".$_SESSION['last_insert_id']."' ,`received`='".$docs_receive."' ,`description`='".$docs_description."' , 
+                        `date`='".$docs_date."' , `required`='".$docs_required."' ".$this->insert_common_sql();
+    					$res = $this->re_db_query($q);
+                    }    
+                    if($res){
+    				      
+                        $_SESSION['success'] = INSERT_MESSAGE;
+    					return true;
+    				}
+    				else{
+    					$_SESSION['warning'] = UNKWON_ERROR;
+    					return false;
+    				}
+                }
+                else if($id>0){
+                    
+                    foreach($data as $key=>$val)
+                    {
+                        $docs_receive=isset($val['docs_receive'])?$this->re_db_input($val['docs_receive']):'';
+                        $docs_description=isset($val['docs_description'])?$this->re_db_input($val['docs_description']):'';
+                        $docs_date=isset($val['docs_date'])?$this->re_db_input($val['docs_date']):'';
+                        $docs_required = isset($val['docs_required'])?$this->re_db_input($val['docs_required']):'';
+                                            
+    				    $q = "UPDATE `".BROKER_REQ_DOC."` SET `broker_id`='".$_SESSION['last_insert_id']."' ,`received`='".$docs_receive."' ,`description`='".$docs_description."' , 
+                        `date`='".$docs_date."' , `required`='".$docs_required."'  ".$this->update_common_sql()." WHERE `broker_id`='".$id."'";
+  					
+                        $res = $this->re_db_query($q);
+		              }
+                    	if($res){
+    					      
+                            $_SESSION['success'] = UPDATE_MESSAGE;
+    						return true;
+    					}
+    					else{
+    						$_SESSION['warning'] = UNKWON_ERROR;
+    						return false;
+    					}
+    				}
            
+            }
         }
-        
         
         public function insert_update_register($data){
            $id = isset($data['id'])?$this->re_db_input($data['id']):0;
@@ -553,7 +579,7 @@
                         $expiration_date=isset($val['expiration_date'])?$this->re_db_input($val['expiration_date']):'';
                         $register_reason=isset($val['register_reason'])?$this->re_db_input($val['register_reason']):'';
                         $type = isset($val['type'])?$this->re_db_input($val['type']):'';
-                        $q = "INSERT INTO `".BROKER_REQ_DOC."` SET `broker_id`='".$_SESSION['last_insert_id']."' ,`license_id`='".$key."' ,`license_name`='".$type."' , 
+                        $q = "INSERT INTO `".BROKER_REGISTER_MASTER."` SET `broker_id`='".$_SESSION['last_insert_id']."' ,`license_id`='".$key."' ,`license_name`='".$type."' , 
                         `approval_date`='".$approval_date."' , `expiration_date`='".$expiration_date."' ,`reason`='".$register_reason."' ".$this->insert_common_sql();
     					$res = $this->re_db_query($q);
                     }   
@@ -578,8 +604,8 @@
                         $register_reason=isset($val['register_reason'])?$this->re_db_input($val['register_reason']):'';
                         $type = isset($val['type'])?$this->re_db_input($val['type']):'';
                                             
-    				    $q = "UPDATE `".BROKER_REQ_DOC."` SET `license_id`='".$key."' ,`license_name`='".$type."' , 
-                        `approval_date`='".$approval_date."' , `expiration_date`='".$expiration_date."' ,`reason`='".$register_reason."' ".$this->update_common_sql()." WHERE `license_id`='".$key."' and `broker_id`='".$id."'";
+    				    $q = "UPDATE `".BROKER_REGISTER_MASTER."` SET `license_id`='".$key."' ,`license_name`='".$type."' , 
+                        `approval_date`='".$approval_date."' , `expiration_date`='".$expiration_date."' ,`reason`='".$register_reason."' ".$this->update_common_sql()." WHERE `broker_id`='".$id."'";
   					
                         $res = $this->re_db_query($q);
 		          }
@@ -783,6 +809,77 @@
             $res = $this->re_db_query($q);
             if($this->re_db_num_rows($res)>0){
     			$return = $this->re_db_fetch_array($res);
+            }
+			return $return;
+		}
+        public function edit_licences_securities($id){
+			$return = array();
+			$q = "SELECT `at`.*
+					FROM `".BROKER_LICENCES_SECURITIES."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`broker_id`='".$id."' "; 
+           
+            $res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+               
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+    			}
+            }
+			return $return;
+		}
+        public function edit_licences_insurance($id){
+			$return = array();
+			$q = "SELECT `at`.*
+					FROM `".BROKER_LICENCES_INSURANCE."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`broker_id`='".$id."' "; 
+            $res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+               
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+    			}
+            }
+			return $return;
+		}
+        public function edit_licences_ria($id){
+			$return = array();
+			$q = "SELECT `at`.*
+					FROM `".BROKER_LICENCES_RIA."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`broker_id`='".$id."' "; 
+            $res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+               
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+    			}
+            }
+			return $return;
+		}
+        public function edit_registers($id){
+			$return = array();
+			$q = "SELECT `at`.*
+					FROM `".BROKER_REGISTER_MASTER."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`broker_id`='".$id."' "; 
+            $res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+		}
+        public function edit_required_docs($id){
+			$return = array();
+			$q = "SELECT `at`.*
+					FROM `".BROKER_REQ_DOC."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`broker_id`='".$id."' "; 
+            $res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                     
+    			}
             }
 			return $return;
 		}
