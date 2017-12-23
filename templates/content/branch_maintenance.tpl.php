@@ -451,19 +451,26 @@ if($action=='add_new'||($action=='edit' && $id>0)){
                 <tbody>
                 <?php 
                 $count = 0;
-                /*$lable_array = array();
-                $lable_array[] = array('name' => 'Branch Name','broker' => 'Manager','b_status' => 'Status','contact' => 'Contact','osj' => 'OSJ',
+                $feild_name='';
+                $lable_array = array();
+                $lable_array = array('name' => 'Branch Name','broker' => 'Manager','b_status' => 'Status','contact' => 'Contact','osj' => 'OSJ',
                 'non_registered' => 'Non-Registered','finra_fee' => 'FINRA Fee','business_address1' => 'Business Address1','business_address2' => 'Business Address2','business_city' => 'Business City',
                 'business_state' => 'Business State','business_zipcode' => 'Business Zipcode','mailing_address1' => 'Mailing Address1','mailing_address2' => 'Mailing Address2','mailing_city' => 'Mailing City','mailing_state' => 'Mailing State','mailing_zipcode' => 'Mailing Zipcode',
                 'email' => 'Email','website' => 'Website','phone' => 'Phone','facsimile' => 'Facsimile','date_established' => 'Date Established
 ','date_terminated' => 'Date Terminated','finra_start_date' => 'FINRA Start Date','finra_end_date' => 'FINRA End Date','last_audit_date' => 'Last Audit Date');
-                echo '<pre>';print_r($lable_array);*/
-                foreach($branch_data as $key=>$val){?>
+                foreach($branch_data as $key=>$val){
+                    
+                    if(isset($lable_array[$val['feild_changed']])){
+                        $feild_name = $lable_array[$val['feild_changed']];
+                    }else {
+                        $feild_name = $val['feild_changed'];
+                    }?>
                     <tr>
+                    
                         <td><?php echo ++$count; ?></td>
                         <td><?php echo $val['user_initial'];?></td>
                         <td><?php echo date('m/d/Y',strtotime($val['created_time']));?></td>
-                        <td><?php echo $val['feild_changed'];?></td>
+                        <td><?php echo $feild_name;?></td>
                         <td><?php echo $val['previous_value'];?></td>
                         <td><?php echo $val['new_value'];?></td>
                     </tr>

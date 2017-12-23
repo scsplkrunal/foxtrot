@@ -626,6 +626,7 @@
 				$q = "UPDATE `".CLIENT_NOTES."` SET `is_delete`='1' WHERE `id`='".$id."'";
 				$res = $this->re_db_query($q);
 				if($res){
+				    $_SESSION['success'] = DELETE_MESSAGE;
 				    return true;
 				}
 				else{

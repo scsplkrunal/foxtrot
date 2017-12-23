@@ -23,7 +23,7 @@
 <script src="<?php echo SITE_JS; ?>bootstrap-datepicker.min.js"></script>
 
 <script src="<?php echo SITE_JS; ?>validator.js"></script>
- 
+ <script src="<?php echo SITE_JS; ?>multipleselection.js"></script>
 <script src="<?php echo SITE_JS; ?>custom.js"></script>
 <script src="<?php echo SITE_PLUGINS; ?>bootbox/bootbox.min.js"></script>
 <script src="<?php echo SITE_PLUGINS; ?>masked-input/jquery.maskedinput.min.js"></script>

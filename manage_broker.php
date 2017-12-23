@@ -55,6 +55,8 @@
     $get_state_new = $instance->select_state_new();
     $get_register=$instance->select_register();
     $get_sponsor = $instance->select_sponsor();
+    $select_broker= $instance->select();
+    $select_percentage= $instance->select_percentage();
     
     if(isset($_POST['submit'])&& $_POST['submit']=='Save'){
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
@@ -130,7 +132,24 @@
             $error = !isset($_SESSION['warning'])?$return:'';
         }
     }
-    else if(isset($_POST['securities'])&& $_POST['securities']=='Save'){
+    else if(isset($_POST['payout'])&& $_POST['payout']=='Save'){
+        echo '<pre>';print_r($_POST);exit;
+        $return = $instance->insert_update_licences($_POST);   
+        if($return===true){
+            if($action == 'edit')
+            {
+                header("location:".CURRENT_PAGE."?action=".$action."&id=".$id."&tab=licences&sub_tab=insurance");exit;
+            }
+            else
+            {
+                header("location:".CURRENT_PAGE."?action=".$action."&tab=licences&sub_tab=insurance");exit;
+            }
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+    }
+     else if(isset($_POST['securities'])&& $_POST['securities']=='Save'){
         $return = $instance->insert_update_licences($_POST);   
         if($return===true){
             if($action == 'edit')
@@ -198,6 +217,7 @@
      else if(isset($_POST['req_doc'])&& $_POST['req_doc']=='Save'){
              //echo '<pre>';print_r($_POST);exit;
              $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
+             
             $return = $instance->insert_update_req_doc($instance->reArrayFiles($_POST['data']),$id); 
             if($return===true){
             if($action == 'edit')

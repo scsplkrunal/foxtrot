@@ -19,8 +19,16 @@
             $broker = isset($data['broker'])?$this->re_db_input($data['broker']):'';
             $b_status = isset($data['b_status'])?$this->re_db_input($data['b_status']):'';
             $contact = isset($data['contact'])?$this->re_db_input($data['contact']):'';
-            $osj = isset($data['osj'])?$this->re_db_input($data['osj']):'';
-            $non_registered = isset($data['non_registered'])?$this->re_db_input($data['non_registered']):'';
+            if(!isset($data['osj']))
+            {
+                $data['osj']=0;
+            }
+            $osj = isset($data['osj'])?$this->re_db_input($data['osj']):0;
+            if(!isset($data['non_registered']))
+            {
+                $data['non_registered']=0;
+            }
+            $non_registered = isset($data['non_registered'])?$this->re_db_input($data['non_registered']):0;
             $finra_fee = isset($data['finra_fee'])?$this->re_db_input($data['finra_fee']):'';
             $business_address1 = isset($data['business_address1'])?$this->re_db_input($data['business_address1']):'';
             $business_address2 = isset($data['business_address2'])?$this->re_db_input($data['business_address2']):'';
@@ -83,8 +91,8 @@
 				    unset($data['submit']);
 				    $current_data = $this->get_dataview($id);
                     if(count($data)>0 && count($current_data)>0)
-                    {
-                      $new_list=array_diff($data,$current_data);
+                    {//echo '<pre>';print_r($data);echo '<pre>';print_r($current_data);
+                      $new_list=array_diff($data,$current_data);//echo '<pre>';print_r($new_list);exit;
                       foreach($new_list as $key=>$val)
                       {
                           $old_data = $current_data[$key];

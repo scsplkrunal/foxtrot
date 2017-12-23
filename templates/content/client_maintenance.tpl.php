@@ -1100,16 +1100,16 @@ $(document).on('click','.remove-row',function(){
 				<div class="modal-body">
                 
                 <div class="inputpopup">
-                    <a class="btn btn-sm btn-success" style="float: right !important; margin-right: 5px !important;" onclick="addMoreNotes();"><i class="fa fa-plus"></i> Add New</a></li>
+                    <a class="btn btn-sm btn-success" style="float: right !important; margin-right: 5px !important;" onclick="open_newnotes();"><i class="fa fa-plus"></i> Add New</a></li>
     			</div>
                 
                 <div class="col-md-12">
                     <div id="msg_notes">
                     </div>
                 </div>
-                
+               
                 <div class="inputpopup">
-                    <div class="table-responsive" id="table-scroll" style="margin: 0px 5px 0px 5px;">
+                    <div class="table-responsive" id="ajax_notes" style="margin: 0px 5px 0px 5px;">
                         <table class="table table-bordered table-stripped table-hover">
                             <thead>
                                 <th>Date</th>
@@ -1130,24 +1130,24 @@ $(document).on('click','.remove-row',function(){
                                     <td class="text-center">
                                        <input type="hidden" name="notes_id" id="notes_id" value="<?php echo $notes_id;?>"/>
                                        <input type="hidden" name="add_notes" value="Add Notes"  />
-							           <button type="submit" class="btn btn-sm btn-warning" name="add_notes" value="Add Notes"><i class="fa fa-save"></i> Save</button>
+                        	           <button type="submit" class="btn btn-sm btn-warning" name="add_notes" value="Add Notes"><i class="fa fa-save"></i> Save</button>
                                        <a href="#" onclick="openedit(<?php echo $notes_id;?>);" class="btn btn-sm btn-primary" ><i class="fa fa-edit"></i> Edit</a>
                                        <a href="#" onclick="delete_notes(<?php echo $notes_id;?>);" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
                                     </td>
                                 </form>
                                 </tr>
                             <?php } $notes_id++;?>
-                            <tr id="add_row_notes">
+                            <tr id="add_row_notes" style="display: none;">
                                 <form method="post" id="add_client_notes_<?php echo $notes_id;?>" name="add_client_notes_<?php echo $notes_id;?>" onsubmit="return notessubmit(<?php echo $notes_id;?>);">
                                     <td><?php echo date('d/m/Y');?></td>
                                     <input type="hidden" name="date" id="date" value="<?php echo date('Y-m-d');?>"/>
-                                    <td><?php echo $_SESSION['user_name'];?></td>
+                                    <td><?php echo $_SESSION['user_id'];?></td>
                                     <input type="hidden" name="user_id" id="user_id" value="<?php echo $_SESSION['user_id'];?>"/>
                                     <td><input type="text" name="client_note" class="form-control" id="client_note" value=""/></td>
                                     <td class="text-center">
                                        <input type="hidden" name="notes_id" id="notes_id" value="0"/>
                                        <input type="hidden" name="add_notes" value="Add Notes" />
-							           <button type="submit" class="btn btn-sm btn-warning" name="add_notes" value="Add Notes"><i class="fa fa-save"></i> Save</button>
+                        	           <button type="submit" class="btn btn-sm btn-warning" name="add_notes" value="Add Notes"><i class="fa fa-save"></i> Save</button>
                                        <a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=" class="btn btn-sm btn-primary" ><i class="fa fa-edit"></i> Edit</a>
                                        <a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
                                     </td>
@@ -1157,7 +1157,6 @@ $(document).on('click','.remove-row',function(){
                         </table>
                     </div>
 				</div>
-                </form>
                 </div><!-- End of Modal body -->
 				</div><!-- End of Modal content -->
 				</div><!-- End of Modal dialog -->
@@ -1412,6 +1411,12 @@ $(document).on('click','.remove-row',function(){
 }
 </style>
 <script>
+function open_newnotes()
+{
+    document.getElementById("add_row_notes").style.display = "";
+}
+</script>
+<script>
 $('#demo-dp-range .input-daterange').datepicker({
         format: "mm/dd/yyyy",
         todayBtn: "linked",
@@ -1561,6 +1566,18 @@ function getAge(dateString)
     });
 </script>
 <script>
+function get_client_notes(){
+    
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) 
+            {
+                document.getElementById("ajax_notes").innerHTML = this.responseText;
+            }
+        };
+        xmlhttp.open("GET", "ajax_client_notes.php", true);
+        xmlhttp.send();
+}
 function openedit(note_id){
     /*var frm_element = document.getElementById("add_client_notes_"+note_id);
     var ele = frm_element.getElementById("client_note");
@@ -1590,8 +1607,9 @@ function notessubmit(note_id)
       data: $("#add_client_notes_"+note_id).serialize(), // serializes the form's elements.
       success: function(data){
           if(data=='1'){
-            $('#msg_notes').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Data Successfully Saved.</div>');
-               
+            
+            //$('#msg_notes').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Data Successfully Saved.</div>');
+            window.location.href = "client_maintenance.php";//get_client_notes();   
           }
           else{
                $('#msg').html('<div class="alert alert-danger">'+data+'</div>');
@@ -1615,16 +1633,10 @@ function delete_notes(note_id){
             if (this.readyState == 4 && this.status == 200) {
                 var data = this.responseText;
                 if(data=='1'){
-                    
-                      $("add_client_notes_"+note_id).remove();
-                      //$("add_client_notes_"+note_id).prop("disabled", true);
-                    
-                    //$("#add_client_notes_"+note_id :"input").prop("disabled", true));
-                    //document.getElementById("add_client_notes_"+note_id :"input").prop("disabled", true);
-                    //alert("add_client_notes_"+note_id);
-                   // elem.remove();
-                   $('#msg_notes').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Note deleted Successfully.</div>');
-                       
+                   window.location.href = "client_maintenance.php"; 
+                   //$('#msg_notes').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Note deleted Successfully.</div>');
+                   //get_client_notes();
+                  
                   }
                   else{
                        $('#msg').html('<div class="alert alert-danger">'+data+'</div>');
