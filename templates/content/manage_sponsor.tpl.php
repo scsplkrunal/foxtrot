@@ -135,8 +135,20 @@ $(document).on('click','.remove-row',function(){
     		</div><!-- End of Modal content -->
     		</div><!-- End of Modal dialog -->
       </div><!-- End of Modal -->
-    
+        <?php if($action=='edit_sponsor' && $sponsor_id>0){?>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group"><br /><div class="selectwrap">
+                        <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=previous" class="previous next_previous_a" style="float: left;">&laquo; Previous</a>
+                        <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=next" class="next next_previous_a" style="float: right;">Next &raquo;</a>
+                    </div>
+                 </div>
+                 </div>
+             </div>
+            <?php } ?>
+            <br />
     <?php  
+    
     if((isset($_GET['action']) && $_GET['action']=='add_sponsor') || (isset($_GET['action']) && ($_GET['action']=='edit_sponsor' && $sponsor_id>0))){
         ?>
         <div class="panel">            
@@ -372,7 +384,18 @@ $(document).on('click','.remove-row',function(){
                 </div>
     		</div>
     	</div>
-        <?php } ?>                                    
+        <?php } ?> 
+        <?php if($action=='edit_sponsor' && $sponsor_id>0){?>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group"><br /><div class="selectwrap">
+                        <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=previous" class="previous next_previous_a" style="float: left;">&laquo; Previous</a>
+                        <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=next" class="next next_previous_a" style="float: right;">Next &raquo;</a>
+                    </div>
+                 </div>
+                 </div>
+             </div>
+            <?php } ?>                                   
     </div>
 </div>
 

@@ -106,7 +106,7 @@
 				  <li><a href="<?php echo SITE_URL; ?>manage_multicompany.php">Mulit-Company Maintenance</a></li>
 				  <li><a href="<?php echo SITE_URL; ?>branch_maintenance.php">Branch Maintenance</a></li>
 				  <li><a href="<?php echo SITE_URL; ?>manage_broker.php">Broker Maintenance</a></li>
-                  <li><a href="<?php echo SITE_URL; ?>manage_Sponsor.php">Sponsor Maintenance</a></li>
+                  <li><a href="<?php echo SITE_URL; ?>manage_sponsor.php">Sponsor Maintenance</a></li>
                   <li><a href="<?php echo SITE_URL; ?>product_cate.php">Product Maintenance</a></li>
                   <li><a href="<?php echo SITE_URL; ?>client_maintenance.php">Client Maintenance</a></li>
 				</ul>

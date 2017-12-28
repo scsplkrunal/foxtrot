@@ -941,7 +941,7 @@ class db
 		?>
 		<div class="alert alert-danger alert-dismissable">
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-			<strong>Error!</strong> <?php echo $msg; ?>
+			<strong>Error!</strong> <?php if(!is_array($msg)) echo $msg; ?>
 		</div>
 		<?php
 	}

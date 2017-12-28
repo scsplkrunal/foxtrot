@@ -58,6 +58,7 @@
     $select_broker= $instance->select();
     $select_percentage= $instance->select_percentage();
     
+    
     if(isset($_POST['submit'])&& $_POST['submit']=='Save'){
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
         $fname = isset($_POST['fname'])?$instance->re_db_input($_POST['fname']):'';
@@ -133,23 +134,27 @@
         }
     }
     else if(isset($_POST['payout'])&& $_POST['payout']=='Save'){
-        echo '<pre>';print_r($_POST);exit;
-        $return = $instance->insert_update_licences($_POST);   
-        if($return===true){
+        //echo '<pre>';print_r($_POST['leval']);exit;
+        $return = $instance->insert_update_payout($_POST);   
+        $return1 = $instance->insert_update_payout_grid($instance->reArrayFiles_grid($_POST['leval']),$_POST['id']);
+        $return2 = $instance->insert_update_payout_override($instance->reArrayFiles_override($_POST['override']),$_POST['id'],$_POST['receiving_rep']);
+        $return3 = $instance->insert_update_payout_split($instance->reArrayFiles_split($_POST['split']),$_POST['id']);
+        if($return===true && $return===true && $return===true && $return===true){
             if($action == 'edit')
             {
-                header("location:".CURRENT_PAGE."?action=".$action."&id=".$id."&tab=licences&sub_tab=insurance");exit;
+                header("location:".CURRENT_PAGE."?action=".$action."&id=".$id."&tab=charges");exit;
             }
             else
             {
-                header("location:".CURRENT_PAGE."?action=".$action."&tab=licences&sub_tab=insurance");exit;
+                header("location:".CURRENT_PAGE."?action=".$action."&tab=charges");exit;
             }
         }
-        else{
-            $error = !isset($_SESSION['warning'])?$return:'';
+        else{            
+            $error = !isset($_SESSION['warning'])?$return:'';            
         }
     }
      else if(isset($_POST['securities'])&& $_POST['securities']=='Save'){
+       //echo '<pre>';print_r($_POST);exit;
         $return = $instance->insert_update_licences($_POST);   
         if($return===true){
             if($action == 'edit')
@@ -199,6 +204,7 @@
     }
     else if(isset($_POST['register'])&& $_POST['register']=='Save'){
         
+            //echo '<pre>';print_r($_POST);exit;
             $return = $instance->insert_update_register($_POST); 
             if($return===true){
             if($action == 'edit')
@@ -259,6 +265,11 @@
         $edit_licences_insurance = $instance->edit_licences_insurance($id);
         $edit_registers = $instance->edit_registers($id);
         $edit_required_docs = $instance->edit_required_docs($id);
+        $edit_payout = $instance->edit_payout($id);
+        $edit_grid = $instance->edit_grid($id);
+        $edit_override = $instance->edit_override($id);
+        $edit_split =$instance->edit_split($id);
+        //echo '<pre>';print_r($edit_licences_securities);exit;
         
         $_SESSION['last_insert_id']=$id;
         $fname = $instance->re_db_output($return['first_name']);
@@ -314,6 +325,36 @@
         //echo '<pre>';print_r($edit_licences_securities);exit;
            
     }
+    else if(isset($_GET['send'])&&$_GET['send']=='previous' && isset($_GET['id'])&&$_GET['id']>0 && $_GET['id']!='')
+    {
+        $id = $instance->re_db_input($_GET['id']);
+        
+        $return = $instance->get_previous_broker($id);
+            
+        if($return!=false){
+            $id=$return['id'];
+            header("location:".CURRENT_PAGE."?action=edit&id=".$id."");exit;
+        }
+        else{
+            header("location:".CURRENT_PAGE."?action=edit&id=".$id."");exit;
+        }
+        
+    }
+    else if(isset($_GET['send'])&&$_GET['send']=='next' && isset($_GET['id'])&&$_GET['id']>0 && $_GET['id']!='')
+    {
+        $id = $instance->re_db_input($_GET['id']);
+        
+        $return = $instance->get_next_broker($id);
+            
+        if($return!=false){
+            $id=$return['id'];
+            header("location:".CURRENT_PAGE."?action=edit&id=".$id."");exit;
+        }
+        else{
+            header("location:".CURRENT_PAGE."?action=edit&id=".$id."");exit;
+        }
+        
+    }
     else if(isset($_POST['submit'])&&$_POST['submit']=='Search'){
         
        $search_text = isset($_POST['search_text'])?$instance->re_db_input($_POST['search_text']):''; 
@@ -342,6 +383,34 @@
             header('location:'.CURRENT_PAGE);exit;
         }
     }
+    else if(isset($_POST['add_notes'])&& $_POST['add_notes']=='Add Notes'){
+        $_POST['user_id']=$_SESSION['user_name'];
+        $_POST['date'] = date('Y-m-d');
+       
+        $return = $instance->insert_update_broker_notes($_POST);
+        
+        if($return===true){
+            echo '1';exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+        echo $error;
+        exit;
+    } 
+    else if(isset($_GET['delete_action'])&&$_GET['delete_action']=='delete_notes'&&isset($_GET['note_id'])&&$_GET['note_id']>0)
+    {
+        $note_id = $instance->re_db_input($_GET['note_id']);
+        $return = $instance->delete_notes($note_id);
+        if($return===true){
+            echo '1';exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+        echo $error;
+        exit;
+    } 
     else if($action=='view'){
         
         $_SESSION['last_insert_id']='';

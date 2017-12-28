@@ -131,7 +131,7 @@ $(document).on('click','.remove-row',function(){
                                 <div class="row">
                                     <div class="col-md-4" style="float: right;">
                                         <div class="form-group">
-                                            <a href="#client_notes" data-toggle="modal"><input type="button" name="notes" value="Notes" /></a>
+                                            <a href="#client_notes" data-toggle="modal"><input type="button" onclick="get_client_notes();" name="notes" value="Notes" /></a>
                                             <a href="#client_transactions" data-toggle="modal"><input type="button" name="transactions" value="Transactions" /></a>
                                             <a href="#joint_account" data-toggle="modal"><input type="button" name="joint_account" value="Joint Account" /></a>
                                             <a href="#client_attachment" data-toggle="modal"><input type="button" name="attach" value="Attach" /></a><br />
@@ -1110,51 +1110,7 @@ $(document).on('click','.remove-row',function(){
                
                 <div class="inputpopup">
                     <div class="table-responsive" id="ajax_notes" style="margin: 0px 5px 0px 5px;">
-                        <table class="table table-bordered table-stripped table-hover">
-                            <thead>
-                                <th>Date</th>
-                                <th>User</th>
-                                <th>Notes</th>
-                                <th class="text-center">Action</th>
-                            </thead>
-                            <tbody>
-                            <?php foreach($get_notes as $key=>$val){
-                                $notes_id = $val['id'];?>
-                                <tr>
-                                <form method="post" id="add_client_notes_<?php echo $notes_id;?>" name="add_client_notes_<?php echo $notes_id;?>" onsubmit="return notessubmit(<?php echo $notes_id;?>);">
-                                    <td><?php echo date('d/m/Y',strtotime($val['date']));?></td>
-                                    <input type="hidden" name="date" id="date" value="<?php echo date('Y-m-d',strtotime($val['date']));?>"/>
-                                    <td><?php echo $_SESSION['user_id'];?></td>
-                                    <input type="hidden" name="user_id" id="user_id" value="<?php echo $_SESSION['user_id'];?>"/>
-                                    <td><input type="text" name="client_note" class="form-control" id="client_note" value="<?php echo $val['notes'];?>"/></td>
-                                    <td class="text-center">
-                                       <input type="hidden" name="notes_id" id="notes_id" value="<?php echo $notes_id;?>"/>
-                                       <input type="hidden" name="add_notes" value="Add Notes"  />
-                        	           <button type="submit" class="btn btn-sm btn-warning" name="add_notes" value="Add Notes"><i class="fa fa-save"></i> Save</button>
-                                       <a href="#" onclick="openedit(<?php echo $notes_id;?>);" class="btn btn-sm btn-primary" ><i class="fa fa-edit"></i> Edit</a>
-                                       <a href="#" onclick="delete_notes(<?php echo $notes_id;?>);" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
-                                    </td>
-                                </form>
-                                </tr>
-                            <?php } $notes_id++;?>
-                            <tr id="add_row_notes" style="display: none;">
-                                <form method="post" id="add_client_notes_<?php echo $notes_id;?>" name="add_client_notes_<?php echo $notes_id;?>" onsubmit="return notessubmit(<?php echo $notes_id;?>);">
-                                    <td><?php echo date('d/m/Y');?></td>
-                                    <input type="hidden" name="date" id="date" value="<?php echo date('Y-m-d');?>"/>
-                                    <td><?php echo $_SESSION['user_id'];?></td>
-                                    <input type="hidden" name="user_id" id="user_id" value="<?php echo $_SESSION['user_id'];?>"/>
-                                    <td><input type="text" name="client_note" class="form-control" id="client_note" value=""/></td>
-                                    <td class="text-center">
-                                       <input type="hidden" name="notes_id" id="notes_id" value="0"/>
-                                       <input type="hidden" name="add_notes" value="Add Notes" />
-                        	           <button type="submit" class="btn btn-sm btn-warning" name="add_notes" value="Add Notes"><i class="fa fa-save"></i> Save</button>
-                                       <a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=" class="btn btn-sm btn-primary" ><i class="fa fa-edit"></i> Edit</a>
-                                       <a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
-                                    </td>
-                                </form>
-                             </tr>
-                          </tbody>
-                        </table>
+                        
                     </div>
 				</div>
                 </div><!-- End of Modal body -->
@@ -1579,18 +1535,12 @@ function get_client_notes(){
         xmlhttp.send();
 }
 function openedit(note_id){
-    /*var frm_element = document.getElementById("add_client_notes_"+note_id);
-    var ele = frm_element.getElementById("client_note");
-    console.log(ele);*/
-    var vis = frm_element.style;
-     
     
-        vis.display = 'none';
-    
-   // var a = $("#add_client_notes_"+note_id+":input");
-     //var b = a["client_note"];
-
-    
+    var frm_element = document.getElementById("add_client_notes_"+note_id);
+    //var ele = frm_element.getElementById("client_note");
+    name = frm_element.elements["client_note"].removeAttribute("style"); 
+    //$(name).css('pointer-events','');
+    console.log(name);
 }
 </script>
 <script>
@@ -1608,16 +1558,17 @@ function notessubmit(note_id)
       success: function(data){
           if(data=='1'){
             
-            //$('#msg_notes').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Data Successfully Saved.</div>');
-            window.location.href = "client_maintenance.php";//get_client_notes();   
+            get_client_notes();
+            $('#msg_notes').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Data Successfully Saved.</div>');
+            //window.location.href = "client_maintenance.php";//get_client_notes();   
           }
           else{
-               $('#msg').html('<div class="alert alert-danger">'+data+'</div>');
+               $('#msg_notes').html('<div class="alert alert-danger">'+data+'</div>');
           }
           
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
-           $('#msg').html('<div class="alert alert-danger">Something went wrong, Please try again.</div>')
+           $('#msg_notes').html('<div class="alert alert-danger">Something went wrong, Please try again.</div>')
       }
       
    });
@@ -1633,13 +1584,13 @@ function delete_notes(note_id){
             if (this.readyState == 4 && this.status == 200) {
                 var data = this.responseText;
                 if(data=='1'){
-                   window.location.href = "client_maintenance.php"; 
-                   //$('#msg_notes').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Note deleted Successfully.</div>');
+                   get_client_notes(); 
+                   $('#msg_notes').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Note deleted Successfully.</div>');
                    //get_client_notes();
                   
                   }
                   else{
-                       $('#msg').html('<div class="alert alert-danger">'+data+'</div>');
+                       $('#msg_notes').html('<div class="alert alert-danger">'+data+'</div>');
                   }
                 
             }

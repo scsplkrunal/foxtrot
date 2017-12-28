@@ -1,5 +1,5 @@
 <?php
-	if(isset($error) && $error!=''){
+	if(isset($error) && $error !=''){
 		$dbins->error_message($error);
 	}
 	else if(isset($_SESSION['success'])){

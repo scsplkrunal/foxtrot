@@ -107,6 +107,40 @@
             }
 			return $return;
 		}
+        public function get_previous_sponsor($id){
+			$return = array();
+			
+            $q = "SELECT `at`.*
+					FROM `".SPONSOR_MASTER."` AS `at`
+                    WHERE `at`.`is_delete`='0' and `at`.`id`<".$id."
+                    ORDER BY `at`.`id` DESC LIMIT 1";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $return = $this->re_db_fetch_array($res);
+            }
+            else
+            {
+                return false;
+            }
+			return $return;
+		} 
+        public function get_next_sponsor($id){
+			$return = array();
+			
+            $q = "SELECT `at`.*
+					FROM `".SPONSOR_MASTER."` AS `at`
+                    WHERE `at`.`is_delete`='0' and `at`.`id`>".$id."
+                    ORDER BY `at`.`id` ASC LIMIT 1";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $return = $this->re_db_fetch_array($res);
+            }
+            else
+            {
+                return false;
+            }
+			return $return;
+		}
         public function select_sponsor(){
 			$return = array();
 			

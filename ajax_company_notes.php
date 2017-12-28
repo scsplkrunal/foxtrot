@@ -2,7 +2,7 @@
 require_once("include/config.php");
 require_once(DIR_FS."islogin.php");
     
-$instance = new client_maintenance();   
+$instance = new manage_company();   
 $get_notes = $instance->select_notes();
 $notes_id = 0;
 ?>

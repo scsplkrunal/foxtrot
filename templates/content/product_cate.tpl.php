@@ -1,25 +1,4 @@
 <script>
-function addMoreNotes(){
-    var html = '<tr class="add_row_notes">'+
-                    '<td>2</td>'+
-                    '<td name="date"><?php echo date('d/m/Y');?></td>'+
-                    '<td name="user"><?php echo $_SESSION['user_name'];?></td>'+
-                    '<td name="notes"><input type="text" name="client_note" class="form-control" id="client_note"/></td>'+
-                    '<td class="text-center">'+
-                    '<a href="<?php echo CURRENT_PAGE; ?>?action=add" class="btn btn-sm btn-warning"><i class="fa fa-save"></i> Save</a>&nbsp;'+
-                    '<a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>&nbsp;'+
-                    '<a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>'+
-                    '</td>'+
-                '</tr>';
-                
-            
-    $(html).insertBefore('#add_row_notes');
-}
-$(document).on('click','.remove-row',function(){
-    $(this).closest('tr').remove();
-});
-</script>
-<script>
 function addMoreAttach(){
     var html = '<tr class="add_row_attach">'+
                     '<td>2</td>'+
@@ -59,7 +38,7 @@ $(document).on('click','.remove-row',function(){
             			</div>
                     </div><br />
             		<div class="panel-body">
-                        <div class="panel-control" >
+                        <div class="panel-control" style="float: right;" >
                          <form method="post">
                             <div class="row"> 
                             <div class="col-md-5"></div>
@@ -69,13 +48,11 @@ $(document).on('click','.remove-row',function(){
                                         <option value="<?php echo $val['id'];?>" <?php if($search_product_category==$val['id']){echo "selected='selected'";} ?>><?php echo $val['type'];?></option>
                                         <?php } ?>
                                     </select>
-                                 </div-->
-                                 <div class="col-md-8" style="float: right; width: 31.33333333% !important;">  
+                                 </div--> 
                                     <input type="hidden" name="search_product_category" value="<?php echo $category; ?>"/> 
                                     <input type="text" name="search_text_product" style=" width:60% !important;"  placeholder="Search Name , Cusip , Ticker" id="search_text_product" value="<?php echo $search_text_product;?>"/>
                                     <button type="submit" name="search_product" id="submit" value="Search"><i class="fa fa-search"></i> Search</button>
-                                    
-                                </div>
+                                 
                             </div>
                         </form>
                         </div><br /><br />
@@ -160,7 +137,7 @@ $(document).on('click','.remove-row',function(){
                  <div class="row">
                     <div class="col-md-4" style="float: right;">
                         <div class="form-group" style="float: right;">
-                            <a href="#client_notes" data-toggle="modal"><input type="button" name="notes" value="Notes" /></a>
+                            <a href="#product_notes" data-toggle="modal"><input type="button" onclick="get_product_notes();" name="notes" value="Notes" /></a>
                             <a href="#client_attachment" data-toggle="modal"><input type="button" name="attach" value="Attachments" /></a><br />
                         </div>
                      </div>
@@ -564,50 +541,34 @@ $(document).on('click','.remove-row',function(){
                     }
                 ?> 
             <!-- Lightbox strart -->							
-			<!-- Modal for add client notes -->
-    			<div id="client_notes" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-    				<div class="modal-dialog">
-    				<div class="modal-content">
-    				<div class="modal-header" style="margin-bottom: 0px !important;">
-    					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-    					<h4 class="modal-title">Client's Notes</h4>
-    				</div>
-    				<div class="modal-body">
-                    <form method="post" id="product_notes" onsubmit="return formsubmitnotes();">
+            	<!-- Modal for add client notes -->
+            	<div id="product_notes" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+            		<div class="modal-dialog">
+            		<div class="modal-content">
+            		<div class="modal-header" style="margin-bottom: 0px !important;">
+            			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+            			<h4 class="modal-title">Branch's Notes</h4>
+            		</div>
+            		<div class="modal-body">
+                    
                     <div class="inputpopup">
-                        <a class="btn btn-sm btn-success" style="float: right !important; margin-right: 5px !important;" onclick="addMoreNotes();"><i class="fa fa-plus"></i> Add New</a></li>
-        			</div>
-                    <div class="inputpopup">
-                        <div class="table-responsive" id="table-scroll" style="margin: 0px 5px 0px 5px;">
-                            <table class="table table-bordered table-stripped table-hover">
-                                <thead>
-                                    <th>#NO</th>
-                                    <th>Date</th>
-                                    <th>User</th>
-                                    <th>Notes</th>
-                                    <th class="text-center">Action</th>
-                                </thead>
-                                <tbody>
-                                    <tr id="add_row_notes">
-                                        <td>1</td>
-                                        <td><?php echo date('d/m/Y');?></td>
-                                        <td><?php echo $_SESSION['user_name'];?></td>
-                                        <td><input type="text" name="product_note" class="form-control" id="product_note"/></td>
-                                        <td class="text-center">
-                                           <a href="<?php echo CURRENT_PAGE; ?>?action=add" class="btn btn-sm btn-warning"><i class="fa fa-save"></i> Save</a>
-                                           <a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=" class="btn btn-sm btn-primary" ><i class="fa fa-edit"></i> Edit</a>
-                                           <a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
-                                        </td>
-                                    </tr>
-                              </tbody>
-                            </table>
+                        <a class="btn btn-sm btn-success" style="float: right !important; margin-right: 5px !important;" onclick="open_newnotes();"><i class="fa fa-plus"></i> Add New</a></li>
+            		</div>
+                    
+                    <div class="col-md-12">
+                        <div id="msg_notes">
                         </div>
-    				</div>
-                    </form>
+                    </div>
+                   
+                    <div class="inputpopup">
+                        <div class="table-responsive" id="ajax_notes" style="margin: 0px 5px 0px 5px;">
+                            
+                        </div>
+            		</div>
                     </div><!-- End of Modal body -->
-    				</div><!-- End of Modal content -->
-    				</div><!-- End of Modal dialog -->
-    		</div><!-- End of Modal -->
+            		</div><!-- End of Modal content -->
+            		</div><!-- End of Modal dialog -->
+            </div><!-- End of Modal -->
             <!-- Lightbox strart -->							
 			<!-- Modal for attach -->
     			<div id="client_attachment" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
@@ -741,43 +702,90 @@ function maxthreshold(feerate)
 }
 </script>
 <script>
-//submit add product notes form data
-function formsubmitnotes()
+function open_newnotes()
 {
-    $('#msgnotes').html('<div class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Please wait...</div>');
-
-    var url = "product_cate.php"; // the script where you handle the form input.
-    //alert($("#add_notes").serialize());
-    $.ajax({
-       type: "POST",
-       url: url,
-       data: $("#product_notes").serialize(), // serializes the form's elements.
-       success: function(data){
-           if(data=='1'){
-                window.location.href = "product_cate.php";
-                
-                /*$('#msgnotes').html('<div class="alert alert-success">Thank you.</div>');
-                $('#add_notes')[0].reset();
-                setTimeout(function(){
-    				$('#myModalShare').modal('hide');				
-    			}, 2000);*/
-                
-           }
-           else{
-                $('#msgnotes').html('<div class="alert alert-danger">'+data+'</div>');
-           }
-           
-       },
-       error: function(XMLHttpRequest, textStatus, errorThrown) {
-            $('#msgnotes').html('<div class="alert alert-danger">Something went wrong, Please try again.</div>')
-       }
-       
-    });
-
-    //e.preventDefault(); // avoid to execute the actual submit of the form.
-    return false;
-        
+    document.getElementById("add_row_notes").style.display = "";
 }
+</script>
+<script>
+function get_product_notes(){
+    
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) 
+            {
+                document.getElementById("ajax_notes").innerHTML = this.responseText;
+            }
+        };
+        xmlhttp.open("GET", "ajax_product_notes.php", true);
+        xmlhttp.send();
+}
+function openedit(note_id){
+    
+    var frm_element = document.getElementById("add_client_notes_"+note_id);
+    //var ele = frm_element.getElementById("client_note");
+    name = frm_element.elements["client_note"].removeAttribute("style"); 
+    //$(name).css('pointer-events','');
+    console.log(name);
+}
+</script>
+<script>
+//submit share form data
+function notessubmit(note_id)
+{
+   $('#msg').html('<div class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Please wait...</div>');
+
+   var url = "product_cate.php"; // the script where you handle the form input.
+   //alert("#add_client_notes_"+note_id);
+   $.ajax({
+      type: "POST",
+      url: url,
+      data: $("#add_client_notes_"+note_id).serialize(), // serializes the form's elements.
+      success: function(data){
+          if(data=='1'){
+            
+            get_product_notes();
+            $('#msg_notes').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Data Successfully Saved.</div>');
+            //window.location.href = "client_maintenance.php";//get_client_notes();   
+          }
+          else{
+               $('#msg_notes').html('<div class="alert alert-danger">'+data+'</div>');
+          }
+          
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+           $('#msg_notes').html('<div class="alert alert-danger">Something went wrong, Please try again.</div>')
+      }
+      
+   });
+
+   //e.preventDefault(); // avoid to execute the actual submit of the form.
+   return false;
+       
+}
+function delete_notes(note_id){
+    
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var data = this.responseText;
+                if(data=='1'){
+                   get_product_notes(); 
+                   $('#msg_notes').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Note deleted Successfully.</div>');
+                   //get_client_notes();
+                  
+                  }
+                  else{
+                       $('#msg_notes').html('<div class="alert alert-danger">'+data+'</div>');
+                  }
+                
+            }
+        };
+        xmlhttp.open("GET", "product_cate.php?delete_action=delete_notes&note_id="+note_id, true);
+        xmlhttp.send();
+}
+
+
 
 $('#demo-dp-range .input-daterange').datepicker({
         format: "mm/dd/yyyy",

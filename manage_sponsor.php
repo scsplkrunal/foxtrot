@@ -111,8 +111,8 @@
     }
     else if(isset($_GET['action'])&&$_GET['action']=='sponsor_delete'&&isset($_GET['sponsor_id'])&&$_GET['sponsor_id']>0)
     {
-        $sponsor_id = $instance->re_db_input($_GET['sponsor_id']);
-        $return = $instance->sponsor_delete($sponsor_id);
+        $id = $instance->re_db_input($_GET['sponsor_id']);
+        $return = $instance->sponsor_delete($id);
         if($return==true){
             header('location:'.CURRENT_PAGE.'?action=view_sponsor');exit;
         }
@@ -120,6 +120,36 @@
             header('location:'.CURRENT_PAGE.'?action=view_sponsor');exit;
         }
     }
+     else if(isset($_GET['send'])&&$_GET['send']=='previous' && isset($_GET['id'])&&$_GET['id']>0 && $_GET['id']!='')
+    {
+        $id = $instance->re_db_input($_GET['id']);
+        
+        $return = $instance->get_previous_sponsor($id);
+            
+        if($return!=false){
+            $id=$return['id'];
+            header("location:".CURRENT_PAGE."?action=edit_sponsor&sponsor_id=".$id."");exit;
+        }
+        else{
+            header("location:".CURRENT_PAGE."?action=edit_sponsor&sponsor_id=".$id."");exit;
+        }
+        
+    }
+    else if(isset($_GET['send'])&&$_GET['send']=='next' && isset($_GET['id'])&&$_GET['id']>0 && $_GET['id']!='')
+    {
+        $id = $instance->re_db_input($_GET['id']);
+        
+        $return = $instance->get_next_sponsor($id);
+            
+        if($return!=false){
+            $id=$return['id'];
+            header("location:".CURRENT_PAGE."?action=edit_sponsor&sponsor_id=".$id."");exit;
+        }
+        else{
+            header("location:".CURRENT_PAGE."?action=edit_sponsor&sponsor_id=".$id."");exit;
+        }
+        
+    }   
     else if(isset($_GET['action'])&&$_GET['action']=='sponsor_status'&&isset($_GET['sponsor_id'])&&$_GET['sponsor_id']>0&&isset($_GET['status'])&&($_GET['status']==0 || $_GET['status']==1))
     {
         $sponsor_id = $instance->re_db_input($_GET['sponsor_id']);

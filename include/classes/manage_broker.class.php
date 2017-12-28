@@ -309,6 +309,208 @@
 				}
 			}
 		}
+        public function reArrayFiles_grid($file_post){
+               $file_ary = array();
+               $file_count = count($file_post['to']);
+               $file_keys = array_keys($file_post);
+               for ($i=1; $i<= $file_count; $i++) { 
+                   foreach ($file_keys as $key) {      
+                        if(isset($file_post[$key][$i]))
+                        {
+                            $file_ary[$i][$key] = $file_post[$key][$i];   
+                        }
+                        else
+                        {
+                            $file_ary[$i][$key] = '';
+                        }
+                   }
+               }
+               return $file_ary;
+        }
+        public function insert_update_payout_grid($data ,$id){
+           //echo '<pre>';print_r($id);print_r($data);exit;
+           $id = isset($id)?$this->re_db_input($id):0;
+           $qq="update `".BROKER_PAYOUT_GRID."` SET is_delete=1 where `broker_id`=".$id."";
+                $res = $this->re_db_query($qq);
+          
+               foreach($data as $key=>$val)
+                {   
+                    $from =isset($val['from'])?$this->re_db_input($val['from']):'';
+                    $to =isset($val['to'])?$this->re_db_input($val['to']):'';
+                    $per =isset($val['per'])?$this->re_db_input($val['per']):'';
+                    $q = "INSERT INTO `".BROKER_PAYOUT_GRID."` SET `broker_id`='".$id."' ,`from`='".$from."' ,`to`='".$to."' , 
+                    `per`='".$per."' ".$this->insert_common_sql();
+    				
+                    $res = $this->re_db_query($q);
+                }    
+                if($res){
+    			      
+                    $_SESSION['success'] = INSERT_MESSAGE;
+    				return true;
+    			}
+    			else{
+    				$_SESSION['warning'] = UNKWON_ERROR;
+    				return false;
+    			}            
+            echo 'Done';exit;
+        }
+        public function reArrayFiles_override($file_post){
+               $file_ary = array();
+               $file_count = count($file_post['to1']);
+               $file_keys = array_keys($file_post);
+               for ($i=1; $i<=$file_count; $i++) { 
+                   foreach ($file_keys as $key) {      
+                        if(isset($file_post[$key][$i]))
+                        {
+                            $file_ary[$i][$key] = $file_post[$key][$i];   
+                        }
+                        else
+                        {
+                            $file_ary[$i][$key] = '';
+                        }
+                   }
+               }
+               
+               return $file_ary;
+        }
+        public function insert_update_payout_override($data ,$id,$rap){
+           $id = isset($id)?$this->re_db_input($id):0;
+           $rap=isset($rap)?$this->re_db_input($rap):0;
+           $qq="update `".BROKER_PAYOUT_OVERRIDE."` SET is_delete=1 where `broker_id`=".$id."";
+                $res = $this->re_db_query($qq);
+           foreach($data as $key=>$val)
+            {   
+                $from1=isset($val['from1'])?$this->re_db_input($val['from1']):'';
+                $to1=isset($val['to1'])?$this->re_db_input($val['to1']):'';
+                $per1=isset($val['per1'])?$this->re_db_input($val['per1']):'';
+                $q = "INSERT INTO `".BROKER_PAYOUT_OVERRIDE."` SET `broker_id`='".$id."',`rap` = '".$rap."',`from`='".$from1."' ,`to`='".$to1."' , 
+                `per`='".$per1."' ".$this->insert_common_sql();
+				$res = $this->re_db_query($q);
+            }    
+            if($res){
+			      
+                $_SESSION['success'] = INSERT_MESSAGE;
+				return true;
+			}
+			else{
+				$_SESSION['warning'] = UNKWON_ERROR;
+				return false;
+			}
+        } 
+        public function reArrayFiles_split($file_post){
+               $file_ary = array();
+               $file_count = count($file_post['rap']);
+               $file_keys = array_keys($file_post);
+               for ($i=1; $i<=$file_count; $i++) { 
+                   foreach ($file_keys as $key) {      
+                        if(isset($file_post[$key][$i]))
+                        {
+                            $file_ary[$i][$key] = $file_post[$key][$i];   
+                        }
+                        else
+                        {
+                            $file_ary[$i][$key] = '';
+                        }
+                   }
+               }
+               return $file_ary;
+        }
+        public function insert_update_payout_split($data ,$id){
+           $id = isset($id)?$this->re_db_input($id):0;
+           $qq="update `".BROKER_PAYOUT_SPLIT."` SET is_delete=1 where `broker_id`=".$id."";
+                $res = $this->re_db_query($qq);
+           foreach($data as $key=>$val)
+            {   
+                $rap=isset($val['rap'])?$this->re_db_input($val['rap']):'';
+                $rate=isset($val['rate'])?$this->re_db_input($val['rate']):'';
+                $start=isset($val['start'])?$this->re_db_input($val['start']):'0000-00-00';
+                $until = isset($val['until'])?$this->re_db_input($val['until']):'';
+                $q = "INSERT INTO `".BROKER_PAYOUT_SPLIT."` SET `broker_id`='".$id."' ,`rap`='".$rap."' ,`rate`='".$rate."' , 
+                `start`='".$start."' , `until`='".$until."' ".$this->insert_common_sql();
+				$res = $this->re_db_query($q);
+            }    
+            if($res){
+			      
+                $_SESSION['success'] = INSERT_MESSAGE;
+				return true;
+			}
+			else{
+				$_SESSION['warning'] = UNKWON_ERROR;
+				return false;
+			}
+        } 
+        public function insert_update_payout($data)
+        {
+            //echo '<pre>';print_r($_POST);exit;
+            $id = isset($data['id'])?$this->re_db_input($data['id']):'0';
+            $transaction_type_general = isset($data['transaction_type_general'])?$this->re_db_input($data['transaction_type_general']):'0';
+            $product_category1 = isset($data['product_category1'])?$this->re_db_input($data['product_category1']):'0';
+            $product_category2 = isset($data['product_category2'])?$this->re_db_input($data['product_category2']):'0';
+            $product_category3 = isset($data['product_category3'])?$this->re_db_input($data['product_category3']):'0';
+            $product_category4 = isset($data['product_category4'])?$this->re_db_input($data['product_category4']):'0';
+            $basis = isset($data['basis'])?$this->re_db_input($data['basis']):'';
+            $cumulative = isset($data['cumulative'])?$this->re_db_input($data['cumulative']):'0';
+            $year = isset($data['year'])?$this->re_db_input($data['year']):'';
+            $calculation_detail = isset($data['calculation_detail'])?$this->re_db_input($data['calculation_detail']):'';
+            $clearing_charge_deducted_from = isset($data['clearing_charge_deducted_from'])?$this->re_db_input($data['clearing_charge_deducted_from']):'';
+            $reset = isset($data['reset'])?$this->re_db_input($data['reset']):'';
+            $description_type = isset($data['description_type'])?$this->re_db_input($data['description_type']):'0';
+            $team_member = isset($data['team_member'])?$this->re_db_input($data['team_member']):'0';
+            $start = isset($data['start'])?$this->re_db_input($data['start']):'';
+            $until = isset($data['until'])?$this->re_db_input($data['until']):'';
+            $apply_to = isset($data['apply_to'])?$this->re_db_input($data['apply_to']):'';
+            $product_2 = isset($data['product_2'])?$this->re_db_input($data['product_2']):'';
+            $product_3 = isset($data['product_3'])?$this->re_db_input($data['product_3']):'';
+            $product_4 = isset($data['product_4'])?$this->re_db_input($data['product_4']):'';
+            $product_5 = isset($data['product_5'])?$this->re_db_input($data['product_5']):'';
+            $calculate_on = isset($data['calculate_on'])?$this->re_db_input($data['calculate_on']):'';
+            
+            
+            if($id>=0){
+				if($id==0){ 
+                        
+                        $q = "INSERT INTO `".BROKER_PAYOUT_MASTER."` SET `broker_id`='".$_SESSION['last_insert_id']."' ,`transaction_type_general`='".$transaction_type_general."' ,`product_category1`='".$product_category1."' , 
+                        `product_category2`='".$product_category2."' , `product_category3`='".$product_category3."' ,`product_category4`='".$product_category4."' ,`basis`='".$basis."' ,
+                        `cumulative`='".$cumulative."' ,`clearing_charge_deducted_from`='".$clearing_charge_deducted_from."',`reset`='".$reset."',`description_type`='".$description_type."' ,
+                        `team_member`='".$team_member."' ,`start`='".$start."',`until`='".$until."',`apply_to`='".$apply_to."',`product_2`='".$product_2."' ,`product_3`='".$product_3."',`product_4`='".$product_4."',
+                        `product_5`='".$product_5."' ,`calculate_on`='".$calculate_on."'".$this->insert_common_sql();
+    					$res = $this->re_db_query($q);
+                       
+                          
+                    if($res){
+					      
+                        $_SESSION['success'] = INSERT_MESSAGE;
+						return true;
+					}
+					else{
+						$_SESSION['warning'] = UNKWON_ERROR;
+						return false;
+					}
+                    
+    			}
+                else if($id>0){
+                    
+                            $q = "UPDATE `".BROKER_PAYOUT_MASTER."`  SET `transaction_type_general`='".$transaction_type_general."' ,`product_category1`='".$product_category1."' , 
+                        `product_category2`='".$product_category2."' , `product_category3`='".$product_category3."' ,`product_category4`='".$product_category4."' ,`basis`='".$basis."' ,
+                        `cumulative`='".$cumulative."' ,`clearing_charge_deducted_from`='".$clearing_charge_deducted_from."',`reset`='".$reset."',`description_type`='".$description_type."' ,
+                        `team_member`='".$team_member."' ,`start`='".$start."',`until`='".$until."',`apply_to`='".$apply_to."',`product_2`='".$product_2."' ,`product_3`='".$product_3."',`product_4`='".$product_4."',
+                        `product_5`='".$product_5."' ,`calculate_on`='".$calculate_on."'".$this->update_common_sql()." WHERE  `broker_id`='".$id."'";
+      					
+                            $res = $this->re_db_query($q);                        	
+                }
+                if($res){			      
+                    $_SESSION['success'] = UPDATE_MESSAGE;
+					return true;
+				}
+				else{
+					$_SESSION['warning'] = UNKWON_ERROR;
+					return false;
+				}
+            }
+        }
+            //echo $id;
+            //exit;
+        
         public function insert_update_licences($data)
         {
             $id = isset($data['id'])?$this->re_db_input($data['id']):0;
@@ -317,7 +519,7 @@
             $product_category = isset($data['product_category'])?$this->re_db_input($data['product_category']):'0';
             if($id>=0){
 				if($id==0){
-				    foreach($data as $key=>$val)
+				    foreach($data['data1'] as $key=>$val)
                     {        
                         $active_check=isset($val['active_check'])?$this->re_db_input($val['active_check']):'0';
                         $fee=isset($val['fee'])?$this->re_db_input($val['fee']):'';
@@ -641,7 +843,7 @@
            
             if($id>=0){
 				if($id==0){
-				    foreach($data['data'] as $key=>$val)
+				    foreach($data['data4'] as $key=>$val)
                     {        
                         $approval_date=isset($val['approval_date'])?$this->re_db_input($val['approval_date']):'';
                         $expiration_date=isset($val['expiration_date'])?$this->re_db_input($val['expiration_date']):'';
@@ -732,7 +934,7 @@
 		}
         /** Insert update charges data for broker. **/
         public function insert_update_charges($data){
-        $id = isset($data['id'])?$this->re_db_input($data['id']):0;
+        if(isset($data['id']) && $data['id']=='0'){$id=$_SESSION['last_insert_id']; } else { $id =isset($data['id'])?$this->re_db_input($data['id']):0 ; }
             if($id>0){
 			    foreach($data['inp_type'] as $type_id=>$type_vale)
                 {
@@ -767,6 +969,7 @@
 				}
 			}
 			else{
+
 				$_SESSION['warning'] = UNKWON_ERROR;
 				return false;
 			}
@@ -775,6 +978,85 @@
 		 * @param int status, default all
 		 * @return array of record if success, error message if any errors
 		 * */
+        public function insert_update_broker_notes($data){//print_r($data);
+			$notes_id = isset($data['notes_id'])?$this->re_db_input($data['notes_id']):0;
+			$date = isset($data['date'])?$this->re_db_input($data['date']):'';
+            $user_id = isset($data['user_id'])?$this->re_db_input($data['user_id']):'';
+            $client_note = isset($data['client_note'])?$this->re_db_input($data['client_note']):'';
+            
+            if($client_note==''){
+				$this->errors = 'Please enter notes.';
+			}
+			if($this->errors!=''){
+				return $this->errors;
+			}
+			else{
+                if($notes_id==0){
+                    $q = "INSERT INTO `".BROKER_NOTES."` SET `date`='".$date."',`user_id`='".$user_id."',`notes`='".$client_note."'".$this->insert_common_sql();
+			        $res = $this->re_db_query($q);
+                    
+                    $notes_id = $this->re_db_insert_id();
+    				if($res){
+    				    $_SESSION['success'] = INSERT_MESSAGE;
+    					return true;
+    				}
+    				else{
+    					$_SESSION['warning'] = UNKWON_ERROR;
+    					return false;
+    				}
+    			}
+    			else if($notes_id>0){
+    			    
+                    $q = "UPDATE `".BROKER_NOTES."` SET `date`='".$date."',`user_id`='".$user_id."',`notes`='".$client_note."'".$this->update_common_sql()." WHERE `id`='".$notes_id."'";
+       				$res = $this->re_db_query($q);
+                    
+                    if($res){
+    				    $_SESSION['success'] = UPDATE_MESSAGE;
+    					return true;
+    				}
+    				else{
+    					$_SESSION['warning'] = UNKWON_ERROR;
+    					return false;
+    				}
+    			}
+            }
+		}
+        public function select_notes(){
+			$return = array();
+			
+			$q = "SELECT `s`.*
+					FROM `".BROKER_NOTES."` AS `s`
+                    WHERE `s`.`is_delete`='0'
+                    ORDER BY `s`.`id` ASC";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+    			}
+            }
+			return $return;
+		}
+        public function delete_notes($id){
+			$id = trim($this->re_db_input($id));
+			if($id>0){
+				$q = "UPDATE `".BROKER_NOTES."` SET `is_delete`='1' WHERE `id`='".$id."'";
+				$res = $this->re_db_query($q);
+				if($res){
+				    $_SESSION['success'] = DELETE_MESSAGE;
+				    return true;
+				}
+				else{
+				    $_SESSION['warning'] = UNKWON_ERROR;
+				    return false;
+				}
+			}
+			else{
+			     $_SESSION['warning'] = UNKWON_ERROR;
+				return false;
+			}
+		}
          
          
 		public function select(){
@@ -807,6 +1089,100 @@
     			     array_push($return,$row);
                      
     			}
+            }
+			return $return;
+		}
+        public function edit_payout($id){
+			$return = array();
+			
+			$q = "SELECT `at`.*
+					FROM `".BROKER_PAYOUT_MASTER."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`broker_id`='".$id."'";
+            $res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			$return = $this->re_db_fetch_array($res);
+            }
+			return $return;
+		}
+        public function edit_grid($id){
+			$return = array();
+			
+			$q = "SELECT `at`.*
+					FROM `".BROKER_PAYOUT_GRID."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`broker_id`='".$id."'";
+            $res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+		}
+        public function edit_split($id){
+			$return = array();
+			
+			$q = "SELECT `at`.*
+					FROM `".BROKER_PAYOUT_SPLIT."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`broker_id`='".$id."'";
+            $res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+		}
+        public function edit_override($id){
+			$return = array();
+			
+			$q = "SELECT `at`.*
+					FROM `".BROKER_PAYOUT_OVERRIDE."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`broker_id`='".$id."'";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+		}
+        public function get_previous_broker($id){
+			$return = array();
+			
+            $q = "SELECT `at`.*
+					FROM `".$this->table."` AS `at`
+                    WHERE `at`.`is_delete`='0' and `at`.`id`<".$id."
+                    ORDER BY `at`.`id` DESC LIMIT 1";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $return = $this->re_db_fetch_array($res);
+            }
+            else
+            {
+                return false;
+            }
+			return $return;
+		} 
+        public function get_next_broker($id){
+			$return = array();
+			
+            $q = "SELECT `at`.*
+					FROM `".$this->table."` AS `at`
+                    WHERE `at`.`is_delete`='0' and `at`.`id`>".$id."
+                    ORDER BY `at`.`id` ASC LIMIT 1";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $return = $this->re_db_fetch_array($res);
+            }
+            else
+            {
+                return false;
             }
 			return $return;
 		}

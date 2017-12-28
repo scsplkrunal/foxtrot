@@ -160,7 +160,35 @@
         else{
             header('location:'.CURRENT_PAGE.'?action=view');exit;
         }
-    }  
+    }
+    else if(isset($_POST['add_notes'])&& $_POST['add_notes']=='Add Notes'){
+        $_POST['user_id']=$_SESSION['user_name'];
+        $_POST['date'] = date('Y-m-d');
+       
+        $return = $instance->insert_update_branch_notes($_POST);
+        
+        if($return===true){
+            echo '1';exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+        echo $error;
+        exit;
+    } 
+    else if(isset($_GET['delete_action'])&&$_GET['delete_action']=='delete_notes'&&isset($_GET['note_id'])&&$_GET['note_id']>0)
+    {
+        $note_id = $instance->re_db_input($_GET['note_id']);
+        $return = $instance->delete_notes($note_id);
+        if($return===true){
+            echo '1';exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+        echo $error;
+        exit;
+    } 
     else if(isset($_POST['search'])&&$_POST['search']=='Search'){
        $search_text = isset($_POST['search_text'])?$instance->re_db_input($_POST['search_text']):''; 
        $return = $instance->search($search_text);

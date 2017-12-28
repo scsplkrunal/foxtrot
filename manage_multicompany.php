@@ -119,6 +119,64 @@
             header('location:'.CURRENT_PAGE);exit;
         }
     }  
+    else if(isset($_GET['send'])&&$_GET['send']=='previous' && isset($_GET['id'])&&$_GET['id']>0 && $_GET['id']!='')
+    {
+        $id = $instance->re_db_input($_GET['id']);
+        
+        $return = $instance->get_previous_company($id);
+            
+        if($return!=false){
+            $id=$return['id'];
+            header("location:".CURRENT_PAGE."?action=edit&id=".$id."");exit;
+        }
+        else{
+            header("location:".CURRENT_PAGE."?action=edit&id=".$id."");exit;
+        }
+        
+    }
+    else if(isset($_GET['send'])&&$_GET['send']=='next' && isset($_GET['id'])&&$_GET['id']>0 && $_GET['id']!='')
+    {
+        $id = $instance->re_db_input($_GET['id']);
+        
+        $return = $instance->get_next_company($id);
+            
+        if($return!=false){
+            $id=$return['id'];
+            header("location:".CURRENT_PAGE."?action=edit&id=".$id."");exit;
+        }
+        else{
+            header("location:".CURRENT_PAGE."?action=edit&id=".$id."");exit;
+        }
+        
+    }  
+    else if(isset($_POST['add_notes'])&& $_POST['add_notes']=='Add Notes'){
+        $_POST['user_id']=$_SESSION['user_name'];
+        $_POST['date'] = date('Y-m-d');
+       
+        $return = $instance->insert_update_company_notes($_POST);
+        
+        if($return===true){
+            echo '1';exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+        echo $error;
+        exit;
+    } 
+    else if(isset($_GET['delete_action'])&&$_GET['delete_action']=='delete_notes'&&isset($_GET['note_id'])&&$_GET['note_id']>0)
+    {
+        $note_id = $instance->re_db_input($_GET['note_id']);
+        $return = $instance->delete_notes($note_id);
+        if($return===true){
+            echo '1';exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+        echo $error;
+        exit;
+    } 
     /*else if(isset($_GET['action'])&&$_GET['action']=='delete'&&isset($_GET['id'])&&$_GET['id']>0)
     {
         $id = $instance->re_db_input($_GET['id']);

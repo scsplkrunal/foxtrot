@@ -290,7 +290,9 @@
         }
     }
     else if(isset($_POST['add_notes'])&& $_POST['add_notes']=='Add Notes'){
-        
+        $_POST['user_id']=$_SESSION['user_name'];
+        $_POST['date'] = date('Y-m-d');
+       
         $return = $instance->insert_update_client_notes($_POST);
         
         if($return===true){

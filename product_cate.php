@@ -149,6 +149,34 @@
         $reg_type = isset($return['reg_type'])?$instance->re_db_output($return['reg_type']):'';
         
     }
+    else if(isset($_POST['add_notes'])&& $_POST['add_notes']=='Add Notes'){
+        $_POST['user_id']=$_SESSION['user_name'];
+        $_POST['date'] = date('Y-m-d');
+       
+        $return = $instance->insert_update_product_notes($_POST);
+        
+        if($return===true){
+            echo '1';exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+        echo $error;
+        exit;
+    } 
+    else if(isset($_GET['delete_action'])&&$_GET['delete_action']=='delete_notes'&&isset($_GET['note_id'])&&$_GET['note_id']>0)
+    {
+        $note_id = $instance->re_db_input($_GET['note_id']);
+        $return = $instance->delete_notes($note_id);
+        if($return===true){
+            echo '1';exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+        echo $error;
+        exit;
+    } 
     else if(isset($_GET['action'])&&$_GET['action']=='product_delete' && $_GET['category']!='' &&isset($_GET['id'])&&$_GET['id']>0)
     {
         $id = $instance->re_db_input($_GET['id']);

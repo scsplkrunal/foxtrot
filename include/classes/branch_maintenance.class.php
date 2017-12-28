@@ -119,6 +119,49 @@
 			}
             }
 		}
+        public function insert_update_branch_notes($data){//print_r($data);
+			$notes_id = isset($data['notes_id'])?$this->re_db_input($data['notes_id']):0;
+			$date = isset($data['date'])?$this->re_db_input($data['date']):'';
+            $user_id = isset($data['user_id'])?$this->re_db_input($data['user_id']):'';
+            $client_note = isset($data['client_note'])?$this->re_db_input($data['client_note']):'';
+            
+            if($client_note==''){
+				$this->errors = 'Please enter notes.';
+			}
+			if($this->errors!=''){
+				return $this->errors;
+			}
+			else{
+                if($notes_id==0){
+                    $q = "INSERT INTO `".BRANCH_NOTES."` SET `date`='".$date."',`user_id`='".$user_id."',`notes`='".$client_note."'".$this->insert_common_sql();
+			        $res = $this->re_db_query($q);
+                    
+                    $notes_id = $this->re_db_insert_id();
+    				if($res){
+    				    $_SESSION['success'] = INSERT_MESSAGE;
+    					return true;
+    				}
+    				else{
+    					$_SESSION['warning'] = UNKWON_ERROR;
+    					return false;
+    				}
+    			}
+    			else if($notes_id>0){
+    			    
+                    $q = "UPDATE `".BRANCH_NOTES."` SET `date`='".$date."',`user_id`='".$user_id."',`notes`='".$client_note."'".$this->update_common_sql()." WHERE `id`='".$notes_id."'";
+       				$res = $this->re_db_query($q);
+                    
+                    if($res){
+    				    $_SESSION['success'] = UPDATE_MESSAGE;
+    					return true;
+    				}
+    				else{
+    					$_SESSION['warning'] = UNKWON_ERROR;
+    					return false;
+    				}
+    			}
+            }
+		}
         /**
 		 * @param int status, default all
 		 * @return array of record if success, error message if any errors
@@ -153,6 +196,23 @@
     			while($row = $this->re_db_fetch_array($res)){
     			     array_push($return,$row);
                      
+    			}
+            }
+			return $return;
+		}
+        public function select_notes(){
+			$return = array();
+			
+			$q = "SELECT `s`.*
+					FROM `".BRANCH_NOTES."` AS `s`
+                    WHERE `s`.`is_delete`='0'
+                    ORDER BY `s`.`id` ASC";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
     			}
             }
 			return $return;
@@ -280,7 +340,25 @@
 				return false;
 			}
 		}
-		
+		public function delete_notes($id){
+			$id = trim($this->re_db_input($id));
+			if($id>0){
+				$q = "UPDATE `".BRANCH_NOTES."` SET `is_delete`='1' WHERE `id`='".$id."'";
+				$res = $this->re_db_query($q);
+				if($res){
+				    $_SESSION['success'] = DELETE_MESSAGE;
+				    return true;
+				}
+				else{
+				    $_SESSION['warning'] = UNKWON_ERROR;
+				    return false;
+				}
+			}
+			else{
+			     $_SESSION['warning'] = UNKWON_ERROR;
+				return false;
+			}
+		}
 		
 		/**
 		 * @param id of record
