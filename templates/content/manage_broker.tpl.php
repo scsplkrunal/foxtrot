@@ -344,41 +344,36 @@ var waitingDialog = waitingDialog || (function ($) {
           <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="registers"){ echo "active"; } ?>" style="pointer-events: none;"><a href="#tab_e" data-toggle="pill">Registers</a></li>
           <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="required_docs"){ echo "active"; } ?>" style="pointer-events: none;"><a href="#tab_f" data-toggle="pill">Required Docs</a></li>
           <?php } ?>
+          <div class="panel-control" style="float: right;">
+    			<div class="btn-group dropdown">
+    				<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
+    				<ul class="dropdown-menu dropdown-menu-right" style="">
+    					<li><a href="<?php echo CURRENT_PAGE; ?>"><i class="fa fa-eye"></i> View List</a></li>
+    				</ul>
+    			</div>
+    		</div>
        </ul>
-       <?php if($action=='edit' && $id>0){?>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group"><br /><div class="selectwrap">
-                        <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;">&laquo; Previous</a>
-                        <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a" style="float: right;">Next &raquo;</a>
+       <form method="post">
+                <div class="panel-footer">
+                    <div class="selectwrap">
+                         <?php if($action=='edit' && $id>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;"><input type="button" name="previous" value="&laquo; Previous" /></a><?php } ?>
+                         <?php if($_GET['action']=='edit' && $_GET['id']>0){?><input style="margin-left: 12% !important;" type="button" name="view_change" value="View Change" /><?php } ?>
+                         <a href="#broker_notes" data-toggle="modal"><input type="button" onclick="get_broker_notes();" name="notes" value="Notes" /></a>
+                         <a href="#client_transactions" data-toggle="modal"><input type="button" name="transactions" value="Transactions" /></a>
+                         <a href="#client_attachment" data-toggle="modal"><input type="button" name="attach" value="Attach" /></a>
+                         <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
+                         <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
+                         <?php if($action=='edit' && $id>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a" style="float: right;"><input type="button" name="next" value="Next &raquo;" /></a><?php } ?>
                     </div>
                  </div>
-                 </div>
-             </div>
-            <?php } ?><br /><br />
-       <div class="row">
-            <div class="col-md-3" style="float: right;">
-                <div class="form-group">
-                    <a href="#broker_notes" data-toggle="modal"><input type="button" onclick="get_broker_notes();" name="notes" value="Notes" /></a>
-                    <a href="#client_transactions" data-toggle="modal"><input type="button" name="transactions" value="Transactions" /></a>
-                    <a href="#client_attachment" data-toggle="modal"><input type="button" name="attach" value="Attach" /></a><br />
-                </div>
-             </div>
-         </div>
-                              
+                 
+            <br /><br />
+             <div class="tab-content">                 
             <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="general"){ echo "active"; }else if(!isset($_GET['tab'])){echo "active";}else{ echo '';} ?>" id="tab_a">
-                <form method="post">
+                
                             <div class="panel-overlay-wrap">
                                 <div class="panel">
                 					<div class="panel-heading">
-                                        <div class="panel-control" style="float: right;">
-                							<div class="btn-group dropdown">
-                								<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
-                								<ul class="dropdown-menu dropdown-menu-right" style="">
-                									<li><a href="<?php echo CURRENT_PAGE; ?>"><i class="fa fa-eye"></i> View List</a></li>
-                								</ul>
-                							</div>
-                						</div>
                                         <h3 class="panel-title"><i class="fa fa-pencil-square-o"></i><?php echo $action=='add_new'?'Add':'Edit'; ?> New Broker/Advisor</h3>
                 					</div>
                                     <div class="panel-body">
@@ -809,16 +804,11 @@ var waitingDialog = waitingDialog || (function ($) {
                                     <div class="panel-overlay">
                                         <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
                                     </div>
-                                    <div class="panel-footer">
-                                        <div class="selectwrap">
                                             <input type="hidden" name="id"  value="<?php echo $id; ?>" />
-                        					<input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
-                                            <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
-                                        </div>
-                                   </div>
+                        					
                                 </div>
                             </div>
-                        </form>
+                        
                         <?php
                     }else{?>
                     <div class="panel">
@@ -903,7 +893,6 @@ var waitingDialog = waitingDialog || (function ($) {
                 <?php if($action!='view'){?> 
                 <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="payouts"){ echo "active"; } ?>" id="tab_b">
                 <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
-                    <form method="post">
                         <div class="panel-overlay-wrap">
                             <div class="panel">
             					<div class="panel-body">
@@ -954,7 +943,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                         <select name="leval[per][<?php echo $doc_id1;?>]"  class="form-control" >
                                                                             <option value="">Select Percentages</option>
                                                                             <?php foreach($select_percentage as $key => $val) {?>
-                                                                            <option <?php if(isset($edit_grid) && $edit_grid['per']== $key){?>selected="true"<?php }?> value="<?php echo $key?>"><?php echo $val['percentage']?></a></option>
+                                                                            <option <?php if(isset($regval['per']) && $regval['per']== $key){?>selected="true"<?php }?> value="<?php echo $key?>"><?php echo $val['percentage']?></a></option>
                                                                             <?php } ?>
                                                                         </select>
                                                                     </td>
@@ -1329,27 +1318,17 @@ var waitingDialog = waitingDialog || (function ($) {
                             <div class="panel-overlay">
                                 <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
                             </div>
-                            <div class="panel-footer">
-                                <div class="selectwrap">
                                     <input type="hidden" name="id"  value="<?php echo $id; ?>" />
-                					<input type="submit" name="payout" onclick="waitingDialog.show();" value="Save"/>	
-                                    <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
-                                </div>
-                           </div>
+                				
                         </div>
-                    </form>
+                    
                  </div>
                  <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="charges"){ echo "active"; } ?>" id="tab_c">
                  <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
-                    <form method="post">
                         <div class="panel-overlay-wrap">
                             <div class="panel">
                                 <div class="panel-heading">
-                                    <div class="panel-control" style="float: right;">
-            							<div class="btn-group dropdown">
-            								<a href="<?php echo CURRENT_PAGE;?> "><i class="fa fa-mail-forward"></i></a>
-            							</div>
-            						</div>
+                                    
                                     <h2 class="panel-title" style="font-size: 25px;"><input type="checkbox" class="checkbox" name="pass_through" style="display: inline !important;"/><b> None (Pass Through)</b></h2>
                                 </div>
             					<div class="panel-body">
@@ -1493,27 +1472,16 @@ var waitingDialog = waitingDialog || (function ($) {
                                 <div class="panel-overlay">
                                     <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
                                 </div>
-                                <div class="panel-footer">
-                                    <div class="selectwrap">
                                         <input type="hidden" name="id"  value="<?php echo $id; ?>" />
-                    					<input type="submit" name="charges" onclick="waitingDialog.show();" value="Save"/>	
-                                        <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
-                                    </div>
-                               </div>
+                    					
                             </div>
                         </div>
-                    </form>
                  </div>
                  <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="licences"){ echo "active"; } ?>" id="tab_d">
                  <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
-                    <form method="POST">
                         <div class="panel-overlay-wrap">
                             <div class="panel">
-                                <div class="panel-control" style="float: right;">
-        							<div class="btn-group dropdown">
-        								<a href="<?php echo CURRENT_PAGE;?> "><i class="fa fa-mail-forward"></i></a>
-        							</div>
-        						</div>
+                                
                                 <ul class="nav nav-tabs">
                                     <li class="<?php if(!isset($_GET['sub_tab'])){echo "active";}else{ echo '';} ?>"><a href="<?php echo CURRENT_PAGE; ?>#tab_securities" data-toggle="tab">Securities</a></li>
                                     <li class="<?php if(isset($_GET['sub_tab'])&&$_GET['sub_tab']=="insurance"){ echo "active"; } ?>"><a href="<?php echo CURRENT_PAGE; ?>#tab_insurance" data-toggle="tab">Insurance</a></li>
@@ -1521,7 +1489,6 @@ var waitingDialog = waitingDialog || (function ($) {
                                 </ul>
                                 <div id="my-tab-content" class="tab-content">
                                     <div class="tab-pane <?php if(!isset($_GET['sub_tab'])){echo "active";}else{ echo '';} ?>" id="tab_securities">
-                                        <form method="post">
                                             <div class="panel-overlay-wrap">
                                                 <div class="panel">
                                                 <?php if(isset($edit_licences_securities)){foreach($edit_licences_securities as $key=>$val)
@@ -1674,24 +1641,17 @@ var waitingDialog = waitingDialog || (function ($) {
                                                     <div class="panel-overlay">
                                                         <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
                                                     </div>
-                                                    <div class="panel-footer">
-                                                        <div class="selectwrap">
-                                                            <input type="hidden" name="id"  value="<?php echo $id; ?>" />   
-                                        					<input type="submit" name="securities" onclick="waitingDialog.show();" value="Save"/>	
-                                                            <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
-                                                        </div>
-                                                   </div>
+                                                            <input type="hidden" name="id"  value="<?php echo $id; ?>" />  
                                                 </div>
-                                            </div>
-                                        </form>     
+                                            </div>   
                                      </div>
                                      <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="licences" && $_GET['sub_tab'] == "insurance"){ echo "active"; } ?>" id="tab_insurance">
-                                        <form method="post">
+                                      
                                             <div class="panel-overlay-wrap">
                                                 <div class="panel">
                                                    <div class="panel-heading">
                                                     <?php if(isset($edit_licences_insurance) && !empty($edit_licences_insurance)){ foreach($edit_licences_insurance as $key=>$val)
-                                                {   $row1 = $val['waive_home_state_fee'];  }  ?>
+                                                {   $row1 = $val['waive_home_state_fee'];  } }  ?>
                                                         <h4 class="panel-title" style="font-size: 20px;"><input type="checkbox" <?php if(isset($_GET['action'])&&$_GET['action']=='edit' && (isset($row1) && $row1==1 )){ ?>checked="true"<?php } ?> value="1 "  class="checkbox" name="pass_through" style="display: inline !important;"/> Waive Home State Fee</h4>
                                                     </div>
                                                     <input type="hidden" name="type" value="2"/>
@@ -1773,7 +1733,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                </div>
                                                             </div>
                                                         </div></div>
-                                                        <?php } } } } } else{ ?>
+                                                        <?php } } } }  else{ ?>
                                                         <?php foreach($get_state_new as $statekey=>$stateval){?>
                                                         <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
                                                         <div class="row">
@@ -1822,24 +1782,18 @@ var waitingDialog = waitingDialog || (function ($) {
                                                     <div class="panel-overlay">
                                                         <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
                                                     </div>
-                                                    <div class="panel-footer">
-                                                        <div class="selectwrap">
                                                             <input type="hidden" name="id"  value="<?php echo $id; ?>" />
-                                        					<input type="submit" name="insurance" onclick="waitingDialog.show();" value="Save"/>	
-                                                            <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
-                                                        </div>
-                                                   </div>
+                                        				
                                                 </div>
                                             </div>
-                                        </form>
                                      </div>
                                      <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="licences" && $_GET['sub_tab'] == "ria"){ echo "active"; } ?>" id="tab_ria">
-                                        <form method="post">
+                                       
                                             <div class="panel-overlay-wrap">
                                                 <div class="panel">
                                                    <div class="panel-heading">
                                                          <?php if(isset($edit_licences_ria) && !empty($edit_licences_ria)) {foreach($edit_licences_ria as $key=>$val)
-                                                        {   $row1 = $val['waive_home_state_fee'];  }  ?>
+                                                        {   $row1 = $val['waive_home_state_fee'];  }  } ?>
                                                         <h4 class="panel-title" style="font-size: 20px;"><input type="checkbox" value="1" <?php if(isset($_GET['action'])&&$_GET['action']=='edit'&& (isset($row1) && $row1==1 )){ ?>checked="true"<?php } ?>  class="checkbox" name="pass_through"  style="display: inline !important;"/> Waive Home State Fee</h4>
                                                     </div>
                                                     <input type="hidden" name="type" value="3"/>
@@ -1921,7 +1875,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                </div>
                                                             </div>
                                                         </div></div>
-                                                        <?php } } } } } else{?>
+                                                        <?php } } }  } else{?>
                                                         <?php foreach($get_state_new as $statekey=>$stateval){?>
                                                         <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
                                                         <div class="row">
@@ -1971,33 +1925,21 @@ var waitingDialog = waitingDialog || (function ($) {
                                                     <div class="panel-overlay">
                                                         <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
                                                     </div>
-                                                    <div class="panel-footer">
-                                                        <div class="selectwrap">
                                                             <input type="hidden" name="id"  value="<?php echo $id; ?>" />
-                                        					<input type="submit" name="ria" onclick="waitingDialog.show();" value="Save"/>	
-                                                            <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
-                                                        </div>
-                                                   </div>
+                                        					
                                                 </div>
-                                            </div>
-                                        </form>       
+                                            </div>      
                                      </div>
                                 </div>
                             </div>
                         </div>
-                    </form>
                  </div>
                  <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="registers"){ echo "active"; } ?>" id="tab_e">
                  <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
-                    <form method="post">
                         <div class="panel-overlay-wrap">
                             <div class="panel">
                                 <div class="panel-heading">
-                                    <div class="panel-control" style="float: right;">
-            							<div class="btn-group dropdown">
-            								<a href="<?php echo CURRENT_PAGE;?> "><i class="fa fa-mail-forward"></i></a>
-            							</div>
-            						</div>
+                                   
                                     <h3 class="panel-title" style="font-size: 25px;"><b>Register</b></h3>
                                 </div>
             					<div class="panel-body">
@@ -2071,28 +2013,16 @@ var waitingDialog = waitingDialog || (function ($) {
                                 <div class="panel-overlay">
                                     <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
                                 </div>
-                                <div class="panel-footer">
-                                    <div class="selectwrap">
                                         <input type="hidden" name="id"  value="<?php echo $id; ?>" />
-                    					<input type="submit" name="register" onclick="waitingDialog.show();" value="Save"/>	
-                                        <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
-                                    </div>
-                               </div>
                             </div>
                         </div>
-                    </form>
                  </div>
                  <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="required_docs"){ echo "active"; } ?>" id="tab_f">
                  <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
-                    <form method="post">
                         <div class="panel-overlay-wrap">
                             <div class="panel">
                                 <div class="panel-heading">
-                                    <div class="panel-control" style="float: right;">
-            							<div class="btn-group dropdown">
-            								<a href="<?php echo CURRENT_PAGE;?> "><i class="fa fa-mail-forward"></i></a>
-            							</div>
-            						</div>
+                                    
                                     <h3 class="panel-title" style="font-size: 25px;"><b>Required Documents</b></h3>
                                 </div>
             					<div class="panel-body">
@@ -2110,7 +2040,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                     <tbody>
                                                         
                                                         <?php $doc_id=0; //echo '<pre>';print_r($edit_required_docs);
-                                                        if(isset($_GET['action']) && $_GET['action']=='edit'){  
+                                                        if(isset($_GET['action']) && $_GET['action']=='edit' && isset($edit_required_docs) ){  
                                                         foreach($edit_required_docs as $key=>$val){ $doc_id=$val['id'];?>
                                                             <tr>
                                                                 <td>
@@ -2155,19 +2085,26 @@ var waitingDialog = waitingDialog || (function ($) {
                                                 </table>
                                             </div>
                                         </div>
-                                        <div class="panel-footer">
-                                            <div class="selectwrap">
                                                 <input type="hidden" name="id"  value="<?php echo $id; ?>" />
-                            					<input type="submit" name="req_doc" onclick="waitingDialog.show();" value="Save"/>	
-                                                <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                     </form>
                  </div>
+              </div>
+              <div class="panel-footer">
+                    <div class="selectwrap">
+                         <?php if($action=='edit' && $id>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;"><input type="button" name="previous" value="&laquo; Previous" /></a><?php } ?>
+                         <?php if($_GET['action']=='edit' && $_GET['id']>0){?><input style="margin-left: 12% !important;" type="button" name="view_change" value="View Change" /><?php } ?>
+                         <a href="#broker_notes" data-toggle="modal"><input type="button" onclick="get_broker_notes();" name="notes" value="Notes" /></a>
+                         <a href="#client_transactions" data-toggle="modal"><input type="button" name="transactions" value="Transactions" /></a>
+                         <a href="#client_attachment" data-toggle="modal"><input type="button" name="attach" value="Attach" /></a>
+                         <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
+                         <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
+                         <?php if($action=='edit' && $id>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a" style="float: right;"><input type="button" name="next" value="Next &raquo;" /></a><?php } ?>
+                    </div>
+                 </div>   
+            </form>
                  <?php } ?>
                 <!-- Lightbox strart -->							
         	<!-- Modal for add client notes -->
@@ -2357,17 +2294,6 @@ var waitingDialog = waitingDialog || (function ($) {
 				</div><!-- End of Modal dialog -->
 		  </div><!-- End of Modal -->
           </div>
-           <?php if($action=='edit' && $id>0){?>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group"><br /><div class="selectwrap">
-                                            <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;">&laquo; Previous</a>
-                                            <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a" style="float: right;">Next &raquo;</a>
-                                        </div>
-                                     </div>
-                                     </div>
-                                 </div>
-                                <?php } ?>
                                 <br />
    </div>
 </div>

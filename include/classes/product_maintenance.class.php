@@ -164,6 +164,66 @@
             }
 			return $return;
 		}
+        public function get_previous_product($id,$category){
+			$return = array();
+			
+            $q = "SELECT `at`.*
+					FROM `product_category_".$category."` AS `at`
+                    WHERE `at`.`is_delete`='0' and `at`.`id`<".$id."
+                    ORDER BY `at`.`id` DESC LIMIT 1";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $return = $this->re_db_fetch_array($res);
+            }
+            else
+            {
+                return false;
+            }
+			return $return;
+		} 
+        public function get_next_product($id,$category){
+			$return = array();
+			
+            $q = "SELECT `at`.*
+					FROM `product_category_".$category."` AS `at`
+                    WHERE `at`.`is_delete`='0' and `at`.`id`>".$id."
+                    ORDER BY `at`.`id` ASC LIMIT 1";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $return = $this->re_db_fetch_array($res);
+            }
+            else
+            {
+                return false;
+            }
+			return $return;
+		}
+        public function get_product_changes($id,$category){
+			$return = array();
+			$q = "SELECT `at`.*,u.first_name as user_initial
+					FROM `product_history_".$category."` AS `at`
+                    LEFT JOIN `".USER_MASTER."` as `u` on `u`.`id`=`at`.`modified_by`
+                    WHERE `at`.`is_delete`='0' AND `at`.`product_id`='".$id."'";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+		}
+        public function get_sponsor_name($id){
+			$return = array();
+			$q = "SELECT `at`.name as sponsor
+					FROM `".SPONSOR_MASTER."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`id`='".$id."'";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			$return = $this->re_db_fetch_array($res);
+            }
+			return $return;
+		}
         public function delete_notes($id){
 			$id = trim($this->re_db_input($id));
 			if($id>0){

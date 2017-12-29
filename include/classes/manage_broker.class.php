@@ -9,6 +9,8 @@
 		 * @return true if success, error message if any errors
 		 * */
 		public function insert_update($data){
+		  
+            //echo '<pre>';print_r($_POST);exit;
 			$id = isset($data['id'])?$this->re_db_input($data['id']):0;
 			$fname = isset($data['fname'])?$this->re_db_input($data['fname']):'';
 			$lname = isset($data['lname'])?$this->re_db_input($data['lname']):'';
@@ -330,18 +332,29 @@
         public function insert_update_payout_grid($data ,$id){
            //echo '<pre>';print_r($id);print_r($data);exit;
            $id = isset($id)?$this->re_db_input($id):0;
-           $qq="update `".BROKER_PAYOUT_GRID."` SET is_delete=1 where `broker_id`=".$id."";
-                $res = $this->re_db_query($qq);
-          
+           $flag=0;
                foreach($data as $key=>$val)
                 {   
                     $from =isset($val['from'])?$this->re_db_input($val['from']):'';
                     $to =isset($val['to'])?$this->re_db_input($val['to']):'';
                     $per =isset($val['per'])?$this->re_db_input($val['per']):'';
-                    $q = "INSERT INTO `".BROKER_PAYOUT_GRID."` SET `broker_id`='".$id."' ,`from`='".$from."' ,`to`='".$to."' , 
-                    `per`='".$per."' ".$this->insert_common_sql();
-    				
-                    $res = $this->re_db_query($q);
+                    if($from!='' && $to != ''){
+                        
+                        if ($flag==0){
+                           $qq="update `".BROKER_PAYOUT_GRID."` SET is_delete=1 where `broker_id`=".$id."";
+                           $res = $this->re_db_query($qq);
+                           $flag=1;
+                        }
+                        
+                        $q = "INSERT INTO `".BROKER_PAYOUT_GRID."` SET `broker_id`='".$id."' ,`from`='".$from."' ,`to`='".$to."' , 
+                        `per`='".$per."' ".$this->insert_common_sql();
+        				
+                        $res = $this->re_db_query($q); 
+                    }
+                    else
+                    {
+                        $res='';
+                    }
                 }    
                 if($res){
     			      
@@ -376,16 +389,27 @@
         public function insert_update_payout_override($data ,$id,$rap){
            $id = isset($id)?$this->re_db_input($id):0;
            $rap=isset($rap)?$this->re_db_input($rap):0;
-           $qq="update `".BROKER_PAYOUT_OVERRIDE."` SET is_delete=1 where `broker_id`=".$id."";
-                $res = $this->re_db_query($qq);
+           $flag1=0;
+           
            foreach($data as $key=>$val)
             {   
                 $from1=isset($val['from1'])?$this->re_db_input($val['from1']):'';
                 $to1=isset($val['to1'])?$this->re_db_input($val['to1']):'';
                 $per1=isset($val['per1'])?$this->re_db_input($val['per1']):'';
-                $q = "INSERT INTO `".BROKER_PAYOUT_OVERRIDE."` SET `broker_id`='".$id."',`rap` = '".$rap."',`from`='".$from1."' ,`to`='".$to1."' , 
-                `per`='".$per1."' ".$this->insert_common_sql();
-				$res = $this->re_db_query($q);
+                if($from1!='' && $to1!=''){
+                    if($flag1==0){
+                        $qq="update `".BROKER_PAYOUT_OVERRIDE."` SET is_delete=1 where `broker_id`=".$id."";
+                        $res = $this->re_db_query($qq);
+                        $flag1=1;
+                    }
+                    $q = "INSERT INTO `".BROKER_PAYOUT_OVERRIDE."` SET `broker_id`='".$id."',`rap` = '".$rap."',`from`='".$from1."' ,`to`='".$to1."' , 
+                    `per`='".$per1."' ".$this->insert_common_sql();
+    				$res = $this->re_db_query($q);
+                }
+                else
+                {
+                    $res='';
+                }
             }    
             if($res){
 			      
@@ -417,17 +441,28 @@
         }
         public function insert_update_payout_split($data ,$id){
            $id = isset($id)?$this->re_db_input($id):0;
-           $qq="update `".BROKER_PAYOUT_SPLIT."` SET is_delete=1 where `broker_id`=".$id."";
-                $res = $this->re_db_query($qq);
+           $flag2=0;
+           
            foreach($data as $key=>$val)
             {   
                 $rap=isset($val['rap'])?$this->re_db_input($val['rap']):'';
                 $rate=isset($val['rate'])?$this->re_db_input($val['rate']):'';
                 $start=isset($val['start'])?$this->re_db_input($val['start']):'0000-00-00';
                 $until = isset($val['until'])?$this->re_db_input($val['until']):'';
-                $q = "INSERT INTO `".BROKER_PAYOUT_SPLIT."` SET `broker_id`='".$id."' ,`rap`='".$rap."' ,`rate`='".$rate."' , 
-                `start`='".$start."' , `until`='".$until."' ".$this->insert_common_sql();
-				$res = $this->re_db_query($q);
+                if($rap!='' && $rate!='' && $start!='' && $until != ''){
+                    if($flag2==0){
+                        $qq="update `".BROKER_PAYOUT_SPLIT."` SET is_delete=1 where `broker_id`=".$id."";
+                        $res = $this->re_db_query($qq);
+                        $flag2=1;
+                    }
+                    $q = "INSERT INTO `".BROKER_PAYOUT_SPLIT."` SET `broker_id`='".$id."' ,`rap`='".$rap."' ,`rate`='".$rate."' , 
+                    `start`='".$start."' , `until`='".$until."' ".$this->insert_common_sql();
+    				$res = $this->re_db_query($q);
+                }
+                else
+                {
+                    $res='';
+                }
             }    
             if($res){
 			      
@@ -765,17 +800,28 @@
         public function insert_update_req_doc($data ,$id1){
           // echo '<pre>';print_r($id1);exit;
            $id = isset($id1)?$this->re_db_input($id1):0;
-           $qq="update `".BROKER_REQ_DOC."` SET is_delete=1 where `broker_id`=".$id."";
-                $res = $this->re_db_query($qq);
+           $flag4=0;
            foreach($data as $key=>$val)
             {   
                 $docs_receive=isset($val['docs_receive'])?$this->re_db_input($val['docs_receive']):'';
                 $docs_description=isset($val['docs_description'])?$this->re_db_input($val['docs_description']):'';
                 $docs_date=isset($val['docs_date'])?$this->re_db_input(date('Y-m-d',strtotime($val['docs_date']))):'0000-00-00';
                 $docs_required = isset($val['docs_required'])?$this->re_db_input($val['docs_required']):'';
-                $q = "INSERT INTO `".BROKER_REQ_DOC."` SET `broker_id`='".$_SESSION['last_insert_id']."' ,`received`='".$docs_receive."' ,`description`='".$docs_description."' , 
-                `date`='".$docs_date."' , `required`='".$docs_required."' ".$this->insert_common_sql();
-				$res = $this->re_db_query($q);
+                
+                if($docs_receive!='' && $docs_description!=''){
+                    if($flag4==0){
+                        $qq="update `".BROKER_REQ_DOC."` SET is_delete=1 where `broker_id`=".$id."";
+                        $res = $this->re_db_query($qq);
+                        $flag4=1;
+                    }
+                    $q = "INSERT INTO `".BROKER_REQ_DOC."` SET `broker_id`='".$_SESSION['last_insert_id']."' ,`received`='".$docs_receive."' ,`description`='".$docs_description."' , 
+                    `date`='".$docs_date."' , `required`='".$docs_required."' ".$this->insert_common_sql();
+    				$res = $this->re_db_query($q);
+                }
+                else
+                {
+                    $res='';
+                }
             }    
             if($res){
 			      

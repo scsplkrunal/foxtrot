@@ -114,28 +114,53 @@
         $ria_general = isset($_POST['ria_general'])?$instance->re_db_input($_POST['ria_general']):0;
 		$insurance_general = isset($_POST['insurance_general'])?$instance->re_db_input($_POST['insurance_general']):0;//echo '<pre>';print_r($_POST);exit;
     
-        
+        //echo '<pre>';print_r($_POST);exit;
         $return = $instance->insert_update($_POST);
         
-        $return = $instance->insert_update_general($_POST);
+        $return1 = $instance->insert_update_general($_POST);
+        
+        //payout tab
+        $return2 = $instance->insert_update_payout($_POST);   
+        $return3 = $instance->insert_update_payout_grid($instance->reArrayFiles_grid($_POST['leval']),$_POST['id']);
+        $return4 = $instance->insert_update_payout_override($instance->reArrayFiles_override($_POST['override']),$_POST['id'],$_POST['receiving_rep']);
+        $return5 = $instance->insert_update_payout_split($instance->reArrayFiles_split($_POST['split']),$_POST['id']);
+        
+        //security tab
+        $return6 = $instance->insert_update_licences($_POST);
+        
+        //insaurance tab
+        $return7 = $instance->insert_update_licences1($_POST);
+        
+        //ria tab
+        $return8 = $instance->insert_update_licences2($_POST);
+        
+        //register tab
+        $return9 = $instance->insert_update_register($_POST); 
+        
+        //requered documents tab
+        $return10 = $instance->insert_update_req_doc($instance->reArrayFiles($_POST['data']),$id);
+        
+        //charges tab
+        $return11 = $instance->insert_update_charges($_POST);
+        
         
         if($return===true){
             if($action == 'edit')
             {
-                header("location:".CURRENT_PAGE."?action=".$action."&id=".$id."&tab=payouts");exit;
+                header("location:".CURRENT_PAGE."?action=".$action."&id=".$id);exit;
             }
             else
             {
-                header("location:".CURRENT_PAGE."?action=".$action."&tab=payouts");exit;
+                header("location:".CURRENT_PAGE."?action=".$action);exit;
             }
         }
         else{
             $error = !isset($_SESSION['warning'])?$return:'';
         }
     }
-    else if(isset($_POST['payout'])&& $_POST['payout']=='Save'){
+    /*else if(isset($_POST['payout'])&& $_POST['payout']=='Save'){
         //echo '<pre>';print_r($_POST['leval']);exit;
-        $return = $instance->insert_update_payout($_POST);   
+        $return2 = $instance->insert_update_payout($_POST);   
         $return1 = $instance->insert_update_payout_grid($instance->reArrayFiles_grid($_POST['leval']),$_POST['id']);
         $return2 = $instance->insert_update_payout_override($instance->reArrayFiles_override($_POST['override']),$_POST['id'],$_POST['receiving_rep']);
         $return3 = $instance->insert_update_payout_split($instance->reArrayFiles_split($_POST['split']),$_POST['id']);
@@ -256,7 +281,7 @@
         else{
             $error = !isset($_SESSION['warning'])?$return:'';
         }
-    }
+    }*/
     else if($action=='edit' && $id>0){
         $return = $instance->edit($id);
         $edit_general = $instance->edit_general($id);
@@ -269,7 +294,7 @@
         $edit_grid = $instance->edit_grid($id);
         $edit_override = $instance->edit_override($id);
         $edit_split =$instance->edit_split($id);
-        //echo '<pre>';print_r($edit_licences_securities);exit;
+        //echo '<pre>';print_r($edit_required_docs);exit;
         
         $_SESSION['last_insert_id']=$id;
         $fname = $instance->re_db_output($return['first_name']);

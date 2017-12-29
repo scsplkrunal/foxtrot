@@ -135,29 +135,33 @@ $(document).on('click','.remove-row',function(){
     		</div><!-- End of Modal content -->
     		</div><!-- End of Modal dialog -->
       </div><!-- End of Modal -->
-        <?php if($action=='edit_sponsor' && $sponsor_id>0){?>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group"><br /><div class="selectwrap">
-                        <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=previous" class="previous next_previous_a" style="float: left;">&laquo; Previous</a>
-                        <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=next" class="next next_previous_a" style="float: right;">Next &raquo;</a>
-                    </div>
-                 </div>
-                 </div>
-             </div>
-            <?php } ?>
-            <br />
+      
     <?php  
     
     if((isset($_GET['action']) && $_GET['action']=='add_sponsor') || (isset($_GET['action']) && ($_GET['action']=='edit_sponsor' && $sponsor_id>0))){
         ?>
-        <div class="panel">            
         <form name="frm2" method="POST">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group"><br /><div class="selectwrap">
+                       <?php if($_GET['action']=='edit_sponsor' && $_GET['sponsor_id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=previous" class="previous next_previous_a" style="float: left;"><input type="button" name="previous" value="&laquo; Previous" /></a><?php } ?>
+                        <?php if($action=='edit_sponsor' && $sponsor_id>0){?>
+                        <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 10%;"/></a>
+                        <?php } ?>
+                        <input type="submit" name="sponser" onclick="waitingDialog.show();" value="Save"/>	
+                        <a href="<?php echo CURRENT_PAGE.'?action=view_sponsor';?>"><input type="button" name="cancel" value="Cancel" /></a>
+                        <?php if($_GET['action']=='edit_sponsor' && $_GET['sponsor_id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=next" class="next next_previous_a" style="float: right;"><input type="button" name="next" value="Next &raquo;" /></a><?php } ?>
+                    </div>
+                 </div>
+                 </div>
+             </div>
+            <br />
+        <div class="panel">            
+        
             <div class="panel-footer">
                 <div class="selectwrap" style="float: right;">
                     <input type="hidden" name="sponsor_id" id="sponsor_id" value="<?php echo $sponsor_id; ?>" />
-    				<input type="submit" name="sponser" onclick="waitingDialog.show();" value="Save"/>	
-                    <a href="<?php echo CURRENT_PAGE.'?action=view_sponsor';?>"><input type="button" name="cancel" value="Cancel" /></a>
+    				
                 </div><br />
            </div>
             <div class="panel-heading">
@@ -319,8 +323,22 @@ $(document).on('click','.remove-row',function(){
                     <a href="<?php echo CURRENT_PAGE.'?action=view_sponsor';?>"><input type="button" name="cancel" value="Cancel" /></a>
                 </div><br />
            </div>
+        <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group"><br /><div class="selectwrap">
+                        <?php if($_GET['action']=='edit_sponsor' && $_GET['sponsor_id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=previous" class="previous next_previous_a" style="float: left;"><input type="button" name="previous" value="&laquo; Previous" /></a><?php } ?>
+                        <?php if($action=='edit_sponsor' && $sponsor_id>0){?>
+                        <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 10%;"/></a>
+                        <?php } ?>
+                        <input type="submit" name="sponser" onclick="waitingDialog.show();" value="Save"/>	
+                        <a href="<?php echo CURRENT_PAGE.'?action=view_sponsor';?>"><input type="button" name="cancel" value="Cancel" /></a>
+                        <?php if($_GET['action']=='edit_sponsor' && $_GET['sponsor_id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=next" class="next next_previous_a" style="float: right;"><input type="button" name="next" value="Next &raquo;" /></a><?php } ?>
+                    
+                    </div>
+                 </div>
+                 </div>
+             </div>
         </form>
-        </div>
         <?php
             }if((isset($_GET['action']) && $_GET['action']=='view_sponsor') || $action=='view_sponsor'){?>
         <div class="panel">
@@ -385,17 +403,87 @@ $(document).on('click','.remove-row',function(){
     		</div>
     	</div>
         <?php } ?> 
-        <?php if($action=='edit_sponsor' && $sponsor_id>0){?>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group"><br /><div class="selectwrap">
-                        <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=previous" class="previous next_previous_a" style="float: left;">&laquo; Previous</a>
-                        <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=next" class="next next_previous_a" style="float: right;">Next &raquo;</a>
-                    </div>
-                 </div>
-                 </div>
-             </div>
-            <?php } ?>                                   
+        
+<!-- Lightbox strart -->							
+<!-- Modal for transaction list -->
+<div id="view_changes" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+	<div class="modal-content">
+	<div class="modal-header" style="margin-bottom: 0px !important;">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+		<h4 class="modal-title">View Changes</h4>
+	</div>
+	<div class="modal-body">
+    <form method="post">
+    <div class="inputpopup">
+        <div class="table-responsive" id="table-scroll" style="margin: 0px 5px 0px 5px;">
+            <table class="table table-bordered table-stripped table-hover">
+                <thead>
+                    <th>#NO</th>
+                    <th>User Initials</th>
+                    <th>Date of Change</th>
+                    <th>Field Changed</th>
+                    <th>Previous Value</th>
+                    <th>New Value</th>
+                </thead>
+                <tbody>
+                <?php 
+                $count = 0;
+                $feild_name='';
+                $lable_array = array();
+                $lable_array = array('name' => 'Sponsor Name','address1' => 'Address 1','address2' => 'Address 2
+','city' => 'City','state' => 'State','zip_code' => 'Zip Code','email' => 'E-Mail','website' => 'Web Site','general_contact' => 'General Contact','general_phone' => 'General Phone','operations_contact' => 'Operations Contact','operations_phone' => 'Operations Phone','dst_system_id' => 'DST System ID','dst_mgmt_code' => 'DST Mgmt Code','dst_importing' => 'Exclude from DST Importing','dazl_importing' => 'Exclude from DAZL Importing','dazl_code' => 'DAZL Code','dtcc_nscc_id' => 'DTCC/NSCC ID','clearing_firm_id' => 'Clearing Firm ID');
+                foreach($sponsor_data as $key=>$val){
+                    
+                    if(isset($lable_array[$val['field']])){
+                        $feild_name = $lable_array[$val['field']];
+                    }else {
+                        $feild_name = $val['field'];
+                    }?>
+                    <tr>
+                    
+                        <td><?php echo ++$count; ?></td>
+                        <td><?php echo $val['user_initial'];?></td>
+                        <td><?php echo date('m/d/Y',strtotime($val['modified_time']));?></td>
+                        <td><?php echo $feild_name;?></td>
+                        <?php 
+                        if($feild_name == 'Exclude from DST Importing' && $val['old_value'] == 0){?>
+                        <td><?php echo 'UnChecked';?></td>
+                        <td><?php echo 'Checked';?></td>
+                        <?php } 
+                        else if($feild_name == 'Exclude from DST Importing' && $val['old_value'] == 1){?>
+                        <td><?php echo 'Checked';?></td>
+                        <td><?php echo 'UnChecked';?></td>
+                        <?php }
+                        else if($feild_name == 'Exclude from DAZL Importing' && $val['old_value'] == 0){?>
+                        <td><?php echo 'UnChecked';?></td>
+                        <td><?php echo 'Checked';?></td>
+                        <?php } 
+                        else if($feild_name == 'Exclude from DAZL Importing' && $val['old_value'] == 1){?>
+                        <td><?php echo 'Checked';?></td>
+                        <td><?php echo 'UnChecked';?></td>
+                        <?php }
+                        else if($feild_name == 'State'){
+                        $state = $instance->get_state_name($val['old_value']);?>
+                        <td><?php echo $state['state_name'];?></td>
+                        <?php $state = $instance->get_state_name($val['new_value']);?>
+                        <td><?php echo $state['state_name'];?></td>
+                        <?php } else {?>
+                        <td><?php echo $val['old_value'];?></td>
+                        <td><?php echo $val['new_value'];?></td>
+                        <?php } ?>
+                    </tr>
+                <?php } ?>
+              </tbody>
+            </table>
+        </div>
+	</div>
+    </form>
+    </div><!-- End of Modal body -->
+	</div><!-- End of Modal content -->
+	</div><!-- End of Modal dialog -->
+</div><!-- End of Modal -->           
+                                              
     </div>
 </div>
 

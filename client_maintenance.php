@@ -145,7 +145,55 @@
         $naf_date = isset($_POST['naf_date'])?$instance->re_db_input($_POST['naf_date']):'';
         $last_contacted = isset($_POST['last_contacted'])?$instance->re_db_input($_POST['last_contacted']):'';
         
+        //Employee tab coding
+        $id = isset($_POST['employment_id'])?$instance->re_db_input($_POST['employment_id']):0;
+        $occupation = isset($_POST['occupation'])?$instance->re_db_input($_POST['occupation']):'';
+        $employer = isset($_POST['employer'])?$instance->re_db_input($_POST['employer']):'';
+        $address_employement = isset($_POST['address_employement'])?$instance->re_db_input($_POST['address_employement']):'';
+        $position = isset($_POST['position'])?$instance->re_db_input($_POST['position']):'';
+        $telephone_employment = isset($_POST['telephone_employment'])?$instance->re_db_input($_POST['telephone_employment']):'';
+        $security_related_firm = isset($_POST['security_related_firm'])?$instance->re_db_input($_POST['security_related_firm']):'';
+        $finra_affiliation = isset($_POST['finra_affiliation'])?$instance->re_db_input($_POST['finra_affiliation']):'';
+        $spouse_name = isset($_POST['spouse_name'])?$instance->re_db_input($_POST['spouse_name']):'';
+        $spouse_ssn = isset($_POST['spouse_ssn'])?$instance->re_db_input($_POST['spouse_ssn']):'';
+        $dependents = isset($_POST['dependents'])?$instance->re_db_input($_POST['dependents']):'';
+        $salutation = isset($_POST['salutation'])?$instance->re_db_input($_POST['salutation']):'';
+        $options = isset($_POST['options'])?$instance->re_db_input($_POST['options']):'';
+        $other = isset($_POST['other'])?$instance->re_db_input($_POST['other']):'';
+        $number = isset($_POST['number'])?$instance->re_db_input($_POST['number']):'';
+        $expiration = isset($_POST['expiration'])?$instance->re_db_input($_POST['expiration']):'';
+        $state_employe = isset($_POST['state_employe'])?$instance->re_db_input($_POST['state_employe']):'';
+        $date_verified = isset($_POST['date_verified'])?$instance->re_db_input($_POST['date_verified']):''; 
+        
+        
+        //accounting tab coding
+        $id = isset($_POST['account_id'])?$instance->re_db_input($_POST['account_id']):0;
+        $account_no = isset($_POST['account_no'])?$instance->re_db_input($_POST['account_no']):array();
+        $sponsor_company = isset($_POST['sponsor'])?$instance->re_db_input($_POST['sponsor']):array();
+        
+        //suitability tab coding
+        $id = isset($_POST['suitability_id'])?$instance->re_db_input($_POST['suitability_id']):0;
+        $income = isset($_POST['income'])?$instance->re_db_input($_POST['income']):'';
+        $goal_horizone = isset($_POST['goal_horizone'])?$instance->re_db_input($_POST['goal_horizone']):'';
+        $net_worth = isset($_POST['net_worth'])?$instance->re_db_input($_POST['net_worth']):'';
+        $risk_tolerance = isset($_POST['risk_tolerance'])?$instance->re_db_input($_POST['risk_tolerance']):'';
+        $annual_expenses = isset($_POST['annual_expenses'])?$instance->re_db_input($_POST['annual_expenses']):'';
+        $liquidity_needs = isset($_POST['liquidity_needs'])?$instance->re_db_input($_POST['liquidity_needs']):'';
+        $liquid_net_worth = isset($_POST['liquid_net_worth'])?$instance->re_db_input($_POST['liquid_net_worth']):'';
+        $special_expenses = isset($_POST['special_expenses'])?$instance->re_db_input($_POST['special_expenses']):'';
+        $per_of_portfolio = isset($_POST['per_of_portfolio'])?$instance->re_db_input($_POST['per_of_portfolio']):'';
+        $timeframe_for_special_exp = isset($_POST['timeframe_for_special_exp'])?$instance->re_db_input($_POST['timeframe_for_special_exp']):'';
+        $account_use = isset($_POST['account_use'])?$instance->re_db_input($_POST['account_use']):'';
+        $signed_by = isset($_POST['signed_by'])?$instance->re_db_input($_POST['signed_by']):'';
+        $sign_date = isset($_POST['sign_date'])?$instance->re_db_input($_POST['sign_date']):'';
+        $tax_bracket = isset($_POST['tax_bracket'])?$instance->re_db_input($_POST['tax_bracket']):'';
+        $tax_id = isset($_POST['tax_id'])?$instance->re_db_input($_POST['tax_id']):'';
+        
+               
         $return = $instance->insert_update($_POST);
+        $return1 = $instance->insert_update_employment($_POST);
+        $return2 = $instance->insert_update_account($_POST);
+        $return3 = $instance->insert_update_suitability($_POST);
         
         if($return===true){
             if($action == 'edit')
@@ -161,7 +209,7 @@
             $error = !isset($_SESSION['warning'])?$return:'';
         }
     }
-    else if(isset($_POST['employment'])&& $_POST['employment']=='Save'){
+    /*else if(isset($_POST['employment'])&& $_POST['employment']=='Save'){
         $id = isset($_POST['employment_id'])?$instance->re_db_input($_POST['employment_id']):0;
         $occupation = isset($_POST['occupation'])?$instance->re_db_input($_POST['occupation']):'';
         $employer = isset($_POST['employer'])?$instance->re_db_input($_POST['employer']):'';
@@ -196,8 +244,8 @@
         else{
             $error = !isset($_SESSION['warning'])?$return:'';
         }
-    }
-    else if(isset($_POST['account'])&& $_POST['account']=='Save'){
+    }*/
+    /*else if(isset($_POST['account'])&& $_POST['account']=='Save'){
         $id = isset($_POST['account_id'])?$instance->re_db_input($_POST['account_id']):0;
         $account_no = isset($_POST['account_no'])?$instance->re_db_input($_POST['account_no']):array();
         $sponsor_company = isset($_POST['sponsor'])?$instance->re_db_input($_POST['sponsor']):array();
@@ -217,8 +265,8 @@
         else{
             $error = !isset($_SESSION['warning'])?$return:'';
         }
-    }
-    else if(isset($_POST['suitability'])&& $_POST['suitability']=='Save'){
+    }*/
+    /*else if(isset($_POST['suitability'])&& $_POST['suitability']=='Save'){
         $id = isset($_POST['suitability_id'])?$instance->re_db_input($_POST['suitability_id']):0;
         $income = isset($_POST['income'])?$instance->re_db_input($_POST['income']):'';
         $goal_horizone = isset($_POST['goal_horizone'])?$instance->re_db_input($_POST['goal_horizone']):'';
@@ -251,7 +299,7 @@
         else{
             $error = !isset($_SESSION['warning'])?$return:'';
         }
-    }
+    }*/
     else if(isset($_POST['add_objective'])&& $_POST['add_objective']=='Add_Objectives'){
         
         $return = $instance->insert_update_objectives($_POST);
@@ -270,9 +318,10 @@
             $error = !isset($_SESSION['warning'])?$return:'';
         }
     }
-    else if(isset($_POST['add_allobjectives'])&& $_POST['add_allobjectives']=='Add_AllObjectives'){
+    else if(isset($_POST['add_allobjectives'])&& $_POST['add_allobjectives']=='Add_AllObjectives'){ echo '<pre>';print_r($_POST);exit;
         $id = isset($_POST['allobjectives_id'])?$instance->re_db_input($_POST['allobjectives_id']):0;
         $allobjectives = isset($_POST['allobjectives'])?$_POST['allobjectives']:array();
+        
         $return = $instance->insert_update_allobjectives($_POST);
         
         if($return===true){

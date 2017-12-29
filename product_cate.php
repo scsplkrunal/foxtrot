@@ -115,6 +115,7 @@
     }
     else if($action=='edit_product' && $id>0 && $category !=''){
         $return = $instance->edit_product($id,$category);
+        $product_data = $instance->get_product_changes($id,$category);
         $id = isset($return['id'])?$instance->re_db_output($return['id']):0;
         $category = isset($return['category'])?$instance->re_db_output($return['category']):'';
         $name = isset($return['name'])?$instance->re_db_output($return['name']):'';
@@ -143,7 +144,7 @@
         $based = isset($return['based'])?$instance->re_db_output($return['based']):0;
         $fee_rate = isset($return['fee_rate'])?$instance->re_db_output($return['fee_rate']):'';
         $st_bo = isset($return['st_bo'])?$instance->re_db_output($return['st_bo']):0;
-        $m_date = isset($return['m_date'])?$instance->re_db_output(date('m-d-Y',strtotime($return['m_date']))):'';
+        $m_date = isset($return['m_date'])?$instance->re_db_output(date('m/d/Y',strtotime($return['m_date']))):'';
         $type = isset($return['type'])?$instance->re_db_output($return['type']):'';
         $var = isset($return['var'])?$instance->re_db_output($return['var']):0;
         $reg_type = isset($return['reg_type'])?$instance->re_db_output($return['reg_type']):'';
@@ -163,6 +164,37 @@
         }
         echo $error;
         exit;
+    }
+    else if(isset($_GET['send'])&&$_GET['send']=='previous' && isset($_GET['id'])&&$_GET['id']>0 && $_GET['id']!='')
+    {
+        $id = $instance->re_db_input($_GET['id']);
+        $category =$instance->re_db_input($_GET['category']);
+        $return = $instance->get_previous_product($id,$category);
+            
+        if($return!=false){
+            $id=$return['id'];
+            header("location:".CURRENT_PAGE."?action=edit_product&id=".$id."");exit;
+        }
+        else{
+            header("location:".CURRENT_PAGE."?action=edit_product&id=".$id."");exit;
+        }
+        
+    }
+    else if(isset($_GET['send'])&&$_GET['send']=='next' && isset($_GET['id'])&&$_GET['id']>0 && $_GET['id']!='')
+    {
+        $id = $instance->re_db_input($_GET['id']);
+        $category =$instance->re_db_input($_GET['category']);
+        
+        $return = $instance->get_next_product($id,$category);
+            
+        if($return!=false){
+            $id=$return['id'];
+            header("location:".CURRENT_PAGE."?action=edit_product&id=".$id."");exit;
+        }
+        else{
+            header("location:".CURRENT_PAGE."?action=edit_product&id=".$id."");exit;
+        }
+        
     } 
     else if(isset($_GET['delete_action'])&&$_GET['delete_action']=='delete_notes'&&isset($_GET['note_id'])&&$_GET['note_id']>0)
     {

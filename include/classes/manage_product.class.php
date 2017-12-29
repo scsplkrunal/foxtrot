@@ -50,7 +50,7 @@
                                         ticker_symbol VARCHAR(100),
                                         cusip VARCHAR(100),
                                         security VARCHAR(100),
-                                        receive TINYINT(1),
+                                        receive TINYINT(1) NOT NULL DEFAULT '0',
                                         income VARCHAR(100),
                                         networth VARCHAR(100),
                                         networthonly VARCHAR(100),
@@ -58,10 +58,10 @@
                                         minimum_offer VARCHAR(100),
                                         maximum_offer VARCHAR(100),
                                         objective VARCHAR(100),
-                                        non_commissionable VARCHAR(100),
+                                        non_commissionable TINYINT(1) NOT NULL DEFAULT '0',
                                         class_type VARCHAR(100),
                                         fund_code VARCHAR(100),
-                                        sweep_fee VARCHAR(100),
+                                        sweep_fee TINYINT(1) NOT NULL DEFAULT '0',
                                         min_threshold VARCHAR(100),
                                         max_threshold VARCHAR(100),
                                         min_rate FLOAT(8,2),
@@ -71,7 +71,7 @@
                                         based VARCHAR(100),
                                         fee_rate VARCHAR(100),
                                         st_bo VARCHAR(100),
-                                        m_date DATETIME,
+                                        m_date DATE,
                                         type VARCHAR(100),
                                         var VARCHAR(100),
                                         reg_type VARCHAR(100),
@@ -85,6 +85,155 @@
                                         modified_ip VARCHAR(100)
                                     );";
 						    $res = $this->re_db_query($q);
+                            
+                            $q = "CREATE TABLE product_history_".$id."
+                                    (id INT(12) PRIMARY KEY AUTO_INCREMENT,
+                                        product_id INT(12),
+                                        field VARCHAR(100),
+                                        old_value VARCHAR(100),
+                                        new_value VARCHAR(100),
+                                        status TINYINT(1) NOT NULL DEFAULT '1',
+                                        is_delete TINYINT(1) NOT NULL DEFAULT '0',
+                                        created_by  INT(12),
+                                        created_time DATETIME,
+                                        created_ip VARCHAR(100),
+                                        modified_by  INT(12),
+                                        modified_time DATETIME,
+                                        modified_ip VARCHAR(100)
+                                    );";
+						    $res = $this->re_db_query($q);
+                            
+                            $q = "CREATE TRIGGER updateProduct_".$id." AFTER UPDATE ON product_category_".$id."
+                                    FOR EACH ROW
+                                    
+                                    BEGIN
+                                    	IF NEW.name <> OLD.name THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'name',OLD.name,NEW.name,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.category <> OLD.category THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'category',OLD.category,NEW.category,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.sponsor <> OLD.sponsor THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'sponsor',OLD.sponsor,NEW.sponsor,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.ticker_symbol <> OLD.ticker_symbol THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'ticker_symbol',OLD.ticker_symbol,NEW.ticker_symbol,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.cusip <> OLD.cusip THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'cusip',OLD.cusip,NEW.cusip,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.security <> OLD.security THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'security',OLD.security,NEW.security,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.receive <> OLD.receive THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'receive',OLD.receive,NEW.receive,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.income <> OLD.income THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'income',OLD.income,NEW.income,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.networth <> OLD.networth THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'networth',OLD.networth,NEW.networth,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.networthonly <> OLD.networthonly THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'networthonly',OLD.networthonly,NEW.networthonly,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.minimum_investment <> OLD.minimum_investment THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'minimum_investment',OLD.minimum_investment,NEW.minimum_investment,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.minimum_offer <> OLD.minimum_offer THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'minimum_offer',OLD.minimum_offer,NEW.minimum_offer,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.maximum_offer <> OLD.maximum_offer THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'maximum_offer',OLD.maximum_offer,NEW.maximum_offer,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.objective <> OLD.objective THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'objective',OLD.objective,NEW.objective,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.non_commissionable <> OLD.non_commissionable THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'non_commissionable',OLD.non_commissionable,NEW.non_commissionable,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.class_type <> OLD.class_type THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'class_type',OLD.class_type,NEW.class_type,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.fund_code <> OLD.fund_code THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'fund_code',OLD.fund_code,NEW.fund_code,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.sweep_fee <> OLD.sweep_fee THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'sweep_fee',OLD.sweep_fee,NEW.sweep_fee,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.min_threshold <> OLD.min_threshold THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'min_threshold',OLD.min_threshold,NEW.min_threshold,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.max_threshold <> OLD.max_threshold THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'max_threshold',OLD.max_threshold,NEW.max_threshold,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.min_rate <> OLD.min_rate THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'min_rate',OLD.min_rate,NEW.min_rate,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.max_rate <> OLD.max_rate THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'max_rate',OLD.max_rate,NEW.max_rate,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.ria_specific <> OLD.ria_specific THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'ria_specific',OLD.ria_specific,NEW.ria_specific,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.ria_specific_type <> OLD.ria_specific_type THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'ria_specific_type',OLD.ria_specific_type,NEW.ria_specific_type,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.based <> OLD.based THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'based',OLD.based,NEW.based,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.fee_rate <> OLD.fee_rate THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'fee_rate',OLD.fee_rate,NEW.fee_rate,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.st_bo <> OLD.st_bo THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'st_bo',OLD.st_bo,NEW.st_bo,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.m_date <> OLD.m_date THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'m_date',OLD.m_date,NEW.m_date,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.type <> OLD.type THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'type',OLD.type,NEW.type,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.var <> OLD.var THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'var',OLD.var,NEW.var,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                        IF NEW.reg_type <> OLD.reg_type THEN  
+                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
+                                    		  							  VALUES(NEW.id,'reg_type',OLD.reg_type,NEW.reg_type,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
+                                        END IF;
+                                    END";
+						    $res = $this->re_db_query($q);
+                            
                             
 						    $_SESSION['success'] = INSERT_MESSAGE;
 							return true;

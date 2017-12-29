@@ -88,6 +88,7 @@
     }
     else if($action=='edit_sponsor' && $sponsor_id>0){
         $return = $instance->edit_sponsor($sponsor_id);
+        $sponsor_data = $instance->get_sponsor_changes($sponsor_id);
         $sponsor_id = isset($return['id'])?$instance->re_db_output($return['id']):0;
         $sponser_name = isset($return['name'])?$instance->re_db_output($return['name']):'';
         $saddress1 = isset($return['address1'])?$instance->re_db_output($return['address1']):'';

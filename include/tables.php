@@ -46,7 +46,7 @@
     define('BROKER_REGISTER_MASTER','ft_broker_register_master');
     define('BRANCH_MASTER','ft_branch_master');
     define('BROKER_REQ_DOC','ft_broker_req_doc_master');
-    define('BRANCH_CHANGES','ft_branch_changes');
+    define('BRANCH_HISTORY','ft_branch_history');
     define('BROKER_PAYOUT_GRID','ft_broker_payout_grid');
     define('BROKER_PAYOUT_OVERRIDE','ft_broker_payout_override');
     define('BROKER_PAYOUT_SPLIT','ft_broker_payout_spilit');
@@ -55,4 +55,6 @@
     define('PRODUCT_NOTES','ft_product_notes');
     define('COMPANY_NOTES','ft_multicompany_notes');
     define('BROKER_NOTES','ft_broker_notes');
+    define('SPONSOR_HISTORY','ft_sponsor_history');
+    
 ?>

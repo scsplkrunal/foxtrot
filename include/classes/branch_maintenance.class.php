@@ -54,6 +54,10 @@
 			if($name==''){
 				$this->errors = 'Please enter branch name.';
 			}
+            else if($email !='' && $this->validemail($email)==0)
+            {
+				$this->errors = 'Please enter valid email.';
+			}
             if($this->errors!=''){
 				return $this->errors;
 			}
@@ -88,7 +92,7 @@
 					}
 				}
 				else if($id>0){
-				    unset($data['submit']);
+				    /*unset($data['submit']);
 				    $current_data = $this->get_dataview($id);
                     if(count($data)>0 && count($current_data)>0)
                     {//echo '<pre>';print_r($data);echo '<pre>';print_r($current_data);
@@ -99,7 +103,7 @@
                           $q = "INSERT INTO `".BRANCH_CHANGES."` SET `branch_id`='".$id."',`user_initial`='".$_SESSION['user_name']."',`feild_changed`='".$key."',`previous_value`='".$old_data."',`new_value`='".$val."'".$this->insert_common_sql();
     					  $res = $this->re_db_query($q);
                       }
-                    }
+                    }*/
 
 				    $q = "UPDATE `".$this->table."` SET `name`='".$name."',`broker`='".$broker."',`b_status`='".$b_status."',`contact`='".$contact."',`osj`='".$osj."',`non_registered`='".$non_registered."',`finra_fee`='".$finra_fee."',`business_address1`='".$business_address1."',`business_address2`='".$business_address2."',`business_city`='".$business_city."',`business_state`='".$business_state."',`business_zipcode`='".$business_zipcode."',`mailing_address1`='".$mailing_address1."',`mailing_address2`='".$mailing_address2."',`mailing_city`='".$mailing_city."',`mailing_state`='".$mailing_state."',`mailing_zipcode`='".$mailing_zipcode."',`email`='".$email."',`website`='".$website."',`phone`='".$phone."',`facsimile`='".$facsimile."',`date_established`='".$date_established."',`date_terminated`='".$date_terminated."',`finra_start_date`='".$finra_start_date."',`finra_end_date`='".$finra_end_date."',`last_audit_date`='".$last_audit_date."'".$this->update_common_sql()." WHERE `id`='".$id."'";
                     $res = $this->re_db_query($q);
@@ -291,8 +295,9 @@
 		}
         public function get_branch_changes($id){
 			$return = array();
-			$q = "SELECT `at`.*
-					FROM `".BRANCH_CHANGES."` AS `at`
+			$q = "SELECT `at`.*,u.first_name as user_initial
+					FROM `".BRANCH_HISTORY."` AS `at`
+                    LEFT JOIN `".USER_MASTER."` as `u` on `u`.`id`=`at`.`modified_by`
                     WHERE `at`.`is_delete`='0' AND `at`.`branch_id`='".$id."'";
 			$res = $this->re_db_query($q);
             if($this->re_db_num_rows($res)>0){
@@ -300,6 +305,17 @@
     			     array_push($return,$row);
                      
     			}
+            }
+			return $return;
+		}
+        public function get_broker_name($id){
+			$return = array();
+			$q = "SELECT `at`.first_name as broker
+					FROM `".BROKER_MASTER."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`id`='".$id."'";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			$return = $this->re_db_fetch_array($res);
             }
 			return $return;
 		}

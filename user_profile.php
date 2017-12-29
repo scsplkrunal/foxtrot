@@ -1,4 +1,4 @@
-<?php
+<?php 
 	require_once("include/config.php");
 	require_once(DIR_FS."islogin.php");
 	
@@ -16,7 +16,7 @@
     
     $instance = new user_master();
     $menu = $instance->menu_select();
-    
+    //print_r($menu);
     if(isset($_POST['submit'])&&$_POST['submit']=='Save'){
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
         $fname = isset($_POST['fname'])?$instance->re_db_input($_POST['fname']):'';

@@ -141,6 +141,32 @@
             }
 			return $return;
 		}
+        public function get_sponsor_changes($id){
+			$return = array();
+			$q = "SELECT `at`.*,u.first_name as user_initial
+					FROM `".SPONSOR_HISTORY."` AS `at`
+                    LEFT JOIN `".USER_MASTER."` as `u` on `u`.`id`=`at`.`modified_by`
+                    WHERE `at`.`is_delete`='0' AND `at`.`sponsor_id`='".$id."'";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+		}
+        public function get_state_name($id){
+			$return = array();
+			$q = "SELECT `at`.name as state_name
+					FROM `".STATE_MASTER."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`id`='".$id."'";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			$return = $this->re_db_fetch_array($res);
+            }
+			return $return;
+		}
         public function select_sponsor(){
 			$return = array();
 			

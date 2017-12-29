@@ -38,6 +38,7 @@ $(document).on('click','.remove-row',function(){
             			</div>
                     </div><br />
             		<div class="panel-body">
+                                
                         <div class="panel-control" style="float: right;" >
                          <form method="post">
                             <div class="row"> 
@@ -107,7 +108,8 @@ $(document).on('click','.remove-row',function(){
             <?php  
             if($action=='select_cat'){
                 ?>
-                <div class="panel">            
+                <div class="panel">
+                           
                 <form name="frm2" method="POST">
                     <div class="panel-body">
                     <div class="row">
@@ -133,15 +135,7 @@ $(document).on('click','.remove-row',function(){
                 </div>
                 <?php
                     }else if($action=='add_product' || ($action=='edit_product' && $id>0)){
-                ?>          
-                 <div class="row">
-                    <div class="col-md-4" style="float: right;">
-                        <div class="form-group" style="float: right;">
-                            <a href="#product_notes" data-toggle="modal"><input type="button" onclick="get_product_notes();" name="notes" value="Notes" /></a>
-                            <a href="#client_attachment" data-toggle="modal"><input type="button" name="attach" value="Attachments" /></a><br />
-                        </div>
-                     </div>
-                 </div>
+                ?>   
                 <ul class="nav nav-tabs ">
                   <li class="active"><a href="#tab_aa" data-toggle="tab">General</a></li>
                   <li><a href="#tab_bb" data-toggle="tab">Suitability</a></li>
@@ -152,16 +146,24 @@ $(document).on('click','.remove-row',function(){
 							<li><a href="<?php echo CURRENT_PAGE; ?>"><i class="fa fa-eye"></i> View List</a></li>
 						</ul>
 					</div>
-				</ul>
+				</ul> 
                  <form name="frm" method="POST" onsubmit="return validation();" enctype="multipart/form-data">    
                  <div class="panel-footer">
-                        <div class="selectwrap" style="float: right;">
+                        <div class="selectwrap col-md-12">
                             <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-        					<input type="submit" name="product" onclick="waitingDialog.show();" value="Save"/>	
+                            <?php if($_GET['action']=='edit_product' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous&category=<?php echo $category;?>" class="previous next_previous_a" style="float: left;" ><input type="button" style="float: left;" name="Previous" value="&laquo; Previous" /></a> <?php } ?>
+        					<?php if($action=='edit_product' && $id>0){?>
+                            <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 10%;"/></a>
+                            <?php } ?>
+                            <a href="#product_notes" data-toggle="modal"><input type="button" onclick="get_product_notes();" name="notes" value="Notes" /></a>
+                            <a href="#client_attachment" data-toggle="modal"><input type="button" name="attach" value="Attachments" /></a>
+                            <a href="#client_attachment" data-toggle="modal"><input type="button" name="attach" value="Transaction" /></a>
+                            <input type="submit" name="product" onclick="waitingDialog.show();" value="Save"/>	
                             <a href="<?php echo CURRENT_PAGE.'?action=view_product';?>"><input type="button" name="cancel" value="Cancel" /></a>
+                            <?php if($_GET['action']=='edit_product' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next&category=<?php echo $category;?>" class="next next_previous_a" style="float: right;"><input type="button" name="Next" value="Next &raquo;" /></a><?php } ?>
                         </div>
                  </div><br /><br />
-                 <div class="tab-content col-md-12">
+                 <div class="tab-content col-md-12 panel">
                     
                     <div class="tab-pane active" id="tab_aa"> 
                         
@@ -356,7 +358,7 @@ $(document).on('click','.remove-row',function(){
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Fee Rate </label><br />
-                                        <input type="number" value="<?php echo $fee_rate; ?>" onblur="round(this.value);"  maxlength="5"   class="form-control" name="fee_rate" id="fee_rate" placeholder="0.00"  />
+                                        <input type="text" value="<?php echo $fee_rate; ?>" onblur="round(this.value);"  maxlength="5"   class="form-control" name="fee_rate" id="fee_rate" placeholder="0.00"  />
                                     </div>
                                 </div>
                             </div>
@@ -532,11 +534,19 @@ $(document).on('click','.remove-row',function(){
                 <div class="panel-footer">
                         <div class="selectwrap">
                             <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-        					<input type="submit" name="product" onclick="waitingDialog.show();" value="Save"/>	
+                            <?php if($_GET['action']=='edit_product' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous&category=<?php echo $category;?>" class="previous next_previous_a" style="float: left;"><input type="button" name="Previous" value="&laquo; Previous" /></a><?php } ?>
+        					<?php if($action=='edit_product' && $id>0){?>
+                            <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 10%;"/></a>
+                            <?php } ?>
+                            <a href="#product_notes" data-toggle="modal"><input type="button" onclick="get_product_notes();" name="notes" value="Notes" /></a>
+                            <a href="#client_attachment" data-toggle="modal"><input type="button" name="attach" value="Attachments" /></a>
+                            <a href="#client_attachment" data-toggle="modal"><input type="button" name="attach" value="Transaction" /></a>
+                            <input type="submit" name="product" onclick="waitingDialog.show();" value="Save"/>	
                             <a href="<?php echo CURRENT_PAGE.'?action=view_product';?>"><input type="button" name="cancel" value="Cancel" /></a>
+                            <?php if($_GET['action']=='edit_product' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next&category=<?php echo $category;?>" class="next next_previous_a" style="float: right;"><input type="button" name="Next" value="Next &raquo;" /></a><?php } ?>
                         </div>
                     </div>
-			    </form>
+			    </form> 
                 <?php
                     }
                 ?> 
@@ -614,6 +624,521 @@ $(document).on('click','.remove-row',function(){
     				</div><!-- End of Modal content -->
     				</div><!-- End of Modal dialog -->
     		  </div><!-- End of Modal -->
+              <!-- Lightbox strart -->							
+                <!-- Modal for transaction list -->
+                <div id="view_changes" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                	<div class="modal-dialog">
+                	<div class="modal-content">
+                	<div class="modal-header" style="margin-bottom: 0px !important;">
+                		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                		<h4 class="modal-title">View Changes</h4>
+                	</div>
+                	<div class="modal-body">
+                    <form method="post">
+                    <div class="inputpopup">
+                        <div class="table-responsive" id="table-scroll" style="margin: 0px 5px 0px 5px;">
+                            <table class="table table-bordered table-stripped table-hover">
+                                <thead>
+                                    <th>#NO</th>
+                                    <th>User Initials</th>
+                                    <th>Date of Change</th>
+                                    <th>Field Changed</th>
+                                    <th>Previous Value</th>
+                                    <th>New Value</th>
+                                </thead>
+                                <tbody>
+                                <?php 
+                                $count = 0;
+                                $feild_name='';
+                                $lable_array = array();
+                                $lable_array = array('name' => 'Product Name','sponsor' => 'Sponsor','ticker_symbol' => 'Ticker Symbol','cusip' => 'CUSIP','security' => 'Security Number',
+                                'receive' => 'Allowable Receivable','income' => 'Income','networth' => 'Net Worth','networthonly' => 'Net Worth Only','minimum_investment' => 'Minimum Investment','minimum_offer' => 'Minimum Offer','maximum_offer' => 'Maximum Offer','objective' => 'Objectives', 'non_commissionable' => 'Non-Commissionable','class_type' => 'Class Type','fund_code' => 'Fund Code','min_rate' => 'Min Rate','max_rate' => 'Max Rate',
+                                'min_threshold' => 'Min Threshold','max_threshold' => 'Max Threshold','sweep_fee' => 'Waive Sweep Fee','ria_specific' => 'Investment Banking Type','ria_specific_type' => 'RIA Type','based' => 'Based Type','fee_rate' => 'Fee Rate','st_bo' => 'Stocks, Bonds',
+                                'm_date' => 'Maturity Date','type' => 'Type','var' => 'Variable Annuities','reg_type' => 'Registration Type');
+                                foreach($product_data as $key=>$val){
+                                    
+                                    if(isset($lable_array[$val['field']])){
+                                        $feild_name = $lable_array[$val['field']];
+                                    }else {
+                                        $feild_name = $val['field'];
+                                    }?>
+                                    <tr>
+                                    
+                                        <td><?php echo ++$count; ?></td>
+                                        <td><?php echo $val['user_initial'];?></td>
+                                        <td><?php echo date('m/d/Y',strtotime($val['modified_time']));?></td>
+                                        <td><?php echo $feild_name;?></td>
+                                        <?php 
+                                        if($feild_name == 'Allowable Receivable' && $val['old_value'] == 0){?>
+                                        <td><?php echo 'UnChecked';?></td>
+                                        <td><?php echo 'Checked';?></td>
+                                        <?php } 
+                                        else if($feild_name == 'Allowable Receivable' && $val['old_value'] == 1){?>
+                                        <td><?php echo 'Checked';?></td>
+                                        <td><?php echo 'UnChecked';?></td>
+                                        <?php }
+                                        else if($feild_name == 'Non-Commissionable' && $val['old_value'] == 0){?>
+                                        <td><?php echo 'UnChecked';?></td>
+                                        <td><?php echo 'Checked';?></td>
+                                        <?php } 
+                                        else if($feild_name == 'Non-Commissionable' && $val['old_value'] == 1){?>
+                                        <td><?php echo 'Checked';?></td>
+                                        <td><?php echo 'UnChecked';?></td>
+                                        <?php }
+                                        else if($feild_name == 'Class Type'){?>
+                                        <td>
+                                        <?php 
+                                        if($val['old_value'] == 1)
+                                        {
+                                            echo 'A';
+                                        }
+                                        else if($val['old_value'] == 2)
+                                        {
+                                            echo 'B';
+                                        }
+                                        else if($val['old_value'] == 3)
+                                        {
+                                            echo 'C';
+                                        }
+                                        else if($val['old_value'] == 4)
+                                        {
+                                            echo 'other';
+                                        }
+                                        ?>
+                                        </td>
+                                        <td>
+                                        <?php 
+                                        if($val['new_value'] == 1)
+                                        {
+                                            echo 'A';
+                                        }
+                                        else if($val['new_value'] == 2)
+                                        {
+                                            echo 'B';
+                                        }
+                                        else if($val['new_value'] == 3)
+                                        {
+                                            echo 'C';
+                                        }
+                                        else if($val['new_value'] == 4)
+                                        {
+                                            echo 'other';
+                                        }
+                                        ?>
+                                        </td>
+                                        <?php }
+                                        else if($feild_name == 'Waive Sweep Fee' && $val['old_value'] == 0){?>
+                                        <td><?php echo 'UnChecked';?></td>
+                                        <td><?php echo 'Checked';?></td>
+                                        <?php } 
+                                        else if($feild_name == 'Waive Sweep Fee' && $val['old_value'] == 1){?>
+                                        <td><?php echo 'Checked';?></td>
+                                        <td><?php echo 'UnChecked';?></td>
+                                        <?php }
+                                        else if($feild_name == 'Investment Banking Type'){?>
+                                        <td>
+                                        <?php 
+                                        if($val['old_value'] == 1)
+                                        {
+                                            echo 'IPO';
+                                        }
+                                        else if($val['old_value'] == 2)
+                                        {
+                                            echo 'Bridge';
+                                        }
+                                        else if($val['old_value'] == 3)
+                                        {
+                                            echo 'Reg S';
+                                        }
+                                        else if($val['old_value'] == 4)
+                                        {
+                                            echo 'Reg D';
+                                        }
+                                        else if($val['old_value'] == 5)
+                                        {
+                                            echo 'Private Placement';
+                                        }
+                                        ?>
+                                        </td>
+                                        <td>
+                                        <?php 
+                                        if($val['new_value'] == 1)
+                                        {
+                                            echo 'IPO';
+                                        }
+                                        else if($val['new_value'] == 2)
+                                        {
+                                            echo 'Bridge';
+                                        }
+                                        else if($val['new_value'] == 3)
+                                        {
+                                            echo 'Reg S';
+                                        }
+                                        else if($val['new_value'] == 4)
+                                        {
+                                            echo 'Reg D';
+                                        }
+                                        else if($val['new_value'] == 5)
+                                        {
+                                            echo 'Private Placement';
+                                        }
+                                        ?>
+                                        </td>
+                                        <?php }
+                                        else if($feild_name == 'RIA Type'){?>
+                                        <td>
+                                        <?php 
+                                        if($val['old_value'] == 1)
+                                        {
+                                            echo 'Fee Based Mutual Funds';
+                                        }
+                                        else if($val['old_value'] == 2)
+                                        {
+                                            echo 'Fee Based Stocks, Bonds &amp; Mutual Funds';
+                                        }
+                                        else if($val['old_value'] == 3)
+                                        {
+                                            echo 'Financial Planning';
+                                        }
+                                        else if($val['old_value'] == 4)
+                                        {
+                                            echo 'Money Managers';
+                                        }
+                                        else if($val['old_value'] == 5)
+                                        {
+                                            echo 'Non-Discretionary';
+                                        }
+                                        else if($val['old_value'] == 6)
+                                        {
+                                            echo 'Socially Screened';
+                                        }
+                                        ?>
+                                        </td>
+                                        <td>
+                                        <?php 
+                                        if($val['new_value'] == 1)
+                                        {
+                                            echo 'Fee Based Mutual Funds';
+                                        }
+                                        else if($val['new_value'] == 2)
+                                        {
+                                            echo 'Fee Based Stocks, Bonds &amp; Mutual Funds';
+                                        }
+                                        else if($val['new_value'] == 3)
+                                        {
+                                            echo 'Financial Planning';
+                                        }
+                                        else if($val['new_value'] == 4)
+                                        {
+                                            echo 'Money Managers';
+                                        }
+                                        else if($val['new_value'] == 5)
+                                        {
+                                            echo 'Non-Discretionary';
+                                        }
+                                        else if($val['new_value'] == 6)
+                                        {
+                                            echo 'Socially Screened';
+                                        }
+                                        ?>
+                                        </td>
+                                        <?php }
+                                        else if($feild_name == 'Based Type'){?>
+                                        <td>
+                                        <?php 
+                                        if($val['old_value'] == 1)
+                                        {
+                                            echo 'Asset Based';
+                                        }
+                                        else if($val['old_value'] == 2)
+                                        {
+                                            echo 'Fee Based';
+                                        }
+                                        ?>
+                                        </td>
+                                        <td>
+                                        <?php 
+                                        if($val['new_value'] == 1)
+                                        {
+                                            echo 'Asset Based';
+                                        }
+                                        else if($val['new_value'] == 2)
+                                        {
+                                            echo 'Fee Based';
+                                        }
+                                        ?>
+                                        </td>
+                                        <?php }
+                                        else if($feild_name == 'Stocks, Bonds'){?>
+                                        <td>
+                                        <?php 
+                                        if($val['old_value'] == 1)
+                                        {
+                                            echo 'Listed';
+                                        }
+                                        else if($val['old_value'] == 2)
+                                        {
+                                            echo 'OTC';
+                                        }
+                                        ?>
+                                        </td>
+                                        <td>
+                                        <?php 
+                                        if($val['new_value'] == 1)
+                                        {
+                                            echo 'Listed';
+                                        }
+                                        else if($val['new_value'] == 2)
+                                        {
+                                            echo 'OTC';
+                                        }
+                                        ?>
+                                        </td>
+                                        <?php }
+                                        else if($feild_name == 'Type'){?>
+                                        <td>
+                                        <?php 
+                                        if($val['old_value'] == 1)
+                                        {
+                                            echo 'Government Municipal';
+                                        }
+                                        else if($val['old_value'] == 2)
+                                        {
+                                            echo 'Corporate';
+                                        }
+                                        else if($val['old_value'] == 3)
+                                        {
+                                            echo 'Treasury';
+                                        }
+                                        else if($val['old_value'] == 4)
+                                        {
+                                            echo 'Zero Coupon';
+                                        }
+                                        ?>
+                                        </td>
+                                        <td>
+                                        <?php 
+                                        if($val['new_value'] == 1)
+                                        {
+                                            echo 'Government Municipal';
+                                        }
+                                        else if($val['new_value'] == 2)
+                                        {
+                                            echo 'Corporate';
+                                        }
+                                        else if($val['new_value'] == 3)
+                                        {
+                                            echo 'Treasury';
+                                        }
+                                        else if($val['new_value'] == 4)
+                                        {
+                                            echo 'Zero Coupon';
+                                        }
+                                        ?>
+                                        </td>
+                                        <?php }
+                                        else if($feild_name == 'Variable Annuities'){?>
+                                        <td>
+                                        <?php 
+                                        if($val['old_value'] == 1)
+                                        {
+                                            echo 'Single';
+                                        }
+                                        else if($val['old_value'] == 2)
+                                        {
+                                            echo 'Recurring';
+                                        }
+                                        ?>
+                                        </td>
+                                        <td>
+                                        <?php 
+                                        if($val['new_value'] == 1)
+                                        {
+                                            echo 'Single';
+                                        }
+                                        else if($val['new_value'] == 2)
+                                        {
+                                            echo 'Recurring';
+                                        }
+                                        ?>
+                                        </td>
+                                        <?php }
+                                        else if($feild_name == 'Registration Type'){?>
+                                        <td>
+                                        <?php 
+                                        if($val['old_value'] == 1)
+                                        {
+                                            echo 'Public Real Estate';
+                                        }
+                                        else if($val['old_value'] == 2)
+                                        {
+                                            echo 'Private Real Estate';
+                                        }
+                                        else if($val['old_value'] == 3)
+                                        {
+                                            echo 'Public Oil &amp; Gas';
+                                        }
+                                        else if($val['old_value'] == 4)
+                                        {
+                                            echo 'Private Oil &amp; Gas';
+                                        }
+                                        else if($val['old_value'] == 5)
+                                        {
+                                            echo 'Public Leasing';
+                                        }
+                                        else if($val['old_value'] == 6)
+                                        {
+                                            echo 'Private Leasing';
+                                        }
+                                        else if($val['old_value'] == 7)
+                                        {
+                                            echo 'Public Mortgage';
+                                        }
+                                        else if($val['old_value'] == 8)
+                                        {
+                                            echo 'Private Mortgage';
+                                        }
+                                        else if($val['old_value'] == 9)
+                                        {
+                                            echo 'Public Raw Land';
+                                        }
+                                        else if($val['old_value'] == 10)
+                                        {
+                                            echo 'Private Raw Land';
+                                        }
+                                        else if($val['old_value'] == 11)
+                                        {
+                                            echo 'REIT';
+                                        }
+                                        else if($val['old_value'] == 12)
+                                        {
+                                            echo 'Subsidized Housing';
+                                        }
+                                        ?>
+                                        </td>
+                                        <td>
+                                        <?php 
+                                        if($val['new_value'] == 1)
+                                        {
+                                            echo 'Public Real Estate';
+                                        }
+                                        else if($val['new_value'] == 2)
+                                        {
+                                            echo 'Private Real Estate';
+                                        }
+                                        else if($val['new_value'] == 3)
+                                        {
+                                            echo 'Public Oil &amp; Gas';
+                                        }
+                                        else if($val['new_value'] == 4)
+                                        {
+                                            echo 'Private Oil &amp; Gas';
+                                        }
+                                        else if($val['new_value'] == 5)
+                                        {
+                                            echo 'Public Leasing';
+                                        }
+                                        else if($val['new_value'] == 6)
+                                        {
+                                            echo 'Private Leasing';
+                                        }
+                                        else if($val['new_value'] == 7)
+                                        {
+                                            echo 'Public Mortgage';
+                                        }
+                                        else if($val['new_value'] == 8)
+                                        {
+                                            echo 'Private Mortgage';
+                                        }
+                                        else if($val['new_value'] == 9)
+                                        {
+                                            echo 'Public Raw Land';
+                                        }
+                                        else if($val['new_value'] == 10)
+                                        {
+                                            echo 'Private Raw Land';
+                                        }
+                                        else if($val['new_value'] == 11)
+                                        {
+                                            echo 'REIT';
+                                        }
+                                        else if($val['new_value'] == 12)
+                                        {
+                                            echo 'Subsidized Housing';
+                                        }
+                                        ?>
+                                        </td>
+                                        <?php }
+                                        else if($feild_name == 'Objectives'){?>
+                                        <td>
+                                        <?php 
+                                        if($val['old_value'] == 1)
+                                        {
+                                            echo 'Growth';
+                                        }
+                                        else if($val['old_value'] == 2)
+                                        {
+                                            echo 'Income';
+                                        }
+                                        else if($val['old_value'] == 3)
+                                        {
+                                            echo 'Growth &amp; Income';
+                                        }
+                                        else if($val['old_value'] == 4)
+                                        {
+                                            echo 'Speculative';
+                                        }
+                                        else if($val['old_value'] == 5)
+                                        {
+                                            echo 'Preservation of Capital';
+                                        }
+                                        ?>
+                                        </td>
+                                        <td>
+                                        <?php 
+                                        if($val['new_value'] == 1)
+                                        {
+                                            echo 'Growth';
+                                        }
+                                        else if($val['new_value'] == 2)
+                                        {
+                                            echo 'Income';
+                                        }
+                                        else if($val['new_value'] == 3)
+                                        {
+                                            echo 'Growth &amp; Income';
+                                        }
+                                        else if($val['new_value'] == 4)
+                                        {
+                                            echo 'Speculative';
+                                        }
+                                        else if($val['new_value'] == 5)
+                                        {
+                                            echo 'Preservation of Capital';
+                                        }
+                                        ?>
+                                        </td>
+                                        <?php }
+                                        else if($feild_name == 'Sponsor'){
+                                        $sponsor_fname = $instance->get_sponsor_name($val['old_value']);?>
+                                        <td><?php echo $sponsor_fname['sponsor'];?></td>
+                                        <?php $sponsor_fname = $instance->get_sponsor_name($val['new_value']);?>
+                                        <td><?php echo $sponsor_fname['sponsor'];?></td>
+                                        <?php } else {?>
+                                        <td><?php echo $val['old_value'];?></td>
+                                        <td><?php echo $val['new_value'];?></td>
+                                        <?php } ?>
+                                    </tr>
+                                <?php } ?>
+                              </tbody>
+                            </table>
+                        </div>
+                	</div>
+                    </form>
+                    </div><!-- End of Modal body -->
+                	</div><!-- End of Modal content -->
+                	</div><!-- End of Modal dialog -->
+                </div><!-- End of Modal -->
             
         </div>
     

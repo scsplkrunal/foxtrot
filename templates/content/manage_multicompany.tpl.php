@@ -23,25 +23,20 @@
     			</div>
     		  
             </ul>
-            <div class="tab-content"> 
-            <?php if($action=='edit' && $id>0){?>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group"><br /><div class="selectwrap">
-                                            <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;">&laquo; Previous</a>
-                                            <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a" style="float: right;">Next &raquo;</a>
-                                        </div>
-                                     </div>
-                                     </div>
-                                 </div>
-                                <?php } ?> 
+            <div class="tab-content panel"> 
+            
                 <div class="panel-footer">
-                <div class="selectwrap" style="float: right;">
+                <div class="selectwrap" >
                     <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-        					<input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
-                            <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
+                        <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous"style="float: left;" class="previous next_previous_a" style="float: left;"><input type="button" name="next" value="&laquo; Previous" /></a><?php } ?>
+                        <?php if($_GET['action']=='edit' && $_GET['id']>0){?><input style="margin-left: 18% !important;" type="button" name="view_change" value="View Change" /><?php } ?>
+       					<a href="#company_notes" data-toggle="modal"><input type="button" onclick="get_company_notes();" name="notes" value="Notes" /></a>
+                        <a href="#client_attachment" data-toggle="modal"><input type="button" name="attach" value="Attach" /></a>
+                        <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
+                        <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
+                        <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" style="float: right;" class="next next_previous_a" style="float: right;"><input type="button" name="previous" value="Next &raquo;" /></a><?php } ?>
                 </div><br />
-           </div>         
+           </div>        
                 <div class="tab-pane active" id="tab_aa">
                     <div class="row">
                         <div class="col-md-12">
@@ -351,26 +346,21 @@
                                 </label>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label></label><br />
-                                <a href="#company_notes" data-toggle="modal"><input type="button" onclick="get_company_notes();" name="notes" value="Notes" /></a>
-                                <a href="#client_attachment" data-toggle="modal"><input type="button" name="attach" value="Attach" /></a>
-                            </div>
-                         </div>
-                    </div>
-                    
-                    
                 </div>
                 <div class="panel-footer">
-                        <div class="selectwrap">
-                            <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-        					<input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
-                            <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
-                        </div>
-                   </div>
-            </div>                
+                    <div class="selectwrap" >
+                        <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
+                            <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous"style="float: left;" class="previous next_previous_a" style="float: left;"><input type="button" name="next" value="&laquo; Previous" /></a><?php } ?>
+                        <?php if($_GET['action']=='edit' && $_GET['id']>0){?><input style="margin-left: 18% !important;" type="button" name="view_change" value="View Change" /><?php } ?>
+       					<a href="#company_notes" data-toggle="modal"><input type="button" onclick="get_company_notes();" name="notes" value="Notes" /></a>
+                        <a href="#client_attachment" data-toggle="modal"><input type="button" name="attach" value="Attach" /></a>
+                        <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
+                        <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
+                        <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" style="float: right;" class="next next_previous_a" style="float: right;"><input type="button" name="previous" value="Next &raquo;" /></a><?php } ?>
+                    </div><br />
+                </div>
+                </div>                    
+                            
         </form> 
         </div>
         </div>

@@ -5,28 +5,28 @@
 <div class="tab-content col-md-12">
 <?php
 if($action=='add_new'||($action=='edit' && $id>0)){
-    ?>
-    <?php if($action=='edit' && $id>0){?>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="form-group"><br /><div class="selectwrap">
-                <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;">&laquo; Previous</a>
-                <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a" style="float: right;">Next &raquo;</a>
-            </div>
-         </div>
-         </div>
-     </div>
-    <?php } ?>
-    <br />
-    <div class="row">
-        <div class="col-md-4" style="float:right;">
-            <div class="form-group">
-                <a href="#branch_notes" data-toggle="modal"><input type="button" style="float: right;" onclick="get_branch_notes();" name="notes" value="Notes" /></a>
-            </div>
-         </div>
-   </div><br />
+    ?><form name="frm2" method="POST">
+    <div class="panel-footer">
+        <div class="selectwrap">
+            <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
+            <?php if($action=='edit' && $id>0){?>
+            <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" style="float: left;"><input type="button" value="&laquo; Previous" style="float: right;"/></a>
+            <?php } ?>
+            <?php if($action=='edit' && $id>0){?>
+            <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 10%;"/></a>
+            <?php } ?>
+            <a href="#branch_notes" data-toggle="modal"><input type="button" onclick="get_branch_notes();" name="notes" value="Notes" /></a>
+            <a href="#" data-toggle="modal"><input type="button" value="Attachments" /></a>
+            <a href="#" data-toggle="modal"><input type="button" value="Transactions" /></a><input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
+            <a href="<?php echo CURRENT_PAGE.'?action=view';?>"><input type="button" name="cancel" value="Cancel" style="margin-right: 8%;" /></a>
+            
+            <?php if($action=='edit' && $id>0){?>
+            <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" style="float: right;"><input type="button" value="Next &raquo;" style="float: right;"/></a>
+            <?php } ?>
+        </div><br />
+   </div>
     <div class="panel">            
-    <form name="frm2" method="POST">
+    
        <div class="panel-heading">
             <div class="panel-control" style="float: right;">
 				<div class="btn-group dropdown">
@@ -61,6 +61,12 @@ if($action=='add_new'||($action=='edit' && $id>0)){
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
+                    <label>Contact </label><br />
+                    <input type="text" maxlength="40" class="form-control" name="contact" value="<?php echo $contact;?>"  />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
                     <label>Status </label><br />
                     <select class="form-control" name="b_status">
                         <option value="0">Select Status</option>
@@ -72,12 +78,6 @@ if($action=='add_new'||($action=='edit' && $id>0)){
                         <option value="6" <?php if($b_status==6){echo "selected='selected'";} ?>>Financial Institution - HQ</option>
                         <option value="7" <?php if($b_status==7){echo "selected='selected'";} ?>>State Branch</option>
                     </select>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>Contact </label><br />
-                    <input type="number" maxlength="40" class="form-control" name="contact" value="<?php echo $contact;?>"  />
                 </div>
             </div>
         </div>
@@ -92,14 +92,6 @@ if($action=='add_new'||($action=='edit' && $id>0)){
                 <div class="form-group">
                     <label>Non-Registered </label><br />
                     <input type="checkbox" name="non_registered" id="non_registered" class="checkbox" value="1" <?php if($non_registered>0){echo "checked='checked'";}?>/>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>FINRA Fee </label><br />
-                    <input type="text" onblur="round(this.value)" maxlength="50" class="form-control" name="finra_fee" id="finra_fee" value="<?php echo $finra_fee;?>"  />
                 </div>
             </div>
         </div>
@@ -189,13 +181,13 @@ if($action=='add_new'||($action=='edit' && $id>0)){
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Email </label><br />
-                    <input type="text" maxlength="50" class="form-control" name="email" value="<?php echo $email;?>"  />
+                    <input type="text" maxlength="50" class="form-control" name="email" value="<?php echo $email;?>" placeholder="yourmail@domain.com" />
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Website </label><br />
-                    <input type="text" maxlength="50" class="form-control" name="website" value="<?php echo $website;?>"  />
+                    <input type="text" maxlength="50" class="form-control" name="website" value="<?php echo $website;?>" placeholder="www.website.com" />
                 </div>
             </div>
         </div>
@@ -268,31 +260,37 @@ if($action=='add_new'||($action=='edit' && $id>0)){
                     </div>
                 </div>
             </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>FINRA Fee </label><br />
+                    <input type="text" onblur="round(this.value)" maxlength="50" class="form-control" name="finra_fee" id="finra_fee" value="<?php echo $finra_fee;?>"  />
+                </div>
+            </div>
         </div>
        </div>
        <div class="panel-footer">
             <div class="selectwrap">
                 <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-				<input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
-                <a href="<?php echo CURRENT_PAGE.'?action=view';?>"><input type="button" name="cancel" value="Cancel" /></a>
                 <?php if($action=='edit' && $id>0){?>
-                <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="float: right;"/></a>
+                <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" style="float: left;"><input type="button" value="&laquo; Previous" style="float: right;"/></a>
+                <?php } ?>
+                <?php if($action=='edit' && $id>0){?>
+                <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 10%;"/></a>
+                <?php } ?>
+                <a href="#branch_notes" data-toggle="modal"><input type="button" onclick="get_branch_notes();" name="notes" value="Notes" /></a>
+                <a href="#" data-toggle="modal"><input type="button" value="Attachments" /></a>
+                <a href="#" data-toggle="modal"><input type="button" value="Transactions" /></a>
+				
+                <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
+                <a href="<?php echo CURRENT_PAGE.'?action=view';?>"><input type="button" name="cancel" value="Cancel" /></a>
+                
+                <?php if($action=='edit' && $id>0){?>
+                <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" style="float: right;"><input type="button" value="Next &raquo;" style="float: right;"/></a>
                 <?php } ?>
             </div><br />
        </div>
-    </form>
-    </div>
-    <?php if($action=='edit' && $id>0){?>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="form-group"><br /><div class="selectwrap">
-                <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;">&laquo; Previous</a>
-                <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a" style="float: right;">Next &raquo;</a>
-            </div>
-         </div>
-         </div>
-     </div>
-    <?php } ?>
+    
+    </div></form>
     <?php
         }else{?>
     <div class="panel">
@@ -423,19 +421,43 @@ if($action=='add_new'||($action=='edit' && $id>0)){
 ','date_terminated' => 'Date Terminated','finra_start_date' => 'FINRA Start Date','finra_end_date' => 'FINRA End Date','last_audit_date' => 'Last Audit Date');
                 foreach($branch_data as $key=>$val){
                     
-                    if(isset($lable_array[$val['feild_changed']])){
-                        $feild_name = $lable_array[$val['feild_changed']];
+                    if(isset($lable_array[$val['field']])){
+                        $feild_name = $lable_array[$val['field']];
                     }else {
-                        $feild_name = $val['feild_changed'];
+                        $feild_name = $val['field'];
                     }?>
                     <tr>
                     
                         <td><?php echo ++$count; ?></td>
                         <td><?php echo $val['user_initial'];?></td>
-                        <td><?php echo date('m/d/Y',strtotime($val['created_time']));?></td>
+                        <td><?php echo date('m/d/Y',strtotime($val['modified_time']));?></td>
                         <td><?php echo $feild_name;?></td>
-                        <td><?php echo $val['previous_value'];?></td>
+                        <?php 
+                        if($feild_name == 'OSJ' && $val['old_value'] == 0){?>
+                        <td><?php echo 'UnChecked';?></td>
+                        <td><?php echo 'Checked';?></td>
+                        <?php } 
+                        else if($feild_name == 'OSJ' && $val['old_value'] == 1){?>
+                        <td><?php echo 'Checked';?></td>
+                        <td><?php echo 'UnChecked';?></td>
+                        <?php }
+                        else if($feild_name == 'Non-Registered' && $val['old_value'] == 0){?>
+                        <td><?php echo 'UnChecked';?></td>
+                        <td><?php echo 'Checked';?></td>
+                        <?php } 
+                        else if($feild_name == 'Non-Registered' && $val['old_value'] == 1){?>
+                        <td><?php echo 'Checked';?></td>
+                        <td><?php echo 'UnChecked';?></td>
+                        <?php }
+                        else if($feild_name == 'Manager'){
+                        $broker_fname = $instance->get_broker_name($val['old_value']);?>
+                        <td><?php echo $broker_fname['broker'];?></td>
+                        <?php $broker_fname = $instance->get_broker_name($val['new_value']);?>
+                        <td><?php echo $broker_fname['broker'];?></td>
+                        <?php } else {?>
+                        <td><?php echo $val['old_value'];?></td>
                         <td><?php echo $val['new_value'];?></td>
+                        <?php } ?>
                     </tr>
                 <?php } ?>
               </tbody>

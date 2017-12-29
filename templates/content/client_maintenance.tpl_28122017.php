@@ -112,34 +112,35 @@ $(document).on('click','.remove-row',function(){
     									<li><a href="<?php echo CURRENT_PAGE; ?>"><i class="fa fa-eye"></i> View List</a></li>
     								</ul>
     							</div>
-    						</ul><form method="post">
-                            <div class="panel-footer"><br />
-                                    <div class="selectwrap">
-                                        <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;"><input type="button" name="previos" value="&laquo; Previous" /></a><?php } ?>
-                                        <?php if($_GET['action']=='edit' && $_GET['id']>0){?><input style="margin-left: 6% !important;" type="button" name="view_change" value="View Change" /><?php } ?>
-                                        <a href="#client_notes" data-toggle="modal"><input type="button" onclick="get_client_notes();" name="notes" value="Notes" /></a>
-                                        <a href="#client_transactions" data-toggle="modal"><input type="button" name="transactions" value="Transactions" /></a>
-                                        <a href="#joint_account" data-toggle="modal"><input type="button" name="joint_account" value="Joint Account" /></a>
-                                        <a href="#client_attachment" data-toggle="modal"><input type="button" name="attach" value="Attach" /></a>
-                                        <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
-                                        <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
-                                        <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a" style="float: right;"><input type="button" name="next" value="Next &raquo;" /></a><?php } ?>
-                                    </div>
-                                 </div>
-                                <br />
+    						</ul>
+                            
                             <!-- Tab 1 is started -->
                             <div class="tab-content">
-                                
+                                <?php if($action=='edit' && $id>0){?>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group"><br /><div class="selectwrap">
+                                            <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;">&laquo; Previous</a>
+                                            <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a" style="float: right;">Next &raquo;</a>
+                                        </div>
+                                     </div>
+                                     </div>
+                                 </div>
+                                <?php } ?>
+                                <br />
                                 <div class="row">
                                     <div class="col-md-4" style="float: right;">
                                         <div class="form-group">
-                                            
+                                            <a href="#client_notes" data-toggle="modal"><input type="button" onclick="get_client_notes();" name="notes" value="Notes" /></a>
+                                            <a href="#client_transactions" data-toggle="modal"><input type="button" name="transactions" value="Transactions" /></a>
+                                            <a href="#joint_account" data-toggle="modal"><input type="button" name="joint_account" value="Joint Account" /></a>
+                                            <a href="#client_attachment" data-toggle="modal"><input type="button" name="attach" value="Attach" /></a><br />
                                         </div>
                                      </div>
                                  </div>
                                 
                                 <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="primary"){ echo "active"; }else if(!isset($_GET['tab'])){echo "active";}else{ echo '';} ?>" id="tab_aa">
-                                
+                                <form method="post">
                                     <div class="panel-overlay-wrap">
                                             <div class="panel">
                                                <div class="panel-heading">
@@ -396,18 +397,26 @@ $(document).on('click','.remove-row',function(){
                                                     </div>
                                                 </div>
                                             </div>
+                                            
                                             </div>
                                             <div class="panel-overlay">
                                                 <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
                                             </div>
+                                            <div class="panel-footer">
+                                                <div class="selectwrap">
                                                     <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-                                            
+                                					<input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
+                                                    <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
+                                                </div>
+                                           </div>
                                         </div>
                                     </div>
+                                   </form>
                                 </div>
                                 
                                 <!-- Tab 1 is ends -->
                                 <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="employment"){ echo "active"; } ?>" id="tab_bb">
+                                <form method="post">
                                         <div class="panel-overlay-wrap">
                                             <div class="panel">
                                                <div class="panel-heading">
@@ -566,11 +575,13 @@ $(document).on('click','.remove-row',function(){
                                             <div class="panel-footer">
                                                 <div class="selectwrap">
                                                     <input type="hidden" name="employment_id" id="employment_id" value="<?php echo $id;?>" />
+                                					<input type="submit" name="employment" onclick="waitingDialog.show();" value="Save"/>	
+                                                    <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                                                 </div>
                                            </div>
                                         </div>
                                     </div>
-                              
+                                </form>
                                 </div>
                                 <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="objectives"){ echo "active"; } ?>" id="tab_cc">
                                    
@@ -588,7 +599,7 @@ $(document).on('click','.remove-row',function(){
                                                         <form id="add_all_objectives" name="add_all_objectives" method="post">
                                                         <?php foreach($get_objectives as $key=>$val){
                                                             ?>
-                                                            <?php 
+                                                            <?php
                                                             $obj_id = $val['id'];//echo '<pre>';print_r($trans_check_id);
                                                             if(!in_array($obj_id, $objectives_check_id)){?>
                                                            
@@ -663,8 +674,11 @@ $(document).on('click','.remove-row',function(){
                                     </div>
                                 
                                 </div>
+                                <style>
+  
+                                </style>
                                 <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="account_no"){ echo "active"; } ?>" id="tab_dd">
-                                  
+                                   <form method="post">
                                         <div class="panel-overlay-wrap">
                                             <div class="panel">
                                                <div class="panel-heading">
@@ -735,11 +749,13 @@ $(document).on('click','.remove-row',function(){
                                             <div class="panel-footer">
                                                 <div class="selectwrap">
                                                     <input type="hidden" name="account_id" id="account_id" value="<?php echo $id;?>" />
+                                					<input type="submit" name="account" onclick="waitingDialog.show();" value="Save"/>	
+                                                    <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                                                 </div>
                                            </div>
                                         </div>
                                     </div>
-                                
+                                </form>
                                 </div>
                                 <!--<div class="tab-pane " id="tab_ee">
                                     
@@ -785,7 +801,7 @@ $(document).on('click','.remove-row',function(){
                               
                                 </div>-->
                                 <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="suitability"){ echo "active"; } ?>" id="tab_ff">
-                                    
+                                    <form method="post">
                                         <div class="panel-overlay-wrap">
                                             <div class="panel">
                                                <div class="panel-heading">
@@ -964,27 +980,27 @@ $(document).on('click','.remove-row',function(){
                                             <div class="panel-footer">
                                                 <div class="selectwrap">
                                                     <input type="hidden" name="suitability_id" id="suitability_id" value="<?php echo $id;?>" />
+		                         			       <input type="submit" onclick="waitingDialog.show();" name="suitability" value="Save"/>	
+                                                    <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                                                 </div>
                                            </div>
                                         </div>
                                     </div>
-                                  
+                                  </form>
                                 </div>
+                                <?php if($action=='edit' && $id>0){?>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group"><br /><div class="selectwrap">
+                                            <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;">&laquo; Previous</a>
+                                            <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a" style="float: right;">Next &raquo;</a>
+                                        </div>
+                                     </div>
+                                     </div>
+                                 </div>
+                                <?php } ?>
                                  
                             </div>
-                            <div class="panel-footer"><br />
-                                    <div class="selectwrap">
-                                        <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;"><input type="button" name="previos" value="&laquo; Previous" /></a><?php } ?>
-                                        <?php if($_GET['action']=='edit' && $_GET['id']>0){?><input style="margin-left: 6% !important;" type="button" name="view_change" value="View Change" /><?php } ?>
-                                        <a href="#client_notes" data-toggle="modal"><input type="button" onclick="get_client_notes();" name="notes" value="Notes" /></a>
-                                        <a href="#client_transactions" data-toggle="modal"><input type="button" name="transactions" value="Transactions" /></a>
-                                        <a href="#joint_account" data-toggle="modal"><input type="button" name="joint_account" value="Joint Account" /></a>
-                                        <a href="#client_attachment" data-toggle="modal"><input type="button" name="attach" value="Attach" /></a>
-                                        <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
-                                        <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
-                                        <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a" style="float: right;"><input type="button" name="next" value="Next &raquo;" /></a><?php } ?>
-                                    </div>
-                                 </div></form>
                         <?php
                     }else{?>
                     <div class="panel">
@@ -1324,6 +1340,32 @@ $(document).on('click','.remove-row',function(){
 		  </div><!-- End of Modal -->
     </div>
 </div>
+<style>
+.next_previous_a {
+    text-decoration: none;
+    display: inline-block;
+    padding: 8px 16px;
+}
+
+.next_previous_a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.previous {
+    background-color: #f1f1f1;
+    color: black;
+}
+
+.next {
+    background-color: #ef7623;
+    color: white;
+}
+
+.round {
+    border-radius: 50%;
+}
+</style>
 <script>
 function open_newnotes()
 {
