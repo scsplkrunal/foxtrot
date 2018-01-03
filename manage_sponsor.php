@@ -121,7 +121,64 @@
             header('location:'.CURRENT_PAGE.'?action=view_sponsor');exit;
         }
     }
-     else if(isset($_GET['send'])&&$_GET['send']=='previous' && isset($_GET['id'])&&$_GET['id']>0 && $_GET['id']!='')
+    else if(isset($_POST['add_notes'])&& $_POST['add_notes']=='Add Notes'){
+        $_POST['user_id']=$_SESSION['user_name'];
+        $_POST['date'] = date('Y-m-d');
+       
+        $return = $instance->insert_update_sponsor_notes($_POST);
+        
+        if($return===true){
+            echo '1';exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+        echo $error;
+        exit;
+    } 
+    else if(isset($_GET['delete_action'])&&$_GET['delete_action']=='delete_notes'&&isset($_GET['note_id'])&&$_GET['note_id']>0)
+    {
+        $note_id = $instance->re_db_input($_GET['note_id']);
+        $return = $instance->delete_notes($note_id);
+        if($return===true){
+            echo '1';exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+        echo $error;
+        exit;
+    } 
+    else if(isset($_POST['add_attach'])&& $_POST['add_attach']=='Add Attach'){//print_r($_FILES);exit;
+        $_POST['user_id']=$_SESSION['user_name'];
+        $_POST['date'] = date('Y-m-d');
+        $file = isset($_FILES['add_attach'])?$_FILES['add_attach']:array();
+        
+        $return = $instance->insert_update_sponsor_attach($_POST);
+        
+        if($return===true){
+            echo '1';exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+        echo $error;
+        exit;
+    }
+    else if(isset($_GET['delete_action'])&&$_GET['delete_action']=='delete_attach'&&isset($_GET['attach_id'])&&$_GET['attach_id']>0)
+    {
+        $attach_id = $instance->re_db_input($_GET['attach_id']);
+        $return = $instance->delete_attach($attach_id);
+        if($return===true){
+            echo '1';exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+        echo $error;
+        exit;
+    }
+    else if(isset($_GET['send'])&&$_GET['send']=='previous' && isset($_GET['id'])&&$_GET['id']>0 && $_GET['id']!='')
     {
         $id = $instance->re_db_input($_GET['id']);
         

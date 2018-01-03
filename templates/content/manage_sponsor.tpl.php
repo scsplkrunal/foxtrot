@@ -45,97 +45,7 @@ $(document).on('click','.remove-row',function(){
 <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
 <div class="col-lg-12 well">
 
-<!-- Lightbox strart -->							
-<!-- Modal for add client notes -->
-    	<div id="client_notes" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-    		<div class="modal-dialog">
-    		<div class="modal-content">
-    		<div class="modal-header" style="margin-bottom: 0px !important;">
-    			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-    			<h4 class="modal-title">Client's Notes</h4>
-    		</div>
-    		<div class="modal-body">
-            <form method="post" id="product_notes" onsubmit="return formsubmitnotes();">
-            <div class="inputpopup">
-                <a class="btn btn-sm btn-success" style="float: right !important; margin-right: 5px !important;" onclick="addMoreNotes();"><i class="fa fa-plus"></i> Add New</a></li>
-    		</div>
-            <div class="inputpopup">
-                <div class="table-responsive" id="table-scroll" style="margin: 0px 5px 0px 5px;">
-                    <table class="table table-bordered table-stripped table-hover">
-                        <thead>
-                            <th>#NO</th>
-                            <th>Date</th>
-                            <th>User</th>
-                            <th>Notes</th>
-                            <th class="text-center">Action</th>
-                        </thead>
-                        <tbody>
-                            <tr id="add_row_notes">
-                                <td>1</td>
-                                <td><?php echo date('d/m/Y');?></td>
-                                <td><?php echo $_SESSION['user_name'];?></td>
-                                <td><input type="text" name="product_note" class="form-control" id="product_note"/></td>
-                                <td class="text-center">
-                                   <a href="<?php echo CURRENT_PAGE; ?>?action=add" class="btn btn-sm btn-warning"><i class="fa fa-save"></i> Save</a>
-                                   <a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=" class="btn btn-sm btn-primary" ><i class="fa fa-edit"></i> Edit</a>
-                                   <a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
-                                </td>
-                            </tr>
-                      </tbody>
-                    </table>
-                </div>
-    		</div>
-            </form>
-            </div><!-- End of Modal body -->
-    		</div><!-- End of Modal content -->
-    		</div><!-- End of Modal dialog -->
-    </div><!-- End of Modal -->
-    <!-- Lightbox strart -->							
-    <!-- Modal for attach -->
-    	<div id="client_attachment" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-    		<div class="modal-dialog">
-    		<div class="modal-content">
-    		<div class="modal-header" style="margin-bottom: 0px !important;">
-    			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-    			<h4 class="modal-title">Attachments</h4>
-    		</div>
-    		<div class="modal-body">
-            <form method="post">
-            <div class="inputpopup">
-                <a class="btn btn-sm btn-success" style="float: right !important; margin-right: 5px !important;" onclick="addMoreAttach();"><i class="fa fa-plus"></i> Add New</a></li>
-    		</div>
-            <div class="inputpopup">
-                <div class="table-responsive" id="table-scroll" style="margin: 0px 5px 0px 5px;">
-                    <table class="table table-bordered table-stripped table-hover">
-                        <thead>
-                            <th>#NO</th>
-                            <th>Date</th>
-                            <th>User</th>
-                            <th>Files Name</th>
-                            <th class="text-center">Action</th>
-                        </thead>
-                        <tbody>
-                            <tr id="add_row_attach">
-                                <td>1</td>
-                                <td><?php echo date('d/m/Y');?></td>
-                                <td><?php echo $_SESSION['user_name'];?></td>
-                                <td><input type="file" name="attach" class="form-control" id="attach"/></td>
-                                <td class="text-center">
-                                   <a href="<?php echo CURRENT_PAGE; ?>?action=add&id=" class="btn btn-sm btn-warning" onclick="waitingDialog.show();"><i class="fa fa-save"></i> Ok</a>
-                                   <a href="<?php echo CURRENT_PAGE; ?>?action=download&id=" class="btn btn-sm btn-success"><i class="fa fa-download"></i> Download</a>
-                                   <a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
-                                </td>
-                            </tr>
-                      </tbody>
-                    </table>
-                </div>
-    		</div>
-            </form>
-            </div><!-- End of Modal body -->
-    		</div><!-- End of Modal content -->
-    		</div><!-- End of Modal dialog -->
-      </div><!-- End of Modal -->
-      
+
     <?php  
     
     if((isset($_GET['action']) && $_GET['action']=='add_sponsor') || (isset($_GET['action']) && ($_GET['action']=='edit_sponsor' && $sponsor_id>0))){
@@ -148,6 +58,9 @@ $(document).on('click','.remove-row',function(){
                         <?php if($action=='edit_sponsor' && $sponsor_id>0){?>
                         <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 10%;"/></a>
                         <?php } ?>
+                        <a href="#sponsor_notes" data-toggle="modal"><input type="button" onclick="get_sponsor_notes();" name="notes" value="Notes" /></a>
+                        <a href="#sponsor_attach" data-toggle="modal"><input type="button"  onclick="get_sponsor_attach();" name="attach" value="Attachments" /></a>
+                        <a href="#" data-toggle="modal"><input type="button" value="Transactions" /></a>
                         <input type="submit" name="sponser" onclick="waitingDialog.show();" value="Save"/>	
                         <a href="<?php echo CURRENT_PAGE.'?action=view_sponsor';?>"><input type="button" name="cancel" value="Cancel" /></a>
                         <?php if($_GET['action']=='edit_sponsor' && $_GET['sponsor_id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=next" class="next next_previous_a" style="float: right;"><input type="button" name="next" value="Next &raquo;" /></a><?php } ?>
@@ -316,20 +229,16 @@ $(document).on('click','.remove-row',function(){
                 </div>
             </div>
            </div>
-           <div class="panel-footer">
-                <div class="selectwrap">
-                    <input type="hidden" name="sponsor_id" id="sponsor_id" value="<?php echo $sponsor_id; ?>" />
-    				<input type="submit" name="sponser" onclick="waitingDialog.show();" value="Save"/>	
-                    <a href="<?php echo CURRENT_PAGE.'?action=view_sponsor';?>"><input type="button" name="cancel" value="Cancel" /></a>
-                </div><br />
-           </div>
-        <div class="row">
+           <div class="row">
                 <div class="col-md-12">
                     <div class="form-group"><br /><div class="selectwrap">
                         <?php if($_GET['action']=='edit_sponsor' && $_GET['sponsor_id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=previous" class="previous next_previous_a" style="float: left;"><input type="button" name="previous" value="&laquo; Previous" /></a><?php } ?>
                         <?php if($action=='edit_sponsor' && $sponsor_id>0){?>
                         <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 10%;"/></a>
                         <?php } ?>
+                        <a href="#sponsor_notes" data-toggle="modal"><input type="button" onclick="get_sponsor_notes();" name="notes" value="Notes" /></a>
+                        <a href="#sponsor_attach" data-toggle="modal"><input type="button"  onclick="get_sponsor_attach();" name="attach" value="Attachments" /></a>
+                        <a href="#" data-toggle="modal"><input type="button" value="Transactions" /></a>
                         <input type="submit" name="sponser" onclick="waitingDialog.show();" value="Save"/>	
                         <a href="<?php echo CURRENT_PAGE.'?action=view_sponsor';?>"><input type="button" name="cancel" value="Cancel" /></a>
                         <?php if($_GET['action']=='edit_sponsor' && $_GET['sponsor_id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=next" class="next next_previous_a" style="float: right;"><input type="button" name="next" value="Next &raquo;" /></a><?php } ?>
@@ -337,7 +246,7 @@ $(document).on('click','.remove-row',function(){
                     </div>
                  </div>
                  </div>
-             </div>
+             </div></div>
         </form>
         <?php
             }if((isset($_GET['action']) && $_GET['action']=='view_sponsor') || $action=='view_sponsor'){?>
@@ -483,47 +392,212 @@ $(document).on('click','.remove-row',function(){
 	</div><!-- End of Modal content -->
 	</div><!-- End of Modal dialog -->
 </div><!-- End of Modal -->           
-                                              
+<!-- Lightbox strart -->							
+	<!-- Modal for add client notes -->    
+	<div id="sponsor_notes" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog">
+		<div class="modal-content">
+		<div class="modal-header" style="margin-bottom: 0px !important;">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+			<h4 class="modal-title">Sponsor's Notes</h4>
+		</div>
+		<div class="modal-body">
+        
+        <div class="inputpopup">
+            <a class="btn btn-sm btn-success" style="float: right !important; margin-right: 5px !important;" onclick="open_newnotes();"><i class="fa fa-plus"></i> Add New</a></li>
+		</div>
+        
+        <div class="col-md-12">
+            <div id="msg_notes">
+            </div>
+        </div>
+       
+        <div class="inputpopup">
+            <div class="table-responsive" id="ajax_notes" style="margin: 0px 5px 0px 5px;">
+                
+            </div>
+		</div>
+        </div><!-- End of Modal body -->
+		</div><!-- End of Modal content -->
+		</div><!-- End of Modal dialog -->
+</div><!-- End of Modal -->
+<!-- Lightbox strart -->							
+	<!-- Modal for add client notes -->
+	<div id="sponsor_attach" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog">
+		<div class="modal-content">
+		<div class="modal-header" style="margin-bottom: 0px !important;">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+			<h4 class="modal-title">Sponsor's Attach</h4>
+		</div>
+		<div class="modal-body">
+        
+        <div class="inputpopup">
+            <a class="btn btn-sm btn-success" style="float: right !important; margin-right: 5px !important;" onclick="open_newattach();"><i class="fa fa-plus"></i> Add New</a></li>
+		</div>
+        
+        <div class="col-md-12">
+            <div id="msg_attach">
+            </div>
+        </div>
+       
+        <div class="inputpopup">
+            <div class="table-responsive" id="ajax_attach" style="margin: 0px 5px 0px 5px;">
+                
+            </div>
+		</div>
+        </div><!-- End of Modal body -->
+		</div><!-- End of Modal content -->
+		</div><!-- End of Modal dialog -->
+</div><!-- End of Modal -->                                              
     </div>
 </div>
 
 <script>
-//submit add product notes form data
-function formsubmitnotes()
+function open_newnotes()
 {
-    $('#msgnotes').html('<div class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Please wait...</div>');
+    document.getElementById("add_row_notes").style.display = "";
+}
+function open_newattach()
+{
+    document.getElementById("add_row_attach").style.display = "";
+}
+</script>
+<script>
+function get_sponsor_attach(){
+    
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) 
+            {
+                document.getElementById("ajax_attach").innerHTML = this.responseText;
+            }
+        };
+        xmlhttp.open("GET", "ajax_sponsor_attach.php", true);
+        xmlhttp.send();
+}
+function get_sponsor_notes(){
+    
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) 
+            {
+                console.info(this.responseText);
+                document.getElementById("ajax_notes").innerHTML = this.responseText;
+            }
+        };
+        xmlhttp.open("GET", "ajax_sponsor_notes.php", true);
+        xmlhttp.send();
+}
+function openedit(note_id){
+    
+    var frm_element = document.getElementById("add_sponsor_notes_"+note_id);
+    //var ele = frm_element.getElementById("client_note");
+    name = frm_element.elements["sponsor_note"].removeAttribute("style"); 
+    //$(name).css('pointer-events','');
+    console.log(name);
+}
+</script>
+<script>
+//submit share form data
+function notessubmit(note_id)
+{
+   $('#msg').html('<div class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Please wait...</div>');
+    
+   var url = "manage_sponsor.php"; // the script where you handle the form input.
+   //alert("#add_client_notes_"+note_id);
+   $.ajax({
+      type: "POST",
+      url: url,
+      data: $("#add_sponsor_notes_"+note_id).serialize(), // serializes the form's elements.
+      success: function(data){
+          if(data=='1'){
+            
+            get_sponsor_notes();
+            $('#msg_notes').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Data Successfully Saved.</div>');
+            //window.location.href = "client_maintenance.php";//get_client_notes();   
+          }
+          else{
+               $('#msg_notes').html('<div class="alert alert-danger">'+data+'</div>');
+          }
+          
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+           $('#msg_notes').html('<div class="alert alert-danger">Something went wrong, Please try again.</div>')
+      }
+      
+   });
 
-    var url = "product_cate.php"; // the script where you handle the form input.
-    //alert($("#add_notes").serialize());
-    $.ajax({
-       type: "POST",
-       url: url,
-       data: $("#product_notes").serialize(), // serializes the form's elements.
-       success: function(data){
-           if(data=='1'){
-                window.location.href = "product_cate.php";
-                
-                /*$('#msgnotes').html('<div class="alert alert-success">Thank you.</div>');
-                $('#add_notes')[0].reset();
-                setTimeout(function(){
-    				$('#myModalShare').modal('hide');				
-    			}, 2000);*/
-                
-           }
-           else{
-                $('#msgnotes').html('<div class="alert alert-danger">'+data+'</div>');
-           }
-           
-       },
-       error: function(XMLHttpRequest, textStatus, errorThrown) {
-            $('#msgnotes').html('<div class="alert alert-danger">Something went wrong, Please try again.</div>')
-       }
-       
-    });
-
-    //e.preventDefault(); // avoid to execute the actual submit of the form.
-    return false;
+   //e.preventDefault(); // avoid to execute the actual submit of the form.
+   return false;       
+}
+function attachsubmit(attach_id)
+{ 
+        var myForm = document.getElementById('add_client_attach_'+attach_id);
+        form_data = new FormData(myForm);
+        $.ajax({
+            url: 'manage_sponsor.php', // point to server-side PHP script 
+            
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            type: 'post',
+            success: function(data){
+                  if(data=='1'){
+                    
+                    get_sponsor_attach();
+                    $('#msg_attach').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Data Successfully Saved.</div>');
+                    //window.location.href = "client_maintenance.php";//get_client_attach();   
+                  }
+                  else{alert(data);
+                       $('#msg_attach').html('<div class="alert alert-danger">'+data+'</div>');
+                  } 
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                   $('#msg_attach').html('<div class="alert alert-danger">Something went wrong, Please try again.</div>')
+              }
+        });
+               
         
+   return false; 
+       
+}
+function delete_notes(note_id){
+    
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var data = this.responseText;
+                if(data=='1'){
+                   get_sponsor_notes(); 
+                   $('#msg_notes').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Note deleted Successfully.</div>');
+                  }
+                  else{
+                       $('#msg_notes').html('<div class="alert alert-danger">'+data+'</div>');
+                  } 
+            }
+        };
+        xmlhttp.open("GET", "manage_sponsor.php?delete_action=delete_notes&note_id="+note_id, true);
+        xmlhttp.send();
+}
+function delete_attach(attach_id){
+    
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var data = this.responseText;
+                if(data=='1'){
+                   get_sponsor_attach(); 
+                   $('#msg_attach').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Attach deleted Successfully.</div>');
+                  }
+                  else{
+                       $('#msg_attach').html('<div class="alert alert-danger">'+data+'</div>');
+                  }
+            }
+        };
+        xmlhttp.open("GET", "manage_sponsor.php?delete_action=delete_attach&attach_id="+attach_id, true);
+        xmlhttp.send();
 }
 
 $('#demo-dp-range .input-daterange').datepicker({

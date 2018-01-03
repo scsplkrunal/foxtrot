@@ -38,51 +38,6 @@ $(document).on('click','.remove-row',function(){
     $(this).closest('.row').remove();
 });
 </script>
-<script>
-function addMoreNotes(){
-    var html = '<tr class="add_row_notes">'+
-                    '<td><?php echo date('d/m/Y');?></td>'+
-                    '<input type="hidden" name="date" id="date" value="<?php echo date('d/m/Y');?>"/>'+
-                    '<td><?php echo $_SESSION['user_name'];?></td>'+
-                    '<input type="hidden" name="user_id" id="user_id" value="<?php echo $_SESSION['user_id'];?>"/>'+
-                    '<td><input type="text" name="client_note" class="form-control" id="client_note"/></td>'+
-                    '<td class="text-center">'+
-                    '<input type="hidden" name="notes_id" id="notes_id" value=""/>'+
-                    '<input type="hidden" name="add_notes" value="Add Notes" />'+
-                    '<button type="submit" class="btn btn-sm btn-warning" name="add_notes" value="Add Notes"><i class="fa fa-save"></i> Save</button>&nbsp;'+
-                    '<a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>&nbsp;'+
-                    '<a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>'+
-                    '</td>'+
-                '</tr>';
-                
-            
-    $(html).insertAfter('#add_row_notes');
-}
-$(document).on('click','.remove-row',function(){
-    $(this).closest('tr').remove();
-});
-</script>
-<script>
-function addMoreAttach(){
-    var html = '<tr class="add_row_attach">'+
-                    '<td>2</td>'+
-                    '<td><?php echo date('d/m/Y');?></td>'+
-                    '<td><?php echo $_SESSION['user_name'];?></td>'+
-                    '<td><input type="file" name="attach" class="form-control" id="attach"/></td>'+
-                    '<td class="text-center">'+
-                    '<a href="<?php echo CURRENT_PAGE; ?>?action=add&id=" class="btn btn-sm btn-warning"><i class="fa fa-save"></i> Ok</a>&nbsp;'+
-                    '<a href="<?php echo CURRENT_PAGE; ?>?action=download&id=" class="btn btn-sm btn-success"><i class="fa fa-download"></i> Download</a>&nbsp;'+
-                    '<a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>'+
-                    '</td>'+
-                '</tr>';
-                
-            
-    $(html).insertBefore('#add_row_attach');
-}
-$(document).on('click','.remove-row',function(){
-    $(this).closest('tr').remove();
-});
-</script>
 <div class="container">
 <h1>Client Maintenance</h1>
 <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
@@ -116,11 +71,13 @@ $(document).on('click','.remove-row',function(){
                             <div class="panel-footer"><br />
                                     <div class="selectwrap">
                                         <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;"><input type="button" name="previos" value="&laquo; Previous" /></a><?php } ?>
-                                        <?php if($_GET['action']=='edit' && $_GET['id']>0){?><input style="margin-left: 6% !important;" type="button" name="view_change" value="View Change" /><?php } ?>
+                                        <?php if($action=='edit' && $id>0){?>
+                                        <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" style="margin-left: 3% !important;" value="View Changes"/></a>
+                                        <?php } ?>
                                         <a href="#client_notes" data-toggle="modal"><input type="button" onclick="get_client_notes();" name="notes" value="Notes" /></a>
                                         <a href="#client_transactions" data-toggle="modal"><input type="button" name="transactions" value="Transactions" /></a>
-                                        <a href="#joint_account" data-toggle="modal"><input type="button" name="joint_account" value="Joint Account" /></a>
-                                        <a href="#client_attachment" data-toggle="modal"><input type="button" name="attach" value="Attach" /></a>
+                                        <a href="#joint_account" data-toggle="modal"><input type="button" onclick="get_client_account();" name="joint_account" value="Joint Account" /></a>
+                                        <a href="#client_attach" data-toggle="modal"><input type="button"  onclick="get_client_attach();" name="attach" value="Attachments" /></a>
                                         <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
                                         <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                                         <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a" style="float: right;"><input type="button" name="next" value="Next &raquo;" /></a><?php } ?>
@@ -712,7 +669,7 @@ $(document).on('click','.remove-row',function(){
                                                     <div class="form-group">
                                                         <label></label><br />
                                                         <select class="form-control" name="sponsor[]">
-                                                            <option value="">Select Sponsor</option>
+                                                            <option value="0">Select Sponsor</option>
                                                              <?php foreach($get_sponsor as $key=>$val){?>
                                                             <option value="<?php echo $val['id'];?>" <?php if($sponsor_company != '' && $sponsor_company==$val['id']){echo "selected='selected'";} ?>><?php echo $val['name'];?></option>
                                                             <?php } ?>
@@ -975,16 +932,19 @@ $(document).on('click','.remove-row',function(){
                             <div class="panel-footer"><br />
                                     <div class="selectwrap">
                                         <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;"><input type="button" name="previos" value="&laquo; Previous" /></a><?php } ?>
-                                        <?php if($_GET['action']=='edit' && $_GET['id']>0){?><input style="margin-left: 6% !important;" type="button" name="view_change" value="View Change" /><?php } ?>
+                                        <?php if($action=='edit' && $id>0){?>
+                                        <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" style="margin-left: 3% !important;" value="View Changes"/></a>
+                                        <?php } ?>
                                         <a href="#client_notes" data-toggle="modal"><input type="button" onclick="get_client_notes();" name="notes" value="Notes" /></a>
-                                        <a href="#client_transactions" data-toggle="modal"><input type="button" name="transactions" value="Transactions" /></a>
-                                        <a href="#joint_account" data-toggle="modal"><input type="button" name="joint_account" value="Joint Account" /></a>
-                                        <a href="#client_attachment" data-toggle="modal"><input type="button" name="attach" value="Attach" /></a>
+                                        <a href="#client_transactions" data-toggle="modal"><input type="button"  name="transactions" value="Transactions" /></a>
+                                        <a href="#joint_account" data-toggle="modal"><input type="button" onclick="get_client_account();" name="joint_account" value="Joint Account" /></a>
+                                        <a href="#client_attach" data-toggle="modal"><input type="button"  onclick="get_client_attach();" name="attach" value="Attachments" /></a>
                                         <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
                                         <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                                         <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a" style="float: right;"><input type="button" name="next" value="Next &raquo;" /></a><?php } ?>
                                     </div>
-                                 </div></form>
+                                 </div>
+                                 </form>
                         <?php
                     }else{?>
                     <div class="panel">
@@ -1150,127 +1110,50 @@ $(document).on('click','.remove-row',function(){
 				</div><!-- End of Modal dialog -->
 		  </div><!-- End of Modal -->
           <!-- Lightbox strart -->							
-			<!-- Modal for joint account -->
-			<div id="joint_account" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-				<div class="modal-dialog">
-				<div class="modal-content">
-				<div class="modal-header" style="margin-bottom: 0px !important;">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-					<h4 class="modal-title">Joint Accounts</h4>
-				</div>
-				<div class="modal-body">
-                <form method="post">
-                <div class="inputpopup">
-                    <a class="btn btn-sm btn-success" href="#add_joint_account" data-toggle="modal" style="float: right !important; margin-right: 5px !important;"><i class="fa fa-plus"></i> Add New</a>
-    			</div>
-                <div class="inputpopup">
-                    <div class="table-responsive" id="table-scroll" style="margin: 0px 5px 0px 5px;">
-                        <table class="table table-bordered table-stripped table-hover">
-                            <thead>
-                                <th>#NO</th>
-                                <th>Joint Name</th>
-                                <th>SSN</th>
-                                <th>DOB</th>
-                                <th>Income</th>
-                                <th>Occupation</th>
-                                <th>Position</th>
-                                <th>Securities-Related Firm?</th>
-                                <th>Employer</th>
-                                <th>Emp. Address</th>
-                                <th>Action</th>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td><a href="#add_joint_account" data-toggle="modal" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a></td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td><a href="#add_joint_account" data-toggle="modal" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a></td>
-                                </tr>
-                          </tbody>
-                        </table>
-                    </div>
-				</div>
-                </form>
-                </div><!-- End of Modal body -->
-				</div><!-- End of Modal content -->
-				</div><!-- End of Modal dialog -->
-		  </div><!-- End of Modal -->
+	<!-- Modal for add client notes -->
+	<div id="joint_account" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog" style="margin-left: 19% !important;">
+		<div class="modal-content" style="width: 150% !important;">
+		<div class="modal-header" style="margin-bottom: 0px !important;">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+			<h4 class="modal-title">Client's Joint Account</h4>
+		</div>
+		<div class="modal-body">
+        
+        <div class="inputpopup">
+            <a class="btn btn-sm btn-success" href="#add_joint_account" onclick="get_client_edit(0);" data-toggle="modal" style="float: right !important; margin-right: 5px !important;"><i class="fa fa-plus"></i> Add New</a>
+		</div>
+        
+        <div class="col-md-12">
+            <div id="msg_account">
+            </div>
+        </div>
+       
+        <div class="inputpopup">
+            <div class="table-responsive" id="ajax_account" style="margin: 0px 5px 0px 5px;">
+                
+            </div>
+		</div>
+        </div><!-- End of Modal body -->
+		</div><!-- End of Modal content -->
+		</div><!-- End of Modal dialog -->
+</div><!-- End of Modal -->
+<!-- Lightbox strart -->	
+          
+          
         <!-- Lightbox strart -->							
-			<!-- Modal for add joint account -->
+			<!--Modal for add joint account -->
 			<div id="add_joint_account" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-				<div class="modal-dialog">
+			
+                <div class="modal-dialog">
 				<div class="modal-content">
 				<div class="modal-header" style="margin-bottom: 0px !important;">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
 					<h4 class="modal-title">Add Joint Account</h4>
 				</div>
 				<div class="modal-body">
-                <form method="post" id="add_new_note" name="add_new_note" onsubmit="return formsubmit_addnotes();">
-                    <div class="inputpopup">
-    					<label>Joint Name:<span>*</span></label>
-                        <input type="text" name="joint_name" id="joint_name" class="form-control" />
-    				</div>
-                    <div class="inputpopup">
-    					<label>SSN:<span>*</span></label>
-                        <input type="text" name="ssn" id="ssn" class="form-control" />
-    				</div>
-                    <div class="inputpopup">
-    					<label>DOB:<span>*</span></label>
-                        <input type="text" name="dob" id="dob" class="form-control" />
-                    </div>
-                    <div class="inputpopup">
-    					<label>Income:<span>*</span></label>
-                        <input type="text" name="income" id="income" class="form-control" />
-    				</div>
-                    <div class="inputpopup">
-    					<label>Occupation:<span>*</span></label>
-                        <input type="text" name="occupation" id="occupation" class="form-control" />
-    				</div>
-                    <div class="inputpopup">
-    					<label>Position:<span>*</span></label>
-                        <input type="text" name="position" id="position" class="form-control" />
-    				</div>
-                    <div class="inputpopup">
-    					<label>Securities-Related Firm?:<span>*</span></label>
-                        <input type="checkbox" name="security_related_firm" id="security_related_firm" class="checkbox" />
-    				</div>
-                    <div class="inputpopup">
-    					<label>Employer:<span>*</span></label>
-                        <input type="text" name="employer" id="employer" class="form-control" />
-    				</div>
-                    <div class="inputpopup">
-    					<label>Emp. Address:<span>*</span></label>
-                        <input type="text" name="employer_add" id="employer_add" class="form-control" />
-    				</div>
-    				<div class="col-md-12">
-                        <div id="msg">
-                        </div>
-                    </div>
-                   	<div class="inputpopup">
-    				<label class="labelblank">&nbsp;</label>
-                        <input type="hidden" name="submit" value="Ok" />
-    					<input type="submit" onclick="waitingDialog.show();" value="Ok" name="submit" />
-    				</div>
+                <form method="post" id="add_new_account" name="add_new_account" onsubmit="return formsubmit_account();">
+                    
 				</form>					
                 
 				</div><!-- End of Modal body -->
@@ -1278,56 +1161,294 @@ $(document).on('click','.remove-row',function(){
 			</div><!-- End of Modal dialog -->
 		</div><!-- End of Modal -->
         <!-- Lightbox strart -->							
-			<!-- Modal for attach -->
-			<div id="client_attachment" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-				<div class="modal-dialog">
-				<div class="modal-content">
-				<div class="modal-header" style="margin-bottom: 0px !important;">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-					<h4 class="modal-title">Attachments</h4>
-				</div>
-				<div class="modal-body">
+	<!-- Modal for add client notes -->
+	<div id="client_attach" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog">
+		<div class="modal-content">
+		<div class="modal-header" style="margin-bottom: 0px !important;">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+			<h4 class="modal-title">Client's Attach</h4>
+		</div>
+		<div class="modal-body">
+        
+        <div class="inputpopup">
+            <a class="btn btn-sm btn-success" style="float: right !important; margin-right: 5px !important;" onclick="open_newattach();"><i class="fa fa-plus"></i> Add New</a></li>
+		</div>
+        
+        <div class="col-md-12">
+            <div id="msg_attach">
+            </div>
+        </div>
+       
+        <div class="inputpopup">
+            <div class="table-responsive" id="ajax_attach" style="margin: 0px 5px 0px 5px;">
+                
+            </div>
+		</div>
+        </div><!-- End of Modal body -->
+		</div><!-- End of Modal content -->
+		</div><!-- End of Modal dialog -->
+</div><!-- End of Modal -->
+<!-- Lightbox strart -->	
+          <!-- Lightbox strart -->							
+            <!-- Modal for transaction list -->
+            <div id="view_changes" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+            	<div class="modal-dialog">
+            	<div class="modal-content">
+            	<div class="modal-header" style="margin-bottom: 0px !important;">
+            		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+            		<h4 class="modal-title">View Changes</h4>
+            	</div>
+            	<div class="modal-body">
                 <form method="post">
-                <div class="inputpopup">
-                    <a class="btn btn-sm btn-success" style="float: right !important; margin-right: 5px !important;" onclick="addMoreAttach();"><i class="fa fa-plus"></i> Add New</a></li>
-    			</div>
                 <div class="inputpopup">
                     <div class="table-responsive" id="table-scroll" style="margin: 0px 5px 0px 5px;">
                         <table class="table table-bordered table-stripped table-hover">
                             <thead>
                                 <th>#NO</th>
-                                <th>Date</th>
-                                <th>User</th>
-                                <th>Files Name</th>
-                                <th class="text-center">Action</th>
+                                <th>User Initials</th>
+                                <th>Date of Change</th>
+                                <th>Field Changed</th>
+                                <th>Previous Value</th>
+                                <th>New Value</th>
                             </thead>
                             <tbody>
-                                <tr id="add_row_attach">
-                                    <td>1</td>
-                                    <td><?php echo date('d/m/Y');?></td>
-                                    <td><?php echo $_SESSION['user_name'];?></td>
-                                    <td><input type="file" name="attach" class="form-control" id="attach"/></td>
-                                    <td class="text-center">
-                                       <a href="<?php echo CURRENT_PAGE; ?>?action=add&id=" class="btn btn-sm btn-warning" onclick="waitingDialog.show();"><i class="fa fa-save"></i> Ok</a>
-                                       <a href="<?php echo CURRENT_PAGE; ?>?action=download&id=" class="btn btn-sm btn-success"><i class="fa fa-download"></i> Download</a>
-                                       <a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
+                            <?php 
+                            $count = 0;
+                            $feild_name='';
+                            $lable_array = array();
+                            $lable_array = array('first_name' => 'First Name','mi' => 'MI','last_name' => 'Last Name
+            ','do_not_contact' => 'Do Not Contact','active' => 'Active','ofac_check' => 'OFAC Check','fincen_check' => 'FinCEN Check','long_name' => 'Long Name','client_file_number' => 'Client File Number','clearing_account' => 'Clearing Acct','client_ssn' => 'Client SSN','house_hold' => 'Household','split_broker' => 'Split Broker','split_rate' => 'Split Rate','address1' => 'Address1','address2' => 'Address2','city' => 'City','state' => 'State','zip_code' => 'Zip Code','citizenship' => 'Citizenship','birth_date' => 'Birth Date','age' => 'Age','date_established' => 'Date Established','open_date' => 'Open Date','naf_date' => 'NAF Date','last_contacted' => 'Last Contacted','account_type' => 'Account Type','broker_name' => 'Broker','telephone' => 'Telephone','contact_status' => 'Contact Status',
+
+'occupation' => 'Occupation','employer' => 'Employer','address' => 'Address','position' => 'Position','telephone' => 'Telephone','security_related_firm' => 'Securities-Related Firm','finra_affiliation' => 'FINRA Affiliation','spouse_name' => 'Spouse Name','spouse_ssn' => 'Spouse SSN','dependents' => 'Dependents','salutation' => 'Salutation','options' => 'CIP Options','other' => 'Other','number' => 'Number','expiration' => 'Expiration','state' => 'State','date_verified' => 'Date Verified',
+
+'income' => 'Income','goal_horizon' => 'Goal Horizon','net_worth' => 'Net Worth','risk_tolerance' => 'Risk Tolerance','annual_expenses' => 'Annual Expenses','liquidity_needs' => 'Liquidity Needs','liquid_net_worth' => 'Liquid Net Worth','special_expenses' => 'Special Expenses','per_of_portfolio' => '% of Portfolio','time_frame_for_special_exp' => 'Timeframe for Special Exp','account_use' => 'Account Use','signed_by' => 'Signed By','sign_date' => 'Sign Date','tax_bracket' => 'Tax Bracket','tax_id' => 'Tax ID');
+                            foreach($client_change_data as $key=>$val){
+                                
+                                if(isset($lable_array[$val['field']])){
+                                    $feild_name = $lable_array[$val['field']];
+                                }else {
+                                    $feild_name = $val['field'];
+                                }?>
+                                <tr>
+                                
+                                    <td><?php echo ++$count; ?></td>
+                                    <td><?php echo $val['user_initial'];?></td>
+                                    <td><?php echo date('m/d/Y',strtotime($val['created_time']));?></td>
+                                    <td><?php echo $feild_name;?></td>
+                                    <?php 
+                                    if($feild_name == 'Do Not Contact' && $val['old_value'] == 0){?>
+                                    <td><?php echo 'UnChecked';?></td>
+                                    <td><?php echo 'Checked';?></td>
+                                    <?php } 
+                                    else if($feild_name == 'Do Not Contact' && $val['old_value'] == 1){?>
+                                    <td><?php echo 'Checked';?></td>
+                                    <td><?php echo 'UnChecked';?></td>
+                                    <?php }
+                                    else if($feild_name == 'Active' && $val['old_value'] == 0){?>
+                                    <td><?php echo 'UnChecked';?></td>
+                                    <td><?php echo 'Checked';?></td>
+                                    <?php } 
+                                    else if($feild_name == 'Active' && $val['old_value'] == 1){?>
+                                    <td><?php echo 'Checked';?></td>
+                                    <td><?php echo 'UnChecked';?></td>
+                                    <?php }
+                                    else if($feild_name == 'State'){
+                                    $state_name = $instance->get_state_name($val['old_value']);?>
+                                    <td><?php echo $state_name['state_name'];?></td>
+                                    <?php $state_name = $instance->get_state_name($val['new_value']);?>
+                                    <td><?php echo $state_name['state_name'];?></td>
+                                    <?php }
+                                    else if($feild_name == 'Account Type'){
+                                    $account_name = $instance->get_account_name($val['old_value']);?>
+                                    <td><?php echo $account_name['account_type'];?></td>
+                                    <?php $account_name = $instance->get_account_name($val['new_value']);?>
+                                    <td><?php echo $account_name['account_type'];?></td>
+                                    <?php }
+                                    else if($feild_name == 'Broker'){
+                                    $broker_name = $instance->get_broker_name($val['old_value']);?>
+                                    <td><?php echo $broker_name['broker_name'];?></td>
+                                    <?php $broker_name = $instance->get_broker_name($val['new_value']);?>
+                                    <td><?php echo $broker_name['broker_name'];?></td>
+                                    <?php }
+                                    else if($feild_name == 'Split Broker'){
+                                    $broker_name = $instance->get_broker_name($val['old_value']);?>
+                                    <td><?php echo $broker_name['broker_name'];?></td>
+                                    <?php $broker_name = $instance->get_broker_name($val['new_value']);?>
+                                    <td><?php echo $broker_name['broker_name'];?></td>
+                                    <?php }
+                                    else if($feild_name == 'Contact Status'){?>
+                                    <td>
+                                    <?php 
+                                    if($val['old_value'] == 1)
+                                    {
+                                        echo 'Yes';
+                                    }
+                                    else if($val['old_value'] == 2)
+                                    {
+                                        echo 'No';
+                                    }
+                                    ?>
                                     </td>
+                                    <td>
+                                    <?php 
+                                    if($val['new_value'] == 1)
+                                    {
+                                        echo 'Yes';
+                                    }
+                                    else if($val['new_value'] == 2)
+                                    {
+                                        echo 'No';
+                                    }
+                                    ?>
+                                    </td>
+                                    <?php }
+                                    else if($feild_name == 'Securities-Related Firm' && $val['old_value'] == 0){?>
+                                    <td><?php echo 'UnChecked';?></td>
+                                    <td><?php echo 'Checked';?></td>
+                                    <?php } 
+                                    else if($feild_name == 'Securities-Related Firm' && $val['old_value'] == 1){?>
+                                    <td><?php echo 'Checked';?></td>
+                                    <td><?php echo 'UnChecked';?></td>
+                                    <?php }
+                                    else if($feild_name == 'FINRA Affiliation' && $val['old_value'] == 0){?>
+                                    <td><?php echo 'UnChecked';?></td>
+                                    <td><?php echo 'Checked';?></td>
+                                    <?php } 
+                                    else if($feild_name == 'FINRA Affiliation' && $val['old_value'] == 1){?>
+                                    <td><?php echo 'Checked';?></td>
+                                    <td><?php echo 'UnChecked';?></td>
+                                    <?php }
+                                    else if($feild_name == 'CIP Options'){?>
+                                    <td>
+                                    <?php 
+                                    if($val['old_value'] == 1)
+                                    {
+                                        echo 'Driver License';
+                                    }
+                                    else if($val['old_value'] == 2)
+                                    {
+                                        echo 'Passport';
+                                    }
+                                    else if($val['old_value'] == 3)
+                                    {
+                                        echo 'Other';
+                                    }
+                                    ?>
+                                    </td>
+                                    <td>
+                                    <?php 
+                                    if($val['new_value'] == 1)
+                                    {
+                                        echo 'Driver License';
+                                    }
+                                    else if($val['new_value'] == 2)
+                                    {
+                                        echo 'Passport';
+                                    }
+                                    else if($val['new_value'] == 3)
+                                    {
+                                        echo 'Other';
+                                    }
+                                    ?>
+                                    </td>
+                                    <?php }
+                                    else if($feild_name == 'Income'){
+                                    $income_name = $instance->get_income_name($val['old_value']);?>
+                                    <td><?php echo $income_name['income'];?></td>
+                                    <?php $income_name = $instance->get_income_name($val['new_value']);?>
+                                    <td><?php echo $income_name['income'];?></td>
+                                    <?php }
+                                    else if($feild_name == 'Goal Horizon'){
+                                    $goal_name = $instance->get_goal_horizon_name($val['old_value']);?>
+                                    <td><?php echo $goal_name['goal'];?></td>
+                                    <?php $goal_name = $instance->get_goal_horizon_name($val['new_value']);?>
+                                    <td><?php echo $goal_name['goal'];?></td>
+                                    <?php }
+                                    else if($feild_name == 'Net Worth'){
+                                    $net_worth_name = $instance->get_net_worth_name($val['old_value']);?>
+                                    <td><?php echo $net_worth_name['net_worth'];?></td>
+                                    <?php $net_worth_name = $instance->get_net_worth_name($val['new_value']);?>
+                                    <td><?php echo $net_worth_name['net_worth'];?></td>
+                                    <?php }
+                                    else if($feild_name == 'Risk Tolerance'){
+                                    $risk_tolerance_name = $instance->get_risk_tolerance_name($val['old_value']);?>
+                                    <td><?php echo $risk_tolerance_name['risk'];?></td>
+                                    <?php $risk_tolerance_name = $instance->get_risk_tolerance_name($val['new_value']);?>
+                                    <td><?php echo $risk_tolerance_name['risk'];?></td>
+                                    <?php }
+                                    else if($feild_name == 'Annual Expenses'){
+                                    $annual_exp_name = $instance->get_annual_expenses_name($val['old_value']);?>
+                                    <td><?php echo $annual_exp_name['annual_expense'];?></td>
+                                    <?php $annual_exp_name = $instance->get_annual_expenses_name($val['new_value']);?>
+                                    <td><?php echo $annual_exp_name['annual_expense'];?></td>
+                                    <?php }
+                                    else if($feild_name == 'Liquidity Needs'){
+                                    $liquid_need = $instance->get_liquidity_needs_name($val['old_value']);?>
+                                    <td><?php echo $liquid_need['liquidity_needs'];?></td>
+                                    <?php $liquid_need = $instance->get_liquidity_needs_name($val['new_value']);?>
+                                    <td><?php echo $liquid_need['liquidity_needs'];?></td>
+                                    <?php }
+                                    else if($feild_name == 'Liquid Net Worth'){
+                                    $liquid_net_worth_name = $instance->get_liquid_net_worth_name($val['old_value']);?>
+                                    <td><?php echo $liquid_net_worth_name['liquid_net_worth'];?></td>
+                                    <?php $liquid_net_worth_name = $instance->get_liquid_net_worth_name($val['new_value']);?>
+                                    <td><?php echo $liquid_net_worth_name['liquid_net_worth'];?></td>
+                                    <?php }
+                                    else if($feild_name == 'Special Expenses'){
+                                    $spc_exp_name = $instance->get_special_expenses_name($val['old_value']);?>
+                                    <td><?php echo $spc_exp_name['special_expense'];?></td>
+                                    <?php $spc_exp_name = $instance->get_special_expenses_name($val['new_value']);?>
+                                    <td><?php echo $spc_exp_name['special_expense'];?></td>
+                                    <?php }
+                                    else if($feild_name == '% of Portfolio'){
+                                    $per_port_name = $instance->get_per_of_portfolio_name($val['old_value']);?>
+                                    <td><?php echo $per_port_name['per_of_portfolio'];?></td>
+                                    <?php $per_port_name = $instance->get_per_of_portfolio_name($val['new_value']);?>
+                                    <td><?php echo $per_port_name['per_of_portfolio'];?></td>
+                                    <?php }
+                                    else if($feild_name == 'Timeframe for Special Exp'){
+                                    $time_frm_name = $instance->get_time_frame_for_special_exp_name($val['old_value']);?>
+                                    <td><?php echo $time_frm_name['time_frame'];?></td>
+                                    <?php $time_frm_name = $instance->get_time_frame_for_special_exp_name($val['new_value']);?>
+                                    <td><?php echo $time_frm_name['time_frame'];?></td>
+                                    <?php }
+                                    else if($feild_name == 'Account Use'){
+                                    $account_name = $instance->get_account_use_name($val['old_value']);?>
+                                    <td><?php echo $account_name['account_use'];?></td>
+                                    <?php $account_name = $instance->get_account_use_name($val['new_value']);?>
+                                    <td><?php echo $account_name['account_use'];?></td>
+                                    <?php }
+                                    else {?>
+                                    <td><?php echo $val['old_value'];?></td>
+                                    <td><?php echo $val['new_value'];?></td>
+                                    <?php } ?>
                                 </tr>
+                            <?php } ?>
                           </tbody>
                         </table>
                     </div>
-				</div>
+            	</div>
                 </form>
                 </div><!-- End of Modal body -->
-				</div><!-- End of Modal content -->
-				</div><!-- End of Modal dialog -->
-		  </div><!-- End of Modal -->
+            	</div><!-- End of Modal content -->
+            	</div><!-- End of Modal dialog -->
+            </div><!-- End of Modal -->           
     </div>
 </div>
 <script>
 function open_newnotes()
 {
     document.getElementById("add_row_notes").style.display = "";
+}
+function open_newattach()
+{
+    document.getElementById("add_row_attach").style.display = "";
+}
+function open_newaccount()
+{
+    document.getElementById("add_row_account").style.display = "";
+    
 }
 </script>
 <script>
@@ -1492,6 +1613,18 @@ function get_client_notes(){
         xmlhttp.open("GET", "ajax_client_notes.php", true);
         xmlhttp.send();
 }
+function get_client_edit(account_id){
+   
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) 
+            {
+                document.getElementById("add_new_account").innerHTML = this.responseText;
+            }
+        };
+        xmlhttp.open("GET", "ajax_client_edit_account.php?&id="+account_id, true);
+        xmlhttp.send();
+}
 function openedit(note_id){
     
     var frm_element = document.getElementById("add_client_notes_"+note_id);
@@ -1503,6 +1636,31 @@ function openedit(note_id){
 </script>
 <script>
 //submit share form data
+function get_client_attach(){
+    
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) 
+            {
+                //alert(this.responseText);
+                document.getElementById("ajax_attach").innerHTML = this.responseText;
+            }
+        };
+        xmlhttp.open("GET", "ajax_client_attach.php", true);
+        xmlhttp.send();
+}
+function get_client_account(){
+    
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) 
+            {
+                document.getElementById("ajax_account").innerHTML = this.responseText;
+            }
+        };
+        xmlhttp.open("GET", "ajax_client_account.php", true);
+        xmlhttp.send();
+}
 function notessubmit(note_id)
 {
    $('#msg').html('<div class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Please wait...</div>');
@@ -1535,6 +1693,96 @@ function notessubmit(note_id)
    return false;
        
 }
+function formsubmit_account()
+{
+   $('#msg').html('<div class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Please wait...</div>');
+
+   var url = "client_maintenance.php"; // the script where you handle the form input.
+   
+   $.ajax({
+      type: "POST",
+      url: url,
+      data: $("#add_new_account").serialize(), // serializes the form's elements.
+      success: function(data){
+          if(data=='1'){
+         	 $("#add_joint_account").modal('hide');
+            get_client_account();
+            $('#msg_account').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Data Successfully Saved.</div>');
+            //window.location.href = "client_maintenance.php";//get_client_notes();   
+          }
+          else{
+               $('#msg_account').html('<div class="alert alert-danger">'+data+'</div>');
+          }
+          
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+           $('#msg_account').html('<div class="alert alert-danger">Something went wrong, Please try again.</div>')
+      }
+      
+   });
+
+   //e.preventDefault(); // avoid to execute the actual submit of the form.
+   return false;
+       
+}
+/*function formsubmit_account()
+{ 
+        $('#msg').html('<div class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Please wait...</div>');
+    var myForm = document.getElementById('add_new_account');
+   var url = "client_maintenance.php"; // the script where you handle the form input.
+   $.ajax({
+      type: "POST",
+      url: url,
+      data: myForm.serialize(), // serializes the form's elements.
+      success: function(data){
+          if(data=='12'){
+            alert(data);
+            get_client_account();
+            $('#msg_notes').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Data Successfully Saved.</div>');  
+          }
+          else{
+               $('#msg_notes').html('<div class="alert alert-danger">'+data+'</div>');
+          }
+          
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+           $('#msg_notes').html('<div class="alert alert-danger">Something went wrong, Please try again.</div>')
+      } 
+   });
+   return false;
+}*/
+function attachsubmit(attach_id)
+{ 
+        var myForm = document.getElementById('add_client_attach_'+attach_id);
+        form_data = new FormData(myForm);
+        $.ajax({
+            url: 'client_maintenance.php', // point to server-side PHP script 
+            
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            type: 'post',
+            success: function(data){
+                  if(data=='1'){
+                    
+                    get_client_attach();
+                    $('#msg_attach').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Data Successfully Saved.</div>');
+                    //window.location.href = "client_maintenance.php";//get_client_attach();   
+                  }
+                  else{
+                       $('#msg_attach').html('<div class="alert alert-danger">'+data+'</div>');
+                  } 
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                   $('#msg_attach').html('<div class="alert alert-danger">Something went wrong, Please try again.</div>')
+              }
+        });
+               
+        
+   return false; 
+       
+}
 function delete_notes(note_id){
     
         var xmlhttp = new XMLHttpRequest();
@@ -1554,6 +1802,24 @@ function delete_notes(note_id){
             }
         };
         xmlhttp.open("GET", "client_maintenance.php?delete_action=delete_notes&note_id="+note_id, true);
+        xmlhttp.send();
+}
+function delete_attach(attach_id){
+    
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var data = this.responseText;
+                if(data=='1'){
+                   get_client_attach(); 
+                   $('#msg_attach').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Attach deleted Successfully.</div>');
+                  }
+                  else{
+                       $('#msg_attach').html('<div class="alert alert-danger">'+data+'</div>');
+                  }
+            }
+        };
+        xmlhttp.open("GET", "client_maintenance.php?delete_action=delete_attach&attach_id="+attach_id, true);
         xmlhttp.send();
 }
 /*{

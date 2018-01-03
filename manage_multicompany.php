@@ -70,6 +70,7 @@
     }
     else if($action=='edit' && $id>0){
         $return = $instance->edit($id);
+        $multicompany_data = $instance->get_multicompany_changes($id);
         $company_name = $instance->re_db_output($return['company_name']);
         $company_type = $instance->re_db_output($return['company_type']);
         $manager_name = $instance->re_db_output($return['manager_name']);
@@ -164,6 +165,35 @@
         echo $error;
         exit;
     } 
+    else if(isset($_POST['add_attach'])&& $_POST['add_attach']=='Add Attach'){//print_r($_FILES);exit;
+        $_POST['user_id']=$_SESSION['user_name'];
+        $_POST['date'] = date('Y-m-d');
+        $file = isset($_FILES['add_attach'])?$_FILES['add_attach']:array();
+        
+        $return = $instance->insert_update_company_attach($_POST);
+        
+        if($return===true){
+            echo '1';exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+        echo $error;
+        exit;
+    }
+    else if(isset($_GET['delete_action'])&&$_GET['delete_action']=='delete_attach'&&isset($_GET['attach_id'])&&$_GET['attach_id']>0)
+    {
+        $attach_id = $instance->re_db_input($_GET['attach_id']);
+        $return = $instance->delete_attach($attach_id);
+        if($return===true){
+            echo '1';exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+        echo $error;
+        exit;
+    }
     else if(isset($_GET['delete_action'])&&$_GET['delete_action']=='delete_notes'&&isset($_GET['note_id'])&&$_GET['note_id']>0)
     {
         $note_id = $instance->re_db_input($_GET['note_id']);

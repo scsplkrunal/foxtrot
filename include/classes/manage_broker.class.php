@@ -280,7 +280,7 @@
 				}
 				else if($id>=0){
 					if($id==0){
-						$q = "INSERT INTO `".BROKER_GENERAL."` SET `broker_id`='".$_SESSION['last_insert_id']."',`home/business`='".$home_general."',`address1`='".$address1_general."',`address2`='".$address2_general."',`city`='".$city_general."',`state_id`='".$state_general."',`zip_code`='".$zip_code_general."',`telephone`='".$telephone_general."',`cell`='".$cell_general."',`fax`='".$fax_general."',`gender`='".$gender_general."',`marital_status`='".$status_general."',`spouse`='".$spouse_general."',`children`='".$children_general."',`email1`='".$email1_general."',`email2`='".$email2_general."',`web_id`='".$web_id_general."',`web_password`='".$web_password_general."',`dob`='".$dob_general."',`prospect_date`='".$prospect_date_general."',`reassign_broker`='".$reassign_broker_general."',`u4`='".$u4_general."',`u5`='".$u5_general."',`dba_name`='".$dba_name_general."',`eft_information`='".$eft_info_general."',`start_date`='".$start_date_general."',`transaction_type`='".$transaction_type_general."',`routing`='".$routing_general."',`account_no`='".$account_no_general."',`cfp`='".$cfp_general."',`chfp`='".$chfp_general."',`cpa`='".$cpa_general."',`clu`='".$clu_general."',`cfa`='".$cfa_general."',`ria`='".$ria_general."',`insurance`='".$insurance_general."'".$this->insert_common_sql();
+						$q = "INSERT INTO `".BROKER_GENERAL."` SET `broker_id`='".$_SESSION['last_insert_id']."',`home`='".$home_general."',`address1`='".$address1_general."',`address2`='".$address2_general."',`city`='".$city_general."',`state_id`='".$state_general."',`zip_code`='".$zip_code_general."',`telephone`='".$telephone_general."',`cell`='".$cell_general."',`fax`='".$fax_general."',`gender`='".$gender_general."',`marital_status`='".$status_general."',`spouse`='".$spouse_general."',`children`='".$children_general."',`email1`='".$email1_general."',`email2`='".$email2_general."',`web_id`='".$web_id_general."',`web_password`='".$web_password_general."',`dob`='".$dob_general."',`prospect_date`='".$prospect_date_general."',`reassign_broker`='".$reassign_broker_general."',`u4`='".$u4_general."',`u5`='".$u5_general."',`dba_name`='".$dba_name_general."',`eft_information`='".$eft_info_general."',`start_date`='".$start_date_general."',`transaction_type`='".$transaction_type_general."',`routing`='".$routing_general."',`account_no`='".$account_no_general."',`cfp`='".$cfp_general."',`chfp`='".$chfp_general."',`cpa`='".$cpa_general."',`clu`='".$clu_general."',`cfa`='".$cfa_general."',`ria`='".$ria_general."',`insurance`='".$insurance_general."'".$this->insert_common_sql();
 						$res = $this->re_db_query($q);
                         if($res){
 						      
@@ -293,7 +293,7 @@
 						}
 				}
                 else if($id>0){
-					    $q = "UPDATE `".BROKER_GENERAL."`  SET `home/business`='".$home_general."',`address1`='".$address1_general."',`address2`='".$address2_general."',`city`='".$city_general."',`state_id`='".$state_general."',`zip_code`='".$zip_code_general."',`telephone`='".$telephone_general."',`cell`='".$cell_general."',`fax`='".$fax_general."',`gender`='".$gender_general."',`marital_status`='".$status_general."',`spouse`='".$spouse_general."',`children`='".$children_general."',`email1`='".$email1_general."',`email2`='".$email2_general."',`web_id`='".$web_id_general."',`web_password`='".$web_password_general."',`dob`='".$dob_general."',`prospect_date`='".$prospect_date_general."',`reassign_broker`='".$reassign_broker_general."',`u4`='".$u4_general."',`u5`='".$u5_general."',`dba_name`='".$dba_name_general."',`eft_information`='".$eft_info_general."',`start_date`='".$start_date_general."',`transaction_type`='".$transaction_type_general."',`routing`='".$routing_general."',`account_no`='".$account_no_general."',`cfp`='".$cfp_general."',`chfp`='".$chfp_general."',`cpa`='".$cpa_general."',`clu`='".$clu_general."',`cfa`='".$cfa_general."',`ria`='".$ria_general."',`insurance`='".$insurance_general."'".$this->update_common_sql()." WHERE `broker_id`='".$id."'";
+					    $q = "UPDATE `".BROKER_GENERAL."`  SET `home`='".$home_general."',`address1`='".$address1_general."',`address2`='".$address2_general."',`city`='".$city_general."',`state_id`='".$state_general."',`zip_code`='".$zip_code_general."',`telephone`='".$telephone_general."',`cell`='".$cell_general."',`fax`='".$fax_general."',`gender`='".$gender_general."',`marital_status`='".$status_general."',`spouse`='".$spouse_general."',`children`='".$children_general."',`email1`='".$email1_general."',`email2`='".$email2_general."',`web_id`='".$web_id_general."',`web_password`='".$web_password_general."',`dob`='".$dob_general."',`prospect_date`='".$prospect_date_general."',`reassign_broker`='".$reassign_broker_general."',`u4`='".$u4_general."',`u5`='".$u5_general."',`dba_name`='".$dba_name_general."',`eft_information`='".$eft_info_general."',`start_date`='".$start_date_general."',`transaction_type`='".$transaction_type_general."',`routing`='".$routing_general."',`account_no`='".$account_no_general."',`cfp`='".$cfp_general."',`chfp`='".$chfp_general."',`cpa`='".$cpa_general."',`clu`='".$clu_general."',`cfa`='".$cfa_general."',`ria`='".$ria_general."',`insurance`='".$insurance_general."'".$this->update_common_sql()." WHERE `broker_id`='".$id."'";
 						$res = $this->re_db_query($q);
 						if($res){
 						      
@@ -994,11 +994,11 @@
                                 $row=$this->re_db_fetch_array($res);
                                 if($row['value']!='')
                                 {
-                                    $r=$this->re_db_query("update ft_charge_value set value='".$value."' where charge_detail_id='".$row['charge_detail_id']."' and broker_id='".$id."'");                           
+                                    $r=$this->re_db_query("update ft_charge_value set value='".$value."'".$this->update_common_sql()." where charge_detail_id='".$row['charge_detail_id']."' and broker_id='".$id."'");                           
                                 } 
                                 else
                                 {
-                                    $r=$this->re_db_query("INSERT INTO ft_charge_value set charge_detail_id='".$row['charge_detail_id']."',broker_id='".$id."',value='".$value."'");
+                                    $r=$this->re_db_query("INSERT INTO ft_charge_value set charge_detail_id='".$row['charge_detail_id']."',broker_id='".$id."',value='".$value."'".$this->insert_common_sql());
                                 }   
                             }   
                         }
@@ -1067,11 +1067,87 @@
     			}
             }
 		}
+        public function insert_update_broker_attach($data){//print_r($data);exit;
+            $attach_id = isset($data['attach_id'])?$this->re_db_input($data['attach_id']):0;
+            $date = isset($data['date'])?$this->re_db_input($data['date']):'';
+            $user_id = isset($data['user_id'])?$this->re_db_input($data['user_id']):'';
+            $file = isset($_FILES['file_attach'])?$_FILES['file_attach']:array();
+            $valid_file = array('png','jpg','jpeg','bmp','pdf','xls','txt','xlsx');
+            $attachment = $file;
+            $file = ''; 
+            $file_name = isset($attachment['name'])?$attachment['name']:'';
+            $tmp_name = isset($attachment['tmp_name'])?$attachment['tmp_name']:'';
+            $error = isset($attachment['error'])?$attachment['error']:0;
+            $size = isset($attachment['size'])?$attachment['size']:'';
+            $type = isset($attachment['type'])?$attachment['type']:'';
+            $target_dir = DIR_FS."upload/";
+            $ext = strtolower(end(explode('.',$file_name)));
+            if($file_name!='')
+            {            
+               if(!in_array($ext,$valid_file))
+               {
+                   $this->errors = 'Please select valid file.';
+               }
+               else
+               {
+                   $attachment_file = time().rand(100000,999999).'.'.$ext;
+                   move_uploaded_file($tmp_name,$target_dir.$attachment_file);
+                   $file = $attachment_file;
+                   
+                   if($attach_id==0){
+                        $q = "INSERT INTO `".BROKER_ATTACH."` SET `date`='".$date."',`user_id`='".$user_id."',`attach`='".$file."' ,`file_name`='".$file_name."'".$this->insert_common_sql();
+            	        $res = $this->re_db_query($q);
+                        
+                        $attach_id = $this->re_db_insert_id();
+            			if($res){
+            			    $_SESSION['success'] = INSERT_MESSAGE;
+            				return true;
+            			}
+            			else{
+            				$_SESSION['warning'] = UNKWON_ERROR;
+            				return false;
+            			}
+            		}
+            		else if($attach_id>0){
+            		    
+                        $q = "UPDATE `".BROKER_ATTACH."` SET `date`='".$date."',`user_id`='".$user_id."',`attach`='".$file."' ,`file_name`='".$file_name."'".$this->update_common_sql()." WHERE `id`='".$attach_id."'";
+            			$res = $this->re_db_query($q);
+                        
+                        if($res){
+            			    $_SESSION['success'] = UPDATE_MESSAGE;
+            				return true;
+            			}
+            			else{
+            				$_SESSION['warning'] = UNKWON_ERROR;
+            				return false;
+            			}
+            		}
+                }
+               
+            }	
+		}
         public function select_notes(){
 			$return = array();
 			
 			$q = "SELECT `s`.*
 					FROM `".BROKER_NOTES."` AS `s`
+                    WHERE `s`.`is_delete`='0'
+                    ORDER BY `s`.`id` ASC";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+    			}
+            }
+			return $return;
+		}
+        public function select_attach(){
+			$return = array();
+			
+			$q = "SELECT `s`.*
+					FROM `".BROKER_ATTACH."` AS `s`
                     WHERE `s`.`is_delete`='0'
                     ORDER BY `s`.`id` ASC";
 			$res = $this->re_db_query($q);
@@ -1103,7 +1179,86 @@
 				return false;
 			}
 		}
-         
+        public function delete_attach($id){
+			$id = trim($this->re_db_input($id));
+			if($id>0){
+				$q = "UPDATE `".BROKER_ATTACH."` SET `is_delete`='1' WHERE `id`='".$id."'";
+				$res = $this->re_db_query($q);
+				if($res){
+				    $_SESSION['success'] = DELETE_MESSAGE;
+				    return true;
+				}
+				else{
+				    $_SESSION['warning'] = UNKWON_ERROR;
+				    return false;
+				}
+			}
+			else{
+			     $_SESSION['warning'] = UNKWON_ERROR;
+				return false;
+			}
+		}
+        public function get_broker_changes($id){
+			$return = array();
+			$q = "SELECT `at`.*,u.first_name as user_initial
+					FROM `".BROKER_HISTORY."` AS `at`
+                    LEFT JOIN `".USER_MASTER."` as `u` on `u`.`id`=`at`.`modified_by`
+                    WHERE `at`.`is_delete`='0' AND `at`.`broker_id`='".$id."'";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+		}
+        public function get_state_name($id){
+			$return = array();
+			$q = "SELECT `at`.name as state_name
+					FROM `".STATE_MASTER."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`id`='".$id."'";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			$return = $this->re_db_fetch_array($res);
+            }
+			return $return;
+		}
+        public function get_charges_name($id){
+			$return = array();
+			$q = "SELECT `at`.*,`ct`.charge_type,`cn`.charge_name
+					FROM `".CHARGE_DETAIL."` AS `at`
+                    LEFT JOIN `".CHARGE_TYPE_MASTER."` as `ct` on `ct`.`charge_type_id`=`at`.`charge_type_id` 
+                    LEFT JOIN `".CHARGE_NAME_MASTER."` as `cn` on `cn`.`charge_name_id`=`at`.`charge_name_id`
+                    WHERE `at`.`charge_detail_id`='".$id."'";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			$return = $this->re_db_fetch_array($res);
+            }
+			return $return;
+		}
+        public function get_broker_name($id){
+			$return = array();
+			$q = "SELECT `at`.first_name as broker_name
+					FROM `".BROKER_MASTER."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`id`='".$id."'";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			$return = $this->re_db_fetch_array($res);
+            }
+			return $return;
+		}
+        public function get_product_category_name($id){
+			$return = array();
+			$q = "SELECT `at`.type as product_type
+					FROM `".PRODUCT_TYPE."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`id`='".$id."'";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			$return = $this->re_db_fetch_array($res);
+            }
+			return $return;
+		} 
          
 		public function select(){
 			$return = array();

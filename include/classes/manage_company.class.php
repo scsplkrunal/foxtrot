@@ -200,6 +200,149 @@
     			}
             }
 		}
+        public function insert_update_company_attach($data){//print_r($data);exit;
+            $attach_id = isset($data['attach_id'])?$this->re_db_input($data['attach_id']):0;
+            $date = isset($data['date'])?$this->re_db_input($data['date']):'';
+            $user_id = isset($data['user_id'])?$this->re_db_input($data['user_id']):'';
+            $file = isset($_FILES['file_attach'])?$_FILES['file_attach']:array();
+            $valid_file = array('png','jpg','jpeg','bmp','pdf','xls','txt','xlsx');
+            $attachment = $file;
+            $file = ''; 
+            $file_name = isset($attachment['name'])?$attachment['name']:'';
+            $tmp_name = isset($attachment['tmp_name'])?$attachment['tmp_name']:'';
+            $error = isset($attachment['error'])?$attachment['error']:0;
+            $size = isset($attachment['size'])?$attachment['size']:'';
+            $type = isset($attachment['type'])?$attachment['type']:'';
+            $target_dir = DIR_FS."upload/";
+            $ext = strtolower(end(explode('.',$file_name)));
+            if($file_name!='')
+            {            
+               if(!in_array($ext,$valid_file))
+               {
+                   $this->errors = 'Please select valid file.';
+               }
+               else
+               {
+                   $attachment_file = time().rand(100000,999999).'.'.$ext;
+                   move_uploaded_file($tmp_name,$target_dir.$attachment_file);
+                   $file = $attachment_file;
+                   
+                   if($attach_id==0){
+                        $q = "INSERT INTO `".COMPANY_ATTACH."` SET `date`='".$date."',`user_id`='".$user_id."',`attach`='".$file."' ,`file_name`='".$file_name."'".$this->insert_common_sql();
+            	        $res = $this->re_db_query($q);
+                        
+                        $attach_id = $this->re_db_insert_id();
+            			if($res){
+            			    $_SESSION['success'] = INSERT_MESSAGE;
+            				return true;
+            			}
+            			else{
+            				$_SESSION['warning'] = UNKWON_ERROR;
+            				return false;
+            			}
+            		}
+            		else if($attach_id>0){
+            		    
+                        $q = "UPDATE `".COMPANY_ATTACH."` SET `date`='".$date."',`user_id`='".$user_id."',`attach`='".$file."' ,`file_name`='".$file_name."'".$this->update_common_sql()." WHERE `id`='".$attach_id."'";
+            			$res = $this->re_db_query($q);
+                        
+                        if($res){
+            			    $_SESSION['success'] = UPDATE_MESSAGE;
+            				return true;
+            			}
+            			else{
+            				$_SESSION['warning'] = UNKWON_ERROR;
+            				return false;
+            			}
+            		}
+                }
+               
+            }	
+		}
+        public function delete_attach($id){
+			$id = trim($this->re_db_input($id));
+			if($id>0){
+				$q = "UPDATE `".COMPANY_ATTACH."` SET `is_delete`='1' WHERE `id`='".$id."'";
+				$res = $this->re_db_query($q);
+				if($res){
+				    $_SESSION['success'] = DELETE_MESSAGE;
+				    return true;
+				}
+				else{
+				    $_SESSION['warning'] = UNKWON_ERROR;
+				    return false;
+				}
+			}
+			else{
+			     $_SESSION['warning'] = UNKWON_ERROR;
+				return false;
+			}
+		}
+        public function select_attach(){
+			$return = array();
+			
+			$q = "SELECT `s`.*
+					FROM `".COMPANY_ATTACH."` AS `s`
+                    WHERE `s`.`is_delete`='0'
+                    ORDER BY `s`.`id` ASC";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+    			}
+            }
+			return $return;
+		}
+        public function get_multicompany_changes($id){
+			$return = array();
+			$q = "SELECT `at`.*,u.first_name as user_initial
+					FROM `".MULTICOMPANY_HISTORY."` AS `at`
+                    LEFT JOIN `".USER_MASTER."` as `u` on `u`.`id`=`at`.`modified_by`
+                    WHERE `at`.`is_delete`='0' AND `at`.`company_id`='".$id."'";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+		}
+        public function get_state_name($id){
+			$return = array();
+			$q = "SELECT `at`.name as state_name
+					FROM `".STATE_MASTER."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`id`='".$id."'";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			$return = $this->re_db_fetch_array($res);
+            }
+			return $return;
+		}
+        public function get_broker_name($id){
+			$return = array();
+			$q = "SELECT `at`.first_name as broker_name
+					FROM `".BROKER_MASTER."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`id`='".$id."'";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			$return = $this->re_db_fetch_array($res);
+            }
+			return $return;
+		}
+        public function get_product_category_name($id){
+			$return = array();
+			$q = "SELECT `at`.type as product_type
+					FROM `".PRODUCT_TYPE."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`id`='".$id."'";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			$return = $this->re_db_fetch_array($res);
+            }
+			return $return;
+		}
         public function select_notes(){
 			$return = array();
 			

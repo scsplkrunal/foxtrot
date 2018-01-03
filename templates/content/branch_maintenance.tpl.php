@@ -16,7 +16,7 @@ if($action=='add_new'||($action=='edit' && $id>0)){
             <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 10%;"/></a>
             <?php } ?>
             <a href="#branch_notes" data-toggle="modal"><input type="button" onclick="get_branch_notes();" name="notes" value="Notes" /></a>
-            <a href="#" data-toggle="modal"><input type="button" value="Attachments" /></a>
+            <a href="#branch_attach" data-toggle="modal"><input type="button"  onclick="get_branch_attach();" name="attach" value="Attachments" /></a>
             <a href="#" data-toggle="modal"><input type="button" value="Transactions" /></a><input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
             <a href="<?php echo CURRENT_PAGE.'?action=view';?>"><input type="button" name="cancel" value="Cancel" style="margin-right: 8%;" /></a>
             
@@ -278,7 +278,7 @@ if($action=='add_new'||($action=='edit' && $id>0)){
                 <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 10%;"/></a>
                 <?php } ?>
                 <a href="#branch_notes" data-toggle="modal"><input type="button" onclick="get_branch_notes();" name="notes" value="Notes" /></a>
-                <a href="#" data-toggle="modal"><input type="button" value="Attachments" /></a>
+                <a href="#branch_attach" data-toggle="modal"><input type="button"  onclick="get_branch_attach();" name="attach" value="Attachments" /></a>
                 <a href="#" data-toggle="modal"><input type="button" value="Transactions" /></a>
 				
                 <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
@@ -388,6 +388,35 @@ if($action=='add_new'||($action=='edit' && $id>0)){
 		</div><!-- End of Modal dialog -->
 </div><!-- End of Modal -->
 <!-- Lightbox strart -->							
+	<!-- Modal for add client notes -->
+	<div id="branch_attach" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog">
+		<div class="modal-content">
+		<div class="modal-header" style="margin-bottom: 0px !important;">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+			<h4 class="modal-title">Branch's Attach</h4>
+		</div>
+		<div class="modal-body">
+        
+        <div class="inputpopup">
+            <a class="btn btn-sm btn-success" style="float: right !important; margin-right: 5px !important;" onclick="open_newattach();"><i class="fa fa-plus"></i> Add New</a></li>
+		</div>
+        
+        <div class="col-md-12">
+            <div id="msg_attach">
+            </div>
+        </div>
+       
+        <div class="inputpopup">
+            <div class="table-responsive" id="ajax_attach" style="margin: 0px 5px 0px 5px;">
+                
+            </div>
+		</div>
+        </div><!-- End of Modal body -->
+		</div><!-- End of Modal content -->
+		</div><!-- End of Modal dialog -->
+</div><!-- End of Modal -->
+<!-- Lightbox strart -->							
 <!-- Modal for transaction list -->
 <div id="view_changes" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog">
@@ -474,8 +503,24 @@ function open_newnotes()
 {
     document.getElementById("add_row_notes").style.display = "";
 }
+function open_newattach()
+{
+    document.getElementById("add_row_attach").style.display = "";
+}
 </script>
 <script>
+function get_branch_attach(){
+    
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) 
+            {
+                document.getElementById("ajax_attach").innerHTML = this.responseText;
+            }
+        };
+        xmlhttp.open("GET", "ajax_branch_attach.php", true);
+        xmlhttp.send();
+}
 function get_branch_notes(){
     
         var xmlhttp = new XMLHttpRequest();
@@ -528,7 +573,38 @@ function notessubmit(note_id)
    });
 
    //e.preventDefault(); // avoid to execute the actual submit of the form.
-   return false;
+   return false;       
+}
+function attachsubmit(attach_id)
+{ 
+        var myForm = document.getElementById('add_client_attach_'+attach_id);
+        form_data = new FormData(myForm);
+        $.ajax({
+            url: 'branch_maintenance.php', // point to server-side PHP script 
+            
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            type: 'post',
+            success: function(data){
+                  if(data=='1'){
+                    
+                    get_branch_attach();
+                    $('#msg_attach').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Data Successfully Saved.</div>');
+                    //window.location.href = "client_maintenance.php";//get_client_attach();   
+                  }
+                  else{
+                       $('#msg_attach').html('<div class="alert alert-danger">'+data+'</div>');
+                  } 
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                   $('#msg_attach').html('<div class="alert alert-danger">Something went wrong, Please try again.</div>')
+              }
+        });
+               
+        
+   return false; 
        
 }
 function delete_notes(note_id){
@@ -540,19 +616,33 @@ function delete_notes(note_id){
                 if(data=='1'){
                    get_branch_notes(); 
                    $('#msg_notes').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Note deleted Successfully.</div>');
-                   //get_client_notes();
-                  
                   }
                   else{
                        $('#msg_notes').html('<div class="alert alert-danger">'+data+'</div>');
-                  }
-                
+                  } 
             }
         };
         xmlhttp.open("GET", "branch_maintenance.php?delete_action=delete_notes&note_id="+note_id, true);
         xmlhttp.send();
 }
-
+function delete_attach(attach_id){
+    
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var data = this.responseText;
+                if(data=='1'){
+                   get_branch_attach(); 
+                   $('#msg_attach').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Attach deleted Successfully.</div>');
+                  }
+                  else{
+                       $('#msg_attach').html('<div class="alert alert-danger">'+data+'</div>');
+                  }
+            }
+        };
+        xmlhttp.open("GET", "branch_maintenance.php?delete_action=delete_attach&attach_id="+attach_id, true);
+        xmlhttp.send();
+}
 
 $('#demo-dp-range .input-daterange').datepicker({
         format: "mm/dd/yyyy",

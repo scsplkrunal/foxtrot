@@ -357,10 +357,12 @@ var waitingDialog = waitingDialog || (function ($) {
                 <div class="panel-footer">
                     <div class="selectwrap">
                          <?php if($action=='edit' && $id>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;"><input type="button" name="previous" value="&laquo; Previous" /></a><?php } ?>
-                         <?php if($_GET['action']=='edit' && $_GET['id']>0){?><input style="margin-left: 12% !important;" type="button" name="view_change" value="View Change" /><?php } ?>
+                         <?php if($action=='edit' && $id>0){?>
+                            <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 12% !important;"/></a>
+                         <?php } ?>
                          <a href="#broker_notes" data-toggle="modal"><input type="button" onclick="get_broker_notes();" name="notes" value="Notes" /></a>
                          <a href="#client_transactions" data-toggle="modal"><input type="button" name="transactions" value="Transactions" /></a>
-                         <a href="#client_attachment" data-toggle="modal"><input type="button" name="attach" value="Attach" /></a>
+                         <a href="#broker_attach" data-toggle="modal"><input type="button"  onclick="get_broker_attach();" name="attach" value="Attachments" /></a>
                          <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
                          <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                          <?php if($action=='edit' && $id>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a" style="float: right;"><input type="button" name="next" value="Next &raquo;" /></a><?php } ?>
@@ -2095,10 +2097,12 @@ var waitingDialog = waitingDialog || (function ($) {
               <div class="panel-footer">
                     <div class="selectwrap">
                          <?php if($action=='edit' && $id>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;"><input type="button" name="previous" value="&laquo; Previous" /></a><?php } ?>
-                         <?php if($_GET['action']=='edit' && $_GET['id']>0){?><input style="margin-left: 12% !important;" type="button" name="view_change" value="View Change" /><?php } ?>
+                         <?php if($action=='edit' && $id>0){?>
+                            <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 12% !important;"/></a>
+                         <?php } ?>
                          <a href="#broker_notes" data-toggle="modal"><input type="button" onclick="get_broker_notes();" name="notes" value="Notes" /></a>
                          <a href="#client_transactions" data-toggle="modal"><input type="button" name="transactions" value="Transactions" /></a>
-                         <a href="#client_attachment" data-toggle="modal"><input type="button" name="attach" value="Attach" /></a>
+                         <a href="#broker_attach" data-toggle="modal"><input type="button"  onclick="get_broker_attach();" name="attach" value="Attachments" /></a>
                          <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
                          <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                          <?php if($action=='edit' && $id>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a" style="float: right;"><input type="button" name="next" value="Next &raquo;" /></a><?php } ?>
@@ -2135,6 +2139,427 @@ var waitingDialog = waitingDialog || (function ($) {
         		</div><!-- End of Modal content -->
         		</div><!-- End of Modal dialog -->
         </div><!-- End of Modal -->
+            <!-- Lightbox strart -->	
+        <!-- Lightbox strart -->							
+        	<!-- Modal for add client notes -->
+        	<div id="broker_attach" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        		<div class="modal-dialog">
+        		<div class="modal-content">
+        		<div class="modal-header" style="margin-bottom: 0px !important;">
+        			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+        			<h4 class="modal-title">Broker's Attach</h4>
+        		</div>
+        		<div class="modal-body">
+                
+                <div class="inputpopup">
+                    <a class="btn btn-sm btn-success" style="float: right !important; margin-right: 5px !important;" onclick="open_newattach();"><i class="fa fa-plus"></i> Add New</a></li>
+        		</div>
+                
+                <div class="col-md-12">
+                    <div id="msg_attach">
+                    </div>
+                </div>
+               
+                <div class="inputpopup">
+                    <div class="table-responsive" id="ajax_attach" style="margin: 0px 5px 0px 5px;">
+                        
+                    </div>
+        		</div>
+                </div><!-- End of Modal body -->
+        		</div><!-- End of Modal content -->
+        		</div><!-- End of Modal dialog -->
+        </div><!-- End of Modal -->						
+        <!-- Modal for view changes list -->
+        <div id="view_changes" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        	<div class="modal-dialog">
+        	<div class="modal-content">
+        	<div class="modal-header" style="margin-bottom: 0px !important;">
+        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+        		<h4 class="modal-title">View Changes</h4>
+        	</div>
+        	<div class="modal-body">
+            <form method="post">
+            <div class="inputpopup">
+                <div class="table-responsive" id="table-scroll" style="margin: 0px 5px 0px 5px;">
+                    <table class="table table-bordered table-stripped table-hover">
+                        <thead>
+                            <th>#NO</th>
+                            <th>User Initials</th>
+                            <th>Date of Change</th>
+                            <th>Field Changed</th>
+                            <th>Previous Value</th>
+                            <th>New Value</th>
+                        </thead>
+                        <tbody>
+                        <?php 
+                        $count = 0;
+                        $feild_name='';
+                        $lable_array = array();
+                        $lable_array = array('first_name' => 'First Name','last_name' => 'Last Name','middle_name' => 'Middle Name','suffix' => 'Suffix','fund' => 'Fund/Clear','internal' => 'Internal','ssn' => 'SSN','tax_id' => 'Tax Id','crd' => 'CRD','active_status' => 'Active status','branch_manager' => 'Branch Manager','pay_method' => 'Pay Method',
+                        
+                        'home' => 'Home/Business','address1' => 'Address 1','address2' => 'Address 2','city' => 'City','state_id' => 'State','zip_code' => 'Zip code','telephone' => 'Telephone','cell' => 'Cell','fax' => 'Fax','gender' => 'Gender','marital_status' => 'Status','spouse' => 'Spouse','children' => 'Children','email1' => 'Email 1','email2' => 'Email 2','web_id' => 'Web ID','web_password' => 'Web Password','dob' => 'DOB','prospect_date' => 'Prospect Date','reassign_broker' => 'Reassign Broker','u4' => 'U4','u5' => 'U5/Termination Date','dba_name' => 'DBA Name','eft_information' => 'EFT Information','start_date' => 'Start Date','transaction_type' => 'Transaction Type','routing' => 'Routing','account_no' => 'Account No','cfp' => 'CFP','chfp' => 'ChFP','cpa' => 'CPA','clu' => 'CLU','cfa' => 'CFA','ria' => 'RIA','insurance' => 'Insurance'
+                        
+                        ,'waive_home_state_fee' => 'Waive Home State Fee','product_category' => 'Product Category','state_id' => 'State','active_check' => 'Active','fee' => 'Fee','received' => 'Received','terminated' => 'Terminated','reson' => 'Reason','	license_name' => 'License Name / Description','approval_date' => 'Approval Date','expiration_date' => 'Expiration Date','reason' => 'Reason');
+                        
+                        foreach($broker_data as $key=>$val){
+                            
+                            if(isset($lable_array[$val['field']])){
+                                $feild_name = $lable_array[$val['field']];
+                            }else {
+                                $feild_name = $val['field'];
+                            }?>
+                            <tr>
+                            
+                                <td><?php echo ++$count; ?></td>
+                                <td><?php echo $val['user_initial'];?></td>
+                                <td><?php echo date('m/d/Y',strtotime($val['modified_time']));?></td>
+                                <?php if (is_numeric($feild_name))
+                                {
+                                    $getfull_name = $instance->get_charges_name($feild_name);
+                                ?>
+                                    <td><?php echo ($getfull_name['charge_type'].'('.$getfull_name['charge_name'].')');;?></td>
+                                <?php }
+                                else{?>
+                                <td><?php echo $feild_name;?></td>
+                                <?php } ?>
+                               <?php if($feild_name == 'EFT Information'){?>
+                                <td>
+                                <?php 
+                                if($val['old_value'] == 1)
+                                {
+                                    echo 'Pre-Notes';
+                                }
+                                else if($val['old_value'] == 2)
+                                {
+                                    echo 'Direct Deposit';
+                                }
+                                ?>
+                                </td>
+                                <td>
+                                <?php 
+                                if($val['new_value'] == 1)
+                                {
+                                    echo 'Pre-Notes';
+                                }
+                                else if($val['new_value'] == 2)
+                                {
+                                    echo 'Direct Deposit';
+                                }
+                                ?>
+                                </td>
+                                <?php }
+                                else if($feild_name == 'Pay Method'){?>
+                                    <td>
+                                    <?php 
+                                    if($val['old_value'] == 1)
+                                    {
+                                        echo 'ACH';
+                                    }
+                                    else if($val['old_value'] == 2)
+                                    {
+                                        echo 'Check';
+                                    }
+                                    ?>
+                                    </td>
+                                    <td>
+                                    <?php 
+                                    if($val['new_value'] == 1)
+                                    {
+                                        echo 'ACH';
+                                    }
+                                    else if($val['new_value'] == 2)
+                                    {
+                                        echo 'Check';
+                                    }
+                                    ?>
+                                    </td>
+                                    <?php }
+                                else if($feild_name == 'Active status'){?>
+                                    <td>
+                                    <?php 
+                                    if($val['old_value'] == 1)
+                                    {
+                                        echo 'Active';
+                                    }
+                                    else if($val['old_value'] == 2)
+                                    {
+                                        echo 'Terminated';
+                                    }
+                                    else if($val['old_value'] == 3)
+                                    {
+                                        echo 'Retired';
+                                    }
+                                    else if($val['old_value'] == 4)
+                                    {
+                                        echo 'Deceased';
+                                    }
+                                    ?>
+                                    </td>
+                                    <td>
+                                    <?php 
+                                    if($val['new_value'] == 1)
+                                    {
+                                        echo 'Active';
+                                    }
+                                    else if($val['new_value'] == 2)
+                                    {
+                                        echo 'Terminated';
+                                    }
+                                    else if($val['new_value'] == 3)
+                                    {
+                                        echo 'Retired';
+                                    }
+                                    else if($val['new_value'] == 4)
+                                    {
+                                        echo 'Deceased';
+                                    }
+                                    ?>
+                                    </td>
+                                    <?php }
+                                else if($feild_name == 'Home/Business'){?>
+                                    <td>
+                                    <?php 
+                                    if($val['old_value'] == 1)
+                                    {
+                                        echo 'Home';
+                                    }
+                                    else if($val['old_value'] == 2)
+                                    {
+                                        echo 'Business';
+                                    }
+                                    ?>
+                                    </td>
+                                    <td>
+                                    <?php 
+                                    if($val['new_value'] == 1)
+                                    {
+                                        echo 'Home';
+                                    }
+                                    else if($val['new_value'] == 2)
+                                    {
+                                        echo 'Business';
+                                    }
+                                    ?>
+                                    </td>
+                                    <?php }
+                                else if($feild_name == 'Gender'){?>
+                                    <td>
+                                    <?php 
+                                    if($val['old_value'] == 1)
+                                    {
+                                        echo 'Male';
+                                    }
+                                    else if($val['old_value'] == 2)
+                                    {
+                                        echo 'Female';
+                                    }
+                                    else if($val['old_value'] == 3)
+                                    {
+                                        echo 'Other';
+                                    }
+                                    ?>
+                                    </td>
+                                    <td>
+                                    <?php 
+                                    if($val['new_value'] == 1)
+                                    {
+                                        echo 'Male';
+                                    }
+                                    else if($val['new_value'] == 2)
+                                    {
+                                        echo 'Female';
+                                    }
+                                    else if($val['new_value'] == 3)
+                                    {
+                                        echo 'Other';
+                                    }
+                                    ?>
+                                    </td>
+                                    <?php }
+                                else if($feild_name == 'Status'){?>
+                                    <td>
+                                    <?php 
+                                    if($val['old_value'] == 1)
+                                    {
+                                        echo 'Single';
+                                    }
+                                    else if($val['old_value'] == 2)
+                                    {
+                                        echo 'Married';
+                                    }
+                                    else if($val['old_value'] == 3)
+                                    {
+                                        echo 'Divorced';
+                                    }
+                                    else if($val['old_value'] == 4)
+                                    {
+                                        echo 'Widowed';
+                                    }
+                                    ?>
+                                    </td>
+                                    <td>
+                                    <?php 
+                                    if($val['new_value'] == 1)
+                                    {
+                                        echo 'Single';
+                                    }
+                                    else if($val['new_value'] == 2)
+                                    {
+                                        echo 'Married';
+                                    }
+                                    else if($val['new_value'] == 3)
+                                    {
+                                        echo 'Divorced';
+                                    }
+                                    else if($val['new_value'] == 4)
+                                    {
+                                        echo 'Widowed';
+                                    }
+                                    ?>
+                                    </td>
+                                    <?php }
+                                else if($feild_name == 'Transaction Type'){?>
+                                <td>
+                                <?php 
+                                if($val['old_value'] == 1)
+                                {
+                                    echo 'Checking';
+                                }
+                                else if($val['old_value'] == 2)
+                                {
+                                    echo 'Savings';
+                                }
+                                ?>
+                                </td>
+                                <td>
+                                <?php 
+                                if($val['new_value'] == 1)
+                                {
+                                    echo 'Checking';
+                                }
+                                else if($val['new_value'] == 2)
+                                {
+                                    echo 'Savings';
+                                }
+                                ?>
+                                </td>
+                                <?php }
+                                else if($feild_name == 'CFP' && $val['old_value'] == 0){?>
+                                <td><?php echo 'UnChecked';?></td>
+                                <td><?php echo 'Checked';?></td>
+                                <?php } 
+                                else if($feild_name == 'CFP' && $val['old_value'] == 1){?>
+                                <td><?php echo 'Checked';?></td>
+                                <td><?php echo 'UnChecked';?></td>
+                                <?php }
+                                else if($feild_name == 'ChFP' && $val['old_value'] == 0){?>
+                                <td><?php echo 'UnChecked';?></td>
+                                <td><?php echo 'Checked';?></td>
+                                <?php } 
+                                else if($feild_name == 'ChFP' && $val['old_value'] == 1){?>
+                                <td><?php echo 'Checked';?></td>
+                                <td><?php echo 'UnChecked';?></td>
+                                <?php }
+                                else if($feild_name == 'CPA' && $val['old_value'] == 0){?>
+                                <td><?php echo 'UnChecked';?></td>
+                                <td><?php echo 'Checked';?></td>
+                                <?php } 
+                                else if($feild_name == 'CPA' && $val['old_value'] == 1){?>
+                                <td><?php echo 'Checked';?></td>
+                                <td><?php echo 'UnChecked';?></td>
+                                <?php }
+                                else if($feild_name == 'CLU' && $val['old_value'] == 0){?>
+                                <td><?php echo 'UnChecked';?></td>
+                                <td><?php echo 'Checked';?></td>
+                                <?php } 
+                                else if($feild_name == 'CLU' && $val['old_value'] == 1){?>
+                                <td><?php echo 'Checked';?></td>
+                                <td><?php echo 'UnChecked';?></td>
+                                <?php }
+                                else if($feild_name == 'CFA' && $val['old_value'] == 0){?>
+                                <td><?php echo 'UnChecked';?></td>
+                                <td><?php echo 'Checked';?></td>
+                                <?php } 
+                                else if($feild_name == 'CFA' && $val['old_value'] == 1){?>
+                                <td><?php echo 'Checked';?></td>
+                                <td><?php echo 'UnChecked';?></td>
+                                <?php }
+                                else if($feild_name == 'RIA' && $val['old_value'] == 0){?>
+                                <td><?php echo 'UnChecked';?></td>
+                                <td><?php echo 'Checked';?></td>
+                                <?php } 
+                                else if($feild_name == 'RIA' && $val['old_value'] == 1){?>
+                                <td><?php echo 'Checked';?></td>
+                                <td><?php echo 'UnChecked';?></td>
+                                <?php }
+                                else if($feild_name == 'Insurance' && $val['old_value'] == 0){?>
+                                <td><?php echo 'UnChecked';?></td>
+                                <td><?php echo 'Checked';?></td>
+                                <?php } 
+                                else if($feild_name == 'Insurance' && $val['old_value'] == 1){?>
+                                <td><?php echo 'Checked';?></td>
+                                <td><?php echo 'UnChecked';?></td>
+                                <?php }
+                                else if($feild_name == 'Branch Manager' && $val['old_value'] == 0){?>
+                                <td><?php echo 'UnChecked';?></td>
+                                <td><?php echo 'Checked';?></td>
+                                <?php } 
+                                else if($feild_name == 'Branch Manager' && $val['old_value'] == 1){?>
+                                <td><?php echo 'Checked';?></td>
+                                <td><?php echo 'UnChecked';?></td>
+                                <?php }
+                                else if($feild_name == 'Active' && $val['old_value'] == 0){?>
+                                <td><?php echo 'UnChecked';?></td>
+                                <td><?php echo 'Checked';?></td>
+                                <?php } 
+                                else if($feild_name == 'Active' && $val['old_value'] == 1){?>
+                                <td><?php echo 'Checked';?></td>
+                                <td><?php echo 'UnChecked';?></td>
+                                <?php }
+                                else if($feild_name == 'Waive Home State Fee' && $val['old_value'] == 0){?>
+                                <td><?php echo 'UnChecked';?></td>
+                                <td><?php echo 'Checked';?></td>
+                                <?php } 
+                                else if($feild_name == 'Waive Home State Fee' && $val['old_value'] == 1){?>
+                                <td><?php echo 'Checked';?></td>
+                                <td><?php echo 'UnChecked';?></td>
+                                <?php }
+                                else if($feild_name == 'State'){
+                                if($val['old_value']>0){
+                                $state = $instance->get_state_name($val['old_value']);?>
+                                <td><?php echo $state['state_name'];?></td>
+                                <?php } if($val['new_value']>0){?>
+                                <?php $state = $instance->get_state_name($val['new_value']);?>
+                                <td><?php echo $state['state_name'];?></td>
+                                <?php } }
+                                else if($feild_name == 'Product Category'){
+                                    if($val['old_value']>0){
+                                    $product_category_name = $instance->get_product_category_name($val['old_value']);?>
+                                    <td><?php echo $product_category_name['product_type'];?></td>
+                                    <?php }
+                                    else {?><td><?php echo '-';?></td>
+                                
+                                    <?php }
+                                    if($val['new_value']>0){?>
+                                    <?php $product_category_name = $instance->get_product_category_name($val['new_value']);?>
+                                    <td><?php echo $product_category_name['product_type'];?></td>
+                                    <?php }
+                                    else{?><td><?php echo '-';?></td>
+                                    <?php }} else {?>
+                                <td><?php echo $val['old_value'];?></td>
+                                <td><?php echo $val['new_value'];?></td>
+                                <?php } ?>
+                            </tr>
+                        <?php } ?>
+                      </tbody>
+                    </table>
+                </div>
+        	</div>
+            </form>
+            </div><!-- End of Modal body -->
+        	</div><!-- End of Modal content -->
+        	</div><!-- End of Modal dialog -->
+        </div><!-- End of Modal -->      
         <!-- Lightbox strart -->							
 			<!-- Modal for transaction list -->
 			<div id="client_transactions" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
@@ -2248,51 +2673,7 @@ var waitingDialog = waitingDialog || (function ($) {
 				</div><!-- End of Modal content -->
 			</div><!-- End of Modal dialog -->
 		</div><!-- End of Modal -->
-        <!-- Lightbox strart -->							
-			<!-- Modal for attach -->
-			<div id="client_attachment" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-				<div class="modal-dialog">
-				<div class="modal-content">
-				<div class="modal-header" style="margin-bottom: 0px !important;">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-					<h4 class="modal-title">Attachments</h4>
-				</div>
-				<div class="modal-body">
-                <form method="post">
-                <div class="inputpopup">
-                    <a class="btn btn-sm btn-success" style="float: right !important; margin-right: 5px !important;" onclick="addMoreAttach();"><i class="fa fa-plus"></i> Add New</a></li>
-    			</div>
-                <div class="inputpopup">
-                    <div class="table-responsive" id="table-scroll" style="margin: 0px 5px 0px 5px;">
-                        <table class="table table-bordered table-stripped table-hover">
-                            <thead>
-                                <th>#NO</th>
-                                <th>Date</th>
-                                <th>User</th>
-                                <th>Files Name</th>
-                                <th class="text-center">Action</th>
-                            </thead>
-                            <tbody>
-                                <tr id="add_row_attach">
-                                    <td>1</td>
-                                    <td><?php echo date('d/m/Y');?></td>
-                                    <td><?php echo $_SESSION['user_name'];?></td>
-                                    <td><input type="file" name="attach" class="form-control" id="attach"/></td>
-                                    <td class="text-center">
-                                       <a href="<?php echo CURRENT_PAGE; ?>?action=add&id=" class="btn btn-sm btn-warning" onclick="waitingDialog.show();"><i class="fa fa-save"></i> Ok</a>
-                                       <a href="<?php echo CURRENT_PAGE; ?>?action=download&id=" class="btn btn-sm btn-success"><i class="fa fa-download"></i> Download</a>
-                                       <a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
-                                    </td>
-                                </tr>
-                          </tbody>
-                        </table>
-                    </div>
-				</div>
-                </form>
-                </div><!-- End of Modal body -->
-				</div><!-- End of Modal content -->
-				</div><!-- End of Modal dialog -->
-		  </div><!-- End of Modal -->
+        
           </div>
                                 <br />
    </div>
@@ -2343,8 +2724,24 @@ function open_newnotes()
 {
     document.getElementById("add_row_notes").style.display = "";
 }
+function open_newattach()
+{
+    document.getElementById("add_row_attach").style.display = "";
+}
 </script>
 <script>
+function get_broker_attach(){
+    
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) 
+            {
+                document.getElementById("ajax_attach").innerHTML = this.responseText;
+            }
+        };
+        xmlhttp.open("GET", "ajax_broker_attach.php", true);
+        xmlhttp.send();
+}
 function get_broker_notes(){
     
         var xmlhttp = new XMLHttpRequest();
@@ -2382,8 +2779,7 @@ function notessubmit(note_id)
           if(data=='1'){
             
             get_broker_notes();
-            $('#msg_notes').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Data Successfully Saved.</div>');
-            //window.location.href = "client_maintenance.php";//get_client_notes();   
+            $('#msg_notes').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Data Successfully Saved.</div>');  
           }
           else{
                $('#msg_notes').html('<div class="alert alert-danger">'+data+'</div>');
@@ -2395,10 +2791,36 @@ function notessubmit(note_id)
       }
       
    });
-
-   //e.preventDefault(); // avoid to execute the actual submit of the form.
-   return false;
-       
+   return false;     
+}
+function attachsubmit(attach_id)
+{ 
+        var myForm = document.getElementById('add_client_attach_'+attach_id);
+        form_data = new FormData(myForm);
+        $.ajax({
+            url: 'manage_broker.php',  
+            
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            type: 'post',
+            success: function(data){
+                  if(data=='1'){
+                    
+                    get_broker_attach();
+                    $('#msg_attach').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Data Successfully Saved.</div>');
+                       
+                  }
+                  else{
+                       $('#msg_attach').html('<div class="alert alert-danger">'+data+'</div>');
+                  } 
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                   $('#msg_attach').html('<div class="alert alert-danger">Something went wrong, Please try again.</div>')
+              }
+        });    
+   return false; 
 }
 function delete_notes(note_id){
     
@@ -2419,6 +2841,24 @@ function delete_notes(note_id){
             }
         };
         xmlhttp.open("GET", "manage_broker.php?delete_action=delete_notes&note_id="+note_id, true);
+        xmlhttp.send();
+}
+function delete_attach(attach_id){
+    
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var data = this.responseText;
+                if(data=='1'){
+                   get_broker_attach(); 
+                   $('#msg_attach').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Attach deleted Successfully.</div>');
+                  }
+                  else{
+                       $('#msg_attach').html('<div class="alert alert-danger">'+data+'</div>');
+                  }
+            }
+        };
+        xmlhttp.open("GET", "manage_broker.php?delete_action=delete_attach&attach_id="+attach_id, true);
         xmlhttp.send();
 }
 </script>

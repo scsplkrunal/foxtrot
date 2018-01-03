@@ -29,9 +29,11 @@
                 <div class="selectwrap" >
                     <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
                         <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous"style="float: left;" class="previous next_previous_a" style="float: left;"><input type="button" name="next" value="&laquo; Previous" /></a><?php } ?>
-                        <?php if($_GET['action']=='edit' && $_GET['id']>0){?><input style="margin-left: 18% !important;" type="button" name="view_change" value="View Change" /><?php } ?>
-       					<a href="#company_notes" data-toggle="modal"><input type="button" onclick="get_company_notes();" name="notes" value="Notes" /></a>
-                        <a href="#client_attachment" data-toggle="modal"><input type="button" name="attach" value="Attach" /></a>
+                        <?php if($action=='edit' && $id>0){?>
+                        <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 18% !important;"/></a>
+                        <?php } ?>
+                        <a href="#company_notes" data-toggle="modal"><input type="button" onclick="get_company_notes();" name="notes" value="Notes" /></a>
+                        <a href="#company_attach" data-toggle="modal"><input type="button"  onclick="get_company_attach();" name="attach" value="Attachments" /></a>
                         <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
                         <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                         <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" style="float: right;" class="next next_previous_a" style="float: right;"><input type="button" name="previous" value="Next &raquo;" /></a><?php } ?>
@@ -335,7 +337,8 @@
                         <div class="form-group">
                             <label class="col-md-12"><h3>State</h3> </label>
                            
-                                <?php  $mystate = explode(',', isset($state));
+                                <?php  if (isset($state) && $state!= ''){$mystate = explode(',',$state);}
+                                
                                 foreach($get_state as $statekey=>$stateval){?>
                                 <label class="check-inline col-md-2">
                                     <input type="checkbox" class="checkbox" <?php if(in_array($stateval['id'],$mystate)){ ?>checked="true" <?php } ?> name="state[<?php echo $stateval['id']; ?>]" id="<?php echo $stateval['name']; ?>" value="<?php echo $stateval['id']; ?>" /><?php echo $stateval['name']; ?>
@@ -350,10 +353,12 @@
                 <div class="panel-footer">
                     <div class="selectwrap" >
                         <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-                            <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous"style="float: left;" class="previous next_previous_a" style="float: left;"><input type="button" name="next" value="&laquo; Previous" /></a><?php } ?>
-                        <?php if($_GET['action']=='edit' && $_GET['id']>0){?><input style="margin-left: 18% !important;" type="button" name="view_change" value="View Change" /><?php } ?>
-       					<a href="#company_notes" data-toggle="modal"><input type="button" onclick="get_company_notes();" name="notes" value="Notes" /></a>
-                        <a href="#client_attachment" data-toggle="modal"><input type="button" name="attach" value="Attach" /></a>
+                        <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous"style="float: left;" class="previous next_previous_a" style="float: left;"><input type="button" name="next" value="&laquo; Previous" /></a><?php } ?>
+                         <?php if($action=='edit' && $id>0){?>
+                        <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 18% !important;"/></a>
+                        <?php } ?>
+                        <a href="#company_notes" data-toggle="modal"><input type="button" onclick="get_company_notes();" name="notes" value="Notes" /></a>
+                        <a href="#company_attach" data-toggle="modal"><input type="button"  onclick="get_company_attach();" name="attach" value="Attachments" /></a>
                         <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
                         <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                         <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" style="float: right;" class="next next_previous_a" style="float: right;"><input type="button" name="previous" value="Next &raquo;" /></a><?php } ?>
@@ -442,17 +447,209 @@
 	</div>
     <?php } ?>
     <?php if($action=='edit' && $id>0){?>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group"><br /><div class="selectwrap">
-                                            <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;">&laquo; Previous</a>
-                                            <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a" style="float: right;">Next &raquo;</a>
-                                        </div>
-                                     </div>
-                                     </div>
-                                 </div>
-                                <?php } ?>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group"><br /><div class="selectwrap">
+                <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;">&laquo; Previous</a>
+                <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a" style="float: right;">Next &raquo;</a>
+            </div>
+         </div>
+         </div>
+     </div>
+    <?php } ?>
     </div>
+    <!-- Lightbox strart -->							
+<!-- Modal for transaction list -->
+<div id="view_changes" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+	<div class="modal-content">
+	<div class="modal-header" style="margin-bottom: 0px !important;">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+		<h4 class="modal-title">View Changes</h4>
+	</div>
+	<div class="modal-body">
+    <form method="post">
+    <div class="inputpopup">
+        <div class="table-responsive" id="table-scroll" style="margin: 0px 5px 0px 5px;">
+            <table class="table table-bordered table-stripped table-hover">
+                <thead>
+                    <th>#NO</th>
+                    <th>User Initials</th>
+                    <th>Date of Change</th>
+                    <th>Field Changed</th>
+                    <th>Previous Value</th>
+                    <th>New Value</th>
+                </thead>
+                <tbody>
+                <?php 
+                $count = 0;
+                $feild_name='';
+                $lable_array = array();
+                $lable_array = array('company_name' => 'Company/Practice Name','company_type' => 'Company/Practice Type','manager_name' => 'Manager Name','address1' => 'Business Address 1','address2' => 'Business Address 2','business_city' => 'Business City','state_general' => 'State General','zip' => 'Business Zipcode','mail_address1' => 'Mailing Address1','mail_address2' => 'Mailing Address2','m_city' => 'Mailing City','m_state' => 'Mailing State','m_zip' => 'Mailing Zipcode','telephone' => 'Telephone','facsimile' => 'Facsimile','e_date' => 'Date Established','i_date' => 'Inactive Date','payout_level' => 'Payout Level','clearing_charge_calculation' => 'Clearing Charge Calculation','sliding_scale_commision' => 'Sliding Scale Commission Basis','product_category' => 'Product Category','p_rate' => 'Rate','threshold1' => 'Threshold 1','l1_rate' => 'Rate 1','threshold2' => 'Threshold 2','l2_rate' => 'Rate 2','threshold3' => 'Threshold 3','l3_rate' => 'Rate 3','threshold4' => 'Threshold 4','l4_rate' => 'Rate 4','threshold5' => 'Threshold 5','l5_rate' => 'Rate 5','threshold6' => 'Threshold 6','l6_rate' => 'Rate 6','state' => 'State','forign' => 'Foreign');
+                
+                foreach($multicompany_data as $key=>$val){
+                    
+                    if(isset($lable_array[$val['field']])){
+                        $feild_name = $lable_array[$val['field']];
+                    }else {
+                        $feild_name = $val['field'];
+                    }?>
+                    <tr>
+                    
+                        <td><?php echo ++$count; ?></td>
+                        <td><?php echo $val['user_initial'];?></td>
+                        <td><?php echo date('m/d/Y',strtotime($val['modified_time']));?></td>
+                        <td><?php echo $feild_name;?></td>
+                       <?php if($feild_name == 'Payout Level'){?>
+                        <td>
+                        <?php 
+                        if($val['old_value'] == 1)
+                        {
+                            echo 'Company/Practice Level';
+                        }
+                        else if($val['old_value'] == 2)
+                        {
+                            echo 'Broker Level';
+                        }
+                        ?>
+                        </td>
+                        <td>
+                        <?php 
+                        if($val['new_value'] == 1)
+                        {
+                            echo 'Company/Practice Level';
+                        }
+                        else if($val['new_value'] == 2)
+                        {
+                            echo 'Broker Level';
+                        }
+                        ?>
+                        </td>
+                        <?php }
+                        else if($feild_name == 'Clearing Charge Calculation'){?>
+                        <td>
+                        <?php 
+                        if($val['old_value'] == 1)
+                        {
+                            echo 'Gross Payout';
+                        }
+                        else if($val['old_value'] == 2)
+                        {
+                            echo 'Net Payout';
+                        }
+                        ?>
+                        </td>
+                        <td>
+                        <?php 
+                        if($val['new_value'] == 1)
+                        {
+                            echo 'Gross Payout';
+                        }
+                        else if($val['new_value'] == 2)
+                        {
+                            echo 'Net Payout';
+                        }
+                        ?>
+                        </td>
+                        <?php }
+                        else if($feild_name == 'Sliding Scale Commission Basis'){?>
+                        <td>
+                        <?php 
+                        if($val['old_value'] == 1)
+                        {
+                            echo 'Payroll-to-Date Concession';
+                        }
+                        else if($val['old_value'] == 2)
+                        {
+                            echo 'Year-to-Date Concession';
+                        }
+                        else if($val['old_value'] == 3)
+                        {
+                            echo 'Year-to-Date Earnings';
+                        }
+                        ?>
+                        </td>
+                        <td>
+                        <?php 
+                        if($val['new_value'] == 1)
+                        {
+                            echo 'Payroll-to-Date Concession';
+                        }
+                        else if($val['new_value'] == 2)
+                        {
+                            echo 'Year-to-Date Concession';
+                        }
+                        else if($val['new_value'] == 3)
+                        {
+                            echo 'Year-to-Date Earnings';
+                        }
+                        ?>
+                        </td>
+                        <?php }
+                        else if($feild_name == 'State General'){
+                        $state = $instance->get_state_name($val['old_value']);?>
+                        <td><?php echo $state['state_name'];?></td>
+                        <?php $state = $instance->get_state_name($val['new_value']);?>
+                        <td><?php echo $state['state_name'];?></td>
+                        <?php }
+                        else if($feild_name == 'Mailing State'){
+                        $state = $instance->get_state_name($val['old_value']);?>
+                        <td><?php echo $state['state_name'];?></td>
+                        <?php $state = $instance->get_state_name($val['new_value']);?>
+                        <td><?php echo $state['state_name'];?></td>
+                        <?php }
+                        else if($feild_name == 'State'){?>
+                        <td>
+                        <?php 
+                            $myArray1 = explode(',', $val['old_value']);
+                            
+                            foreach($myArray1 as $key1=>$val1)
+                            {
+                                $state1 = $instance->get_state_name($val1);
+                                echo $state1['state_name'].',';
+                            }
+                            
+                            
+                        ?>
+                        </td>
+                        
+                        <td>
+                        <?php 
+                            $myArray = explode(',', $val['new_value']);
+                            foreach($myArray as $key=>$val)
+                            {
+                                $state = $instance->get_state_name($val);
+                                echo $state['state_name'].',';
+                            }
+                        ?>
+                        </td>
+                        <?php }
+                        else if($feild_name == 'Manager Name'){
+                        $manager_name = $instance->get_broker_name($val['old_value']);?>
+                        <td><?php echo $manager_name['broker_name'];?></td>
+                        <?php $manager_name = $instance->get_broker_name($val['new_value']);?>
+                        <td><?php echo $manager_name['broker_name'];?></td>
+                        <?php }
+                        else if($feild_name == 'Product Category'){
+                        $product_category_name = $instance->get_product_category_name($val['old_value']);?>
+                        <td><?php echo $product_category_name['product_type'];?></td>
+                        <?php $product_category_name = $instance->get_product_category_name($val['new_value']);?>
+                        <td><?php echo $product_category_name['product_type'];?></td>
+                        <?php } else {?>
+                        <td><?php echo $val['old_value'];?></td>
+                        <td><?php echo $val['new_value'];?></td>
+                        <?php } ?>
+                    </tr>
+                <?php } ?>
+              </tbody>
+            </table>
+        </div>
+	</div>
+    </form>
+    </div><!-- End of Modal body -->
+	</div><!-- End of Modal content -->
+	</div><!-- End of Modal dialog -->
+</div><!-- End of Modal -->           
     <!-- Lightbox strart -->							
         	<!-- Modal for add client notes -->
         	<div id="company_notes" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
@@ -484,50 +681,35 @@
         </div><!-- End of Modal -->
         <!-- Lightbox strart -->
         <!-- Lightbox strart -->							
-			<!-- Modal for attach -->
-			<div id="client_attachment" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-				<div class="modal-dialog">
-				<div class="modal-content">
-				<div class="modal-header" style="margin-bottom: 0px !important;">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-					<h4 class="modal-title">Attachments</h4>
-				</div>
-				<div class="modal-body">
-                <form method="post">
-                <div class="inputpopup">
-                    <a class="btn btn-sm btn-success" style="float: right !important; margin-right: 5px !important;" onclick="addMoreAttach();"><i class="fa fa-plus"></i> Add New</a></li>
-    			</div>
-                <div class="inputpopup">
-                    <div class="table-responsive" id="table-scroll" style="margin: 0px 5px 0px 5px;">
-                        <table class="table table-bordered table-stripped table-hover">
-                            <thead>
-                                <th>#NO</th>
-                                <th>Date</th>
-                                <th>User</th>
-                                <th>Files Name</th>
-                                <th class="text-center">Action</th>
-                            </thead>
-                            <tbody>
-                                <tr id="add_row_attach">
-                                    <td>1</td>
-                                    <td><?php echo date('d/m/Y');?></td>
-                                    <td><?php echo $_SESSION['user_name'];?></td>
-                                    <td><input type="file" name="attach" class="form-control" id="attach"/></td>
-                                    <td class="text-center">
-                                       <a href="<?php echo CURRENT_PAGE; ?>?action=add&id=" class="btn btn-sm btn-warning" onclick="waitingDialog.show();"><i class="fa fa-save"></i> Ok</a>
-                                       <a href="<?php echo CURRENT_PAGE; ?>?action=download&id=" class="btn btn-sm btn-success"><i class="fa fa-download"></i> Download</a>
-                                       <a href="<?php echo CURRENT_PAGE; ?>?action=delete&id=" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
-                                    </td>
-                                </tr>
-                          </tbody>
-                        </table>
-                    </div>
-				</div>
-                </form>
-                </div><!-- End of Modal body -->
-				</div><!-- End of Modal content -->
-				</div><!-- End of Modal dialog -->
-		  </div><!-- End of Modal -->
+	<!-- Modal for add client notes -->
+	<div id="company_attach" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog">
+		<div class="modal-content">
+		<div class="modal-header" style="margin-bottom: 0px !important;">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+			<h4 class="modal-title">Multi-Company's Attach</h4>
+		</div>
+		<div class="modal-body">
+        
+        <div class="inputpopup">
+            <a class="btn btn-sm btn-success" style="float: right !important; margin-right: 5px !important;" onclick="open_newattach();"><i class="fa fa-plus"></i> Add New</a></li>
+		</div>
+        
+        <div class="col-md-12">
+            <div id="msg_attach">
+            </div>
+        </div>
+       
+        <div class="inputpopup">
+            <div class="table-responsive" id="ajax_attach" style="margin: 0px 5px 0px 5px;">
+                
+            </div>
+		</div>
+        </div><!-- End of Modal body -->
+		</div><!-- End of Modal content -->
+		</div><!-- End of Modal dialog -->
+</div><!-- End of Modal -->
+<!-- Lightbox strart -->
           
 </div>
 <style>
@@ -621,6 +803,10 @@ function open_newnotes()
 {
     document.getElementById("add_row_notes").style.display = "";
 }
+function open_newattach()
+{
+    document.getElementById("add_row_attach").style.display = "";
+}
 </script>
 <script>
 function get_company_notes(){
@@ -633,6 +819,18 @@ function get_company_notes(){
             }
         };
         xmlhttp.open("GET", "ajax_company_notes.php", true);
+        xmlhttp.send();
+}
+function get_company_attach(){
+    
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) 
+            {
+                document.getElementById("ajax_attach").innerHTML = this.responseText;
+            }
+        };
+        xmlhttp.open("GET", "ajax_company_attach.php", true);
         xmlhttp.send();
 }
 function openedit(note_id){
@@ -677,6 +875,55 @@ function notessubmit(note_id)
    //e.preventDefault(); // avoid to execute the actual submit of the form.
    return false;
        
+}
+function attachsubmit(attach_id)
+{ 
+        var myForm = document.getElementById('add_client_attach_'+attach_id);
+        form_data = new FormData(myForm);
+        $.ajax({
+            url: 'manage_multicompany.php', // point to server-side PHP script 
+            
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            type: 'post',
+            success: function(data){
+                  if(data=='1'){
+                    
+                    get_company_attach();
+                    $('#msg_attach').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Data Successfully Saved.</div>');
+                    //window.location.href = "client_maintenance.php";//get_client_attach();   
+                  }
+                  else{
+                       $('#msg_attach').html('<div class="alert alert-danger">'+data+'</div>');
+                  } 
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                   $('#msg_attach').html('<div class="alert alert-danger">Something went wrong, Please try again.</div>')
+              }
+        });
+               
+        
+   return false;   
+}
+function delete_attach(attach_id){
+    
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var data = this.responseText;
+                if(data=='1'){
+                   get_company_attach(); 
+                   $('#msg_attach').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Attach deleted Successfully.</div>');
+                  }
+                  else{
+                       $('#msg_attach').html('<div class="alert alert-danger">'+data+'</div>');
+                  }
+            }
+        };
+        xmlhttp.open("GET", "manage_multicompany.php?delete_action=delete_attach&attach_id="+attach_id, true);
+        xmlhttp.send();
 }
 function delete_notes(note_id){
     

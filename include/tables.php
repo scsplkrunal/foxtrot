@@ -56,5 +56,14 @@
     define('COMPANY_NOTES','ft_multicompany_notes');
     define('BROKER_NOTES','ft_broker_notes');
     define('SPONSOR_HISTORY','ft_sponsor_history');
-    
+    define('CLIENT_HISTORY','ft_client_history');
+    define('BRANCH_ATTACH','ft_branch_attach');
+    define('BROKER_ATTACH','ft_broker_attach');
+    define('CLIENT_ATTACH','ft_client_attach');
+    define('CLIENT_ACCOUNT_JOIN','ft_client_account');
+    define('PRODUCT_ATTACH','ft_product_attach');
+    define('COMPANY_ATTACH','ft_multicompany_attach');
+    define('MULTICOMPANY_HISTORY','ft_multicompany_history');
+    define('BROKER_HISTORY','ft_broker_history');
+    define('SPONSOR_NOTES','ft_sponsor_notes');
 ?>

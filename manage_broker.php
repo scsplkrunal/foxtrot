@@ -284,6 +284,7 @@
     }*/
     else if($action=='edit' && $id>0){
         $return = $instance->edit($id);
+        $broker_data = $instance->get_broker_changes($id);
         $edit_general = $instance->edit_general($id);
         $edit_licences_securities = $instance->edit_licences_securities($id);
         $edit_licences_ria = $instance->edit_licences_ria($id);
@@ -310,7 +311,7 @@
     	$pay_method = $instance->re_db_output($return['pay_method']);
     	$branch_manager = $instance->re_db_output($return['branch_manager']);
         
-        $home = $instance->re_db_output($edit_general['home/business']);
+        $home = $instance->re_db_output($edit_general['home']);
         $address1 = $instance->re_db_output($edit_general['address1']);
         $address2 = $instance->re_db_output($edit_general['address2']);
         $city = $instance->re_db_output($edit_general['city']);
@@ -423,6 +424,35 @@
         echo $error;
         exit;
     } 
+    else if(isset($_POST['add_attach'])&& $_POST['add_attach']=='Add Attach'){//print_r($_FILES);exit;
+        $_POST['user_id']=$_SESSION['user_name'];
+        $_POST['date'] = date('Y-m-d');
+        $file = isset($_FILES['add_attach'])?$_FILES['add_attach']:array();
+        
+        $return = $instance->insert_update_broker_attach($_POST);
+        
+        if($return===true){
+            echo '1';exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+        echo $error;
+        exit;
+    }
+    else if(isset($_GET['delete_action'])&&$_GET['delete_action']=='delete_attach'&&isset($_GET['attach_id'])&&$_GET['attach_id']>0)
+    {
+        $attach_id = $instance->re_db_input($_GET['attach_id']);
+        $return = $instance->delete_attach($attach_id);
+        if($return===true){
+            echo '1';exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+        echo $error;
+        exit;
+    }
     else if(isset($_GET['delete_action'])&&$_GET['delete_action']=='delete_notes'&&isset($_GET['note_id'])&&$_GET['note_id']>0)
     {
         $note_id = $instance->re_db_input($_GET['note_id']);

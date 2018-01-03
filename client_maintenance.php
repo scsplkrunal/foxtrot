@@ -113,6 +113,7 @@
     $get_broker = $instance_broker->select();
     
     if(isset($_POST['submit'])&& $_POST['submit']=='Save'){
+        
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
         $fname = isset($_POST['fname'])?$instance->re_db_input($_POST['fname']):'';
         $lname = isset($_POST['lname'])?$instance->re_db_input($_POST['lname']):'';
@@ -168,8 +169,8 @@
         
         //accounting tab coding
         $id = isset($_POST['account_id'])?$instance->re_db_input($_POST['account_id']):0;
-        $account_no = isset($_POST['account_no'])?$instance->re_db_input($_POST['account_no']):array();
-        $sponsor_company = isset($_POST['sponsor'])?$instance->re_db_input($_POST['sponsor']):array();
+        $account_no = isset($_POST['account_no'])?$_POST['account_no']:array();
+        $sponsor_company = isset($_POST['sponsor'])?$_POST['sponsor']:array();
         
         //suitability tab coding
         $id = isset($_POST['suitability_id'])?$instance->re_db_input($_POST['suitability_id']):0;
@@ -353,7 +354,48 @@
         echo $error;
         exit;
     }
-    
+    else if(isset($_POST['submit_account']) && $_POST['submit_account']=='Ok'){
+        
+        $return = $instance->insert_update_client_account($_POST);
+        
+        if($return===true){
+            echo '1';exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+        echo $error;
+        exit;
+    }
+    else if(isset($_POST['add_attach'])&& $_POST['add_attach']=='Add Attach'){//print_r($_FILES);exit;
+        $_POST['user_id']=$_SESSION['user_name'];
+        $_POST['date'] = date('Y-m-d');
+        $file = isset($_FILES['add_attach'])?$_FILES['add_attach']:array();
+        
+        $return = $instance->insert_update_client_attach($_POST);
+        
+        if($return===true){
+            echo '1';exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+        echo $error;
+        exit;
+    }
+    else if(isset($_GET['delete_action'])&&$_GET['delete_action']=='delete_attach'&&isset($_GET['attach_id'])&&$_GET['attach_id']>0)
+    {
+        $attach_id = $instance->re_db_input($_GET['attach_id']);
+        $return = $instance->delete_attach($attach_id);
+        if($return===true){
+            echo '1';exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+        echo $error;
+        exit;
+    }
     else if(isset($_POST['submit'])&&$_POST['submit']=='Search'){
         
        $search_text = isset($_POST['search_text'])?$instance->re_db_input($_POST['search_text']):''; 
@@ -361,6 +403,7 @@
     }
     else if($action=='edit' && $id>0){
         $return = $instance->edit($id);//echo '<pre>';print_r($return);exit;
+        $client_change_data = $instance->get_client_changes($id);
         $fname = isset($return['first_name'])?$instance->re_db_output($return['first_name']):'';
         $lname = isset($return['last_name'])?$instance->re_db_output($return['last_name']):'';
         $mi = isset($return['mi'])?$instance->re_db_output($return['mi']):'';
