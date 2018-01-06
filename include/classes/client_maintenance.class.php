@@ -167,62 +167,68 @@
             $sponsor = isset($data['sponsor'])?$data['sponsor']:array();
             
             if($id==0){
-                foreach($account_no as $key_acc=>$val_acc)
+                if($account_no[0] != '')
                 {
-                    if($val_acc != '' && $sponsor[$key_acc]>0)
+                    foreach($account_no as $key_acc=>$val_acc)
                     {
-        				$q = "INSERT INTO `".CLIENT_ACCOUNT."` SET `client_id`='".$_SESSION['client_id']."',`account_no`='".$val_acc."',`sponsor_company`='".$sponsor[$key_acc]."'".$this->insert_common_sql();
-        				$res = $this->re_db_query($q);
+                        if($val_acc != '' && $sponsor[$key_acc]>0)
+                        {
+            				$q = "INSERT INTO `".CLIENT_ACCOUNT."` SET `client_id`='".$_SESSION['client_id']."',`account_no`='".$val_acc."',`sponsor_company`='".$sponsor[$key_acc]."'".$this->insert_common_sql();
+            				$res = $this->re_db_query($q);
+                        }
                     }
+                    $id = $this->re_db_insert_id();
+    				if($res){
+    				    $_SESSION['success'] = INSERT_MESSAGE;
+    					return true;
+    				}
+                    else{
+    					$_SESSION['warning'] = UNKWON_ERROR;
+    					return false;
+    				}
                 }
-                $id = $this->re_db_insert_id();
-				if($res){
-				    $_SESSION['success'] = INSERT_MESSAGE;
-					return true;
-				}
-				else{
-					$_SESSION['warning'] = UNKWON_ERROR;
-					return false;
-				}
 			}
 			else if($id>0){
 			    $account_data = $this->get_account_no($id); 
 			    $sponsor_data = $this->get_sponsor_data($id);
                 $q = "UPDATE `".CLIENT_ACCOUNT."` SET `is_delete`='1' WHERE `client_id`='".$id."'";
 				$res = $this->re_db_query($q);
-                foreach($account_no as $key_acc=>$val_acc)
+                if($account_no[0] != '')
                 {
-                    if($val_acc != '' && $sponsor[$key_acc]>0)
+                    foreach($account_no as $key_acc=>$val_acc)
                     {
-                        $q = "INSERT INTO `".CLIENT_ACCOUNT."` SET `client_id`='".$id."',`account_no`='".$val_acc."',`sponsor_company`='".$sponsor[$key_acc]."'".$this->insert_common_sql();
-        				$res = $this->re_db_query($q);
-                        
-                        if(!in_array($val_acc,$account_data,true))
+                        if($val_acc != '' && $sponsor[$key_acc]>0)
                         {
-                            $no_match_val = array_diff($account_data,$account_no);
-                            $no_match_key = array_keys($no_match_val);
-                            $q = "INSERT INTO `".CLIENT_HISTORY."` SET `client_id`='".$id."',`field`='account_no',`old_value`='".$no_match_val[$no_match_key[0]]."',`new_value`='".$val_acc."'".$this->insert_common_sql();
+                            $q = "INSERT INTO `".CLIENT_ACCOUNT."` SET `client_id`='".$id."',`account_no`='".$val_acc."',`sponsor_company`='".$sponsor[$key_acc]."'".$this->insert_common_sql();
             				$res = $this->re_db_query($q);
-                        }//echo '<pre>';print_r($sponsor[$key_acc]);
-                        /*if(!in_array($sponsor[$key_acc],$sponsor_data,true))
-                        {print_r($sponsor[$key_acc]);
-                            //$no_match_val = array_diff($sponsor_data,$account_no);
-                            //$no_match_key = array_keys($no_match_val);
-                            $q = "INSERT INTO `".CLIENT_HISTORY."` SET `client_id`='".$id."',`field`='sponsor_company',`old_value`='-',`new_value`='".$sponsor[$key_acc]."'".$this->insert_common_sql();
-            				$res = $this->re_db_query($q);
-                        }*/
+                            
+                            if(!in_array($val_acc,$account_data,true))
+                            {
+                                $no_match_val = array_diff($account_data,$account_no);
+                                $no_match_key = array_keys($no_match_val);
+                                $q = "INSERT INTO `".CLIENT_HISTORY."` SET `client_id`='".$id."',`field`='account_no',`old_value`='".$no_match_val[$no_match_key[0]]."',`new_value`='".$val_acc."'".$this->insert_common_sql();
+                				$res = $this->re_db_query($q);
+                            }//echo '<pre>';print_r($sponsor[$key_acc]);
+                            /*if(!in_array($sponsor[$key_acc],$sponsor_data,true))
+                            {print_r($sponsor[$key_acc]);
+                                //$no_match_val = array_diff($sponsor_data,$account_no);
+                                //$no_match_key = array_keys($no_match_val);
+                                $q = "INSERT INTO `".CLIENT_HISTORY."` SET `client_id`='".$id."',`field`='sponsor_company',`old_value`='-',`new_value`='".$sponsor[$key_acc]."'".$this->insert_common_sql();
+                				$res = $this->re_db_query($q);
+                            }*/
+                        }
                     }
+					if($res){
+    				    $_SESSION['success'] = INSERT_MESSAGE;
+    					return true;
+    				}
+                    else{
+    					$_SESSION['warning'] = UNKWON_ERROR;
+    					return false;
+    				}
                 }
-				if($res){
-				    $_SESSION['success'] = UPDATE_MESSAGE;
-					return true;
-				}
-				else{
-					$_SESSION['warning'] = UNKWON_ERROR;
-					return false;
-				}
 			}
-		}
+        }
         public function insert_update_suitability($data){
             $id = isset($data['suitability_id'])?$this->re_db_input($data['suitability_id']):0;
             $income = isset($data['income'])?$this->re_db_input($data['income']):'';
@@ -286,7 +292,7 @@
 			
 			
 		}
-        public function insert_update_allobjectives($data){
+        public function insert_update_allobjectives($data){//print_r($data);exit;
 
 			$allobjectives = isset($data['allobjectives'])?$data['allobjectives']:array();
             
@@ -305,7 +311,7 @@
     				return false;
     			}
         }
-        public function insert_update_client_notes($data){//print_r($data);
+        public function insert_update_client_notes($data){
 			$notes_id = isset($data['notes_id'])?$this->re_db_input($data['notes_id']):0;
 			$date = isset($data['date'])?$this->re_db_input($data['date']):'';
             $user_id = isset($data['user_id'])?$this->re_db_input($data['user_id']):'';

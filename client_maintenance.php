@@ -112,7 +112,7 @@
     $instance_broker = new broker_master();
     $get_broker = $instance_broker->select();
     
-    if(isset($_POST['submit'])&& $_POST['submit']=='Save'){
+    if(isset($_POST['submit'])&& $_POST['submit']=='Save'){//print_r($_POST);exit;
         
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
         $fname = isset($_POST['fname'])?$instance->re_db_input($_POST['fname']):'';
@@ -199,11 +199,11 @@
         if($return===true){
             if($action == 'edit')
             {
-                header("location:".CURRENT_PAGE."?action=".$action."&id=".$id."&tab=account_no");exit;
+                header("location:".CURRENT_PAGE."?action=".$action."&id=".$id."&tab=primary");exit;
             }
             else
             {
-                header("location:".CURRENT_PAGE."?action=".$action."&tab=account_no");exit;
+                header("location:".CURRENT_PAGE."?action=".$action."&tab=primary");exit;
             }
         }
         else{

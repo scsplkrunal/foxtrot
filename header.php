@@ -69,14 +69,13 @@
 			<ul class="nav navbar-nav">
 			  <li class="active menuhome"><a href="home.php"><i class="fa fa-home"></i></a></li>
 			  <li>
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Import <i class="fa fa-download"></i></a>
-                
+                <a class="dropdown-toggle" href="<?php echo SITE_URL; ?>import.php">Import <i class="fa fa-download"></i></a>
               </li>
 			  <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Commissions <i class="fa fa-inr"></i></a>
                 <ul class="dropdown-menu">
 				  <li><a href="#">Enter Commissions</a></li>
-				  <li><a href="#">Batches</a></li>
+				  <li><a href="batches.php">Batches</a></li>
 				  <li><a href="#">Post Commission</a></li>
                   <li><a href="#">Report</a></li>
 				</ul>

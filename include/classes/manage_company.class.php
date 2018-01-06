@@ -77,7 +77,12 @@
             if($zip==''){
 				$this->errors .= 'Please enter first city zip code.<br />';
 			}
-            
+            if($state_general==''){
+				$this->errors .= 'Please select state.<br />';
+			}
+            if($e_date==''){
+				$this->errors .= 'Please enter establish date.<br />';
+			}
   
 			if($this->errors!=''){
 				return $this->errors;

@@ -56,11 +56,11 @@ $(document).on('click','.remove-row',function(){
                     <div class="form-group"><br /><div class="selectwrap">
                        <?php if($_GET['action']=='edit_sponsor' && $_GET['sponsor_id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=previous" class="previous next_previous_a" style="float: left;"><input type="button" name="previous" value="&laquo; Previous" /></a><?php } ?>
                         <?php if($action=='edit_sponsor' && $sponsor_id>0){?>
-                        <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 10%;"/></a>
+                        <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 5%;"/></a>
                         <?php } ?>
                         <a href="#sponsor_notes" data-toggle="modal"><input type="button" onclick="get_sponsor_notes();" name="notes" value="Notes" /></a>
                         <a href="#sponsor_attach" data-toggle="modal"><input type="button"  onclick="get_sponsor_attach();" name="attach" value="Attachments" /></a>
-                        <a href="#" data-toggle="modal"><input type="button" value="Transactions" /></a>
+                        <a href="#client_transactions" data-toggle="modal"><input type="button"  name="transactions" value="Transactions" /></a>
                         <input type="submit" name="sponser" onclick="waitingDialog.show();" value="Save"/>	
                         <a href="<?php echo CURRENT_PAGE.'?action=view_sponsor';?>"><input type="button" name="cancel" value="Cancel" /></a>
                         <?php if($_GET['action']=='edit_sponsor' && $_GET['sponsor_id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=next" class="next next_previous_a" style="float: right;"><input type="button" name="next" value="Next &raquo;" /></a><?php } ?>
@@ -234,11 +234,11 @@ $(document).on('click','.remove-row',function(){
                     <div class="form-group"><br /><div class="selectwrap">
                         <?php if($_GET['action']=='edit_sponsor' && $_GET['sponsor_id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=previous" class="previous next_previous_a" style="float: left;"><input type="button" name="previous" value="&laquo; Previous" /></a><?php } ?>
                         <?php if($action=='edit_sponsor' && $sponsor_id>0){?>
-                        <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 10%;"/></a>
+                        <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 5%;"/></a>
                         <?php } ?>
                         <a href="#sponsor_notes" data-toggle="modal"><input type="button" onclick="get_sponsor_notes();" name="notes" value="Notes" /></a>
                         <a href="#sponsor_attach" data-toggle="modal"><input type="button"  onclick="get_sponsor_attach();" name="attach" value="Attachments" /></a>
-                        <a href="#" data-toggle="modal"><input type="button" value="Transactions" /></a>
+                        <a href="#client_transactions" data-toggle="modal"><input type="button"  name="transactions" value="Transactions" /></a>
                         <input type="submit" name="sponser" onclick="waitingDialog.show();" value="Save"/>	
                         <a href="<?php echo CURRENT_PAGE.'?action=view_sponsor';?>"><input type="button" name="cancel" value="Cancel" /></a>
                         <?php if($_GET['action']=='edit_sponsor' && $_GET['sponsor_id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=next" class="next next_previous_a" style="float: right;"><input type="button" name="next" value="Next &raquo;" /></a><?php } ?>
@@ -449,7 +449,55 @@ $(document).on('click','.remove-row',function(){
         </div><!-- End of Modal body -->
 		</div><!-- End of Modal content -->
 		</div><!-- End of Modal dialog -->
-</div><!-- End of Modal -->                                              
+</div><!-- End of Modal -->  
+<!-- Lightbox strart -->							
+<!-- Modal for transaction list -->
+<div id="client_transactions" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+	<div class="modal-content">
+	<div class="modal-header" style="margin-bottom: 0px !important;">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+		<h4 class="modal-title">Client's Transactions</h4>
+	</div>
+	<div class="modal-body">
+    <form method="post">
+    <div class="inputpopup">
+        <div class="table-responsive" id="table-scroll" style="margin: 0px 5px 0px 5px;">
+            <table class="table table-bordered table-stripped table-hover">
+                <thead>
+                    <th>#NO</th>
+                    <th>Trade No</th>
+                    <th>Date</th>
+                    <th>Product</th>
+                    <th>Client No</th>
+                    <th>Trade Amount</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>30</td>
+                        <td>28/11/2017</td>
+                        <td>Electronics</td>
+                        <td>20</td>
+                        <td>$200</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>30</td>
+                        <td>28/11/2017</td>
+                        <td>Mobile accessories</td>
+                        <td>20</td>
+                        <td>$200</td>
+                    </tr>
+              </tbody>
+            </table>
+        </div>
+	</div>
+    </form>
+    </div><!-- End of Modal body -->
+	</div><!-- End of Modal content -->
+	</div><!-- End of Modal dialog -->
+</div><!-- End of Modal -->                                            
     </div>
 </div>
 
@@ -550,7 +598,7 @@ function attachsubmit(attach_id)
                     $('#msg_attach').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Data Successfully Saved.</div>');
                     //window.location.href = "client_maintenance.php";//get_client_attach();   
                   }
-                  else{alert(data);
+                  else{
                        $('#msg_attach').html('<div class="alert alert-danger">'+data+'</div>');
                   } 
             },

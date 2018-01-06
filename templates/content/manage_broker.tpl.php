@@ -2904,7 +2904,7 @@ function validation()
 </script>
 <script>
 $('#demo-dp-range .input-daterange').datepicker({
-        format: "yyyy-m-d",
+        format: "mm/dd/yyyy",
         todayBtn: "linked",
         autoclose: true,
         todayHighlight: true

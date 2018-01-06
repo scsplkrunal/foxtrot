@@ -195,7 +195,7 @@ if($action=='add_new'||($action=='edit' && $id>0)){
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Phone </label><br />
-                    <input type="number" maxlength="13" class="form-control" name="phone" value="<?php echo $phone;?>"  />
+                    <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="13" class="form-control" name="phone" value="<?php echo $phone;?>"  />
                 </div>
             </div>
             <div class="col-md-6">

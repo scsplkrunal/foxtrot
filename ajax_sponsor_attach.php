@@ -2,7 +2,7 @@
 require_once("include/config.php");
 require_once(DIR_FS."islogin.php");
     
-$instance = new branch_maintenance();   
+$instance = new manage_sponsor();   
 $get_attach = $instance->select_attach();
 $attach_id = 0;
 ?>

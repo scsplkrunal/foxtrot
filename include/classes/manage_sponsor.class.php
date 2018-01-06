@@ -169,7 +169,7 @@
             $attach_id = isset($data['attach_id'])?$this->re_db_input($data['attach_id']):0;
             $date = isset($data['date'])?$this->re_db_input($data['date']):'';
             $user_id = isset($data['user_id'])?$this->re_db_input($data['user_id']):'';
-            $file = isset($_FILES['file_attach'])?$_FILES['file_attach']:array();print_r($file);exit;
+            $file = isset($_FILES['file_attach'])?$_FILES['file_attach']:array();
             $valid_file = array('png','jpg','jpeg','bmp','pdf','xls','txt','xlsx');
             
                 $attachment = $file;
@@ -202,7 +202,7 @@
                            $file = $attachment_file;
                            
                            if($attach_id==0){
-                                $q = "INSERT INTO `".BRANCH_ATTACH."` SET `date`='".$date."',`user_id`='".$user_id."',`attach`='".$file."' ,`file_name`='".$file_name."'".$this->insert_common_sql();
+                                $q = "INSERT INTO `".SPONSOR_ATTACH."` SET `date`='".$date."',`user_id`='".$user_id."',`attach`='".$file."' ,`file_name`='".$file_name."'".$this->insert_common_sql();
                     	        $res = $this->re_db_query($q);
                                 
                                 $attach_id = $this->re_db_insert_id();
@@ -217,7 +217,7 @@
                     		}
                     		else if($attach_id>0){
                     		    
-                                $q = "UPDATE `".BRANCH_ATTACH."` SET `date`='".$date."',`user_id`='".$user_id."',`attach`='".$file."' ,`file_name`='".$file_name."'".$this->update_common_sql()." WHERE `id`='".$attach_id."'";
+                                $q = "UPDATE `".SPONSOR_ATTACH."` SET `date`='".$date."',`user_id`='".$user_id."',`attach`='".$file."' ,`file_name`='".$file_name."'".$this->update_common_sql()." WHERE `id`='".$attach_id."'";
                     			$res = $this->re_db_query($q);
                                 
                                 if($res){
@@ -234,10 +234,27 @@
                 }	
             }
 		}
+        public function select_attach(){
+			$return = array();
+			
+			$q = "SELECT `s`.*
+					FROM `".SPONSOR_ATTACH."` AS `s`
+                    WHERE `s`.`is_delete`='0'
+                    ORDER BY `s`.`id` ASC";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+    			}
+            }
+			return $return;
+		}
         public function delete_attach($id){
 			$id = trim($this->re_db_input($id));
 			if($id>0){
-				$q = "UPDATE `".BRANCH_ATTACH."` SET `is_delete`='1' WHERE `id`='".$id."'";
+				$q = "UPDATE `".SPONSOR_ATTACH."` SET `is_delete`='1' WHERE `id`='".$id."'";
 				$res = $this->re_db_query($q);
 				if($res){
 				    $_SESSION['success'] = DELETE_MESSAGE;

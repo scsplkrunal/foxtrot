@@ -4,7 +4,7 @@ function addMoreDocs(){
                     '<div class="col-md-4">'+
                         '<div class="form-group">'+
                             '<label></label><br />'+
-                            '<input type="text" name="account_no[]" id="account_no" class="form-control" />'+
+                            '<input type="text" name="account_no[]" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="account_no" class="form-control" />'+
                         '</div>'+
                     '</div>'+
                     
@@ -49,17 +49,11 @@ $(document).on('click','.remove-row',function(){
                         ?>
                             <ul class="nav nav-tabs ">
                               <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="primary"){ echo "active"; }else if(!isset($_GET['tab'])){echo "active";}else{ echo '';} ?>"><a href="#tab_aa" data-toggle="tab">Primary</a></li>
-                              <?php if(isset($_SESSION['client_id']) && $_SESSION['client_id']!=''){?>
                               <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="account_no"){ echo "active"; } ?>"><a href="#tab_dd" data-toggle="tab">Account No's</a></li>
                               <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="employment"){ echo "active"; } ?>"><a href="#tab_bb" data-toggle="tab">Employment</a></li>
                               <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="suitability"){ echo "active"; } ?>"><a href="#tab_ff" data-toggle="tab">Suitability</a></li>
                               <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="objectives"){ echo "active"; } ?>"><a href="<?php echo CURRENT_PAGE; ?>#tab_cc" data-toggle="tab">Objectives</a></li>
-                              <?php }else{ ?> 
-                              <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="account_no"){ echo "active"; } ?>" style="pointer-events: none;"><a href="#tab_dd" data-toggle="tab">Account No's</a></li>
-                              <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="employment"){ echo "active"; } ?>" style="pointer-events: none;"><a href="#tab_bb" data-toggle="tab">Employment</a></li>
-                              <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="suitability"){ echo "active"; } ?>" style="pointer-events: none;"><a href="#tab_ff" data-toggle="tab">Suitability</a></li>
-                              <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="objectives"){ echo "active"; } ?>" style="pointer-events: none;"><a href="<?php echo CURRENT_PAGE; ?>#tab_cc" data-toggle="tab">Objectives</a></li>
-                              <?php } ?>
+                              
                               <!--<li><a href="#tab_ee" data-toggle="tab">Documents</a></li>-->
                                 <div class="btn-group dropdown" style="float: right;">
     								<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
@@ -468,12 +462,21 @@ $(document).on('click','.remove-row',function(){
                                                         <input type="radio" onclick="open_other()" name="options" id="options" class="radio" style="display: inline;" value="3" <?php if($options == 3){echo "checked='checked'";}?>/>&nbsp;<label>Other</label>&nbsp;
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6" style="display: none;" id="other_div">
+                                                <?php if($options == 3){?>
+                                                <div class="col-md-6" id="other_div">
                                                     <div class="form-group">
                                                         <label>Other </label>
                                                         <input type="text" name="other" id="other" class="form-control" value="<?php echo $other; ?>"/>
                                                     </div>
                                                 </div>
+                                                <?php } else {?>
+                                                <div class="col-md-6" style="display: none;" id="other_div">
+                                                    <div class="form-group">
+                                                        <label>Other </label>
+                                                        <input type="text" name="other" id="other" class="form-control" value=""/>
+                                                    </div>
+                                                </div>
+                                                <?php } ?>
                                             </div> 
                                             <div class="row">
                                             	<div class="col-md-6">
@@ -530,10 +533,9 @@ $(document).on('click','.remove-row',function(){
                               
                                 </div>
                                 <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="objectives"){ echo "active"; } ?>" id="tab_cc">
-                                   
                                         <div class="panel-overlay-wrap">
                                             <div class="panel">
-                                            <div id="msg"></div>
+                                            <div id="message"></div>
                                                <div class="panel-heading">
                                                     <h4 class="panel-title" style="font-size: 20px;"><?php if(isset($_SESSION['client_full_name'])){echo $_SESSION['client_full_name'];}?></h4>
                                                </div>
@@ -541,24 +543,23 @@ $(document).on('click','.remove-row',function(){
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                       <h4 class="panel-title" style="font-size: 20px;">Source Objectives <a href="#" onclick="return add_allobjectives()"><i class="fa fa-angle-double-right"></i></a></h4>
-                                                        <form id="add_all_objectives" name="add_all_objectives" method="post">
-                                                        <?php foreach($get_objectives as $key=>$val){
+                                                       <h4 class="panel-title" style="font-size: 20px;">Source Objectives <a href="#" onclick="send_allobjectives()"><i class="fa fa-angle-double-right"></i></a></h4>
+                                                        <?php 
+                                                        foreach($get_objectives as $key=>$val){
                                                             ?>
                                                             <?php 
                                                             $obj_id = $val['id'];//echo '<pre>';print_r($trans_check_id);
                                                             if(!in_array($obj_id, $objectives_check_id)){?>
                                                            
-                                                                <input type="hidden" name="allobjectives[]" id="allobjectives" value="<?php echo $val['id'];?>" />
+                                                                <input type="hidden" class="all_objective" name="allobjectives[]" id="allobjectives" value="<?php echo $val['id'];?>" />
                                                                 <input type="hidden" name="allobjectives_id" id="allobjectives_id" value="<?php echo $id; ?>" />
                                                                 <input type="hidden" name="add_allobjectives"  value="Add_AllObjectives" id="add_allobjective"/>
                                                         <?php }} ?>
-                                                        </form>
                                                     </div>
                                                 </div>
                                             	<div class="col-md-6">
                                                     <div class="form-group">
-                                                        <h4 class="panel-title" style="font-size: 20px;"><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&delete_action=delete_allobjectives&delete_id=<?php echo $_SESSION['client_id'];?>"><i class="fa fa-angle-double-left"></i></a> Selected Objectives</h4>
+                                                        <h4 class="panel-title" style="font-size: 20px;"><a href="#" onclick="delete_allobjectives(<?php echo $_SESSION['client_id'];?>)"><i class="fa fa-angle-double-left"></i></a> Selected Objectives</h4>
                                                     </div>
                                                 </div>
                                             </div>
@@ -577,12 +578,10 @@ $(document).on('click','.remove-row',function(){
                                                                     
                                                                    <tr>
                                                                    <td class="text-center">
-                                                                   <form id="add_objectives_<?php echo $val['id'];?>" name="add_objectives_<?php echo $val['id'];?>" method="post">
-                                                                        <a href="#" onclick="return add_objectives(<?php echo $val['id'];?>)" style="color: black !important;"><?php echo $val['option'];?>  <i class="fa fa-angle-right"></i></a>
+                                                                    <a href="#" onclick="send_objectives(<?php echo $val['id'];?>)" style="color: black !important;"><?php echo $val['option'];?>  <i class="fa fa-angle-right"></i></a>
                                                                         <input type="hidden" name="objectives" id="objectives" value="<?php echo $val['id'];?>" />
                                                                         <input type="hidden" name="objectives_id" id="objectives_id" value="<?php echo $id; ?>" />
                                                                         <input type="hidden" name="add_objective"  value="Add_Objectives" id="add_objective"/>
-                                                                   </form>
                                                                    </td>
                                                                    </tr>
                                                                 <?php }} ?>
@@ -598,7 +597,7 @@ $(document).on('click','.remove-row',function(){
                                             	            <tbody>
                                                                  <?php foreach($get_current_objectives as $key=>$val){?>
                                                                    <tr>
-                                                                        <td class="text-center"><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&delete_action=delete_objectives&objectives_id=<?php echo $val['id']; ?>" style="color: black !important;"><i class="fa fa-angle-left"></i>  <?php echo $val['oname'];?></a></td>
+                                                                        <td class="text-center"><a href="#" onclick="delete_objectives(<?php echo $val['id'];?>)" style="color: black !important;"><i class="fa fa-angle-left"></i>  <?php echo $val['oname'];?></a></td>
                                                                    </tr>
                                                                  <?php } ?>
                                                             </tbody>
@@ -632,7 +631,7 @@ $(document).on('click','.remove-row',function(){
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Account No's </label><br />
-                                                        <input type="text" name="account_no[]" id="account_no" class="form-control" value="<?php //echo //$valedit['account_no'];?>" />
+                                                        <input type="text" name="account_no[]" onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="account_no" class="form-control" value="<?php //echo //$valedit['account_no'];?>" />
                                                     </div>
                                                 </div>
                                             	<div class="col-md-4">
@@ -662,7 +661,7 @@ $(document).on('click','.remove-row',function(){
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label></label><br />
-                                                        <input type="text" name="account_no[]" id="account_no" class="form-control" value="<?php echo $valedit['account_no'];?>" />
+                                                        <input type="text" name="account_no[]" onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="account_no" class="form-control" value="<?php echo $valedit['account_no'];?>" />
                                                     </div>
                                                 </div>
                                             	<div class="col-md-4">
@@ -1601,6 +1600,59 @@ function getAge(dateString)
     });
 </script>
 <script>
+function send_allobjectives()
+{
+    $('#message').html('<div class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Please wait...</div>');
+    var values = $("input[name='allobjectives[]']") .map(function(){return $(this).val();}).get();
+    var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) 
+            {
+                $( "#tab_cc" ).load(window.location.href + " #tab_cc" );
+            }
+        };
+        xmlhttp.open("GET", "ajax_objectives.php?all_objectives="+values, true);
+        xmlhttp.send();
+}
+function send_objectives(id)
+{
+    $('#message').html('<div class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Please wait...</div>');
+    var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) 
+            {
+                $( "#tab_cc" ).load(window.location.href + " #tab_cc" );
+            }
+        };
+        xmlhttp.open("GET", "ajax_objectives.php?objectives="+id, true);
+        xmlhttp.send();
+}
+function delete_allobjectives(id)
+{
+    $('#message').html('<div class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Please wait...</div>');
+    var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) 
+            {
+                $( "#tab_cc" ).load(window.location.href + " #tab_cc" );
+            }
+        };
+        xmlhttp.open("GET", "ajax_objectives.php?delete_allobjective="+id, true);
+        xmlhttp.send();
+}
+function delete_objectives(id)
+{
+    $('#message').html('<div class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Please wait...</div>');
+    var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) 
+            {
+                $( "#tab_cc" ).load(window.location.href + " #tab_cc" );
+            }
+        };
+        xmlhttp.open("GET", "ajax_objectives.php?delete_objective="+id, true);
+        xmlhttp.send();
+}
 function get_client_notes(){
     
         var xmlhttp = new XMLHttpRequest();

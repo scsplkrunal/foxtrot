@@ -295,7 +295,7 @@
         $edit_grid = $instance->edit_grid($id);
         $edit_override = $instance->edit_override($id);
         $edit_split =$instance->edit_split($id);
-        //echo '<pre>';print_r($edit_required_docs);exit;
+        //echo '<pre>';print_r($edit_general);exit;
         
         $_SESSION['last_insert_id']=$id;
         $fname = $instance->re_db_output($return['first_name']);
