@@ -58,7 +58,7 @@
         $prompt_for_check_amount = isset($return['prompt_for_check_amount'])?$instance->re_db_output($return['prompt_for_check_amount']):'';
         $posted_amounts = isset($return['posted_amounts'])?$instance->re_db_output($return['posted_amounts']):'';        
     }
-    else if(isset($_GET['action'])&&$_GET['action']=='batches_delete'&&isset($_GET['id'])&&$_GET['id']>0)
+    else if(isset($_['action'])&&$_GET['action']=='batches_delete'&&isset($_GET['id'])&&$_GET['id']>0)
     {
         $id = $instance->re_db_input($_GET['id']);
         $return = $instance->delete($id);
@@ -68,6 +68,12 @@
         else{
             header('location:'.CURRENT_PAGE.'?action=view_batches');exit;
         }
+    }
+     else if(isset($_POST['search_batches'])&& $_POST['search_batches']=='Search')
+    {
+        $search_type= isset($_POST['search_type'])?$instance->re_db_input($_POST['search_type']):'';
+        $search_text_batches= isset($_POST['search_text_batches'])?$instance->re_db_input($_POST['search_text_batches']):'';
+        $return = $instance->search_batch($_POST);
     }
     else if($action=='view_batches'){
         

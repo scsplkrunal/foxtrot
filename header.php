@@ -74,8 +74,8 @@
 			  <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Commissions <i class="fa fa-inr"></i></a>
                 <ul class="dropdown-menu">
-				  <li><a href="#">Enter Commissions</a></li>
-				  <li><a href="batches.php">Batches</a></li>
+				  <li><a href="<?php echo SITE_URL; ?>transaction.php">Enter Commissions</a></li>
+				  <li><a href="<?php echo SITE_URL; ?>batches.php">Batches</a></li>
 				  <li><a href="#">Post Commission</a></li>
                   <li><a href="#">Report</a></li>
 				</ul>

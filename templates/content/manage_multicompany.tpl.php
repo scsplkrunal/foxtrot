@@ -419,7 +419,7 @@
                             <tr>
                                 <td class="text-center"><?php echo ++$count; ?></td>
                                 <td><?php echo $val['company_name']; ?></td>
-                                <td><?php echo $val['manager_name']; ?></td>
+                                <td><?php foreach($get_manager as $statekey=>$stateval){ if($val['manager_name'] == $stateval['id']){echo $stateval['first_name'].' '.$stateval['middle_name'].' '.$stateval['last_name']; }} ?></td>
                                 <td><?php echo $val['company_type']; ?></td>
                                 <td><?php echo $val['e_date']; ?></td>
                                 <td><?php echo $val['i_date']; ?></td>

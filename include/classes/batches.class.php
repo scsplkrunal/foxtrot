@@ -102,6 +102,41 @@
             }
 			return $return;
 		}
+        public function search_batch($data){
+            //echo '<pre>';print_r($data);exit;
+            $search_type= isset($data['search_type'])?$this->re_db_input($data['search_type']):'';
+            $search_text_batches= isset($data['search_text_batches'])?$this->re_db_input($data['search_text_batches']):'';
+            
+			$return = array();
+			
+            if($search_type=='batch_number' || $search_type=='batch_date'){
+                $q = "SELECT `at`.*
+					FROM `".$this->table."` AS `at`
+                    WHERE `".$search_type."` like '".$search_text_batches."%' and `at`.`is_delete`='0'
+                    ORDER BY `at`.`id` ASC";
+            }
+            else if($search_type=='pro_category'){
+                $q = "SELECT `at`.*
+					FROM `".$this->table."` AS `at`
+                    WHERE `".$search_type."` in (SELECT `id` FROM ".PRODUCT_TYPE." where `type` like '".$search_text_batches."%')and `at`.`is_delete`='0'
+                    ORDER BY `at`.`id` ASC";
+            }
+            else if($search_type=='sponsor'){
+                $q = "SELECT `at`.*
+					FROM `".$this->table."` AS `at`
+                    WHERE `".$search_type."` in (SELECT `id` FROM ".SPONSOR_MASTER." where `name` like '".$search_text_batches."%') and `at`.`is_delete`='0'
+                    ORDER BY `at`.`id` ASC";
+            }
+            
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+    			}
+            }
+			return $return;
+		}
         public function delete($id){
 			$id = trim($this->re_db_input($id));
 			if($id>0 && ($status==0 || $status==1) ){
