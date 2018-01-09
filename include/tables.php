@@ -65,6 +65,7 @@
     define('COMPANY_ATTACH','ft_multicompany_attach');
     define('MULTICOMPANY_HISTORY','ft_multicompany_history');
     define('BROKER_HISTORY','ft_broker_history');
+    define('TRANSACTION_MASTER','ft_transaction_master');
     define('SPONSOR_NOTES','ft_sponsor_notes');
     define('SPONSOR_ATTACH','ft_sponsor_attach');
     define('BATCH_MASTER','ft_batch_master');

@@ -108,7 +108,9 @@
             $search_text_batches= isset($data['search_text_batches'])?$this->re_db_input($data['search_text_batches']):'';
             
 			$return = array();
-			
+			if($search_type==''){
+				$this->errors = 'Please select search type.';
+			}
             if($search_type=='batch_number' || $search_type=='batch_date'){
                 $q = "SELECT `at`.*
 					FROM `".$this->table."` AS `at`
@@ -126,6 +128,12 @@
 					FROM `".$this->table."` AS `at`
                     WHERE `".$search_type."` in (SELECT `id` FROM ".SPONSOR_MASTER." where `name` like '".$search_text_batches."%') and `at`.`is_delete`='0'
                     ORDER BY `at`.`id` ASC";
+            }
+            else{
+                $q = "SELECT `at`.*
+					FROM `".$this->table."` AS `at`
+                    WHERE `at`.`is_delete`='0'
+                    ORDER BY `at`.`id` ASC";   
             }
             
 			$res = $this->re_db_query($q);
