@@ -103,7 +103,7 @@
 			return $return;
 		}
         public function search_batch($data){
-            //echo '<pre>';print_r($data);exit;
+            
             $search_type= isset($data['search_type'])?$this->re_db_input($data['search_type']):'';
             $search_text_batches= isset($data['search_text_batches'])?$this->re_db_input($data['search_text_batches']):'';
             

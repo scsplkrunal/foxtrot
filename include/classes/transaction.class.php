@@ -18,8 +18,9 @@ class transaction extends db{
             $invest_amount = isset($data['invest_amount'])?$this->re_db_input($data['invest_amount']):'';
             $charge_amount = isset($data['charge_amount'])?$this->re_db_input($data['charge_amount']):'';
             $commission_received = isset($data['commission_received'])?$this->re_db_input($data['commission_received']):'';
-            $trade_date = isset($data['trade_date'])?$this->re_db_input($data['trade_date']):'';
-            $settlement_date = isset($data['settlement_date'])?$this->re_db_input($data['settlement_date']):'';
+            $commission_received_date = isset($data['commission_received_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['commission_received_date']))):'0000-00-00';
+            $trade_date = isset($data['trade_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['trade_date']))):'0000-00-00';
+            $settlement_date = isset($data['settlement_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['settlement_date']))):'0000-00-00';
             $split = isset($data['split'])?$this->re_db_input($data['split']):'';
             $split_broker = isset($data['split_broker'])?$this->re_db_input($data['split_broker']):'';
             $split_rate = isset($data['split_rate'])?$this->re_db_input($data['split_rate']):'';
@@ -51,6 +52,9 @@ class transaction extends db{
             else if($trade_date==''){
 				$this->errors = 'Please enter trade date.';
 			}
+            else if($commission_received_date==''){
+				$this->errors = 'Please enter commission received date.';
+			}
             else if($settlement_date==''){
 				$this->errors = 'Please enter settlement date.';
 			}
@@ -71,7 +75,7 @@ class transaction extends db{
 					if($id==0){
 						$q = "INSERT INTO ".$this->table." SET `client_name`='".$client_name."',`client_number`='".$client_number."',`broker_name`='".$broker_name."',
                         `product_cate`='".$product_cate."',`sponsor`='".$sponsor."',`product`='".$product."',`batch`='".$batch."',
-                        `invest_amount`='".$invest_amount."',`charge_amount`='".$charge_amount."',`commission_received`='".$commission_received."',`split`='".$split."',
+                        `invest_amount`='".$invest_amount."',`commission_received_date`='".$commission_received_date."',`trade_date`='".$trade_date."',`settlement_date`='".$settlement_date."',`charge_amount`='".$charge_amount."',`commission_received`='".$commission_received."',`split`='".$split."',
                         `split_broker`='".$split_broker."',`split_rate`='".$split_rate."',`another_level`='".$another_level."',`cancel`='".$cancel."',`buy_sell`='".$buy_sell."',
                         `hold_resoan`='".$hold_resoan."',`hold_commission`='".$hold_commission."'".$this->insert_common_sql();
 						
@@ -89,7 +93,7 @@ class transaction extends db{
 					else if($id>0){
 						$q = "UPDATE ".$this->table." SET `client_name`='".$client_name."',`client_number`='".$client_number."',`broker_name`='".$broker_name."',
                         `product_cate`='".$product_cate."',`sponsor`='".$sponsor."',`product`='".$product."',`batch`='".$batch."',
-                        `invest_amount`='".$invest_amount."',`charge_amount`='".$charge_amount."',`commission_received`='".$commission_received."',`split`='".$split."',
+                        `invest_amount`='".$invest_amount."',`commission_received_date`='".$commission_received_date."',`trade_date`='".$trade_date."',`settlement_date`='".$settlement_date."',`charge_amount`='".$charge_amount."',`commission_received`='".$commission_received."',`split`='".$split."',
                         `split_broker`='".$split_broker."',`split_rate`='".$split_rate."',`another_level`='".$another_level."',`cancel`='".$cancel."',`buy_sell`='".$buy_sell."',
                         `hold_resoan`='".$hold_resoan."',`hold_commission`='".$hold_commission."'".$this->update_common_sql()." WHERE `id`='".$id."'";
                         $res = $this->re_db_query($q);
@@ -109,7 +113,79 @@ class transaction extends db{
 				}
 			}
 		}
-    
+        public function edit_transaction($id){
+			$return = array();
+			$q = "SELECT `at`.*
+					FROM ".$this->table." AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`id`='".$id."'";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			$return = $this->re_db_fetch_array($res);
+            }
+			return $return;
+		}
+     public function delete($id){
+			$id = trim($this->re_db_input($id));
+			if($id>0 && ($status==0 || $status==1) ){
+				$q = "UPDATE `".$this->table."` SET `is_delete`='1' WHERE `id`='".$id."'";
+				$res = $this->re_db_query($q);
+				if($res){
+				    $_SESSION['success'] = DELETE_MESSAGE;
+					return true;
+				}
+				else{
+				    $_SESSION['warning'] = UNKWON_ERROR;
+					return false;
+				}
+			}
+			else{
+			     $_SESSION['warning'] = UNKWON_ERROR;
+				return false;
+			}
+		}
+        public function search_transcation($data){
+            //echo '<pre>';print_r($data);exit;
+            $search_type= isset($data['search_type'])?$this->re_db_input($data['search_type']):'';
+            $search_text_batches= isset($data['search_text'])?$this->re_db_input($data['search_text']):'';
+            
+			$return = array();
+			if($search_type==''){
+				$this->errors = 'Please select search type.';
+			}
+            if($search_type=='client_name' ){
+                $q = "SELECT `at`.*
+					FROM `".$this->table."` AS `at`
+                    WHERE `".$search_type."` in (SELECT `id` FROM ".CLIENT_MASTER." where `mi` like '".$search_text_batches."%' )   and `at`.`is_delete`='0'
+                    ORDER BY `at`.`id` ASC";
+            }
+            else if($search_type=='id' || $search_type=='trade_date' || $search_type=='commission_received' || $search_type=='client_number'){
+                $q = "SELECT `at`.*
+					FROM `".$this->table."` AS `at`
+                    WHERE `".$search_type."`like'".$search_text_batches."%' and `at`.`is_delete`='0'
+                    ORDER BY `at`.`id` ASC";
+            }
+            else if($search_type=='batch'){
+                $q = "SELECT `at`.*
+					FROM `".$this->table."` AS `at`
+                    WHERE `".$search_type."` in (SELECT `id` FROM ".BATCH_MASTER." where `batch_number` like '".$search_text_batches."%')and `at`.`is_delete`='0'
+                    ORDER BY `at`.`id` ASC";
+            }
+            else{
+                $q = "SELECT `at`.*
+					FROM `".$this->table."` AS `at`
+                    WHERE `at`.`is_delete`='0'
+                    ORDER BY `at`.`id` ASC"; 
+            }
+            
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+    			}
+            }
+			return $return;
+		}
     public function select_sponsor(){
 			$return = array();
 			
@@ -211,6 +287,48 @@ class transaction extends db{
             }
 			return $return;
 		}
+        public function select(){
+			$return = array();
+			
+			$q = "SELECT `at`.*
+					FROM `".$this->table."` AS `at`
+                    WHERE `at`.`is_delete`='0'
+                    ORDER BY `at`.`id` ASC";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+    			}
+            }
+			return $return;
+		}
+        public function select_data_report($batch_id = ''){
+			$return = array();
+            $con = '';
+            
+            if($batch_id != '')
+            {
+                $con .= "and `batch` = ".$batch_id."";
+            }
+			
+			$q = "SELECT `at`.*,bm.first_name as broker_name,cm.first_name as client_name,bt.batch_desc
+					FROM `".$this->table."` AS `at`
+                    LEFT JOIN `".BATCH_MASTER."` as `bt` on `bt`.`id` = `at`.`batch`
+                    LEFT JOIN `".BROKER_MASTER."` as `bm` on `bm`.`id` = `at`.`broker_name`
+                    LEFT JOIN `".CLIENT_MASTER."` as `cm` on `cm`.`id` = `at`.`client_name`
+                    WHERE `at`.`is_delete`='0' ".$con."
+                    ORDER BY `at`.`id` ASC";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+    			}
+            }
+			return $return;
+		}
+        
 }
 
 class RRPDF extends TCPDF {

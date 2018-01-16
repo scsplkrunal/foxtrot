@@ -110,6 +110,7 @@
             $password = isset($data['password'])?trim($this->re_db_input($data['password'])):'';
 			$confirm_password = isset($data['confirm_password'])?trim($this->re_db_input($data['confirm_password'])):'';
             $menu_rights = isset($data['check_sub'])?$data['check_sub']:array();
+            $main_menu_rights = isset($data['check_parent'])?$data['check_parent']:array();
             
             $user_image = isset($_FILES['file_image'])?$_FILES['file_image']:array();//print_r($user_image);exit;
             $valid_file = array('jpg','jpeg','png','bmp');
@@ -197,10 +198,18 @@
                         $last_id = $this->re_db_insert_id($res);
                         if($last_id>0)
                         {
+                            foreach($main_menu_rights as $key=>$val)
+                            {
+                                $q = "INSERT INTO `".USER_MENU_RIGHTS."` SET `user_id`='".$last_id."',`parent_id`='0',`link_id`='".$val."' ".$this->insert_common_sql();
+                                $res = $this->re_db_query($q);
+                            }
                             foreach($menu_rights as $key=>$data)
                             {
-                                $q = "INSERT INTO `".USER_MENU_RIGHTS."` SET `user_id`='".$last_id."',`link_id`='".$data."' ".$this->insert_common_sql();
-    						    $res = $this->re_db_query($q);
+                                foreach($data as $key_sub=>$key_val)
+                                {
+                                    $q = "INSERT INTO `".USER_MENU_RIGHTS."` SET `user_id`='".$last_id."',`parent_id`='".$key."',`link_id`='".$key_val."' ".$this->insert_common_sql();
+        						    $res = $this->re_db_query($q);
+                                }
                             }
                         }
                         //$_SESSION['user_id'] = $last_id;
@@ -224,10 +233,19 @@
                             
                             $q = "DELETE FROM `".USER_MENU_RIGHTS."` WHERE `user_id`='".$id."'";
                             $res = $this->re_db_query($q);
+                            
+                            foreach($main_menu_rights as $key=>$val)
+                            {
+                                $q = "INSERT INTO `".USER_MENU_RIGHTS."` SET `user_id`='".$id."',`parent_id`='0',`link_id`='".$val."' ".$this->insert_common_sql();
+                                $res = $this->re_db_query($q);
+                            }
                             foreach($menu_rights as $key=>$data)
                             {
-                                $q = "INSERT INTO `".USER_MENU_RIGHTS."` SET `user_id`='".$id."',`link_id`='".$data."' ".$this->insert_common_sql();
-                                $res = $this->re_db_query($q);
+                                foreach($data as $key_sub=>$key_val)
+                                {
+                                    $q = "INSERT INTO `".USER_MENU_RIGHTS."` SET `user_id`='".$id."',`parent_id`='".$key."',`link_id`='".$key_val."' ".$this->insert_common_sql();
+                                    $res = $this->re_db_query($q);
+                                }
                                 
                             }
                             $_SESSION['success'] = UPDATE_MESSAGE;

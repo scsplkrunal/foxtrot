@@ -119,8 +119,10 @@
         public function insert_update_general($data){
 			$id = isset($data['id'])?$this->re_db_input($data['id']):0;
 			$home_general = isset($data['home_general'])?$this->re_db_input($data['home_general']):'';
-			$address1_general = isset($data['address1_general'])?$this->re_db_input($data['address1_general']):'';
-			$address2_general = isset($data['address2_general'])?$this->re_db_input($data['address2_general']):'';
+			$home_address1_general = isset($data['home_address1_general'])?$this->re_db_input($data['home_address1_general']):'';
+			$home_address2_general = isset($data['home_address2_general'])?$this->re_db_input($data['home_address2_general']):'';
+            $business_address1_general = isset($data['business_address1_general'])?$this->re_db_input($data['business_address1_general']):'';
+			$business_address2_general = isset($data['business_address2_general'])?$this->re_db_input($data['business_address2_general']):'';
 			$city_general = isset($data['city_general'])?$this->re_db_input($data['city_general']):'';
 			$state_general = isset($data['state_general'])?$this->re_db_input($data['state_general']):'';
 			$zip_code_general = isset($data['zip_code_general'])?$this->re_db_input($data['zip_code_general']):'';
@@ -149,6 +151,7 @@
 			$reassign_broker_general = isset($data['reassign_broker_general'])?$this->re_db_input($data['reassign_broker_general']):'';
 			$u4_general = isset($data['u4_general'])?$this->re_db_input(date('Y-m-d',strtotime($data['u4_general']))):'';
             $u5_general = isset($data['u5_general'])?$this->re_db_input(date('Y-m-d',strtotime($data['u5_general']))):'';
+            $day_after_u5 = isset($data['day_after_u5'])?$this->re_db_input($data['day_after_u5']):'';
 			$dba_name_general = isset($data['dba_name_general'])?$this->re_db_input($data['dba_name_general']):'';
 			$eft_info_general = isset($data['eft_info_general'])?$this->re_db_input($data['eft_info_general']):'';
             $start_date_general = isset($data['start_date_general'])?$this->re_db_input(date('Y-m-d',strtotime($data['start_date_general']))):'';
@@ -280,7 +283,7 @@
 				}
 				else if($id>=0){
 					if($id==0){
-						$q = "INSERT INTO `".BROKER_GENERAL."` SET `broker_id`='".$_SESSION['last_insert_id']."',`home`='".$home_general."',`address1`='".$address1_general."',`address2`='".$address2_general."',`city`='".$city_general."',`state_id`='".$state_general."',`zip_code`='".$zip_code_general."',`telephone`='".$telephone_general."',`cell`='".$cell_general."',`fax`='".$fax_general."',`gender`='".$gender_general."',`marital_status`='".$status_general."',`spouse`='".$spouse_general."',`children`='".$children_general."',`email1`='".$email1_general."',`email2`='".$email2_general."',`web_id`='".$web_id_general."',`web_password`='".$web_password_general."',`dob`='".$dob_general."',`prospect_date`='".$prospect_date_general."',`reassign_broker`='".$reassign_broker_general."',`u4`='".$u4_general."',`u5`='".$u5_general."',`dba_name`='".$dba_name_general."',`eft_information`='".$eft_info_general."',`start_date`='".$start_date_general."',`transaction_type`='".$transaction_type_general."',`routing`='".$routing_general."',`account_no`='".$account_no_general."',`cfp`='".$cfp_general."',`chfp`='".$chfp_general."',`cpa`='".$cpa_general."',`clu`='".$clu_general."',`cfa`='".$cfa_general."',`ria`='".$ria_general."',`insurance`='".$insurance_general."'".$this->insert_common_sql();
+						$q = "INSERT INTO `".BROKER_GENERAL."` SET `broker_id`='".$_SESSION['last_insert_id']."',`home`='".$home_general."',`home_address1_general`='".$home_address1_general."',`home_address2_general`='".$home_address2_general."',`business_address1_general`='".$business_address1_general."',`business_address2_general`='".$business_address2_general."',`city`='".$city_general."',`state_id`='".$state_general."',`zip_code`='".$zip_code_general."',`telephone`='".$telephone_general."',`cell`='".$cell_general."',`fax`='".$fax_general."',`gender`='".$gender_general."',`marital_status`='".$status_general."',`spouse`='".$spouse_general."',`children`='".$children_general."',`email1`='".$email1_general."',`email2`='".$email2_general."',`web_id`='".$web_id_general."',`web_password`='".$web_password_general."',`dob`='".$dob_general."',`prospect_date`='".$prospect_date_general."',`reassign_broker`='".$reassign_broker_general."',`u4`='".$u4_general."',`u5`='".$u5_general."',`day_after_u5`='".$day_after_u5."',`dba_name`='".$dba_name_general."',`eft_information`='".$eft_info_general."',`start_date`='".$start_date_general."',`transaction_type`='".$transaction_type_general."',`routing`='".$routing_general."',`account_no`='".$account_no_general."',`cfp`='".$cfp_general."',`chfp`='".$chfp_general."',`cpa`='".$cpa_general."',`clu`='".$clu_general."',`cfa`='".$cfa_general."',`ria`='".$ria_general."',`insurance`='".$insurance_general."'".$this->insert_common_sql();
 						$res = $this->re_db_query($q);
                         if($res){
 						      
@@ -293,7 +296,7 @@
 						}
 				}
                 else if($id>0){
-					    $q = "UPDATE `".BROKER_GENERAL."`  SET `home`='".$home_general."',`address1`='".$address1_general."',`address2`='".$address2_general."',`city`='".$city_general."',`state_id`='".$state_general."',`zip_code`='".$zip_code_general."',`telephone`='".$telephone_general."',`cell`='".$cell_general."',`fax`='".$fax_general."',`gender`='".$gender_general."',`marital_status`='".$status_general."',`spouse`='".$spouse_general."',`children`='".$children_general."',`email1`='".$email1_general."',`email2`='".$email2_general."',`web_id`='".$web_id_general."',`web_password`='".$web_password_general."',`dob`='".$dob_general."',`prospect_date`='".$prospect_date_general."',`reassign_broker`='".$reassign_broker_general."',`u4`='".$u4_general."',`u5`='".$u5_general."',`dba_name`='".$dba_name_general."',`eft_information`='".$eft_info_general."',`start_date`='".$start_date_general."',`transaction_type`='".$transaction_type_general."',`routing`='".$routing_general."',`account_no`='".$account_no_general."',`cfp`='".$cfp_general."',`chfp`='".$chfp_general."',`cpa`='".$cpa_general."',`clu`='".$clu_general."',`cfa`='".$cfa_general."',`ria`='".$ria_general."',`insurance`='".$insurance_general."'".$this->update_common_sql()." WHERE `broker_id`='".$id."'";
+					    $q = "UPDATE `".BROKER_GENERAL."`  SET `home`='".$home_general."',`home_address1_general`='".$home_address1_general."',`home_address2_general`='".$home_address2_general."',`business_address1_general`='".$business_address1_general."',`business_address2_general`='".$business_address2_general."',`city`='".$city_general."',`state_id`='".$state_general."',`zip_code`='".$zip_code_general."',`telephone`='".$telephone_general."',`cell`='".$cell_general."',`fax`='".$fax_general."',`gender`='".$gender_general."',`marital_status`='".$status_general."',`spouse`='".$spouse_general."',`children`='".$children_general."',`email1`='".$email1_general."',`email2`='".$email2_general."',`web_id`='".$web_id_general."',`web_password`='".$web_password_general."',`dob`='".$dob_general."',`prospect_date`='".$prospect_date_general."',`reassign_broker`='".$reassign_broker_general."',`u4`='".$u4_general."',`u5`='".$u5_general."',`day_after_u5`='".$day_after_u5."',`dba_name`='".$dba_name_general."',`eft_information`='".$eft_info_general."',`start_date`='".$start_date_general."',`transaction_type`='".$transaction_type_general."',`routing`='".$routing_general."',`account_no`='".$account_no_general."',`cfp`='".$cfp_general."',`chfp`='".$chfp_general."',`cpa`='".$cpa_general."',`clu`='".$clu_general."',`cfa`='".$cfa_general."',`ria`='".$ria_general."',`insurance`='".$insurance_general."'".$this->update_common_sql()." WHERE `broker_id`='".$id."'";
 						$res = $this->re_db_query($q);
 						if($res){
 						      
@@ -1695,7 +1698,7 @@
     			while($row = $this->re_db_fetch_array($res)){
     			     $return[$row['charge_type_id']][$row['charge_name_id']][$row['account_type']][$row['account_process']]=$row['value'];
     			}
-            }
+            }//echo "<pre>"; print_r($return);exit;
 			return $return;
 		}
         

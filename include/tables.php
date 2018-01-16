@@ -69,4 +69,5 @@
     define('SPONSOR_NOTES','ft_sponsor_notes');
     define('SPONSOR_ATTACH','ft_sponsor_attach');
     define('BATCH_MASTER','ft_batch_master');
+    define('BROKER_DOCUMENT_MASTER','ft_broker_document_master');
 ?>

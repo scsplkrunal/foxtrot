@@ -13,6 +13,9 @@
                     <div class="form-group"><br /><div class="selectwrap">
                         <input type="submit" name="batches" onclick="waitingDialog.show();" value="Save"/>	
                         <a href="<?php echo CURRENT_PAGE.'?action=view_batches';?>"><input type="button" name="cancel" value="Cancel" /></a>
+                        <?php if($_GET['action']=='edit_batches' && $id>0){?>
+                        <a href="report_transaction_by_batch.php?batch_id=<?php echo $id; ?>" target="_blank"><input type="button" name="view_report" value="View Report" /></a>
+                        <?php } ?>
                     </div>
                  </div>
                  </div>
@@ -145,13 +148,20 @@
                     </div>
                 </div>
                 <div class="col-md-6">
+                <div class="row">
                     <div id="other_div" class="form-group" <?php if((isset($split) && $split!=1) || !isset($split)){?>style="display: none;<?php } ?>">
                         <div class="form-group">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <label>Other </label><br />
-                            <input class="col-md-6" type="text" name="prompt_for_check_amount" placeholder="Enter prompt for Check Amount" value="<?php if(isset($prompt_for_check_amount) && (isset($split) && $split==1)) {echo $prompt_for_check_amount;}else{echo '';}?>"/>
-                            <input class="col-md-6" type="text" name="posted_amounts"  placeholder="Enter Posted amounts"  value="<?php if(isset($posted_amounts)&& (isset($split) && $split==1)) {echo $posted_amounts;}else{echo '';}?>"/>
+                            <div class="col-md-6">
+                                <input class=" form-control" type="text" name="prompt_for_check_amount" placeholder="Enter prompt for Check Amount" value="<?php if(isset($prompt_for_check_amount) && (isset($split) && $split==1)) {echo $prompt_for_check_amount;}else{echo '';}?>"/>
+                            </div>
+                            <div class="col-md-6">
+                                <input class="form-control" type="text" name="posted_amounts"  placeholder="Enter Posted amounts"  value="<?php if(isset($posted_amounts)&& (isset($split) && $split==1)) {echo $posted_amounts;}else{echo '';}?>"/>
+                            </div>
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
             
@@ -162,6 +172,9 @@
                     <div class="form-group "><br /><div class="selectwrap">
                         <input type="submit" name="batches" onclick="waitingDialog.show();" value="Save"/>	
                         <a href="<?php echo CURRENT_PAGE.'?action=view_batches';?>"><input type="button" name="cancel" value="Cancel" /></a>
+                        <?php if($_GET['action']=='edit_batches' && $id>0){?>
+                        <a href="report_transaction_by_batch.php?batch_id=<?php echo $id; ?>" target="_blank"><input type="button" name="view_report" value="View Report" /></a>
+                        <?php } ?>
                     </div>
                  </div>
                  </div>
@@ -252,6 +265,13 @@
     
     </div>
 </div>
+<style>
+.btn-primary {
+    color: #fff;
+    background-color: #337ab7 !important;
+    border-color: #2e6da4 !important;
+}
+</style>
 <script>
 var waitingDialog = waitingDialog || (function ($) {
     'use strict';

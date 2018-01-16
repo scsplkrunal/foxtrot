@@ -46,6 +46,7 @@
     $from_date = '';
     $to_date = '';
     $sponsor_company = '';
+    $day_after_u5 = 0;
     
     $action = isset($_GET['action'])&&$_GET['action']!=''?$dbins->re_db_input($_GET['action']):'view';
     $id = isset($_GET['id'])&&$_GET['id']!=''?$dbins->re_db_input($_GET['id']):0;
@@ -57,7 +58,10 @@
     $get_sponsor = $instance->select_sponsor();
     $select_broker= $instance->select();
     $select_percentage= $instance->select_percentage();
-    
+    $broker_charge=$instance->select_broker_charge($id);
+    $charge_type_arr=$instance->select_charge_type();
+    $get_broker = $instance->select();
+    //echo '<pre>';print_r($charge_type_arr);exit();
     
     if(isset($_POST['submit'])&& $_POST['submit']=='Save'){
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
@@ -75,8 +79,10 @@
     	$branch_manager = isset($_POST['branch_manager'])?$instance->re_db_input($_POST['branch_manager']):'';//echo '<pre>';print_r($_POST);exit;
         
         $home_general = isset($_POST['home_general'])?$instance->re_db_input($_POST['home_general']):'';
-		$address1_general = isset($_POST['address1_general'])?$instance->re_db_input($_POST['address1_general']):'';
-		$address2_general = isset($_POST['address2_general'])?$instance->re_db_input($_POST['address2_general']):'';
+        $home_address1_general = isset($_POST['home_address1_general'])?$instance->re_db_input($_POST['home_address1_general']):'';
+		$home_address2_general = isset($_POST['home_address2_general'])?$instance->re_db_input($_POST['home_address2_general']):'';
+		$business_address1_general = isset($_POST['business_address1_general'])?$instance->re_db_input($_POST['business_address1_general']):'';
+		$business_address2_general = isset($_POST['business_address2_general'])?$instance->re_db_input($_POST['business_address2_general']):'';
 		$city_general = isset($_POST['city_general'])?$instance->re_db_input($_POST['city_general']):'';
 		$state_general = isset($_POST['state_general'])?$instance->re_db_input($_POST['state_general']):'';
 		$zip_code_general = isset($_POST['zip_code_general'])?$instance->re_db_input($_POST['zip_code_general']):'';
@@ -96,6 +102,7 @@
 		$reassign_broker_general = isset($_POST['reassign_broker_general'])?$instance->re_db_input($_POST['reassign_broker_general']):'';
 		$u4_general = isset($_POST['u4_general'])?$instance->re_db_input($_POST['u4_general']):'';
         $u5_general = isset($_POST['u5_general'])?$instance->re_db_input($_POST['u5_general']):'';
+        $day_after_u5 = isset($_POST['day_after_u5'])?$instance->re_db_input($_POST['day_after_u5']):'';
 		$dba_name_general = isset($_POST['dba_name_general'])?$instance->re_db_input($_POST['dba_name_general']):'';
 		$eft_info_general = isset($_POST['eft_info_general'])?$instance->re_db_input($_POST['eft_info_general']):'';
         $start_date_general = isset($_POST['start_date_general'])?$instance->re_db_input($_POST['start_date_general']):'';
@@ -312,8 +319,10 @@
     	$branch_manager = $instance->re_db_output($return['branch_manager']);
         
         $home = $instance->re_db_output($edit_general['home']);
-        $address1 = $instance->re_db_output($edit_general['address1']);
-        $address2 = $instance->re_db_output($edit_general['address2']);
+        $home_address1_general = $instance->re_db_output($edit_general['home_address1_general']);
+        $home_address2_general = $instance->re_db_output($edit_general['home_address2_general']);
+        $business_address1_general = $instance->re_db_output($edit_general['business_address1_general']);
+        $business_address2_general = $instance->re_db_output($edit_general['business_address2_general']);
         $city = $instance->re_db_output($edit_general['city']);
         $state_id = $instance->re_db_output($edit_general['state_id']);
         $zip_code = $instance->re_db_output($edit_general['zip_code']);
@@ -333,6 +342,7 @@
         $reassign_broker = $instance->re_db_output($edit_general['reassign_broker']);
         $u4 = $instance->re_db_output($edit_general['u4']);
         $u5 = $instance->re_db_output($edit_general['u5']);
+        $day_after_u5 = $instance->re_db_output($edit_general['day_after_u5']);
         $dba_name = $instance->re_db_output($edit_general['dba_name']);
         $eft_information = $instance->re_db_output($edit_general['eft_information']);
         $start_date = $instance->re_db_output($edit_general['start_date']);
@@ -471,8 +481,7 @@
         $_SESSION['last_insert_id']='';
         $return = $instance->select();
         
-    }
-    
+    }    
 	$content = "manage_broker";
 	require_once(DIR_WS_TEMPLATES."main_page.tpl.php");
 ?>

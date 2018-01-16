@@ -35,7 +35,7 @@
     <![endif]-->
 </head>
 <body>
-<?php require_once("islogin.php"); ?>
+<?php require_once("include/config.php"); require_once("islogin.php"); ?>
 <header>
 <div class="sectionwrapper">
   <div class="container">
@@ -68,7 +68,34 @@
 			<div class="collapse navbar-collapse" id="myNavbar">
 			<ul class="nav navbar-nav">
 			  <li class="active menuhome"><a href="home.php"><i class="fa fa-home"></i></a></li>
-			  <li>
+			  <?php  
+					$instance_header = new header_class();
+					$menu = $instance_header->menu_select();
+					//echo '<pre>';print_r($menu);exit;
+			  ?>
+			  <?php 
+                        foreach($menu as $menukey=>$menudata)
+                        { 
+                    ?>   	<li class="dropdown"> 
+								<a <?php if(!empty($menudata['submenu'])){  ?> class="dropdown-toggle"  data-toggle="dropdown"  <?php } ?>href="<?php echo $menudata['link_page']; ?>"><?php echo $menudata['link_text']; ?> <i class="<?php echo $menudata['class']; ?>"></i></a>
+								<?php if(!empty($menudata['submenu'])){  ?>
+									<ul class="dropdown-menu">
+									<?php 
+										foreach($menudata['submenu'] as $subkey=>$subdata)
+										{ 
+										  if($subdata['link_id'] == 11){?>
+										    <li><a href="<?php echo $subdata['link_page'] ?>" target="_blank"><?php echo $subdata['link_text']; ?></a></li>
+										<?php } else { ?>    
+											<li><a href="<?php echo $subdata['link_page'] ?>"><?php echo $subdata['link_text']; ?></a></li>
+										<?php }
+                                        } 
+										?>
+									</ul>
+								<?php } 
+									?>
+							</li>
+                    <?php }?>
+			  <!--li>
                 <a class="dropdown-toggle" href="<?php echo SITE_URL; ?>import.php">Import <i class="fa fa-download"></i></a>
               </li>
 			  <li class="dropdown">
@@ -132,7 +159,7 @@
                   <li><a href="<?php echo SITE_URL; ?>payroll_adjustment.php">Payroll Adjustment Category Maintenance</a></li>
                   <li><a href="<?php echo SITE_URL; ?>system_config.php">System Configuration</a></li>
 				</ul>
-			  </li>
+			  </li>-->
 			</ul>
 		  </div>
 		  </div>

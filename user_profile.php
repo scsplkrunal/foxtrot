@@ -15,8 +15,8 @@
     $id = isset($_GET['id'])&&$_GET['id']!=''?$dbins->re_db_input($_GET['id']):0;
     
     $instance = new user_master();
-    $menu = $instance->menu_select();
-    //print_r($menu);
+    $menu11 = $instance->menu_select();
+    
     if(isset($_POST['submit'])&&$_POST['submit']=='Save'){
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
         $fname = isset($_POST['fname'])?$instance->re_db_input($_POST['fname']):'';

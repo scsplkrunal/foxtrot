@@ -73,14 +73,14 @@
                         </div>
                     </div>
                     <?php 
-                        foreach($menu as $menukey=>$menudata)
-                        {
+                        foreach($menu11 as $menukey=>$menudata)
+                        { 
                     ?>      <div class="row"> 
                                 <div class="col-sm-6 form-group">
                                     <label><?php echo $menudata['link_text']; ?></label><br />
                                 </div>
                                 <div class="col-sm-6 form-group">
-                                    <input type="checkbox" class="checkbox" name="check_parent<?php echo $menudata['link_id']; ?>" onclick="check_main(this,<?php echo $menudata['link_id']; ?>)" value="<?php echo $menudata['link_id']; ?>" checked="true"/>
+                                    <input type="checkbox" class="checkbox" name="check_parent[]<?php echo $menudata['link_id']; ?>" onclick="check_main(this,<?php echo $menudata['link_id']; ?>)" value="<?php echo $menudata['link_id']; ?>" checked="true"/>
                                 </div>
                             </div>
 					       <?php
@@ -91,7 +91,7 @@
                                             <?php echo $subdata['link_text'];?>
                                         </div>
                                         <div class="col-sm-6 form-group">
-                                            <input type="checkbox" class="checkbox"  name="check_sub[]<?php echo $subdata['link_id']; ?>" value="<?php echo $subdata['link_id']; ?>" <?php if(in_array($subdata['link_id'],$menu_rights)){echo "checked='true'";} ?>/>
+                                            <input type="checkbox" class="checkbox"  name="check_sub[<?php echo $menudata['link_id']; ?>][]<?php echo $subdata['link_id']; ?>" value="<?php echo $subdata['link_id']; ?>" <?php if(in_array($subdata['link_id'],$menu_rights)){echo "checked='true'";} ?>/>
                                         </div>
                                    </div>
                                 <?php }

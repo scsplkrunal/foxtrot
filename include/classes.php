@@ -15,5 +15,7 @@
     include_once(DIR_FS_CLASSES."branch_maintenance.class.php");
     include_once(DIR_FS_CLASSES."batches.class.php");
     include_once(DIR_FS_CLASSES."import.class.php");
+	include_once(DIR_FS_CLASSES."header.class.php");
     include_once(DIR_FS_CLASSES."transaction.class.php");
+    include_once(DIR_FS_CLASSES."broker_document.class.php");
 ?>

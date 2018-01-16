@@ -1,6 +1,22 @@
 <?php 
 require_once("include/config.php");
 require_once(DIR_FS."islogin.php");
+$instance = new transaction();
+$get_trans_data = array();
+$batch_id = '';
+if(isset($_GET['batch_id']) && $_GET['batch_id'] != '')
+{
+    $batch_id = $_GET['batch_id'];
+    $get_trans_data = $instance->select_data_report($batch_id);
+}
+else
+{
+    $get_trans_data = $instance->select_data_report();
+}
+$batch_desc = $get_trans_data[0]['batch_desc'];
+$total_amount_invested = 0;
+$total_commission_received = 0;
+$total_charges = 0;
 ?>
 <?php
 
@@ -34,9 +50,17 @@ require_once(DIR_FS."islogin.php");
     $pdf->SetFont('times','B',12);
     $pdf->SetFont('times','',10);
     $html='<table border="0">
-                <tr>
-                   <td width="100%" style="font-size:16px;font-weight:bold;text-align:center;">TRANSACTION BY BATCH REPORT : MUTUAL FUNDS</td>
-                </tr>
+                <tr>';
+                    if($batch_id != ''){
+                        
+                        $html .='<td width="100%" style="font-size:16px;font-weight:bold;text-align:center;">TRANSACTION BY BATCH REPORT : '.strtoupper($batch_desc).'</td>';
+                     
+                     } else {
+                        
+                        $html .='<td width="100%" style="font-size:16px;font-weight:bold;text-align:center;">TRANSACTION BY BATCH REPORT : ALL BATCHES</td>';
+                     }  
+                   
+                $html .='</tr>
             </table>';
     $pdf->writeHTML($html, false, 0, false, 0);
     $pdf->Ln(5);
@@ -44,9 +68,16 @@ require_once(DIR_FS."islogin.php");
     $pdf->SetFont('times','B',12);
     $pdf->SetFont('times','',10);
     $html='<table border="0">
-                <tr>
-                   <td width="100%" style="font-size:12px;font-weight:bold;text-align:center;">Batch #742</td>
-                </tr>
+                <tr>';
+                if($batch_id != ''){
+                    
+                    $html .='<td width="100%" style="font-size:12px;font-weight:bold;text-align:center;">Batch #'.$batch_id.'</td>';
+                 
+                 } else {
+                    
+                    $html .='<td width="100%" style="font-size:12px;font-weight:bold;text-align:center;"></td>';
+                 }   
+            $html .='</tr>
             </table>';
     $pdf->writeHTML($html, false, 0, false, 0);
     $pdf->Ln(5);
@@ -66,32 +97,37 @@ require_once(DIR_FS."islogin.php");
                     <td><h4>CHARGE</h4></td>
                 </tr>';
     $pdf->Line(10, 81, 290, 81);
-    $html.='<tr>
-                   <td style="font-size:13px;font-weight:normal;text-align:left;">897797</td>
-                   <td style="font-size:13px;font-weight:normal;text-align:left;">kishan</td>
-                   <td style="font-size:13px;font-weight:normal;text-align:left;">aksha</td>
-                   <td style="font-size:13px;font-weight:normal;text-align:left;">06/01/2018</td>
-                   <td style="font-size:13px;font-weight:normal;text-align:left;">08/01/2018</td>
-                   <td style="font-size:13px;font-weight:normal;text-align:left;">1,000.00</td>
-                   <td style="font-size:13px;font-weight:normal;text-align:left;">1,000.00</td>
-                   <td style="font-size:13px;font-weight:normal;text-align:left;">0.00</td>
-                </tr>
-                <tr>
-                   <td style="font-size:13px;font-weight:normal;text-align:left;">897797</td>
-                   <td style="font-size:13px;font-weight:normal;text-align:left;">kishan</td>
-                   <td style="font-size:13px;font-weight:normal;text-align:left;">aksha</td>
-                   <td style="font-size:13px;font-weight:normal;text-align:left;">06/01/2018</td>
-                   <td style="font-size:13px;font-weight:normal;text-align:left;">08/01/2018</td>
-                   <td style="font-size:13px;font-weight:normal;text-align:left;">2,000.00</td>
-                   <td style="font-size:13px;font-weight:normal;text-align:left;">4,000.00</td>
-                   <td style="font-size:13px;font-weight:normal;text-align:left;">0.00</td>
-                </tr>
-            </table>';
+    if($get_trans_data != array())
+    {
+        foreach($get_trans_data as $trans_key=>$trans_data)
+        {
+            $total_amount_invested = ($total_amount_invested+$trans_data['invest_amount']);
+            $total_commission_received = ($total_commission_received+$trans_data['commission_received']);
+            $total_charges = ($total_charges+$trans_data['charge_amount']);
+        $html.='<tr>
+                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$trans_data['id'].'</td>
+                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$trans_data['broker_name'].'</td>
+                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$trans_data['client_name'].'</td>
+                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.date('m-d-Y',strtotime($trans_data['trade_date'])).'</td>
+                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.date('m-d-Y',strtotime($trans_data['commission_received_date'])).'</td>
+                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.number_format($trans_data['invest_amount'],2).'</td>
+                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.number_format($trans_data['commission_received'],2).'</td>
+                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.number_format($trans_data['charge_amount'],2).'</td>
+                    </tr>';
+        } 
+    }
+    else
+    {
+        $html.='<tr>
+                    <td style="font-size:13px;font-weight:cold;text-align:center;" colspan="8">No Records Found.</td>
+                </tr>';
+    }           
+    $html.='</table>';
     $pdf->writeHTML($html, false, 0, false, 0);
     $pdf->Ln(5);
-    $pdf->Line(205, 105, 182, 105);
-    $pdf->Line(238, 105, 215, 105);
-    $pdf->Line(280, 105, 265, 105);
+    //$pdf->Line(205, 105, 182, 105);
+    //$pdf->Line(238, 105, 215, 105);
+    //$pdf->Line(280, 105, 265, 105);
     $pdf->SetFont('times','B',12);
     $pdf->SetFont('times','',10);
     $html='<table border="0" cellpadding="5" width="100%">
@@ -100,9 +136,9 @@ require_once(DIR_FS."islogin.php");
                    <td></td>
                    <td></td>
                    <td style="font-size:13px;font-weight:bold;text-align:right;" colspan="2">Report Total : </td>
-                   <td style="font-size:13px;font-weight:bold;text-align:left;">3,000.00</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:left;width:18%;">5,000.00</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:left;">0.00</td>
+                   <td style="font-size:13px;font-weight:bold;text-align:left;">'.number_format($total_amount_invested,2).'</td>
+                   <td style="font-size:13px;font-weight:bold;text-align:left;width:18%;">'.number_format($total_commission_received,2).'</td>
+                   <td style="font-size:13px;font-weight:bold;text-align:left;">'.number_format($total_charges,2).'</td>
                 </tr>
             </table>';
     $pdf->writeHTML($html, false, 0, false, 0);
