@@ -15,8 +15,11 @@
                 </div>
                 <div class="tab-pane " id="tab_b">
                     <div class="selectwrap">
-                        <div class="row"><center>
-            					<input type="button" name="connect" class="btn btn-warning btn-lg btn3d" onclick="waitingDialog.show();setTimeout(function () {waitingDialog.hide();}, 5000);" value="OFAC System Scan"/></center>
+                        <div class="row">
+                            <form method="post" enctype="multipart/form-data" target="_blank">
+                                <center><input type="file" name="file" class="btn btn-warning btn-lg btn3d"/></center><br />
+            					<center><input type="submit" name="import" class="btn btn-warning btn-lg btn3d" value="OFAC System Scan"/></center>
+                            </form>
                         </div>
                     </div>
                 </div>

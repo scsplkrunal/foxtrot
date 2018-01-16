@@ -70,4 +70,5 @@
     define('SPONSOR_ATTACH','ft_sponsor_attach');
     define('BATCH_MASTER','ft_batch_master');
     define('BROKER_DOCUMENT_MASTER','ft_broker_document_master');
+    define('OFAC_CHECK_DATA','ft_ofac_check_data');
 ?>

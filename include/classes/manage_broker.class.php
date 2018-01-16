@@ -801,7 +801,7 @@
            }
            
         public function insert_update_req_doc($data ,$id1){
-          // echo '<pre>';print_r($id1);exit;
+           //echo '<pre>';print_r($data);exit;
            $id = isset($id1)?$this->re_db_input($id1):0;
            $flag4=0;
            foreach($data as $key=>$val)
@@ -811,7 +811,7 @@
                 $docs_date=isset($val['docs_date'])?$this->re_db_input(date('Y-m-d',strtotime($val['docs_date']))):'0000-00-00';
                 $docs_required = isset($val['docs_required'])?$this->re_db_input($val['docs_required']):'';
                 
-                if($docs_receive!='' && $docs_description!=''){
+                if( $docs_description!=''){
                     if($flag4==0){
                         $qq="update `".BROKER_REQ_DOC."` SET is_delete=1 where `broker_id`=".$id."";
                         $res = $this->re_db_query($qq);
@@ -1134,6 +1134,23 @@
 			
 			$q = "SELECT `s`.*
 					FROM `".BROKER_NOTES."` AS `s`
+                    WHERE `s`.`is_delete`='0'
+                    ORDER BY `s`.`id` ASC";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+    			}
+            }
+			return $return;
+		}
+        public function select_docs(){
+			$return = array();
+			
+			$q = "SELECT `s`.*
+					FROM `".BROKER_DOCUMENT_MASTER."` AS `s`
                     WHERE `s`.`is_delete`='0'
                     ORDER BY `s`.`id` ASC";
 			$res = $this->re_db_query($q);

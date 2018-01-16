@@ -48,7 +48,7 @@
                     <div class="col-md-2 ">
                         <div class="input-group">
                           <span class="input-group-addon">
-                             <input type="checkbox" name="required" <?php if($required=='1'){?>checked="true"<?php }?> style="display: inline;" value="1">
+                             <input type="checkbox" name="required" <?php if(isset($required) && $required=='1'){?>checked="true"<?php }?> style="display: inline;" value="1">
                           </span>
                           <label class="form-control">Required</label>
                         </div> 

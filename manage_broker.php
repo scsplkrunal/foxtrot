@@ -61,7 +61,8 @@
     $broker_charge=$instance->select_broker_charge($id);
     $charge_type_arr=$instance->select_charge_type();
     $get_broker = $instance->select();
-    //echo '<pre>';print_r($charge_type_arr);exit();
+    $select_docs = $instance->select_docs();
+        //echo '<pre>';print_r($charge_type_arr);exit();
     
     if(isset($_POST['submit'])&& $_POST['submit']=='Save'){
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;

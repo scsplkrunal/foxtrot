@@ -2098,28 +2098,51 @@ var waitingDialog = waitingDialog || (function ($) {
                                                         
                                                         <?php $doc_id=0; //echo '<pre>';print_r($edit_required_docs);
                                                         if(isset($_GET['action']) && $_GET['action']=='edit' && isset($edit_required_docs) ){  
-                                                        foreach($edit_required_docs as $key=>$val){ $doc_id=$val['id'];?>
+                                                        foreach($edit_required_docs as $key=>$val){ $doc_id++;?>
                                                             <tr>
                                                                 <td>
-                                                                    <input type="checkbox" name="data[docs_receive][<?php echo $key;?>]" <?php if($val['received']==1){ ?>checked="true"<?php } ?> value="1" class="checkbox" id="docs_receive"/>
+                                                                    <input type="checkbox" name="data[docs_receive][<?php echo $doc_id;?>]" <?php if($val['received']==1){ ?>checked="true"<?php } ?> value="1" class="checkbox" id="docs_receive"/>
                                                                 </td>
-                                                                <td><input class="form-control" value="<?php echo $val['description']?>" name="data[docs_description][<?php echo $key;?>]" id="docs_description" type="text" /></td>
+                                                                <td><input class="form-control" value="<?php echo $val['description']?>" name="data[docs_description][<?php echo $doc_id;?>]" id="docs_description" type="text" /></td>
                                                                 <td>
                                                                     <div id="demo-dp-range">
                     					                                <div class="input-daterange input-group" id="datepicker">
-                                                                            <input type="text" name="data[docs_date][<?php echo $key;?>]" id="docs_date" value="<?php echo $val['date']?>" class="form-control" />
+                                                                            <input type="text" name="data[docs_date][<?php echo $doc_id;?>]" id="docs_date" value="<?php echo $val['date']?>" class="form-control" />
                     					                                </div>
                  					                                </div>
                                                                 </td>
                                                                 <td>
-                                                                    <input type="checkbox" name="data[docs_required][<?php echo $key;?>]" <?php if($val['required']==1){ ?>checked="true"<?php } ?> class="checkbox" value="1" id="docs_required"/>
+                                                                    <input type="checkbox" name="data[docs_required][<?php echo $doc_id;?>]" <?php if($val['required']==1){ ?>checked="true"<?php } ?> class="checkbox" value="1" id="docs_required"/>
                                                                 </td>
                                                                 <td>
                                                                     <button type="button" tabindex="-1" class="btn remove-row btn-icon btn-circle"><i class="fa fa-minus"></i></button>
                                                                 </td>
                                                             </tr>
-                                                      <?php } } $doc_id++; ?>
+                                                      <?php } }  ?>
+                                                      <?php 
+                                                        if(isset($select_docs) ){  
+                                                        foreach($select_docs as $key=>$val){   $doc_id  ++; ;?>
                                                       <tr id="add_row_docs">
+                                                            <td>
+                                                                <input type="checkbox" value="1" name="data[docs_receive][<?php echo $doc_id;?>]" class="checkbox" id="docs_receive"/>
+                                                            </td>
+                                                            <td><input class="form-control" value="<?php echo $val['desc']?>" name="data[docs_description][<?php echo $doc_id;?>]" id="docs_description" type="text" /></td>
+                                                            <td>
+                                                                <div id="demo-dp-range">
+                					                                <div class="input-daterange input-group" id="datepicker">
+                                                                        <input type="text" name="data[docs_date][<?php echo $doc_id;?>]" id="docs_date" value="" class="form-control" />
+                					                                </div>
+             					                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <input type="checkbox" name="data[docs_required][<?php echo $doc_id;?>]" <?php if($val['required'] == 1){?>checked="true"<?php }?> value="1" class="checkbox" id="docs_required"/>
+                                                            </td>
+                                                            <td>
+                                                                <button type="button" tabindex="-1" class="btn remove-row btn-icon btn-circle"><i class="fa fa-minus"></i></button>
+                                                            </td>
+                                                        </tr>
+                                                   <?php } }  $doc_id  ++;?>
+                                                   <tr id="add_row_docs">
                                                             <td>
                                                                 <input type="checkbox" value="1" name="data[docs_receive][<?php echo $doc_id;?>]" class="checkbox" id="docs_receive"/>
                                                             </td>
@@ -2158,7 +2181,7 @@ var waitingDialog = waitingDialog || (function ($) {
                          <a href="#broker_notes" data-toggle="modal"><input type="button" onclick="get_broker_notes();" name="notes" value="Notes" /></a>
                          <a href="#client_transactions" data-toggle="modal"><input type="button" name="transactions" value="Transactions" /></a>
                          <a href="#broker_attach" data-toggle="modal"><input type="button"  onclick="get_broker_attach();" name="attach" value="Attachments" /></a>
-                         <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
+                         <input type="submit" name="submit" value="Save"/>	
                          <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                          <?php if($action=='edit' && $id>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a" style="float: right;"><input type="button" name="next" value="Next &raquo;" /></a><?php } ?>
                     </div>

@@ -18,4 +18,5 @@
 	include_once(DIR_FS_CLASSES."header.class.php");
     include_once(DIR_FS_CLASSES."transaction.class.php");
     include_once(DIR_FS_CLASSES."broker_document.class.php");
+    include_once(DIR_FS_CLASSES."ofac_fincen.class.php");
 ?>
