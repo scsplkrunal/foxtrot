@@ -6,32 +6,21 @@ class ofac_fincen extends db{
     
     public function get_ofac_data($sdn_name = '',$sdn_desc = ''){//echo '<pre>';print_r($sdn_name);exit;
 		$return = array();
-        $name_array = array();
         $con = '';
         $name = isset($sdn_name)?$this->re_db_input($sdn_name):'';
         
         $client_data = $this->get_client_data();
         if($name != '')
         {
-            $name_array = explode(' ',$name,2);
-
-            $i=1;
-            foreach($name_array as $key_name=>$val_name)
+            //$con .= "and `at`.`first_name` LIKE '%".$name."%' ";
+            $con .= "and `at`.`first_name` LIKE '%".$name."%' OR `at`.`last_name` LIKE '%".$name."%' ";
+            /*if($sdn_desc != '')
             {
-                if(strlen($val_name)>2)
-                {
-                    if($i == 1)
-                    {
-                        $con .= " and `at`.`first_name` LIKE '%".$val_name."%' OR `at`.`last_name` LIKE '%".$val_name."%' ";
-                    }
-                    else
-                    {
-                        $con .= " OR `at`.`first_name` LIKE '%".$val_name."%' OR `at`.`last_name` LIKE '%".$val_name."%' ";
-                    }
-                    $i++;
-                }
-            }
-            $q = "SELECT `at`.*
+                $con .= "and (`at`.`first_name` LIKE '%".$name."%' OR `at`.`last_name` LIKE '%".$name."%' OR`at`.`mi` LIKE '%".$name."%')";
+            }*/
+        
+		
+    		$q = "SELECT `at`.*
     				FROM `".$this->table."` AS `at`
                     WHERE `at`.`is_delete`='0' ".$con."
                     ";
@@ -59,7 +48,7 @@ class ofac_fincen extends db{
             
 			foreach($data as $key=>$val)
             {
-                $q = "INSERT INTO `".OFAC_CHECK_DATA."` SET `ofac_check_data_id`='".$last_inserted_id."',`id_no`='".$val[0]['id_no']."',`sdn_name`='".$val[0]['sdn_name']."',`program`='".$val[0]['program']."',`client_id`='".$val['id']."',`client_name`='".$val['first_name']." ".$val['last_name']."',`rep_no`='',`rep_name`=''".$this->insert_common_sql();
+                $q = "INSERT INTO `".OFAC_CHECK_DATA."` SET `ofac_check_data_id`='".$last_inserted_id."',`id_no`='".$val[0]['id_no']."',`sdn_name`='".$val[0]['sdn_name']."',`program`='".$val[0]['program']."',`client_id`='".$val['id']."',`client_name`='".$val['first_name']."',`rep_no`='',`rep_name`=''".$this->insert_common_sql();
     			$res = $this->re_db_query($q);
             }
             
@@ -157,23 +146,6 @@ class ofac_fincen extends db{
 			
 			$q = "SELECT `at`.*
 					FROM `".OFAC_CHECK_DATA_MASTER."` AS `at`
-                    WHERE `at`.`is_delete`='0'
-                    ORDER BY `at`.`id` ASC";
-			$res = $this->re_db_query($q);
-            if($this->re_db_num_rows($res)>0){
-                $a = 0;
-    			while($row = $this->re_db_fetch_array($res)){
-    			     array_push($return,$row);
-                     
-    			}
-            }
-			return $return;
-		}
-        public function select_fincen_scan_file(){
-			$return = array();
-			
-			$q = "SELECT `at`.*
-					FROM `".FINCEN_CHECK_DATA_MASTER."` AS `at`
                     WHERE `at`.`is_delete`='0'
                     ORDER BY `at`.`id` ASC";
 			$res = $this->re_db_query($q);

@@ -59,6 +59,7 @@
     include(DIR_FS_INCLUDES.'tables.php');
     include(DIR_FS_INCLUDES.'db.class.php');
     include(DIR_FS_INCLUDES.'classes.php');
+   
     
     $dbins = new db();
     

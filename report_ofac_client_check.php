@@ -3,14 +3,24 @@ require_once("include/config.php");
 require_once(DIR_FS."islogin.php");
 $instance = new ofac_fincen();
 $get_ofac_data = array();
+$get_ofac_main_data = array();
 
-$get_ofac_data = $instance->select_data_report();
-
-//print_r($get_trans_data);exit();
-
-$total_amount_invested = 0;
-$total_matches = count($get_ofac_data);
-$total_charges = 0;
+$ofac_main_id = isset($_GET['id'])?$instance->re_db_input($_GET['id']):0;
+if($ofac_main_id >0)
+{
+    $get_ofac_main_data = $instance->select_data_master_report($ofac_main_id);
+    $get_ofac_data = $instance->select_data_report($ofac_main_id);
+}
+else
+{
+    $get_ofac_main_data = $instance->select_data_master_report();
+    $ofac_main_id = isset($get_ofac_main_data['id'])?$instance->re_db_input($get_ofac_main_data['id']):0;
+    $get_ofac_data = $instance->select_data_report($ofac_main_id);
+}
+//print_r($get_ofac_data);exit;
+$file_date = isset($get_ofac_main_data['created_time'])?$instance->re_db_input(date('m/d/Y',strtotime($get_ofac_main_data['created_time']))):'00/00/0000';
+$total_matches = isset($get_ofac_main_data['total_match'])?$instance->re_db_input($get_ofac_main_data['total_match']):0;
+$total_scan = isset($get_ofac_main_data['total_scan'])?$instance->re_db_input($get_ofac_main_data['total_scan']):0;
 ?>
 <?php
 
@@ -55,7 +65,7 @@ $total_charges = 0;
     $pdf->SetFont('times','',10);
     $html='<table border="0">
                 <tr>
-                    <td width="100%" style="font-size:14px;font-weight:bold;text-align:center;">File Date - '.date('m/d/Y').'</td>
+                    <td width="100%" style="font-size:14px;font-weight:bold;text-align:center;">File Date - '.$file_date.'</td>
                 </tr>
             </table>';
     $pdf->writeHTML($html, false, 0, false, 0);
@@ -74,44 +84,53 @@ $total_charges = 0;
                     <td style="width:10%"><h4>REP NO.</h4></td>
                     <td style="width:20%"><h4>REP NAME</h4></td>
                 </tr>';
-                foreach($get_ofac_data as $key=>$val)
+                if($get_ofac_data != array())
                 {
-        $html.='<tr>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$val['sdn_name'].'</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$val['id_no'].'</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$val['program'].'</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$val['client_id'].'</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$val['client_name'].'</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">-</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">-</td>
-                    </tr>';
+                    foreach($get_ofac_data as $key=>$val)
+                    {
+                        $html.='<tr>
+                           <td style="font-size:10px;font-weight:normal;text-align:left;">'.$val['sdn_name'].'</td>
+                           <td style="font-size:10px;font-weight:normal;text-align:left;">'.$val['id_no'].'</td>
+                           <td style="font-size:10px;font-weight:normal;text-align:left;">'.$val['program'].'</td>
+                           <td style="font-size:10px;font-weight:normal;text-align:left;">'.$val['client_id'].'</td>
+                           <td style="font-size:10px;font-weight:normal;text-align:left;">'.$val['client_name'].'</td>
+                           <td style="font-size:10px;font-weight:normal;text-align:left;">-</td>
+                           <td style="font-size:10px;font-weight:normal;text-align:left;">-</td>
+                        </tr>';
+                    }
                 }
-       
+                else
+                {
+                    $html.='<tr>
+                                <td style="font-size:13px;font-weight:cold;text-align:center;" colspan="8">No Records Found.</td>
+                            </tr>';
+                }   
     $html.='</table>';
     $pdf->writeHTML($html, false, 0, false, 0);
     $pdf->Ln(5);
     $html='<br/>';
     
-    
+    if($get_ofac_data != array())
+    {
     $pdf->SetFont('times','B',12);
     $pdf->SetFont('times','',10);
     $html='<table border="0" cellpadding="5" width="100%">
                 <tr>
-                   <td style="font-size:13px;font-weight:normal;text-align:right;width:14%">Total Scanned:</td>
-                   <td style="font-size:13px;font-weight:normal;text-align:left;width:14%">36.696</td>
+                   <td style="font-size:10px;font-weight:normal;text-align:right;width:14%">Total Scanned:</td>
+                   <td style="font-size:10px;font-weight:normal;text-align:left;width:14%">'.$total_scan.'</td>
                 </tr>
                 <tr>
-                   <td style="font-size:13px;font-weight:normal;text-align:right;width:14%">Total Matches:</td>
-                   <td style="font-size:13px;font-weight:normal;text-align:left;width:14%">'.$total_matches.'</td>
+                   <td style="font-size:10px;font-weight:normal;text-align:right;width:14%">Total Matches:</td>
+                   <td style="font-size:10px;font-weight:normal;text-align:left;width:14%">'.$total_matches.'</td>
                 </tr>
                 <tr>
-                   <td style="font-size:13px;font-weight:normal;text-align:left;width:18%">*Foxtrot Client Name - </td>
-                   <td style="font-size:13px;font-weight:normal;text-align:Left;width:20%">Match found in First name</td>
+                   <td style="font-size:10px;font-weight:normal;text-align:left;width:14%">*Foxtrot Client Name - </td>
+                   <td style="font-size:10px;font-weight:normal;text-align:Left;width:20%">Match found in joint name</td>
                 </tr>
             </table>';
     $pdf->writeHTML($html, false, 0, false, 0);
     $pdf->Ln(5);
-   
+    }
     $pdf->lastPage();
     $pdf->Output('report_ofac_client_check.pdf', 'I');
     

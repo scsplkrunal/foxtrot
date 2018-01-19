@@ -4,6 +4,12 @@
 
 <script type="text/javascript" lang="javaScript">
 $(document).ready(function (){
+
+
+ var data_investment_amount = <?php if($invest_amount['count']==''){ echo '0'; } else {echo $invest_amount['count']; }?>;
+ var data_charge_amount = <?php if($charge_amount['count'] == '') {echo '0'; }else{echo $charge_amount['count']; }?>;
+ var data_commission_received_amount = <?php if($commission_received_amount['count']==''){echo '0';}else {echo $commission_received_amount['count'];} ?>;
+
 Highcharts.chart('container1', {
    chart: {
         plotBackgroundColor: null,
@@ -144,7 +150,6 @@ Highcharts.chart('container3', {
 
     }]
 });
-
 Highcharts.chart('container_commission', {
     chart: {
         type: 'pie',
@@ -166,7 +171,7 @@ Highcharts.chart('container_commission', {
         pie: {
             allowPointSelect: true,
             cursor: 'pointer',
-            depth: 35,
+            depth: 20,
             dataLabels: {
                 enabled: false,
                 format: '{point.name}'
@@ -175,18 +180,11 @@ Highcharts.chart('container_commission', {
     },
     series: [{
         type: 'pie',
-        name: 'Browser share',
+        name: 'Commision Ammount',
         data: [
-            ['Direct', 45.0],
-            {
-                name: 'Pending',
-                y: 12.8,
-                sliced: false,
-                selected: true
-            },
-            ['Advisory', 26.8],
-            ['Clearing', 8.5],
-            ['Others', 2.3]
+            ['Investment Amount', data_investment_amount],
+            ['Charge Amount', data_charge_amount],
+            ['Commission Received Amount', data_commission_received_amount]
         ]
     }]
 });
@@ -251,7 +249,7 @@ Highcharts.chart('container_payroll', {
 				<div class="graphboxcontent">
                     <table width='100%'> 
                         <tr>
-                            <td>Completed file</td>
+                            <td>Completed Files</td>
                             <td>16</td>
                             <td rowspan="5" width='60%'><div id="container1" style="min-width: 200px; height: 200px; max-width: 200px; margin:  auto"></div></td>
                         </tr>
@@ -260,7 +258,7 @@ Highcharts.chart('container_payroll', {
                             <td>4</td>
                         </tr>
                         <tr>
-                            <td>New file</td>
+                            <td>New Files</td>
                             <td>4</td>
                         </tr>
                     </table>
@@ -273,33 +271,25 @@ Highcharts.chart('container_payroll', {
 				<div class="graphboxcontent">
                     <table width='100%'> 
                         <tr>
-                            <td>Direct</td>
-                            <td>$45.000</td>
+                            <td>Invest Amount</td>
+                            <td>$<?php echo $invest_amount['count'];?></td>
                             <td rowspan="5" style="width: 60%;"><div id="container_commission" style="min-width: 200px; height: 200px; max-width: 3000px; margin:  auto"></div></td>
                         </tr>
                         <tr>
-                            <td>Pending</td>
-                            <td>$12.8000</td>
+                            <td>Charge Amount</td>
+                            <td>$<?php echo $charge_amount['count'];?></td>
                         </tr>
                         <tr>
-                            <td>Advisory</td>
-                            <td>$26.8000</td>
-                        </tr>
-                        <tr>
-                            <td>Clearing</td>
-                            <td>$8.5000</td>
-                        </tr>
-                        <tr>
-                            <td>Others</td>
-                            <td>$2.3000</td>
+                            <td>Commission Received Amount</td>
+                            <td>$<?php echo $commission_received_amount['count'];?></td>
                         </tr>
                         </table>
         				</div>
                         <div class="graphboxtitle" style="border-top: 2px solid #dfdfdf; font-weight: 10 !important; font-size: 15px !important;">
                         <table>
-                            <tr>
-                                <td style="width: 28.5% !important;">Total file</td>
-                                <td>$192.000</td>
+                            <tr><?php $total= $invest_amount['count']+$charge_amount['count']+$commission_received_amount['count'];?>
+                                <td style="width: 28.5% !important;">Total Amount</td>
+                                <td>$<?php echo $total; ?></td>
                                 <td rowspan="5" style="width: 60%;"></td>
                             </tr>
                         </table>
@@ -359,13 +349,13 @@ Highcharts.chart('container_payroll', {
 					<div class="graphimg">
                      <table width='100%'> 
                         <tr>
-                            <td align='center'>Complated file</td>
+                            <td align='center'>Completed Files</td>
                         </tr>
                         <tr>
                             <td align='center'>4</td>
                         </tr>
                         <tr>
-                            <td align='center'>Pendding file</td>
+                            <td align='center'>Pending Files</td>
                         </tr>
                         <tr>
                             <td align='center'>4</td>

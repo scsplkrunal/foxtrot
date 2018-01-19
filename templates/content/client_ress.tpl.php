@@ -1,16 +1,16 @@
 <div class="container">
 <h1>Client Reassignment</h1>
     <div class="col-md-12 well">
+        <form method="POST" id="client_ress_form" target="_blank">
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                     <label>From Broker </label>
                     <select class="form-control" name="from_broker">
-                        <option value="">Select From</option>
-                        <option value="1">Option 1</option>
-                        <option value="2">Option 2</option>
-                        <option value="3">Option 3</option>
-                        <option value="4">Option 4</option>
+                        <option value="0">Select Broker</option>
+                            <?php foreach($get_broker as $key=>$val){?>
+                            <option value="<?php echo $val['id'];?>" ><?php echo $val['first_name'].' '.$val['middle_name'].' '.$val['last_name'];?></option>
+                            <?php } ?>
                     </select>
                 </div>
             </div>
@@ -20,11 +20,10 @@
                 <div class="form-group">
                     <label>To Broker </label>
                     <select class="form-control" name="to_broker">
-                        <option value="">Select To</option>
-                        <option value="1">Option 1</option>
-                        <option value="2">Option 2</option>
-                        <option value="3">Option 3</option>
-                        <option value="4">Option 4</option>
+                        <option value="0">Select Broker</option>
+                            <?php foreach($get_broker as $key=>$val){?>
+                            <option value="<?php echo $val['id'];?>" ><?php echo $val['first_name'].' '.$val['middle_name'].' '.$val['last_name'];?></option>
+                            <?php } ?>
                     </select>
                 </div>
             </div>
@@ -33,24 +32,65 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>List Of Ressigned Client </label><br />
-                    <input type="radio" class="radio" name="output" id="output_to_screen" style="display: inline;" checked="checked" /> Output to Screen&nbsp;&nbsp;&nbsp;
-                    <input type="radio" class="radio" name="output" id="output_to_printer" style="display: inline;" /> Output to Printer&nbsp;&nbsp;&nbsp;
-                    <input type="radio" class="radio" name="output" id="output_to_pdf" style="display: inline;" /> Output to PDF
+                    <input type="radio" class="radio" name="output" id="output_to_screen" style="display: inline;" checked="checked" value="1"/> Output to Screen&nbsp;&nbsp;&nbsp;
+                    <input type="radio" class="radio" name="output" id="output_to_printer" style="display: inline;" value="2"/> Output to Printer&nbsp;&nbsp;&nbsp;
+                    <input type="radio" class="radio" name="output" id="output_to_pdf" style="display: inline;" value="3"/> Output to PDF
                 </div>
             </div>
         </div>
         <div class="panel-footer">
             <div class="selectwrap">
 				<div class="selectwrap">
-                    <input type="hidden" name="id" id="id" value="<?php //echo $id; ?>" />
-					<input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
+					<input type="submit" name="submit"  value="Save"/>	
                     <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                 </div>
             </div>
         </div>
-        
+        <div id="myModal" class="modal fade" role="dialog" aria-hidden="true" tabindex="-1">
+        	<div class="modal-dialog modal-lg">
+        		<!-- Modal content-->
+        		<div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><i class="pci-cross pci-circle"></i></button>
+                        <h4 class="modal-title">Client Reassignment List</h4>
+                    </div>
+        			<div class="modal-body" id="output_screen_content">Loading...</div>
+        		</div>
+        	</div>
+        </div>
+        </form>
     </div>
 </div>
+<?php if(isset($_GET['open']) && $_GET['open'] == "output_screen" && isset($_GET['from_broker']) && $_GET['from_broker'] != ''){?>
+<script>
+//location.href=location.href.replace(/&?open=([^&]$|[^&]*)/i, "");
+$(document).ready(function(){
+    
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) 
+        {
+            document.getElementById("output_screen_content").innerHTML = this.responseText;
+        }
+    };
+    xmlhttp.open("GET", "ajax_client_reassign.php?from_broker="+<?php echo $_GET['from_broker']; ?>, true);
+    xmlhttp.send();
+
+
+    $('#myModal').modal({
+    		show: true
+    	});
+       //location.href=location.href.replace(/&?open=([^&]$|[^&]*)/i, ""); 
+});
+
+</script>
+<?php } ?>
+<?php if(isset($_GET['open']) && $_GET['open'] == "output_print" && isset($_GET['from_broker']) && $_GET['from_broker'] != ''){?>
+<script>
+window.print();
+</script>
+<?php } ?>
+
 <script type="text/javascript">
 var waitingDialog = waitingDialog || (function ($) {
     'use strict';
@@ -111,6 +151,7 @@ var waitingDialog = waitingDialog || (function ($) {
 	};
 
 })(jQuery);
+
 </script>
 <style>
 .btn-primary {
