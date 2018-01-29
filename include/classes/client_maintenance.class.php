@@ -39,11 +39,11 @@
             $telephone_brack1 = str_replace("(", '', $telephone_no);
             $telephone = str_replace(")", '', $telephone_brack1);
             $contact_status = isset($data['contact_status'])?$this->re_db_input($data['contact_status']):'';
-            $birth_date = isset($data['birth_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['birth_date']))):'';
-            $date_established = isset($data['date_established'])?$this->re_db_input(date('Y-m-d',strtotime($data['date_established']))):'';
-            $open_date = isset($data['open_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['open_date']))):'';
-            $naf_date = isset($data['naf_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['naf_date']))):'';
-            $last_contacted = isset($data['last_contacted'])?$this->re_db_input(date('Y-m-d',strtotime($data['last_contacted']))):'';
+            $birth_date = isset($data['birth_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['birth_date']))):'0000-00-00';
+            $date_established = isset($data['date_established'])?$this->re_db_input(date('Y-m-d',strtotime($data['date_established']))):'0000-00-00';
+            $open_date = isset($data['open_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['open_date']))):'0000-00-00';
+            $naf_date = isset($data['naf_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['naf_date']))):'0000-00-00';
+            $last_contacted = isset($data['last_contacted'])?$this->re_db_input(date('Y-m-d',strtotime($data['last_contacted']))):'0000-00-00';
             //print_r($last_contacted);exit;
             if($lname==''){
 				$this->errors = 'Please enter last name.';
@@ -126,9 +126,9 @@
             $options = isset($data['options'])?$this->re_db_input($data['options']):'';
             $other = isset($data['other'])?$this->re_db_input($data['other']):'';
             $number = isset($data['number'])?$this->re_db_input($data['number']):'';
-            $expiration = isset($data['expiration'])?$this->re_db_input(date('Y-m-d',strtotime($data['expiration']))):'';
+            $expiration = isset($data['expiration'])?$this->re_db_input(date('Y-m-d',strtotime($data['expiration']))):'0000-00-00';
             $state_employe = isset($data['state_employe'])?$this->re_db_input($data['state_employe']):'';
-            $date_verified = isset($data['date_verified'])?$this->re_db_input(date('Y-m-d',strtotime($data['date_verified']))):'';
+            $date_verified = isset($data['date_verified'])?$this->re_db_input(date('Y-m-d',strtotime($data['date_verified']))):'0000-00-00';
             $telephone_mask = isset($data['telephone_employment'])?$this->re_db_input($data['telephone_employment']):'';
             $telephone_no = str_replace("-", '', $telephone_mask);
             $telephone_brack1 = str_replace("(", '', $telephone_no);
@@ -243,7 +243,7 @@
             $timeframe_for_special_exp = isset($data['timeframe_for_special_exp'])?$this->re_db_input($data['timeframe_for_special_exp']):'';
             $account_use = isset($data['account_use'])?$this->re_db_input($data['account_use']):'';
             $signed_by = isset($data['signed_by'])?$this->re_db_input($data['signed_by']):'';
-            $sign_date = isset($data['sign_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['sign_date']))):'';
+            $sign_date = isset($data['sign_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['sign_date']))):'0000-00-00';
             $tax_bracket = isset($data['tax_bracket'])?$this->re_db_input($data['tax_bracket']):'';
             $tax_id = isset($data['tax_id'])?$this->re_db_input($data['tax_id']):'';
             

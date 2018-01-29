@@ -109,8 +109,8 @@
                                                     <td><?php echo $val['total_scan']; ?></td>
                                                     <td><?php echo $val['total_match']; ?></td>
                                                     <td class="text-center">
-                                                        <a target="_blank" href="<?php echo CURRENT_PAGE; ?>?action=print&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-success"><i class="fa fa-print"></i> Print</a>
-                                                        <a onclick="return conf('<?php echo CURRENT_PAGE; ?>?action=delete&id=<?php echo $val['id']; ?>');" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
+                                                        <a target="_blank" href="<?php echo CURRENT_PAGE; ?>?action=print_fincen&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-success"><i class="fa fa-print"></i> Print</a>
+                                                        <a onclick="return conf('<?php echo CURRENT_PAGE; ?>?action=delete_fincen&id=<?php echo $val['id']; ?>');" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
                                                     </td>
                                                 </tr>
                                                 <?php
@@ -130,6 +130,12 @@
 <script>
 location.href=location.href.replace(/&?open=([^&]$|[^&]*)/i, "");
 window.open('report_ofac_client_check.php','_blank');
+</script>
+<?php } ?>
+<?php if(isset($_GET['open']) && $_GET['open'] == "report_fincen"){?>
+<script>
+location.href=location.href.replace(/&?open=([^&]$|[^&]*)/i, "");
+window.open('report_fincen_client_check.php','_blank');
 </script>
 <?php } ?>
 <script type="text/javascript">

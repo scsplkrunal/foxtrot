@@ -19,6 +19,71 @@ $(document).on('click','.remove-row',function(){
     $(this).closest('tr').remove();
 });
 </script>
+<style>
+
+#sticky {
+    padding: 0.5ex;
+    width: 600px;
+    background-color: #333;
+    color: #fff;
+    font-size: 2em;
+    border-radius: 0.5ex;
+}
+
+#sticky.stick {
+    margin-top: 0 !important;
+    position: fixed;
+    top: 0;
+    z-index: 10000;
+    border-radius: 0 0 0.5em 0.5em;
+}
+
+body {
+    margin: 1em;
+}
+
+p {
+    margin: 1em auto;
+}
+
+
+</style>
+<script>
+function sticky_relocate() {
+    var window_top = $(window).scrollTop();
+    var div_top = $('#sticky-anchor').offset().top;
+    if (window_top > div_top) {
+        $('#sticky').addClass('stick');
+        $('#sticky-anchor').height($('#sticky').outerHeight());
+    } else {
+        $('#sticky').removeClass('stick');
+        $('#sticky-anchor').height(0);
+    }
+}
+
+$(function() {
+    $(window).scroll(sticky_relocate);
+    sticky_relocate();
+});
+
+var dir = 1;
+var MIN_TOP = 200;
+var MAX_TOP = 350;
+
+function autoscroll() {
+    var window_top = $(window).scrollTop() + dir;
+    if (window_top >= MAX_TOP) {
+        window_top = MAX_TOP;
+        dir = -1;
+    } else if (window_top <= MIN_TOP) {
+        window_top = MIN_TOP;
+        dir = 1;
+    }
+    $(window).scrollTop(window_top);
+    window.setTimeout(autoscroll, 100);
+}
+
+</script>
 <script>
 function addMoreAttach(){
     var html = '<tr class="add_row_attach">'+
@@ -39,6 +104,7 @@ function addMoreAttach(){
 $(document).on('click','.remove-row',function(){
     $(this).closest('tr').remove();
 });
+
 </script>
 <div class="container">
 <h1>Sponsor Maintenance</h1>
@@ -50,7 +116,7 @@ $(document).on('click','.remove-row',function(){
     
     if((isset($_GET['action']) && $_GET['action']=='add_sponsor') || (isset($_GET['action']) && ($_GET['action']=='edit_sponsor' && $sponsor_id>0))){
         ?>
-        <form name="frm2" method="POST">
+        <form name="frm2" method="POST" >
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group"><br /><div class="selectwrap">
@@ -67,7 +133,7 @@ $(document).on('click','.remove-row',function(){
                     </div>
                  </div>
                  </div>
-             </div>
+             </div></div>
             <br />
         <div class="panel">            
         
@@ -110,7 +176,7 @@ $(document).on('click','.remove-row',function(){
                         <input type="text" maxlength="50" class="form-control" name="saddress2" value="<?php echo $saddress2;?>"  />
                     </div>
                 </div>
-            </div>
+            </div><div id="sticky-anchor"></div>
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
@@ -229,7 +295,7 @@ $(document).on('click','.remove-row',function(){
                 </div>
             </div>
            </div>
-           <div class="row">
+           <div class="row" id="sticky">
                 <div class="col-md-12">
                     <div class="form-group"><br /><div class="selectwrap">
                         <?php if($_GET['action']=='edit_sponsor' && $_GET['sponsor_id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=previous" class="previous next_previous_a" style="float: left;"><input type="button" name="previous" value="&laquo; Previous" /></a><?php } ?>

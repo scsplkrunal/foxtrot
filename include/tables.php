@@ -76,6 +76,7 @@
     define('RULE_DETAILS','ft_rules_details');
     define('OFAC_CHECK_DATA_MASTER','ft_ofac_check_data_master');
     define('FINCEN_CHECK_DATA_MASTER','ft_fincen_check_data_master');
-    
-    
+    define('FINCEN_CHECK_DATA','ft_fincen_check_data_detail');
+    define('IMPORT_FTP_MASTER','ft_import_ftp_master');
+    define('IMPORT_CURRENT_FILES','ft_import_current_files');
 ?>

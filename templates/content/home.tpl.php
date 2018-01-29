@@ -272,16 +272,16 @@ Highcharts.chart('container_payroll', {
                     <table width='100%'> 
                         <tr>
                             <td>Invest Amount</td>
-                            <td>$<?php echo $invest_amount['count'];?></td>
+                            <td>$<?php if($invest_amount['count']!=''){ echo $invest_amount['count'];}else{echo 0;}?></td>
                             <td rowspan="5" style="width: 60%;"><div id="container_commission" style="min-width: 200px; height: 200px; max-width: 3000px; margin:  auto"></div></td>
                         </tr>
                         <tr>
                             <td>Charge Amount</td>
-                            <td>$<?php echo $charge_amount['count'];?></td>
+                            <td>$<?php if($charge_amount['count']!=''){ echo $charge_amount['count'];}else{echo 0;}?></td>
                         </tr>
                         <tr>
                             <td>Commission Received Amount</td>
-                            <td>$<?php echo $commission_received_amount['count'];?></td>
+                            <td>$<?php if($commission_received_amount['count']!=''){ echo $commission_received_amount['count'];}else{echo 0;}?></td>
                         </tr>
                         </table>
         				</div>

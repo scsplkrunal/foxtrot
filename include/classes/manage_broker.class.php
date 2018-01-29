@@ -319,7 +319,7 @@
                $file_count = count($file_post['to']);
                $file_keys = array_keys($file_post);
                for ($i=1; $i<= $file_count; $i++) { 
-                   foreach ($file_keys as $key) {      
+                   foreach ($file_keys as $key) {    //echo '<pre>';print_r($file_post); exit;
                         if(isset($file_post[$key][$i]))
                         {
                             $file_ary[$i][$key] = $file_post[$key][$i];   
@@ -329,7 +329,7 @@
                             $file_ary[$i][$key] = '';
                         }
                    }
-               }
+               }//echo '<pre>';print_r($file_ary);exit;
                return $file_ary;
         }
         public function insert_update_payout_grid($data ,$id){
@@ -349,7 +349,7 @@
                            $flag=1;
                         }
                         
-                        $q = "INSERT INTO `".BROKER_PAYOUT_GRID."` SET `broker_id`='".$id."' ,`from`='".$from."' ,`to`='".$to."' , 
+                         $q = "INSERT INTO `".BROKER_PAYOUT_GRID."` SET `broker_id`='".$id."' ,`from`='".$from."' ,`to`='".$to."' , 
                         `per`='".$per."' ".$this->insert_common_sql();
         				
                         $res = $this->re_db_query($q); 
@@ -386,20 +386,21 @@
                         }
                    }
                }
-               
+               //echo'<pre>';print_r($file_ary);exit;
                return $file_ary;
         }
-        public function insert_update_payout_override($data ,$id,$rap){
+        public function insert_update_payout_override($data ,$id){//echo '<pre>';print_r($data);exit;
            $id = isset($id)?$this->re_db_input($id):0;
            $rap=isset($rap)?$this->re_db_input($rap):0;
            $flag1=0;
            
            foreach($data as $key=>$val)
-            {   
-                $from1=isset($val['from1'])?$this->re_db_input($val['from1']):'';
-                $to1=isset($val['to1'])?$this->re_db_input($val['to1']):'';
+            {  
+                $rap=isset($val['receiving_rep1'])?$this->re_db_input($val['receiving_rep1']):'';
+                $from1=isset($val['from1'])?$this->re_db_input(date('Y-m-d',strtotime($val['from1']))):'0000-00-00';
+                $to1=isset($val['to1'])?$this->re_db_input(date('Y-m-d',strtotime($val['to1']))):'0000-00-00';
                 $per1=isset($val['per1'])?$this->re_db_input($val['per1']):'';
-                if($from1!='' && $to1!=''){
+                if($from1!='' && $to1!='' && $rap != ''){
                     if($flag1==0){
                         $qq="update `".BROKER_PAYOUT_OVERRIDE."` SET is_delete=1 where `broker_id`=".$id."";
                         $res = $this->re_db_query($qq);
@@ -445,13 +446,13 @@
         public function insert_update_payout_split($data ,$id){
            $id = isset($id)?$this->re_db_input($id):0;
            $flag2=0;
-           
+           //echo '<pre>';print_r($data);exit;
            foreach($data as $key=>$val)
             {   
                 $rap=isset($val['rap'])?$this->re_db_input($val['rap']):'';
                 $rate=isset($val['rate'])?$this->re_db_input($val['rate']):'';
-                $start=isset($val['start'])?$this->re_db_input($val['start']):'0000-00-00';
-                $until = isset($val['until'])?$this->re_db_input($val['until']):'';
+                $start=isset($val['start'])?$this->re_db_input(date('Y-m-d',strtotime($val['start']))):'0000-00-00';
+                $until = isset($val['until'])?$this->re_db_input(date('Y-m-d',strtotime($val['until']))):'0000-00-00';
                 if($rap!='' && $rate!='' && $start!='' && $until != ''){
                     if($flag2==0){
                         $qq="update `".BROKER_PAYOUT_SPLIT."` SET is_delete=1 where `broker_id`=".$id."";
@@ -478,11 +479,11 @@
 			}
         } 
         public function insert_update_payout($data)
-        {
-            //echo '<pre>';print_r($_POST);exit;
+        {//echo '<pre>';print_r($data);exit;
+            
             $id = isset($data['id'])?$this->re_db_input($data['id']):'0';
             $transaction_type_general = isset($data['transaction_type_general'])?$this->re_db_input($data['transaction_type_general']):'0';
-            $product_category1 = isset($data['product_category1'])?$this->re_db_input($data['product_category1']):'0';
+            $product_category1 = isset($data['product_category1'])?$this->re_db_input($data['product_category1']):'';
             $product_category2 = isset($data['product_category2'])?$this->re_db_input($data['product_category2']):'0';
             $product_category3 = isset($data['product_category3'])?$this->re_db_input($data['product_category3']):'0';
             $product_category4 = isset($data['product_category4'])?$this->re_db_input($data['product_category4']):'0';
@@ -491,11 +492,11 @@
             $year = isset($data['year'])?$this->re_db_input($data['year']):'';
             $calculation_detail = isset($data['calculation_detail'])?$this->re_db_input($data['calculation_detail']):'';
             $clearing_charge_deducted_from = isset($data['clearing_charge_deducted_from'])?$this->re_db_input($data['clearing_charge_deducted_from']):'';
-            $reset = isset($data['reset'])?$this->re_db_input($data['reset']):'';
+            $reset = isset($data['reset'])?$this->re_db_input(date('Y-m-d',strtotime($data['reset']))):'0000-00-00';
             $description_type = isset($data['description_type'])?$this->re_db_input($data['description_type']):'0';
             $team_member = isset($data['team_member'])?$this->re_db_input($data['team_member']):'0';
-            $start = isset($data['start'])?$this->re_db_input($data['start']):'';
-            $until = isset($data['until'])?$this->re_db_input($data['until']):'';
+            $start = isset($data['start'])?$this->re_db_input(date('Y-m-d',strtotime($data['start']))):'0000-00-00';
+            $until = isset($data['until'])?$this->re_db_input(date('Y-m-d',strtotime($data['until']))):'0000-00-00';
             $apply_to = isset($data['apply_to'])?$this->re_db_input($data['apply_to']):'';
             $product_2 = isset($data['product_2'])?$this->re_db_input($data['product_2']):'';
             $product_3 = isset($data['product_3'])?$this->re_db_input($data['product_3']):'';
@@ -1128,6 +1129,23 @@
                 }
                
             }	
+		}
+        public function select_category(){
+			$return = array();
+			
+			$q = "SELECT `at`.*
+					FROM `".PRODUCT_TYPE."` AS `at`
+                    WHERE `at`.`is_delete`='0'
+                    ORDER BY `at`.`id` ASC";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
 		}
         public function select_notes(){
 			$return = array();

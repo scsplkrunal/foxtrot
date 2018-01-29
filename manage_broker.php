@@ -62,6 +62,7 @@
     $charge_type_arr=$instance->select_charge_type();
     $get_broker = $instance->select();
     $select_docs = $instance->select_docs();
+    $product_category = $instance->select_category();
         //echo '<pre>';print_r($charge_type_arr);exit();
     
     if(isset($_POST['submit'])&& $_POST['submit']=='Save'){
@@ -303,7 +304,7 @@
         $edit_grid = $instance->edit_grid($id);
         $edit_override = $instance->edit_override($id);
         $edit_split =$instance->edit_split($id);
-        //echo '<pre>';print_r($edit_general);exit;
+        //echo '<pre>';print_r($edit_split);exit;//echo '<pre>';print_r($edit_override);exit;
         
         $_SESSION['last_insert_id']=$id;
         $fname = $instance->re_db_output($return['first_name']);
