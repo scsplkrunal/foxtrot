@@ -4,6 +4,9 @@ require_once(DIR_FS."islogin.php");
 $instance = new transaction();
 $get_trans_data = array();
 $batch_id = '';
+$get_logo = $instance->get_system_logo($_SESSION['user_id']);
+$system_logo = isset($get_logo['logo'])?$instance->re_db_input($get_logo['logo']):'';
+
 if(isset($_GET['batch_id']) && $_GET['batch_id'] != '')
 {
     $batch_id = $_GET['batch_id'];
@@ -25,7 +28,7 @@ $total_charges = 0;
     // add a page
     $pdf->AddPage('L');
     // Title
-    $img = '<img src="'.SITE_IMAGES.'sitelogo.png" height="60px" />';
+    $img = '<img src="'.SITE_URL."upload/logo/".$system_logo.'" height="60px" />';
     
     $pdf->SetFont('times','B',12);
     $pdf->SetFont('times','',10);
@@ -105,7 +108,7 @@ $total_charges = 0;
             $total_commission_received = ($total_commission_received+$trans_data['commission_received']);
             $total_charges = ($total_charges+$trans_data['charge_amount']);
         $html.='<tr>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$trans_data['id'].'</td>
+                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$trans_data['trade_number'].'</td>
                        <td style="font-size:13px;font-weight:normal;text-align:left;">'.$trans_data['broker_name'].'</td>
                        <td style="font-size:13px;font-weight:normal;text-align:left;">'.$trans_data['client_name'].'</td>
                        <td style="font-size:13px;font-weight:normal;text-align:left;">'.date('m-d-Y',strtotime($trans_data['trade_date'])).'</td>

@@ -222,13 +222,13 @@ class ofac_fincen extends db{
                 $fincen_phone = isset($val[0]['fincen_phone'])?$this->re_db_input($val[0]['fincen_phone']):'';
                 $fincen_keyno = isset($val[0]['fincen_keyno'])?$this->re_db_input($val[0]['fincen_keyno']):'';
                 $fincen_no_type = isset($val[0]['fincen_no_type'])?$this->re_db_input($val[0]['fincen_no_type']):'';
-                $fincen_dob = isset($val[0]['fincen_dob'])?$this->re_db_input($val[0]['fincen_dob']):'0000-00-00';
+                $fincen_dob = isset($val[0]['fincen_dob']) && $val[0]['fincen_dob'] != ''?$this->re_db_input(date('Y-m-d',strtotime($val[0]['fincen_dob']))):'0000-00-00';
                 $client_id = isset($val['id'])?$this->re_db_input($val['id']):0;
                 
                 
                 if($fincen_tracking_no>0)
                 {
-                $q = "INSERT INTO `".FINCEN_CHECK_DATA."` SET `fincen_scan_id`='".$last_inserted_id."',`fincen_tracking_no`='".$fincen_tracking_no."',`fincen_firstname`='".$fincen_firstname."',`fincen_miname`='".$fincen_miname."',`fincen_lastname`='".$fincen_lastname."',`fincen_address`='".$fincen_address."',`fincen_country`='".$fincen_country."',`fincen_phone`='".$fincen_phone."',`fincen_number`='".$fincen_keyno."',`fincen_number_type`='".$fincen_no_type."',`fincen_dob`='".date('Y-m-d',strtotime($fincen_dob))."',`client_id`='".$client_id."'".$this->insert_common_sql();
+                $q = "INSERT INTO `".FINCEN_CHECK_DATA."` SET `fincen_scan_id`='".$last_inserted_id."',`fincen_tracking_no`='".$fincen_tracking_no."',`fincen_firstname`='".$fincen_firstname."',`fincen_miname`='".$fincen_miname."',`fincen_lastname`='".$fincen_lastname."',`fincen_address`='".$fincen_address."',`fincen_country`='".$fincen_country."',`fincen_phone`='".$fincen_phone."',`fincen_number`='".$fincen_keyno."',`fincen_number_type`='".$fincen_no_type."',`fincen_dob`='".$fincen_dob."',`client_id`='".$client_id."'".$this->insert_common_sql();
     			$res = $this->re_db_query($q);
                 }
             }

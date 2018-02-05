@@ -4,6 +4,8 @@ require_once(DIR_FS."islogin.php");
 $instance = new ofac_fincen();
 $get_fincen_data = array();
 $get_fincen_main_data = array();
+$get_logo = $instance->get_system_logo($_SESSION['user_id']);
+$system_logo = isset($get_logo['logo'])?$instance->re_db_input($get_logo['logo']):'';
 
 $fincen_main_id = isset($_GET['id'])?$instance->re_db_input($_GET['id']):0;
 if($fincen_main_id >0)
@@ -32,13 +34,23 @@ $cl_last_name = '';
     // add a page
     $pdf->AddPage('L');
     // Title
-    $img = '<img src="'.SITE_IMAGES.'sitelogo.png" height="60px" />';
+    $img = '<img src="'.SITE_URL."upload/logo/".$system_logo.'" height="60px" />';
     
     $pdf->SetFont('times','B',12);
     $pdf->SetFont('times','',10);
     $html='<table border="0">
                 <tr>
                    <td width="100%" style="font-size:10px;font-weight:bold;text-align:left;">'.date('d/m/Y h:i:s A').'</td>
+                </tr>
+            </table>';
+    $pdf->writeHTML($html, false, 0, false, 0);
+    $pdf->Ln(5);
+    
+    $pdf->SetFont('times','B',12);
+    $pdf->SetFont('times','',10);
+    $html='<table border="0" width="100%">
+                <tr>
+                    <td align="center">'.$img.'</td>
                 </tr>
             </table>';
     $pdf->writeHTML($html, false, 0, false, 0);
@@ -219,6 +231,35 @@ $cl_last_name = '';
                     $cl_last_name = '';
                 }
                 
+                if($val['fincen_firstname'] != '')
+                { 
+                    $fincen_firstname = $val['fincen_firstname'];
+                }
+                else{ 
+                    $fincen_firstname = '';
+                }
+                if($val['fincen_miname'] != '')
+                { 
+                    $fincen_miname = '-'.$val['fincen_miname'];
+                }
+                else{ 
+                    $fincen_miname = '';
+                }
+                if($val['fincen_lastname'] != '')
+                { 
+                    $fincen_lastname = ','.$val['fincen_lastname'];
+                }
+                else{ 
+                    $fincen_lastname = '';
+                }
+                if($val['fincen_dob'] != '0000-00-00')
+                {
+                    $fincen_dob = date('m/d/Y',strtotime($val['fincen_dob']));
+                }
+                else
+                {
+                    $fincen_dob = '';
+                }
                 
             $html.='<tr>
                     <td style="width:40%">
@@ -236,7 +277,7 @@ $cl_last_name = '';
                                     <table border="0" cellpadding="5" width="100%">
                                         <tr>
                                             <td style="font-weight:normal;text-align:left;width:60%">
-                                                '.$val['fincen_firstname'].'-'.$val['fincen_miname'].','.$val['fincen_lastname'].'
+                                                '.$fincen_firstname.''.$fincen_miname.''.$fincen_lastname.'
                                             </td>
                                             <td style="font-weight:normal;text-align:center;width:40%">
                                                 '.$val['fincen_tracking_no'].'
@@ -263,7 +304,7 @@ $cl_last_name = '';
                                                 '.$val['fincen_country'].' '.$val['fincen_phone'].'
                                             </td>
                                             <td style="font-weight:normal;text-align:center;width:40%">
-                                                '.date('m/d/Y',strtotime($val['fincen_dob'])).'
+                                                ' .$fincen_dob.'
                                             </td>
                                         </tr>
                                     </table>

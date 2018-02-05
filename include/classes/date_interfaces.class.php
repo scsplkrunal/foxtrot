@@ -23,7 +23,7 @@
 			if($uname=='' && $dim_id<5){
 				$this->errors = 'Please enter username.';
 			}
-			else if($password=='' && $dim_id<5){
+			else if($password=='' && $dim_id<5 && $id == 0){
 			     $this->errors = 'Please enter password.';
 			}
 			if($this->errors!=''){
@@ -35,8 +35,13 @@
 			$res = $this->re_db_query($q);
 			$return = $this->re_db_num_rows($res);
 			if($return>0){
+			 
+                    $con = '';
+					if($password!=''){
+						$con .= " , `password`='".$this->encryptor($password)."' ";
+					}
 			        
-                    $q = "UPDATE `".$this->table."` SET `user_id`='".$user_id."',`dim_id`='".$dim_id."',`is_authorized_person`='".$is_authorized."',`user_name`='".$uname."',`password`='".md5($password)."',`exclude_non_comm_trade_activity`='".$trade_activity."',`add_client`='".$add_client."',`update_client`='".$update_client."',`local_folder`='".$local_folder."'".$this->update_common_sql()." WHERE `id`='".$id."'";
+                    $q = "UPDATE `".$this->table."` SET `user_id`='".$user_id."',`dim_id`='".$dim_id."',`is_authorized_person`='".$is_authorized."',`user_name`='".$uname."',`exclude_non_comm_trade_activity`='".$trade_activity."',`add_client`='".$add_client."',`update_client`='".$update_client."',`local_folder`='".$local_folder."' ".$con." ".$this->update_common_sql()." WHERE `id`='".$id."'";
                             
 					$res = $this->re_db_query($q);
                     $id = $this->re_db_insert_id();

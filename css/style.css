@@ -89,7 +89,7 @@ select::-ms-expand {
 }
 .userlogin {
 	float: right;
-	padding: 6px 0 0 35px;
+	padding: 6px 0 0 0px;
 }
 
 .userimg {

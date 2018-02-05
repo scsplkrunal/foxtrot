@@ -35,20 +35,23 @@
     <![endif]-->
 </head>
 <body>
-<?php require_once("include/config.php"); require_once("islogin.php"); ?>
+<?php 
+require_once("include/config.php"); 
+require_once("islogin.php"); 
+$instance_header = new header_class();
+?>
 <header>
 <div class="sectionwrapper">
   <div class="container">
     <div class="headertop">
       <div class="sitelogo"><a href="home.php" title="Foxtrot"><img src="images/sitelogo.png" alt="Foxtrot" /></a></div>
       <div class="headertopright">
-		<a href="#" class="userinfo"><i class="fa fa-info-circle"></i></a>
+		<a href="#" class="userinfo"><img src="images/Help-desk.png" alt="Chat/Help" title="Chat/Help" height="30" width="50" /></a>
+                
 		<div class="userlogin">
-			<div class="userimg"><img src="images/usericon.jpeg" alt="User Image" /></div>
 			<ul class="nav navbar-nav">
                  <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $_SESSION['user_name'];?>
-                    <i class="fa fa-angle-down"></i>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $_SESSION['user_name']." ";?>
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="sign-out.php">Logout</a></li>
@@ -56,6 +59,10 @@
                     </ul>
                  </li>              
              </ul>
+             <a href="<?php echo SITE_URL; ?>user_profile.php?action=edit&id=<?php echo $_SESSION['user_id'];?>" class="dropdown-toggle" >User Profile
+                    
+             <?php $user_header_image = $instance_header->get_user_image($_SESSION['user_id']); ?>
+             <div class="userimg"><img src="<?php echo SITE_URL."upload/".$user_header_image['image'];?>" height="30" width="50" /></div>
 		</div>
 	  </div>
     </div>
@@ -69,7 +76,7 @@
 			<ul class="nav navbar-nav">
 			  <li class="active menuhome"><a href="home.php"><i class="fa fa-home"></i></a></li>
 			  <?php  
-					$instance_header = new header_class();
+					
 					$menu = $instance_header->menu_select();
 					//echo '<pre>';print_r($menu);exit;
 			  ?>
@@ -168,3 +175,8 @@
   </div>
 </div>
 </header>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('input:text:visible:first', this).focus();
+});
+</script>

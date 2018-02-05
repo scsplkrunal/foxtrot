@@ -3,6 +3,9 @@ require_once("include/config.php");
 require_once(DIR_FS."islogin.php");
 $instance = new client_ress();
 $get_client_ress_data = array();
+$get_logo = $instance->get_system_logo($_SESSION['user_id']);
+$system_logo = isset($get_logo['logo'])?$instance->re_db_input($get_logo['logo']):'';
+//print_r($get_logo);exit;
 $from_broker = '';
 if(isset($_GET['from_broker']) && $_GET['from_broker'] != '')
 {
@@ -23,7 +26,7 @@ else
     // add a page
     $pdf->AddPage('L');
     // Title
-    $img = '<img src="'.SITE_IMAGES.'sitelogo.png" height="60px" />';
+    $img = '<img src="'.SITE_URL."upload/logo/".$system_logo.'" height="60px" />';
     
     $pdf->SetFont('times','B',12);
     $pdf->SetFont('times','',10);
@@ -97,11 +100,11 @@ else
             foreach($get_broker as $key=>$val){
                 if($val['id'] == $trans_data['broker_name'])
                 {
-                    $new_broker=$val['first_name'].$val['last_name'];
+                    $new_broker=$val['first_name'].' '.$val['last_name'];
                 }
                 if($val['id'] == $trans_data['broker_old_name'])
                 {
-                    $old_broker=$val['first_name'].$val['last_name'];
+                    $old_broker=$val['first_name'].' '.$val['last_name'];
                 }
             }
             

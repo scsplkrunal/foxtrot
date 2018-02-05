@@ -2,81 +2,97 @@
 <h1>System Configuration</h1> 
  <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
     <div class="col-lg-12 well">
+        <div class="panel">        
+        <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-pencil-square-o"></i> Add System Configuration</h3>
+		</div>
         <form class="form-validate-system" name="frm" method="POST" enctype="multipart/form-data">
+        <div class="panel-body">
             <div class="row">
-                <div class="col-sm-3 form-group">
-                    <label style="float: right;">Company Name:</label>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Company Name </label>
+                        <input type="text" class="form-control"  name="company_name" value="<?php echo $company_name; ?>" required="required" />
+                    </div>
                 </div>
-                <div class="col-sm-3 form-group">
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Address 1 </label>
+                        <input type="text" class="form-control" name="address1" value="<?php echo $address1; ?>" required="required" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Address 2 </label>
+                        <input type="text" class="form-control" name="address2" value="<?php echo $address2 ;?>"  required="required"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>City </label>
+                        <input type="text" class="form-control" name="city" value="<?php echo $city; ?>" required="required"/>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>State </label>
+                        <select name="state" id="state" class="form-control">
+                            <option value="">Select State</option>
+                            <?php foreach($get_state as $key=>$val){ ?>
+                            <option value="<?php echo $val['id'];?>" <?php if($state != '' && $state==$val['id']){echo "selected='selected'";} ?>><?php echo $val['name'];?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Zip code </label>
+                        <input type="text" class="form-control" name="zip" value="<?php echo $zip; ?>" required="required" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Minimum Check Amount </label>
+                        <input type="text" class="currency form-control" required="required" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' value="<?php echo $minimum_check_amount;?>" maxlength="8"  name="minimum_check_amount"  />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group"> 
+                        <label>FINRA Assessment </label>
+                        <input type="number" value="<?php echo $finra;?>" required="required" min="0" max=" 9.99999999" class="form-control" name="finra" id="finra"  />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>SIPC Assessment </label>
+                        <input type="number" value="<?php echo $sipc;?>"  required="required" min="0" max=" 9.99999999" class="form-control" name="sipc"  />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Logo </label>
+                        <input type="file" class="form-control" name="logo" value="<?php echo $logo;?>" onchange="readURL(this);" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label> <img src="<?php echo SITE_URL."upload/logo/"."thumb_".$logo;?>" id="logo_img" class="img img-thumbnail img-lg" height="100" width="100"/></label>
+                    </div>
+				</div>
                 
-                    <input type="text" class="form-control"  name="company_name" value="<?php echo $company_name; ?>" required="required" />
-                </div>
-                <div class="col-sm-3 form-group">
-                    <label style="float: right;">Address 1:</label>
-                </div>
-                <div class="col-sm-3 form-group">
-                    <input type="text" class="form-control" name="address1" value="<?php echo $address1; ?>" required="required" />
-                </div>
-            </div>
+            </div><br />
             <div class="row">
-                <div class="col-sm-3 form-group">
-                    <label style="float: right;">Address 2:</label>
-                </div>
-                <div class="col-sm-3 form-group">
-                    <input type="text" class="form-control" name="address2" value="<?php echo $address2 ;?>"  required="required"/>
-                </div>
-                <div class="col-sm-3 form-group">
-                    <label style="float: right;">City:</label>
-                </div>
-                <div class="col-sm-3 form-group">
-                    <input type="text" class="form-control" name="city" value="<?php echo $city; ?>" required="required"/>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-3 form-group">
-                    <label style="float: right;">State:</label>
-                </div>
-                <div class="col-sm-3 form-group">
-                    <input type="text" class="form-control" name="state" value="<?php echo $state; ?>" required="required"/>
-                </div>
-                <div class="col-sm-3 form-group">
-                    <label style="float: right;">Zip code:</label>
-                </div>
-                <div class="col-sm-3 form-group">
-                    <input type="text" class="form-control" name="zip" value="<?php echo $zip; ?>" required="required" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-3 form-group">
-                    <label style="float: right;">Minimum Check Amount :</label>
-                </div>
-                <div class="col-sm-3 form-group">
-                    <input type="text" class="currency form-control" required="required" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' value="<?php echo $minimum_check_amount;?>" maxlength="8"  name="minimum_check_amount"  />
-                </div>
-                <div class="col-sm-3 form-group">
-                    <label style="float: right;">FINRA Assessment:</label>
-                </div>
-                <div class="col-sm-3 form-group">
-                    <input type="text" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 ' value="<?php echo $finra;?>" required="required"  class="currency1 form-control" name="finra"  />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-3 form-group">
-                    <label style="float: right;">SIPC Assessment:</label>
-                </div>
-                <div class="col-sm-3 form-group">
-                    <input type="text" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 ' value="<?php echo $sipc;?>"  required="required"  class="currency1 form-control" name="sipc"  />
-                </div>
-                <div class="col-sm-3 form-group">
-                    <label style="float: right;">Logo:</label>
-                </div>
-                <div class="col-sm-3 form-group">
-                    <input type="file" class="form-control" name="logo"  />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-1"></div>
-                <div class="col-sm-11">
+                <div class="col-md-12">
                     <div class="form-group">
                         <input type="checkbox" class="checkbox" name="brocker_pick_lists" value="1" style="display: inline;" <?php if($brocker_pick_lists==1){?>checked="true"<?php } ?> id="brocker_pick_lists" />&nbsp;
                         <label>Display Terminated Brokers on Pick-Lists</label>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -89,6 +105,7 @@
                     </div>
                 </div>
             </div>
+            </div>
             <div class="panel-footer">
                 <div class="selectwrap">
 					<input type="submit" name="submit" class="btn btn-warning btn-lg btn3d " value="Save"/>
@@ -97,9 +114,27 @@
                 </div>
             </div>
         </form>
+        </div>
     </div>
 </div>
 <script type="text/javascript">
+function round(feerate)
+{
+    if(feerate>100)
+    {
+        var rounded = 99.9;
+    }
+    else
+    {
+        var round = Math.round( feerate * 10 ) / 10;
+        var rounded = round.toFixed(8);
+    }
+    document.getElementById("finra").value = rounded;
+    
+}/*
+$( function() {
+        $('.currency1').currencyFormat1();
+    });
 (function($) {
         $.fn.currencyFormat = function() {
             this.each( function( i ) {
@@ -132,7 +167,7 @@
   
     $( function() {
         $('.currency1').currencyFormat1();
-    });
+    }); */    
 var waitingDialog = waitingDialog || (function ($) {
     'use strict';
 
@@ -192,4 +227,18 @@ var waitingDialog = waitingDialog || (function ($) {
 	};
 
 })(jQuery);
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#logo_img')
+                .attr('src', e.target.result)
+                .width(150)
+                .height(200);
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
 </script>

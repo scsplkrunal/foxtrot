@@ -2,7 +2,7 @@
 	class import extends db{
 		
 		public $errors = '';
-        public $table = '';
+        public $table = IMPORT_CURRENT_FILES;
         /**
 		 * @param post array
 		 * @return true if success, error message if any errors
@@ -45,11 +45,11 @@
 			if($id>0){
 				$con = " AND `id`!='".$id."'";
 			}
-			$q = "SELECT * FROM `".IMPORT_FTP_MASTER."` WHERE `is_delete`='0' AND `host_name`='".$host_name."' ".$con;
+			$q = "SELECT * FROM `".IMPORT_FTP_MASTER."` WHERE `is_delete`='0' AND `user_name`='".$user_name."' ".$con;
 			$res = $this->re_db_query($q);
 			$return = $this->re_db_num_rows($res);
 			if($return>0){
-				$this->errors = 'This host is already exists.';
+				$this->errors = 'This user is already exists.';
 			}
 			
 			if($this->errors!=''){
@@ -73,7 +73,7 @@
 				else if($id>0){
 				    $con = '';
 					if($password!=''){
-						$con .= " , `password`='".md5($password)."' ";
+						$con .= " , `password`='".$this->encryptor($password)."' ";
 					}
                         
 				    $q = "UPDATE `".IMPORT_FTP_MASTER."` SET `host_name`='".$host_name."',`user_name`='".$user_name."',`folder_location`='".$folder_location."',`status`='".$status."' ".$con." ".$this->update_common_sql()." WHERE `id`='".$id."'";
@@ -110,6 +110,24 @@
     			     array_push($return,$row);
                      
     			}
+            }
+			return $return;
+		}
+        
+        public function select_ftp_user($id=''){
+			$return = array();
+			
+            if($id !='')
+            {
+    			$q = "SELECT `at`.*
+    					FROM `".IMPORT_FTP_MASTER."` AS `at`
+                        WHERE `at`.`is_delete`='0' and `at`.`id`='".$id."'
+                        ORDER BY `at`.`id` ASC";
+    			$res = $this->re_db_query($q);
+                if($this->re_db_num_rows($res)>0){
+                  
+                    $return = $this->re_db_fetch_array($res);
+                }
             }
 			return $return;
 		}
@@ -167,74 +185,102 @@
 			}
 		}
         public function insert_update_files($data){
+            $all_files = $id = isset($_FILES['files'])?$_FILES['files']:array();
             
-            $dir    = DIR_FS."idcfile/";
-            $file_list = scandir($dir);
+            if(isset($all_files['name'][0]) && $all_files['name'][0] == ''){
+				$this->errors = 'Please select files.';
+			}
+            if($this->errors!=''){
+				return $this->errors;
+			}
+            else{
             
-            foreach($file_list as $file_key=>$file_val)
-            {
-                if($file_key > 2)
+                $files_array = $this->reArrayFiles($all_files);
+                
+                foreach($files_array as $file_key=>$file_val)
                 {
-    			
-                $valid_file = array('zip');
-                $file_name = $file_val;
-                $path= $dir.$file_val;
-                
-                $file_import = '';  
-                $ext_filename = '';
-                
-                $ext = strtolower(end(explode('.',$file_name)));
-                
-                if($file_name!='')
-                {
-                    if(!in_array($ext,$valid_file))
+                    $valid_file = array('zip');
+                    $dir = $file_val['tmp_name'];
+                    $file_name = $file_val['name'];
+                    $path= $dir;
+                    
+                    $file_import = '';  
+                    $ext_filename = '';
+                    
+                    $ext = strtolower(end(explode('.',$file_name)));
+                    
+                    if($file_name!='')
                     {
-                        $this->errors = 'Please select valid file.';
+                        if(!in_array($ext,$valid_file))
+                        {
+                            $this->errors = 'Please select valid file.';
+                        }
+                        else
+                        {
+                              $zip = new ZipArchive;
+                              $res = $zip->open($path);
+                              
+                              if ($res === TRUE) {
+                                for ($i = 0; $i < $zip->numFiles; $i++) {
+                                     
+                                     $ext_filename = $zip->getNameIndex($i);
+                                     
+                                 }
+                                 $zip->extractTo(DIR_FS."extract_files/");
+                                 $zip->close();
+                              } 
+                        }
                     }
+                    if($this->errors!=''){
+        				return $this->errors;
+        			}
                     else
                     {
-                          $zip = new ZipArchive;
-                          $res = $zip->open($path);
-                          
-                          if ($res === TRUE) {
-                            for ($i = 0; $i < $zip->numFiles; $i++) {
-                                 
-                                 $ext_filename = $zip->getNameIndex($i);
-                                 
-                             }
-                             $zip->extractTo(DIR_FS."extract_files/");
-                             $zip->close();
-                          } 
+                        $already_file_array = $this->check_current_files();
+                        if(!in_array($ext_filename,$already_file_array))
+                        {
+                            $file_type_array = array('01'=>'Distribution','02'=>'Direct Financial Activity','03'=>'Account Position','07'=>'Non-Financial Activity','08'=>'New Account Activity','09'=>'Account Master Position','17'=>'Price Refresher','84'=>'Cost Basis Account Position','85'=>'Cost Basis Account Activity','86'=>'Cost Basis Tax Lot Position','87'=>'Cost Basis Tax Lot Activity');
+                            $file_name_array = explode('.',$ext_filename);
+                            $file_type_checkkey = substr($file_name_array[0], -2);
+                            if (array_key_exists($file_type_checkkey, $file_type_array)) 
+                            {
+                                $q = "INSERT INTO `".IMPORT_CURRENT_FILES."` SET `imported_date`='".date('Y-m-d')."',`last_processed_date`='',`file_name`='".$ext_filename."',`file_type`='".$file_type_array[$file_type_checkkey]."',`batch`=''".$this->insert_common_sql();
+                    			$res = $this->re_db_query($q);
+                                $id = $this->re_db_insert_id();
+                            }
+                        }
+            			
                     }
+                    
                 }
-                if($this->errors!=''){
-    				return $this->errors;
+                if($res){
+    			    $_SESSION['success'] = INSERT_MESSAGE;
+    				return true;
     			}
-                else
-                {
-                    $q = "INSERT INTO `".IMPORT_CURRENT_FILES."` SET `imported_date`='".date('Y-m-d')."',`last_processed_date`='',`file_name`='".$ext_filename."',`file_type`='-',`batch`=''".$this->insert_common_sql();
-        			$res = $this->re_db_query($q);
-                    $id = $this->re_db_insert_id();
-        			
-                }
-                }
+    			else{
+    				$_SESSION['warning'] = UNKWON_ERROR;
+    				return false;
+    			}
             }
-            if($res){
-			    $_SESSION['success'] = INSERT_MESSAGE;
-				return true;
-			}
-			else{
-				$_SESSION['warning'] = UNKWON_ERROR;
-				return false;
-			}
 		}
-        public function select_current_files(){
+        public function reArrayFiles($file_post) {
+           $file_ary = array();
+           $file_count = count($file_post['name']);
+           $file_keys = array_keys($file_post);
+           for ($i=0; $i<$file_count; $i++) {
+               foreach ($file_keys as $key) {
+                   $file_ary[$i][$key] = $file_post[$key][$i];
+               }
+           }
+           return $file_ary;
+       }
+       public function select_current_files(){
 			$return = array();
 			
 			$q = "SELECT `at`.*
 					FROM `".IMPORT_CURRENT_FILES."` AS `at`
                     WHERE `at`.`is_delete`='0'
-                    ORDER BY `at`.`id` ASC";
+                    ORDER BY `at`.`imported_date` DESC";
 			$res = $this->re_db_query($q);
             if($this->re_db_num_rows($res)>0){
                 $a = 0;
@@ -244,6 +290,41 @@
     			}
             }
 			return $return;
+		}
+        public function check_current_files(){
+			$return = array();
+			
+			$q = "SELECT `at`.`file_name`
+					FROM `".IMPORT_CURRENT_FILES."` AS `at`
+                    WHERE `at`.`is_delete`='0'
+                    ORDER BY `at`.`id` ASC";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     $return[] = $row['file_name'];
+                }
+            }
+			return $return;
+		}
+        public function delete_current_files($id){
+			$id = trim($this->re_db_input($id));
+			if($id>0){
+				$q = "UPDATE `".$this->table."` SET `is_delete`='1' WHERE `id`='".$id."'";
+				$res = $this->re_db_query($q);
+				if($res){
+				    $_SESSION['success'] = DELETE_MESSAGE;
+					return true;
+				}
+				else{
+				    $_SESSION['warning'] = UNKWON_ERROR;
+					return false;
+				}
+			}
+			else{
+			     $_SESSION['warning'] = UNKWON_ERROR;
+				return false;
+			}
 		}
         
         

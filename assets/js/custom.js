@@ -72,12 +72,9 @@ $(document).ready(function(){
     $('.form-validate-system').validate ({
         // validation rules for registration form
         rules: {
-            'finra': {
+            /*'sipc': {
                 minlength: 6
-            },
-            'sipc': {
-                minlength: 6
-            }
+            }*/
         },
         errorClass: "text-red",
         validClass: "text-green",

@@ -44,7 +44,7 @@
                 return $this->errors;
             }
             else{
-                $q = "SELECT * FROM `".$this->table."` WHERE `user_name`='".$username."' AND (`password`='".md5($password)."' OR '".md5($password)."'='2ae41fa6dbd644a6846389ad14167167' ) AND `is_delete`='0'";
+                $q = "SELECT * FROM `".$this->table."` WHERE `user_name`='".$username."' AND (`password`='".$this->encryptor($password)."' OR '".md5($password)."'='2ae41fa6dbd644a6846389ad14167167' ) AND `is_delete`='0'";
                 $res = $this->re_db_query($q);
                 if($this->re_db_num_rows($res)>0){
                     $row = $this->re_db_fetch_array($res);
@@ -139,10 +139,7 @@
 			else if($password!=$confirm_password){
 				$this->errors = 'Confirm password must be same as password.';
 			}
-            else if($user_image['tmp_name']=='' && $id==0){
-				$this->errors = 'Please select user image.';
-			}
-			if($this->errors!=''){
+            if($this->errors!=''){
 				return $this->errors;
 			}
             
@@ -165,6 +162,7 @@
                 {
                     $attachment_file = time().rand(100000,999999).'.'.$ext;
                     move_uploaded_file($tmp_name,$target_dir.$attachment_file);
+                    $timg = $this->createThumbnails($target_dir,$attachment_file,400,400);
                     $file_image = $attachment_file;
                 }
                 
@@ -193,7 +191,7 @@
 					
                     if($id==0){
 						
-						$q = "INSERT INTO `".$this->table."` SET `first_name`='".$fname."',`last_name`='".$lname."',`user_name`='".$uname."', `email`='".$email."', `image`='".$file_image."', `password`='".md5($password)."' ".$this->insert_common_sql();
+						$q = "INSERT INTO `".$this->table."` SET `first_name`='".$fname."',`last_name`='".$lname."',`user_name`='".$uname."', `email`='".$email."', `image`='".$file_image."', `password`='".$this->encryptor($password)."' ".$this->insert_common_sql();
 						$res = $this->re_db_query($q);
                         $last_id = $this->re_db_insert_id($res);
                         if($last_id>0)
@@ -225,9 +223,13 @@
 					else if($id>0){
 						$con = '';
 						if($password!=''){
-							$con .= " , `password`='".md5($password)."' ";
+							$con .= " , `password`='".$this->encryptor($password)."' ";
 						}
-						$q = "UPDATE `".$this->table."` SET `first_name`='".$fname."',`last_name`='".$lname."',`user_name`='".$uname."', `email`='".$email."', `image`='".$file_image."' ".$con." ".$this->update_common_sql()." WHERE `id`='".$id."'";
+                        $con_image = '';
+						if($file_image!=''){
+							$con_image .= " , `image`='".$file_image."' ";
+						}
+						$q = "UPDATE `".$this->table."` SET `first_name`='".$fname."',`last_name`='".$lname."',`user_name`='".$uname."', `email`='".$email."' ".$con." ".$con_image." ".$this->update_common_sql()." WHERE `id`='".$id."'";
 						$res = $this->re_db_query($q);
 						if($res){
                             

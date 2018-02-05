@@ -27,7 +27,7 @@
     							</div>		
     							<div class="col-md-6 form-group">
     								<label>Password</label>
-    								<input type="password" name="password" class="form-control" value=""/>
+    								<input type="text" name="password" class="form-control" value="<?php echo $instance->decryptor($password); ?>"/>
     							</div>	
                             </div>
                             <div class="row"> 
@@ -87,7 +87,7 @@
     							</div>		
     							<div class="col-md-6 form-group">
     								<label>Password</label>
-    								<input type="password" name="password" class="form-control" />
+    								<input type="text" name="password" class="form-control" value="<?php echo $instance->decryptor($password); ?>" />
     							</div>	
                             </div>
                             <div class="row"> 
@@ -147,7 +147,7 @@
     							</div>		
     							<div class="col-md-6 form-group">
     								<label>Password</label>
-    								<input type="password" name="password" class="form-control" />
+    								<input type="text" name="password" class="form-control" value="<?php echo $instance->decryptor($password); ?>" />
     							</div>	
                             </div>
                             <div class="row"> 
@@ -207,7 +207,7 @@
     							</div>		
     							<div class="col-md-6 form-group">
     								<label>Password</label>
-    								<input type="password" name="password" class="form-control" />
+    								<input type="text" name="password" class="form-control" value="<?php echo $instance->decryptor($password); ?>" />
     							</div>	
                             </div>
                             <div class="row"> 

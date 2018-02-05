@@ -6,7 +6,7 @@
     $id = isset($_GET['id'])&&$_GET['id']!=''?$dbins->re_db_input($_GET['id']):0;
     $instance = new ofac_fincen();
     //$report = $instance->select_fincen_scan_report();
-    if(isset($_POST['import'])&& $_POST['import']=='OFAC System Scan'){
+    if(isset($_POST['import'])&& $_POST['import']=='OFAC Scan'){
     
         $filename=$_FILES["file"]["tmp_name"];	
         $array = array();
@@ -56,7 +56,7 @@
             fclose($file);	
     	 }
     }
-    else if(isset($_POST['import_fincen'])&& $_POST['import_fincen']=='FINCEN System Scan'){
+    else if(isset($_POST['import_fincen'])&& $_POST['import_fincen']=='FINCEN Scan'){
         
         $filename=$_FILES["file_fincen"]["tmp_name"];	
         $array = array();

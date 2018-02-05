@@ -4,7 +4,7 @@
     $instance = new client_ress();
     $get_broker =$instance->select_broker();
     
-    if(isset($_POST['submit'])&& $_POST['submit']=='Save'){ 
+    if(isset($_POST['submit'])&& $_POST['submit']=='Proceed'){ 
         //echo '<pre>';print_r($_POST);exit();
         $from_broker = isset($_POST['from_broker'])?$instance->re_db_input($_POST['from_broker']):0;
         $to_broker= isset($_POST['to_broker'])?$instance->re_db_input($_POST['to_broker']):'';

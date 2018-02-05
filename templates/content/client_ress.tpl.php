@@ -1,7 +1,7 @@
 <div class="container">
 <h1>Client Reassignment</h1>
     <div class="col-md-12 well">
-        <form method="POST" id="client_ress_form" target="_blank">
+        <form method="POST" id="client_ress_form">
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
@@ -41,7 +41,7 @@
         <div class="panel-footer">
             <div class="selectwrap">
 				<div class="selectwrap">
-					<input type="submit" name="submit"  value="Save"/>	
+					<input type="submit" name="submit"  value="Proceed"/>	
                     <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
                 </div>
             </div>
@@ -50,11 +50,17 @@
         	<div class="modal-dialog modal-lg">
         		<!-- Modal content-->
         		<div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><i class="pci-cross pci-circle"></i></button>
-                        <h4 class="modal-title">Client Reassignment List</h4>
-                    </div>
+                    <div class="modal-header" style="margin-bottom: 0px !important;">
+            			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+            			<h4 class="modal-title">Client Reassignment List</h4>
+            		</div>
+                    
         			<div class="modal-body" id="output_screen_content">Loading...</div>
+                    <div class="modal-footer" style="margin-bottom: 0px !important;">
+            			<a href="<?php echo SITE_URL;?>client_ress_report.php?open=output_print&from_broker=<?php if(isset($_GET['from_broker']) && $_GET['from_broker']){ echo $_GET['from_broker']; }else{ echo '0';}?> " class="btn btn-warning">Output to Printer</a>
+                        <a href="<?php echo SITE_URL;?>client_ress_report.php?from_broker=<?php if(isset($_GET['from_broker']) && $_GET['from_broker']){ echo $_GET['from_broker']; }else{ echo '0';}?> " class="btn btn-warning">Output to PDF</a>
+            			
+            		</div>
         		</div>
         	</div>
         </div>

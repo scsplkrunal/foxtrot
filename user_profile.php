@@ -7,6 +7,7 @@
     $lname = '';
     $email = '';
     $uname = '';
+    $password = '';
     $user_image = array();
     $menu = array();
     $menu_rights = array();
@@ -23,6 +24,7 @@
         $lname = isset($_POST['lname'])?$instance->re_db_input($_POST['lname']):'';
         $email = isset($_POST['email'])?$instance->re_db_input($_POST['email']):'';
         $uname = isset($_POST['uname'])?$instance->re_db_input($_POST['uname']):'';
+        $password = isset($_POST['password'])?$instance->re_db_input($_POST['password']):'';
         $user_image = isset($_POST['file_image'])?$_POST['file_image']:array();
         $menu_rights = isset($_POST['check_sub'])?$_POST['check_sub']:array();
         
@@ -43,6 +45,7 @@
         $lname = isset($return['last_name'])?$instance->re_db_output($return['last_name']):'';
         $email = isset($return['email'])?$instance->re_db_output($return['email']):'';
         $uname = isset($return['user_name'])?$instance->re_db_output($return['user_name']):'';
+        $password = isset($return['password'])?$instance->re_db_input($return['password']):'';
         $user_image = isset($return['image'])?$instance->re_db_output($return['image']):'';
         $menu_link_id = $instance->edit_menu_rights($id);
         foreach($menu_link_id as $key=>$data)

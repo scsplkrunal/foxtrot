@@ -3,23 +3,25 @@
 <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
     <div class="col-lg-12 well">
         <ul class="nav nav-pills nav-stacked col-md-2">
-          <li class="<?php if(!isset($_GET['tab'])){echo "active";}else{ echo '';} ?>"><a href="#tab_a" data-toggle="pill">Connect &amp; Download OFAC</a></li>
-          <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="tab_b"){ echo "active"; } ?>"><a href="#tab_b" data-toggle="pill">OFAC Complete System Scan</a></li>
-          <li><a href="#tab_c" data-toggle="pill">Connect &amp; Download FINCEN</a></li>
-          <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="tab_d"){ echo "active"; } ?>"><a href="#tab_d" data-toggle="pill">FINCEN Complete System Scan</a></li>
+          <!--<li class="<?php if(!isset($_GET['tab'])){echo "active";}else{ echo '';} ?>"><a href="#tab_a" data-toggle="pill">Connect &amp; Download OFAC</a></li>-->
+          <li class="<?php if(isset($_GET['tab']) && $_GET['tab']=="tab_b" || !isset($_GET['tab'])){ echo "active"; } ?>"><a href="#tab_b" data-toggle="pill">OFAC Download and Scan</a></li>
+          <!--<li><a href="#tab_c" data-toggle="pill">Connect &amp; Download FINCEN</a></li>-->
+          <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="tab_d"){ echo "active"; } ?>"><a href="#tab_d" data-toggle="pill">FINCEN Download and Scan</a></li>
         </ul>
         <div class="tab-content col-md-10">
-                <div class="tab-pane <?php if(!isset($_GET['tab'])){echo "active";}else{ echo '';}?>" id="tab_a">
+                <!--<div class="tab-pane <?php if(!isset($_GET['tab'])){echo "active";}else{ echo '';}?>" id="tab_a">
                         <div class="selectwrap"><center>
                 					<input type="button" name="connect" class="btn btn-warning btn-lg btn3d" onclick="openNewTab1();" value="Connect And Download" />
                         </div>
-                </div>
-                <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="tab_b"){ echo "active"; } ?>" id="tab_b">
+                </div>-->
+                <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="tab_b" || !isset($_GET['tab'])){ echo "active"; } ?>" id="tab_b">
                     <div class="selectwrap">
                         <div class="row">
                             <form method="post" enctype="multipart/form-data">
-                                <center><input type="file" name="file" accept=".csv" class="btn btn-warning btn-lg btn3d" style="display: inline;"/>
-            					<input type="submit" name="import" class="btn btn-warning btn-lg btn3d" value="OFAC System Scan"/></center>
+                                <center>
+                                <input type="button" name="connect" class="btn btn-warning btn-lg btn3d" onclick="openNewTab1();" value="Connect And Download" />
+                                <input type="file" name="file" accept=".csv" class="btn btn-warning btn-lg btn3d" style="display: inline;"/>
+            					<input type="submit" name="import" class="btn btn-warning btn-lg btn3d" value="OFAC Scan"/></center>
                             </form>
                         </div>
                     </div>
@@ -64,20 +66,22 @@
                 		</div>
                 	</div>
                 </div>
-                <div class="tab-pane " id="tab_c">
+                <!--<div class="tab-pane " id="tab_c">
                     <div class="selectwrap">
                         <div class="row"><center>
             					<input type="button" name="connect" class="btn btn-warning btn-lg btn3d" onclick="openNewTab2();" value="Connect And Download"/>	
                         </div>
                     </div>
-                </div>
+                </div>-->
                 <div class="tab-pane  <?php if(isset($_GET['tab'])&&$_GET['tab']=="tab_d"){ echo "active"; } ?>" id="tab_d">
                     <div class="selectwrap">
                         <div class="selectwrap">
                             <div class="row">
                                 <form method="post" enctype="multipart/form-data">
-                                    <center><input type="file" name="file_fincen" accept=".csv" class="btn btn-warning btn-lg btn3d" style="display: inline;"/>
-                					<input type="submit" name="import_fincen" class="btn btn-warning btn-lg btn3d" value="FINCEN System Scan"/></center>
+                                    <center>
+                                    <input type="button" name="connect" class="btn btn-warning btn-lg btn3d" onclick="openNewTab2();" value="Connect And Download"/>
+                                    <input type="file" name="file_fincen" accept=".csv" class="btn btn-warning btn-lg btn3d" style="display: inline;"/>
+                					<input type="submit" name="import_fincen" class="btn btn-warning btn-lg btn3d" value="FINCEN Scan"/></center>
                                 </form>
                             </div>
                         </div>

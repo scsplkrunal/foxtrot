@@ -1971,6 +1971,11 @@ function add_allobjectives()
 }*/
 
 </script>
+<script type="text/javascript">
+$(document).ready(function() {
+    document.getElementById("fname").focus();
+});
+</script>
 <script>
 function round(feerate)
 {

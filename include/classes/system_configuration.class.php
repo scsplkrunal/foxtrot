@@ -23,83 +23,82 @@
             $brocker_pick_lists = isset($data['brocker_pick_lists'])?$this->re_db_input($data['brocker_pick_lists']):'';
             $branch_pick_lists = isset($data['branch_pick_lists'])?$this->re_db_input($data['branch_pick_lists']):'';
             $brocker_statement = isset($data['brocker_statement'])?$this->re_db_input($data['brocker_statement']):'';
+            $logo= isset($_FILES['logo'])?$_FILES['logo']:array();
+            $valid_file = array('jpg','jpeg','png','bmp');
             
-            /*if($brocker_pick_lists=='on')
-            {
-                $brocker_pick_lists=1;
-            }
-            else
-            {
-                $brocker_pick_lists=0;
-            }
-            if($branch_pick_lists=='on')
-            {
-                $branch_pick_lists=1;
-            }
-            else
-            {
-                $branch_pick_lists=0;
-            }
-            if($brocker_statement=='on')
-            {
-                $brocker_statement=1;
-            }
-            else
-            {
-                $brocker_statement=0;
-            }*/
+            $file_image = '';  
             
-            /*$logo=isset($data['logo'])?$this->re_db_input($data['logo']):'';
-            
-            $file_ext=strtolower(end(explode('.',$_FILES['logo']['name'])));
-            $expensions= array("jpeg","jpg","png");
+            $file_name = isset($logo['name'])?$logo['name']:'';
+            $tmp_name = isset($logo['tmp_name'])?$logo['tmp_name']:'';
+            $error = isset($logo['error'])?$logo['error']:0;
+            $size = isset($logo['size'])?$logo['size']:'';
+            $type = isset($logo['type'])?$logo['type']:'';
+            $target_dir = DIR_FS."upload/logo/";
+            $ext = strtolower(end(explode('.',$file_name)));
+            if($file_name!='')
+            {
+                if(!in_array($ext,$valid_file))
+                {
+                    $this->errors = 'Please select valid file.';
+                }
+                else
+                {
+                    $attachment_file = time().rand(100000,999999).'.'.$ext;
+                    move_uploaded_file($tmp_name,$target_dir.$attachment_file);
+                    $timg = $this->createThumbnails($target_dir,$attachment_file,400,400);
+                    $file_image = $attachment_file;
+                }
                 
-                if(in_array($file_ext,$expensions)=== false){
-                    $this->$errors +="extension not allowed, please choose a JPEG or PNG file.";
-                }*/
-            //$ = isset($data[''])?$this->re_db_input($data['']):'';
-            
-		/* check duplicate record */
-			
-			$q = "SELECT * FROM `".$this->table."` WHERE `is_delete`='0' AND `user_id`='".$user_id."'";
-			$res = $this->re_db_query($q);
-			$return = $this->re_db_num_rows($res);
-			if($return>0){
-			        
-                    $q = "UPDATE `".$this->table."` SET `company_name`='".$company_name."',`address1`='".$address1."',`address2`='".$address2."',`city`='".$city."',
-                            `state`='".$state."',`zip`='".$zip."',`minimum_check_amount`='".$minimum_check_amount."',`finra`='".$finra."',`sipc`='".$sipc."',`brocker_pick_lists`='".$brocker_pick_lists."',
-                            `branch_pick_lists`='".$branch_pick_lists."',`brocker_statement`='".$brocker_statement."' ".$this->update_common_sql()." where `user_id`='".$user_id."'";
-                            
-					$res = $this->re_db_query($q);
-                    $id = $this->re_db_insert_id();
-					if($res){
-					    $_SESSION['success'] = UPDATE_MESSAGE;
-						return true;
-					}
-					else{
-						$_SESSION['warning'] = UNKWON_ERROR;
-						return false;
-					}
+            }
+            if($this->errors!=''){
+				return $this->errors;
 			}
-			else{
-			        $q = "INSERT INTO `".$this->table."` SET `user_id`='".$user_id."',`company_name`='".$company_name."',`address1`='".$address1."',`address2`='".$address2."',`city`='".$city."',
-                            `state`='".$state."',`zip`='".$zip."',`minimum_check_amount`='".$minimum_check_amount."',`finra`='".$finra."',`sipc`='".$sipc."',`brocker_pick_lists`='".$brocker_pick_lists."',
-                            `branch_pick_lists`='".$branch_pick_lists."',`brocker_statement`='".$brocker_statement."' ".$this->insert_common_sql();
-					$res = $this->re_db_query($q);
-                    $id = $this->re_db_insert_id();
-					if($res){
-					    $_SESSION['success'] = INSERT_MESSAGE;
-						return true;
-					}
-					else{
-						$_SESSION['warning'] = UNKWON_ERROR;
-						return false;
-					}
-			 
-			}
-			
-		}
-        
+            else
+            {
+                
+                $q = "SELECT * FROM `".$this->table."` WHERE `is_delete`='0' AND `user_id`='".$user_id."'";
+    			$res = $this->re_db_query($q);
+    			$return = $this->re_db_num_rows($res);
+    			if($return>0){
+                        $con = '';
+						if($file_image!=''){
+							$con .= " , `logo`='".$file_image."' ";
+						}
+    			        
+                        $q = "UPDATE `".$this->table."` SET `company_name`='".$company_name."',`address1`='".$address1."',`address2`='".$address2."',`city`='".$city."',
+                                `state`='".$state."',`zip`='".$zip."',`minimum_check_amount`='".$minimum_check_amount."',`finra`='".$finra."',`sipc`='".$sipc."',`brocker_pick_lists`='".$brocker_pick_lists."',
+                                `branch_pick_lists`='".$branch_pick_lists."',`brocker_statement`='".$brocker_statement."' ".$con." ".$this->update_common_sql()." where `user_id`='".$user_id."'";
+                                
+    					$res = $this->re_db_query($q);
+                        $id = $this->re_db_insert_id();
+    					if($res){
+    					    $_SESSION['success'] = UPDATE_MESSAGE;
+    						return true;
+    					}
+    					else{
+    						$_SESSION['warning'] = UNKWON_ERROR;
+    						return false;
+    					}
+    			}
+    			else{
+    			        $q = "INSERT INTO `".$this->table."` SET `user_id`='".$user_id."',`company_name`='".$company_name."',`address1`='".$address1."',`address2`='".$address2."',`city`='".$city."',
+                                `state`='".$state."',`zip`='".$zip."',`minimum_check_amount`='".$minimum_check_amount."',`finra`='".$finra."',`sipc`='".$sipc."',`brocker_pick_lists`='".$brocker_pick_lists."',
+                                `branch_pick_lists`='".$branch_pick_lists."',`brocker_statement`='".$brocker_statement."',`logo`='".$file_image."' ".$this->insert_common_sql();
+    					$res = $this->re_db_query($q);
+                        $id = $this->re_db_insert_id();
+    					if($res){
+    					    $_SESSION['success'] = INSERT_MESSAGE;
+    						return true;
+    					}
+    					else{
+    						$_SESSION['warning'] = UNKWON_ERROR;
+    						return false;
+    					}
+    			 
+    			}
+    			
+    		}
+        }
         /**
 		 * @param int status, default all
 		 * @return array of record if success, error message if any errors
@@ -121,7 +120,23 @@
             }
 			return $return;
 		}
-        
+        public function select_state(){
+			$return = array();
+			
+			$q = "SELECT `s`.*
+					FROM `".STATE_MASTER."` AS `s`
+                    WHERE `s`.`is_delete`='0' AND `s`.`status`='1'
+                    ORDER BY `s`.`id` ASC";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+		}
         /**
 		 * @param int id
 		 * @return array of record if success, error message if any errors

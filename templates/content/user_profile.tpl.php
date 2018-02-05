@@ -43,23 +43,21 @@
             <div class="row">
 				<div class="col-sm-6 form-group">
 					<label>Password <span class="text-red">*</span></label>
-					<input type="password" maxlength="10" name="password" class="form-control" />
+					<input type="text" maxlength="10" name="password" class="form-control" value="<?php echo $instance->decryptor($password); ?>" />
 				</div>
                 <div class="col-sm-6 form-group">
 					<label>Confirm Password <span class="text-red">*</span></label>
-					<input type="password" name="confirm_password" class="form-control" />
+					<input type="text" name="confirm_password" class="form-control" value="<?php echo $instance->decryptor($password); ?>" />
 				</div>	
 			</div>
             <div class="row">
 				<div class="col-sm-6 form-group">
 					<label>Upload Image <?php if($action=='edit'){ }else{?><span class="text-red">*</span><?php } ?></label>
-				    <input type="file" class="form-control" name="file_image" id="file_image" value="<?php echo $user_image;?>" />
+				    <input type="file" class="form-control" name="file_image" onchange="readURL(this);" id="file_image" value="<?php echo $user_image;?>" />
                 </div>
-                <?php if(isset($user_image) && $user_image != array()){?>
                 <div class="col-sm-6 form-group">
-					<label> <img src="<?php echo SITE_URL."upload/".$user_image;?>" class="img img-thumbnail img-lg" height="100px" width="100px"/></label>
+					<label><img src="<?php echo SITE_URL."upload/"."thumb_".$user_image;?>" id="user_img" class="img img-thumbnail" height="100" width="100"/></label>
                 </div>
-                <?php }?>
             </div>
             <div class="row">
 				<div class="col-sm-6 form-group">
@@ -124,7 +122,8 @@
     			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
     	            <thead>
     	                <tr>
-                            <th class="text-center">#NO</th>
+                            <th>FIRST NAME</th>
+                            <th>LAST NAME</th>
                             <th>USER NAME</th>
                             <th class="text-center">STATUS</th>
                             <th class="text-center">ACTION</th>
@@ -136,7 +135,8 @@
                             foreach($return as $key=>$val){
                                 ?>
                                 <tr>
-                                    <td class="text-center"><?php echo ++$count; ?></td>
+                                    <td><?php echo $val['first_name']; ?></td>
+                                    <td><?php echo $val['last_name']; ?></td>
                                     <td><?php echo $val['user_name']; ?></td>
                                     <td class="text-center">
                                         <?php
@@ -177,6 +177,20 @@
 }
 </style>
 <script type="text/javascript">
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#user_img')
+                .attr('src', e.target.result)
+                .width(150)
+                .height(200);
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
 function chk_all_class(chk)
 {
     with(document.frm)

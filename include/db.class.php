@@ -723,6 +723,56 @@ class db
     	imagedestroy($img2);
     }
     
+     function createThumbnails($updir, $img, $MaxWe=100,$MaxHe=150){
+        $arr_image_details = getimagesize($updir.$img); 
+        $width = $arr_image_details[0];
+        $height = $arr_image_details[1];
+    
+        $percent = 100;
+        if($width > $MaxWe) $percent = floor(($MaxWe * 100) / $width);
+    
+        if(floor(($height * $percent)/100)>$MaxHe)  
+        $percent = (($MaxHe * 100) / $height);
+    
+        if($width > $height) {
+            $newWidth=$MaxWe;
+            $newHeight=round(($height*$percent)/100);
+        }else{
+            $newWidth=round(($width*$percent)/100);
+            $newHeight=$MaxHe;
+        }
+    
+        $newHeight = 300;
+        $newHeight = 260;
+    
+        if ($arr_image_details[2] == 1) {
+            $imgt = "ImageGIF";
+            $imgcreatefrom = "ImageCreateFromGIF";
+        }
+        else if ($arr_image_details[2] == 2) {
+            $imgt = "ImageJPEG";
+            $imgcreatefrom = "ImageCreateFromJPEG";
+        }
+        else if ($arr_image_details[2] == 3) {
+            $imgt = "ImagePNG";
+            $imgcreatefrom = "ImageCreateFromPNG";
+        }
+        else if ($arr_image_details[2] == 4) {
+            $imgt = "ImageBMP";
+            $imgcreatefrom = "ImageCreateFromBMP";
+        }
+    
+    
+        if ($imgt) {
+            $old_image = $imgcreatefrom($updir.$img);
+            $new_image = imagecreatetruecolor($newWidth, $newHeight);
+            imagecopyresized($new_image, $old_image, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+    
+            $imgt($new_image, $updir."thumb_".$img);
+            return true;    
+        }
+    }
+
     public function encryptor($string) {
         $output = false;
         $encrypt_method = "AES-256-CBC";
@@ -747,7 +797,7 @@ class db
     
         // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
         $iv = substr(hash('sha256', SECRET_IV), 0, 16);
-        $output = openssl_decrypt(base64_decode($string), ENCRYPT_METHOD, $key, 0, $iv);
+        $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
         return $output;
     }
     
@@ -827,6 +877,28 @@ class db
     public function insert_common_sql(){
         $insert_common_sql = " , `created_ip`='".$this->get_client_ip()."', `created_by`='".$_SESSION['user_id']."', `created_time`='".CURRENT_DATETIME."' ";
         return $insert_common_sql;
+    }
+    public function get_system_logo($id){
+    	$return = array();
+    	$q = "SELECT `at`.`logo`
+    			FROM `".SYSTEM_CONFIGURATION."` AS `at`
+                WHERE `at`.`is_delete`='0' AND `at`.`user_id`='".$id."'";
+    	$res = $this->re_db_query($q);
+        if($this->re_db_num_rows($res)>0){
+    		$return = $this->re_db_fetch_array($res);
+        }
+    	return $return;
+    }
+    public function get_user_image($id){
+    	$return = array();
+    	$q = "SELECT `at`.`image`
+    			FROM `".USER_MASTER."` AS `at`
+                WHERE `at`.`is_delete`='0' AND `at`.`id`='".$id."'";
+    	$res = $this->re_db_query($q);
+        if($this->re_db_num_rows($res)>0){
+    		$return = $this->re_db_fetch_array($res);
+        }
+    	return $return;
     }
 /*
     public function send_email($to,$subject,$body,$cc=array(),$bcc=array(),$attachemnt=array()){

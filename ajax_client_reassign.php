@@ -33,11 +33,11 @@
                 foreach($get_broker as $key=>$val){
                     if($val['id'] == $trans_data['broker_name'])
                     {
-                        $new_broker=$val['first_name'].$val['last_name'];
+                        $new_broker=$val['first_name'].' '.$val['last_name'];
                     }
                     if($val['id'] == $trans_data['broker_old_name'])
                     {
-                        $old_broker=$val['first_name'].$val['last_name'];
+                        $old_broker=$val['first_name'].' '.$val['last_name'];
                     }
                 }?>
         <tr>

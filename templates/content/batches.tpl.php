@@ -39,41 +39,32 @@
                 <h3 class="panel-title"><i class="fa fa-pencil-square-o"></i><?php echo $action=='add_batches'?'Add':'Edit'; ?> Batches</h3>
     		</div>
             <div class="panel-body">
+            
             <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Product Category <span class="text-red">*</span></label><br />
-                        <select class="form-control" name="pro_category">
-                            <option value="0">Select Category</option>
-                            <?php foreach($product_category as $key=>$val){?>
-                            <option value="<?php echo $val['id'];?>" <?php if(isset($pro_category) && $pro_category==$val['id']){ ?>selected="true"<?php } ?>><?php echo $val['type'];?></option>
-                            <?php } ?>
-                        </select>
-                    </div>
-                </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Batch Number </label><br />
                         <input type="text" maxlength="10" class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' name="batch_number"  value="<?php if(isset($batch_number)) {echo $batch_number;}?>"/>
                     </div>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Batch Description </label><br />
                         <input type="text" maxlength="40" class="form-control" name="batch_desc" value="<?php if(isset($batch_desc)) {echo $batch_desc;}?>"  />
                     </div>
                 </div>
-                 <div class="col-md-6">
+            </div>
+            <div class="row">
+                <div class="col-md-6">
                     <div class="form-group">
-                        <label>Sponsor </label><br />
-                        <select class="form-control" name="sponsor">
-                            <option value="0">Select Sponsor</option>
-                             <?php foreach($get_sponsor as $key=>$val){?>
-                            <option value="<?php echo $val['id'];?>" <?php if(isset($sponsor) && $sponsor==$val['id']){?> selected="true"<?php } ?>><?php echo $val['name'];?></option>
-                            <?php } ?>
-                        </select>
+                        <label>Check Amount </label><br />
+                        <input type="text"  class="form-control" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 '  maxlength="12" name="check_amount" value="<?php if(isset($check_amount)) {echo $check_amount;}?>" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Posted Commission Amount</label><br />
+                        <input type="text"  class="form-control"  maxlength="12" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 ' name="commission_amount" value="<?php if(isset($commission_amount)) {echo $commission_amount;}?>" <?php if(isset($_GET['action']) && $action=='edit_batches'){ echo "disabled='true'";}?> />
                     </div>
                 </div>
             </div>
@@ -102,7 +93,31 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Trade Date Range Beginning</label><br />
+                        <label>Product Category <span class="text-red">*</span></label><br />
+                        <select class="form-control" name="pro_category">
+                            <option value="0">Select Category</option>
+                            <?php foreach($product_category as $key=>$val){?>
+                            <option value="<?php echo $val['id'];?>" <?php if(isset($pro_category) && $pro_category==$val['id']){ ?>selected="true"<?php } ?>><?php echo $val['type'];?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Sponsor </label><br />
+                        <select class="form-control" name="sponsor">
+                            <option value="0">Select Sponsor</option>
+                             <?php foreach($get_sponsor as $key=>$val){?>
+                            <option value="<?php echo $val['id'];?>" <?php if(isset($sponsor) && $sponsor==$val['id']){?> selected="true"<?php } ?>><?php echo $val['name'];?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Beginning Trade Date</label><br />
                         <div id="demo-dp-range">
                             <div class="input-daterange input-group" id="datepicker">
                                 <input type="text" name="trade_start_date" id="trade_start_date" value="<?php if(isset($trade_start_date)) {echo $trade_start_date;}?>" class="form-control" />
@@ -112,7 +127,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Trade Date Range Ending</label><br />
+                        <label>Ending Trade Date</label><br />
                         <div id="demo-dp-range">
                             <div class="input-daterange input-group" id="datepicker">
                                 <input type="text" name="trade_end_date" id="trade_end_date" value="<?php if(isset($trade_end_date)) {echo $trade_end_date;}?>" class="form-control" />
@@ -121,21 +136,8 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Check Amount </label><br />
-                        <input type="text"  class="form-control" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 '  maxlength="12" name="check_amount" value="<?php if(isset($check_amount)) {echo $check_amount;}?>" />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Posted Commission Amount</label><br />
-                        <input type="text"  class="form-control" maxlength="12" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 ' name="commission_amount" value="<?php if(isset($commission_amount)) {echo $commission_amount;}?>" />
-                    </div>
-                </div>
-            </div>
-            <div class="row">
+            
+            <!--<div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Split between product categories</label><br />
@@ -163,7 +165,7 @@
                     </div>
                 </div>
                 </div>
-            </div>
+            </div>-->
             
             
            </div>
@@ -218,10 +220,11 @@
     	            <thead>
     	                <tr>
                             <th class="text-center">#NO</th>
-                            <th>Product Category</th>
-                            <th>Batch Number</th>
-                            <th>Sponsor</th>
                             <th>Batch Date</th>
+                            <th>Description</th>
+                            <th>Product Category</th>
+                            <th>Check Amount</th>
+                            <th>Posted Amount</th>
                             <th class="text-center">ACTION</th>
                         </tr>
     	            </thead>
@@ -232,10 +235,11 @@
                         ?>
     	                   <tr>
                                 <td class="text-center"><?php echo ++$count; ?></td>
-                                <td><?php foreach($product_category as $ke=>$va){ if(isset($val['pro_category']) && $val['pro_category']==$va['id']){ echo $va['type']; } }?></td>
-                                <td><?php echo $val['batch_number'];?></td>
-                                <td><?php foreach($get_sponsor as $key1=>$val1){ if(isset($val['sponsor']) && $val['sponsor']==$val1['id']){ echo $val1['name']; } }?></td>
                                 <td><?php echo $val['batch_date'];?></td>
+                                <td><?php echo $val['batch_desc'];?></td>
+                                <td><?php foreach($product_category as $ke=>$va){ if(isset($val['pro_category']) && $val['pro_category']==$va['id']){ echo $va['type']; } }?></td>
+                                <td><?php echo $val['check_amount'];?></td>
+                                <td><?php echo $val['commission_amount'];?></td>
                                 <!--td class="text-center">
                                     <?php
                                         if($val['status']==1){

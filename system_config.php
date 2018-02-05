@@ -9,15 +9,17 @@
     $state = '';
     $zip = '';
     $minimum_check_amount = '';
-    $finra = '';
-    $sipc = '';
+    $finra = 0;
+    $sipc = 0;
     $brocker_pick_lists = '';
     $branch_pick_lists = '';
     $brocker_statement = '';
+    $logo = array();
     $action = isset($_GET['action'])&&$_GET['action']!=''?$dbins->re_db_input($_GET['action']):'view';
     $id = isset($_GET['id'])&&$_GET['id']!=''?$dbins->re_db_input($_GET['id']):0;
     
     $instance = new system_master();
+    $get_state = $instance->select_state();
     
     if(isset($_POST['submit'])&& $_POST['submit']=='Save'){
         
@@ -35,7 +37,7 @@
         $brocker_pick_lists= isset($_POST['brocker_pick_lists'])?$instance->re_db_input($_POST['brocker_pick_lists']):'';
         $branch_pick_lists= isset($_POST['branch_pick_lists'])?$instance->re_db_input($_POST['branch_pick_lists']):'';
         $brocker_statement= isset($_POST['brocker_statement'])?$instance->re_db_input($_POST['brocker_statement']):'';
-        //$logo= isset($_FILES['logo'])?$instance->re_db_input($_FILES['logo']):'';
+        $logo= isset($_FILES['logo']['name'])?$_FILES['logo']['name']:'';
         $return = $instance->insert_update($_POST);
         
         if($return===true){
@@ -60,6 +62,7 @@
         $brocker_pick_lists = isset($return['brocker_pick_lists'])?$instance->re_db_output($return['brocker_pick_lists']):'';
         $branch_pick_lists = isset($return['branch_pick_lists'])?$instance->re_db_output($return['branch_pick_lists']):'';
         $brocker_statement = isset($return['brocker_statement'])?$instance->re_db_output($return['brocker_statement']):'';
+        $logo = isset($return['logo'])?$instance->re_db_output($return['logo']):'';
     }
     
     $content = "system_config";
