@@ -8,7 +8,7 @@
 		 * @param post array
 		 * @return true if success, error message if any errors
 		 * */
-		public function insert_update($data){
+		public function insert_update($data){//echo '<pre>';print_r($data);exit;
             
 			$id = isset($data['id'])?$this->re_db_input($data['id']):0;
 			$category = isset($data['product_category'])?$this->re_db_input($data['product_category']):'';
@@ -29,10 +29,10 @@
             $class_type = isset($data['class_type'])?$this->re_db_input($data['class_type']):'';
             $fund_code = isset($data['fund_code'])?$this->re_db_input($data['fund_code']):'';
             $sweep_fee = isset($data['sweep_fee'])?$this->re_db_input($data['sweep_fee']):'';
-            $min_threshold = isset($data['min_threshold'])?$this->re_db_input($data['min_threshold']):'';
-            $max_threshold = isset($data['max_threshold'])?$this->re_db_input($data['max_threshold']):'';
-            $min_rate = isset($data['min_rate'])?$this->re_db_input($data['min_rate']):'';
-            $max_rate = isset($data['max_rate'])?$this->re_db_input($data['max_rate']):'';
+            $min_threshold = isset($data['min_threshold'])?$data['min_threshold']:array();
+            $max_threshold = isset($data['max_threshold'])?$data['max_threshold']:array();
+            $min_rate = isset($data['min_rate'])?$data['min_rate']:array();
+            $max_rate = isset($data['max_rate'])?$data['max_rate']:array();
             $ria_specific = isset($data['investment_banking_type'])?$this->re_db_input($data['investment_banking_type']):'';
             $ria_specific_type = isset($data['ria_specific_type'])?$this->re_db_input($data['ria_specific_type']):'';
             $based = isset($data['based_type'])?$this->re_db_input($data['based_type']):'';
@@ -75,9 +75,18 @@
 				}
 				else if($id>=0){
 					if($id==0){
-						$q = "INSERT INTO `product_category_".$category."` SET `category`='".$category."',`name`='".$name."',`sponsor`='".$sponsor."',`ticker_symbol`='".$ticker_symbol."',`cusip`='".$cusip."',`security`='".$security."',`receive`='".$receive."',`income`='".$income."',`networth`='".$networth."',`networthonly`='".$networthonly."',`minimum_investment`='".$minimum_investment."',`minimum_offer`='".$minimum_offer."',`maximum_offer`='".$maximum_offer."',`objective`='".$objective."',`non_commissionable`='".$non_commissionable."',`class_type`='".$class_type."',`fund_code`='".$fund_code."',`sweep_fee`='".$sweep_fee."',`min_threshold`='".$min_threshold."',`max_threshold`='".$max_threshold."',`min_rate`='".$min_rate."',`max_rate`='".$max_rate."',`ria_specific`='".$ria_specific."',`ria_specific_type`='".$ria_specific_type."',`based`='".$based."',`fee_rate`='".$fee_rate."',`st_bo`='".$st_bo."',`m_date`='".$m_date."',`type`='".$type."',`var`='".$var."',`reg_type`='".$reg_type."'".$this->insert_common_sql();
+						$q = "INSERT INTO `product_category_".$category."` SET `category`='".$category."',`name`='".$name."',`sponsor`='".$sponsor."',`ticker_symbol`='".$ticker_symbol."',`cusip`='".$cusip."',`security`='".$security."',`receive`='".$receive."',`income`='".$income."',`networth`='".$networth."',`networthonly`='".$networthonly."',`minimum_investment`='".$minimum_investment."',`minimum_offer`='".$minimum_offer."',`maximum_offer`='".$maximum_offer."',`objective`='".$objective."',`non_commissionable`='".$non_commissionable."',`class_type`='".$class_type."',`fund_code`='".$fund_code."',`sweep_fee`='".$sweep_fee."',`ria_specific`='".$ria_specific."',`ria_specific_type`='".$ria_specific_type."',`based`='".$based."',`fee_rate`='".$fee_rate."',`st_bo`='".$st_bo."',`m_date`='".$m_date."',`type`='".$type."',`var`='".$var."',`reg_type`='".$reg_type."'".$this->insert_common_sql();
 						$res = $this->re_db_query($q);
-                        $id = $this->re_db_insert_id();
+                        $last_inserted_id = $this->re_db_insert_id();
+                        
+                        foreach($min_threshold as $key_thres=>$val_thres)
+                        {
+                            if($val_thres != '' && $min_rate[$key_thres]>0)
+                            {
+                				$q = "INSERT INTO `product_rates_".$category."` SET `product_id`='".$last_inserted_id."',`min_threshold`='".$val_thres."',`max_threshold`='".$max_threshold[$key_thres]."',`min_rate`='".$min_rate[$key_thres]."',`max_rate`='".$max_rate[$key_thres]."'".$this->insert_common_sql();
+                				$res = $this->re_db_query($q);
+                            }
+                        }
 						if($res){
 						    $_SESSION['success'] = INSERT_MESSAGE;
 							return true;
@@ -88,8 +97,20 @@
 						}
 					}
 					else if($id>0){
-						$q = "UPDATE `product_category_".$category."` SET `category`='".$category."',`name`='".$name."',`sponsor`='".$sponsor."',`ticker_symbol`='".$ticker_symbol."',`cusip`='".$cusip."',`security`='".$security."',`receive`='".$receive."',`income`='".$income."',`networth`='".$networth."',`networthonly`='".$networthonly."',`minimum_investment`='".$minimum_investment."',`minimum_offer`='".$minimum_offer."',`maximum_offer`='".$maximum_offer."',`objective`='".$objective."',`non_commissionable`='".$non_commissionable."',`class_type`='".$class_type."',`fund_code`='".$fund_code."',`sweep_fee`='".$sweep_fee."',`min_threshold`='".$min_threshold."',`max_threshold`='".$max_threshold."',`min_rate`='".$min_rate."',`max_rate`='".$max_rate."',`ria_specific`='".$ria_specific."',`ria_specific_type`='".$ria_specific_type."',`based`='".$based."',`fee_rate`='".$fee_rate."',`st_bo`='".$st_bo."',`m_date`='".$m_date."',`type`='".$type."',`var`='".$var."',`reg_type`='".$reg_type."'".$this->update_common_sql()." WHERE `id`='".$id."'";
+						$q = "UPDATE `product_category_".$category."` SET `category`='".$category."',`name`='".$name."',`sponsor`='".$sponsor."',`ticker_symbol`='".$ticker_symbol."',`cusip`='".$cusip."',`security`='".$security."',`receive`='".$receive."',`income`='".$income."',`networth`='".$networth."',`networthonly`='".$networthonly."',`minimum_investment`='".$minimum_investment."',`minimum_offer`='".$minimum_offer."',`maximum_offer`='".$maximum_offer."',`objective`='".$objective."',`non_commissionable`='".$non_commissionable."',`class_type`='".$class_type."',`fund_code`='".$fund_code."',`sweep_fee`='".$sweep_fee."',`ria_specific`='".$ria_specific."',`ria_specific_type`='".$ria_specific_type."',`based`='".$based."',`fee_rate`='".$fee_rate."',`st_bo`='".$st_bo."',`m_date`='".$m_date."',`type`='".$type."',`var`='".$var."',`reg_type`='".$reg_type."'".$this->update_common_sql()." WHERE `id`='".$id."'";
                         $res = $this->re_db_query($q);
+                        
+                        $q = "UPDATE `product_rates_".$category."` SET `is_delete`='1' WHERE `product_id`='".$id."'";
+				        $res = $this->re_db_query($q);
+                        
+                        foreach($min_threshold as $key_thres=>$val_thres)
+                        {
+                            if($val_thres != '' && $min_rate[$key_thres]>0)
+                            {
+                				$q = "INSERT INTO `product_rates_".$category."` SET `product_id`='".$id."',`min_threshold`='".$val_thres."',`max_threshold`='".$max_threshold[$key_thres]."',`min_rate`='".$min_rate[$key_thres]."',`max_rate`='".$max_rate[$key_thres]."'".$this->insert_common_sql();
+                				$res = $this->re_db_query($q);
+                            }
+                        }
 						if($res){
 						    $_SESSION['success'] = UPDATE_MESSAGE;
 							return true;
@@ -433,6 +454,19 @@
 			$res = $this->re_db_query($q);
             if($this->re_db_num_rows($res)>0){
     			$return = $this->re_db_fetch_array($res);
+            }
+			return $return;
+		}
+        public function edit_product_rates($id,$category=''){
+			$return = array();
+			$q = "SELECT `at`.*
+					FROM `product_rates_".$category."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`product_id`='".$id."'";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                }
             }
 			return $return;
 		}

@@ -4,7 +4,6 @@ function addMoreRow(){
                     
                     '<div class="col-md-4">'+
                         '<div class="form-group">'+
-                            '<label></label><br />'+
                             '<select class="form-control" name="split_broker[]">'+
                             '<option value="">Select Broker</option>'+
                             <?php foreach($get_broker as $key=>$val){?>
@@ -18,15 +17,14 @@ function addMoreRow(){
                         '</div>'+*/
                     '</div>'+
                     '<div class="col-md-4">'+
-                        '<div class="form-group">'+
-                            '<label></label><br />'+
+                        '<div class="input-group">'+
                             '<input type="text" name="split_rate[]" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="split_rate" class="form-control" />'+
+                            '<span class="input-group-addon">%</span>'+
                         '</div>'+
                     '</div>'+
                     
                     '<div class="col-md-2">'+
                         '<div class="form-group">'+
-                            '<label></label><br />'+
                             '<button type="button" tabindex="-1" class="btn remove-row btn-icon btn-circle"><i class="fa fa-minus"></i></button>'+
                         '</div>'+
                     '</div>'+
@@ -251,7 +249,10 @@ $(document).on('click','.remove-row',function(){
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Split Rate </label><br />
-                        <input type="text" name="split_rate[]" onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="account_no" class="form-control" value="" />
+                        <div class="input-group">
+                            <input type="text" name="split_rate[]" onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="account_no" class="form-control" value="" />
+                            <span class="input-group-addon">%</span>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-2">
@@ -261,6 +262,35 @@ $(document).on('click','.remove-row',function(){
                     </div>
                 </div>
             </div>
+            <?php
+            if($return_splits != '')
+            {
+            foreach($return_splits as $keyedit_split=>$valedit_split){
+                $split_broker = $valedit_split['split_broker'];?>
+            <div class="row split_edit_row" <?php  if((isset($split) && $split!=1) || (isset($_GET['action']) && $_GET['action']=='add')){?>style="display: none;"<?php } ?>>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <select class="form-control" name="split_broker[]">
+                            <option value="">Select Broker</option>
+                             <?php foreach($get_broker as $key=>$val){?>
+                            <option value="<?php echo $val['id'];?>" <?php if($split_broker != '' && $split_broker==$val['id']){echo "selected='selected'";} ?>><?php echo $val['first_name'].' '.$val['middle_name'].' '.$val['last_name'];?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <input type="text" name="split_rate[]" onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="account_no" class="form-control" value="<?php echo $valedit_split['split_rate'];?>" />
+                        <span class="input-group-addon">%</span>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                         <button type="button" tabindex="-1" class="btn remove-row btn-icon btn-circle"><i class="fa fa-minus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <?php } }?>
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
@@ -472,10 +502,14 @@ function get_product(id,selected=''){
 function open_other()
 {
     $('#add_other_split').css('display','block');
+    $('.split_edit_row').css('display','block');
+    
 }
 function close_other()
 {
     $('#add_other_split').css('display','none');
+    $('.split_edit_row').css('display','none');
+    
 }
 var waitingDialog = waitingDialog || (function ($) {
     'use strict';

@@ -62,10 +62,6 @@
                                         class_type VARCHAR(100),
                                         fund_code VARCHAR(100),
                                         sweep_fee TINYINT(1) NOT NULL DEFAULT '0',
-                                        min_threshold VARCHAR(100),
-                                        max_threshold VARCHAR(100),
-                                        min_rate FLOAT(8,2),
-                                        max_rate FLOAT(8,2),
                                         ria_specific VARCHAR(100),
                                         ria_specific_type VARCHAR(100),
                                         based VARCHAR(100),
@@ -103,7 +99,25 @@
                                     );";
 						    $res = $this->re_db_query($q);
                             
-                            $q = "CREATE TRIGGER updateProduct_".$id." AFTER UPDATE ON product_category_".$id."
+                            $q = "CREATE TABLE product_rates_".$id."
+                                    (id INT(12) PRIMARY KEY AUTO_INCREMENT,
+                                        product_id INT(12),
+                                        min_threshold VARCHAR(100),
+                                        max_threshold VARCHAR(100),
+                                        min_rate FLOAT(8,2),
+                                        max_rate FLOAT(8,2),
+                                        status TINYINT(1) NOT NULL DEFAULT '1',
+                                        is_delete TINYINT(1) NOT NULL DEFAULT '0',
+                                        created_by  INT(12),
+                                        created_time DATETIME,
+                                        created_ip VARCHAR(100),
+                                        modified_by  INT(12),
+                                        modified_time DATETIME,
+                                        modified_ip VARCHAR(100)
+                                    );";
+						    $res = $this->re_db_query($q);
+                            
+                            /*$q = "CREATE TRIGGER updateProduct_".$id." AFTER UPDATE ON product_category_".$id."
                                     FOR EACH ROW
                                     
                                     BEGIN
@@ -179,22 +193,6 @@
                                             INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
                                     		  							  VALUES(NEW.id,'sweep_fee',OLD.sweep_fee,NEW.sweep_fee,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
                                         END IF;
-                                        IF NEW.min_threshold <> OLD.min_threshold THEN  
-                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
-                                    		  							  VALUES(NEW.id,'min_threshold',OLD.min_threshold,NEW.min_threshold,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
-                                        END IF;
-                                        IF NEW.max_threshold <> OLD.max_threshold THEN  
-                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
-                                    		  							  VALUES(NEW.id,'max_threshold',OLD.max_threshold,NEW.max_threshold,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
-                                        END IF;
-                                        IF NEW.min_rate <> OLD.min_rate THEN  
-                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
-                                    		  							  VALUES(NEW.id,'min_rate',OLD.min_rate,NEW.min_rate,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
-                                        END IF;
-                                        IF NEW.max_rate <> OLD.max_rate THEN  
-                                            INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
-                                    		  							  VALUES(NEW.id,'max_rate',OLD.max_rate,NEW.max_rate,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
-                                        END IF;
                                         IF NEW.ria_specific <> OLD.ria_specific THEN  
                                             INSERT INTO product_history_".$id." (product_id,field,old_value,new_value,status,is_delete,created_by,created_time,created_ip,modified_by,modified_time) 
                                     		  							  VALUES(NEW.id,'ria_specific',OLD.ria_specific,NEW.ria_specific,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
@@ -232,7 +230,7 @@
                                     		  							  VALUES(NEW.id,'reg_type',OLD.reg_type,NEW.reg_type,NEW.status,NEW.is_delete,NEW.created_by,NEW.created_time,NEW.created_ip,NEW.modified_by,NEW.modified_time);
                                         END IF;
                                     END";
-						    $res = $this->re_db_query($q);
+						    $res = $this->re_db_query($q);*/
                             
                             
 						    $_SESSION['success'] = INSERT_MESSAGE;

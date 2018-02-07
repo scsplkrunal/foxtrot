@@ -4,6 +4,7 @@
     
     $action = isset($_GET['action'])&&$_GET['action']!=''?$dbins->re_db_input($_GET['action']):'view';
     $id = isset($_GET['id'])&&$_GET['id']!=''?$dbins->re_db_input($_GET['id']):0;
+    
     $instance = new ofac_fincen();
     //$report = $instance->select_fincen_scan_report();
     if(isset($_POST['import'])&& $_POST['import']=='OFAC Scan'){
@@ -113,7 +114,7 @@
             fclose($file);	
     	 }
     }
-    else if(isset($_GET['action'])&&$_GET['action']=='print'&&isset($_GET['id'])&&$_GET['id']>0)
+    /*else if(isset($_GET['action'])&&$_GET['action']=='print'&&isset($_GET['id'])&&$_GET['id']>0)
     {
         $id = $instance->re_db_input($_GET['id']);
         header("location:report_ofac_client_check.php?id=".$id);exit;
@@ -122,7 +123,7 @@
     {
         $id = $instance->re_db_input($_GET['id']);
         header("location:report_fincen_client_check.php?id=".$id);exit;
-    }
+    }*/
     else if(isset($_GET['action'])&&$_GET['action']=='delete'&&isset($_GET['id'])&&$_GET['id']>0)
     {
         $id = $instance->re_db_input($_GET['id']);

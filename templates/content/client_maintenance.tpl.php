@@ -969,13 +969,10 @@ $(document).on('click','.remove-row',function(){
             			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
             	            <thead>
             	                <tr>
-                                    <th class="text-center">#NO</th>
                                     <th>Name</th>
                                     <th>File</th>
                                     <th>Account Type</th>
-                                    <th>Broker's Name</th>
-                                    <th>Telephone</th>
-                                    <th>Contact Status</th>
+                                    <th>Broker Name</th>
                                     <th>Status</th>
                                     <th class="text-center">ACTION</th>
                                 </tr>
@@ -986,23 +983,10 @@ $(document).on('click','.remove-row',function(){
                             foreach($return as $key=>$val){
                                 ?>
             	                   <tr>
-                                        <td class="text-center"><?php echo ++$count; ?></td>
                                         <td><?php echo $val['first_name']." ".$val['last_name']; ?></td>
                                         <td><?php echo $val['client_file_number']; ?></td>
                                         <td><?php echo $val['account_type']; ?></td>
-                                        <td><?php echo $val['broker']; ?></td>
-                                        <td><?php echo '('.substr($val['telephone'], 0, 3).')'.'-'.substr($val['telephone'], 3, 3).'-'.substr($val['telephone'],6); //echo $val['telephone']; ?></td>
-                                        <td>
-                                        <?php 
-                                        if($val['contact_status']==1)
-                                        {
-                                            echo "Yes";
-                                        }
-                                        else
-                                        {
-                                            echo "No"; 
-                                        } ?>
-                                        </td>
+                                        <td><?php echo $val['broker_fname']." ".$val['broker_lname']; ?></td>
                                         <td class="text-center">
                                             <?php
                                                 if($val['status']==1){

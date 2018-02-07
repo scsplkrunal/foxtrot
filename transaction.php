@@ -13,8 +13,8 @@
     $get_client= $instance->select_client();
     $get_batch = $instance->select_batch();
     $product_cate ='';
-    $split_broker = '';
-    $split_rate = '';
+    $split_broker = array();
+    $split_rate = array();
     
     
     if(isset($_POST['transaction'])&& $_POST['transaction']=='Save'){ 
@@ -35,8 +35,8 @@
         $trade_date = isset($_POST['trade_date'])?$instance->re_db_input($_POST['trade_date']):'';
         $settlement_date = isset($_POST['settlement_date'])?$instance->re_db_input($_POST['settlement_date']):'';
         $split = isset($_POST['split'])?$instance->re_db_input($_POST['split']):'';
-        $split_broker = isset($_POST['split_broker'])?$instance->re_db_input($_POST['split_broker']):'';
-        $split_rate = isset($_POST['split_rate'])?$instance->re_db_input($_POST['split_rate']):'';
+        $split_broker = isset($_POST['split_broker'])?$_POST['split_broker']:array();
+        $split_rate = isset($_POST['split_rate'])?$_POST['split_rate']:array();
         $another_level = isset($_POST['another_level'])?$instance->re_db_input($_POST['another_level']):'';
         $cancel = isset($_POST['cancel'])?$instance->re_db_input($_POST['cancel']):'';
         $buy_sell = isset($_POST['buy_sell'])?$instance->re_db_input($_POST['buy_sell']):'';
@@ -74,14 +74,12 @@
         $trade_date = isset($return['trade_date'])?$instance->re_db_output($return['trade_date']):'';
         $settlement_date = isset($return['settlement_date'])?$instance->re_db_output($return['settlement_date']):'';
         $split = isset($return['split'])?$instance->re_db_output($return['split']):'';
-        $split_broker = isset($return['split_broker'])?$instance->re_db_output($return['split_broker']):'';
-        $split_rate = isset($return['split_rate'])?$instance->re_db_output($return['split_rate']):'';
         $another_level = isset($return['another_level'])?$instance->re_db_output($return['another_level']):'';
         $cancel = isset($return['cancel'])?$instance->re_db_output($return['cancel']):'';
         $buy_sell = isset($return['buy_sell'])?$instance->re_db_output($return['buy_sell']):'';
         $hold_commission = isset($return['hold_commission'])?$instance->re_db_output($return['hold_commission']):'';
         $hold_resoan = isset($return['hold_resoan'])?$instance->re_db_output($return['hold_resoan']):'';
-        
+        $return_splits = $instance->edit_splits($id);
              
     }
     else if(isset($_GET['action'])&&$_GET['action']=='transaction_delete'&&isset($_GET['id'])&&$_GET['id']>0)

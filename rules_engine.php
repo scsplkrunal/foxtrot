@@ -17,13 +17,13 @@
         $parameter1 = isset($_POST['parameter1'])?$instance->re_db_input($_POST['parameter1']):0;
         $parameter_2 = isset($_POST['parameter_2'])?$instance->re_db_input($_POST['parameter_2']):0;
         $parameter2 = isset($_POST['parameter2'])?$instance->re_db_input($_POST['parameter2']):0;
-        $return = $instance->insert_update($_POST);
+        $return1 = $instance->insert_update($_POST);
         
-        if($return===true){
+        if($return1===true){
             header("location:".CURRENT_PAGE);exit;
         }
         else{
-            $error = !isset($_SESSION['warning'])?$return:'';
+            $error = !isset($_SESSION['warning'])?$return1:'';
         }
  
     }

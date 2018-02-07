@@ -937,7 +937,6 @@ var waitingDialog = waitingDialog || (function ($) {
             			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
             	            <thead>
             	                <tr>
-                                    <th class="text-center">#NO</th>
                                     <th>Broker Name</th>
                                     <th>Fund</th>
                                     <th>SSN</th>
@@ -953,7 +952,6 @@ var waitingDialog = waitingDialog || (function ($) {
                             foreach($return as $key=>$val){
                                 ?>
             	                   <tr>
-                                        <td class="text-center"><?php echo ++$count; ?></td>
                                         <td><?php echo $val['first_name']." ".$val['last_name']; ?></td>
                                         <td><?php echo $val['fund']; ?></td>
                                         <!--td><?php echo $val['internal']; ?></td-->

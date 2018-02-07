@@ -4,7 +4,9 @@ require_once(DIR_FS."islogin.php");
 $instance = new ofac_fincen();
 $get_fincen_data = array();
 $get_fincen_main_data = array();
-$get_logo = $instance->get_system_logo($_SESSION['user_id']);
+$get_logo = $instance->get_system_logo();
+$get_company_name = $instance->get_company_name();
+$system_company_name = isset($get_company_name['company_name'])?$instance->re_db_input($get_company_name['company_name']):'';
 $system_logo = isset($get_logo['logo'])?$instance->re_db_input($get_logo['logo']):'';
 
 $fincen_main_id = isset($_GET['id'])?$instance->re_db_input($_GET['id']):0;
@@ -40,21 +42,28 @@ $cl_last_name = '';
     $pdf->SetFont('times','',10);
     $html='<table border="0">
                 <tr>
-                   <td width="100%" style="font-size:10px;font-weight:bold;text-align:left;">'.date('d/m/Y h:i:s A').'</td>
-                </tr>
+                   <td width="50%" style="font-size:10px;font-weight:bold;text-align:left;">'.date('d/m/Y h:i:s A').'</td>';
+                   if(isset($system_company_name) && $system_company_name != '')
+                   {
+                        $html.='<td width="50%" style="font-size:10px;font-weight:bold;text-align:right;">'.$system_company_name.'</td>';
+                   }
+        $html.='</tr>
             </table>';
     $pdf->writeHTML($html, false, 0, false, 0);
     $pdf->Ln(5);
     
-    $pdf->SetFont('times','B',12);
-    $pdf->SetFont('times','',10);
-    $html='<table border="0" width="100%">
-                <tr>
-                    <td align="center">'.$img.'</td>
-                </tr>
-            </table>';
-    $pdf->writeHTML($html, false, 0, false, 0);
-    $pdf->Ln(5);
+    if(isset($system_logo) && $system_logo != '')
+    {
+        $pdf->SetFont('times','B',12);
+        $pdf->SetFont('times','',10);
+        $html='<table border="0" width="100%">
+                    <tr>
+                        <td align="center">'.$img.'</td>
+                    </tr>
+                </table>';
+        $pdf->writeHTML($html, false, 0, false, 0);
+        $pdf->Ln(5);
+    }
     
     $pdf->SetFont('times','B',12);
     $pdf->SetFont('times','',10);
@@ -391,6 +400,10 @@ $cl_last_name = '';
     $pdf->Ln(5);
     
     $pdf->lastPage();
+    if(isset($_GET['open']) && $_GET['open'] == 'fincen_print')
+    {
+        $pdf->IncludeJS("print();");
+    }
     $pdf->Output('report_fincen_client_check.pdf', 'I');
     
     exit;

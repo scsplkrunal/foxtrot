@@ -21,10 +21,10 @@
     $class_type = '';
     $fund_code = '';
     $sweep_fee = '';
-    $min_threshold = '';
-    $max_threshold = '';
-    $min_rate = '';
-    $max_rate = '';
+    $min_threshold = array();
+    $max_threshold = array();
+    $min_rate = array();
+    $max_rate = array();
     $investment_banking_type = '';
     $ria_specific_type = '';
     $based = '';
@@ -36,6 +36,7 @@
     $reg_type = '';
     $search_text_product = '';
     $search_product_category = '';
+    $return_rates = array();
     
  
     $action = isset($_GET['action'])&&$_GET['action']!=''?$dbins->re_db_input($_GET['action']):'select_cat';
@@ -75,10 +76,10 @@
         $class_type = isset($_POST['class_type'])?$instance->re_db_input($_POST['class_type']):'';
         $fund_code = isset($_POST['fund_code'])?$instance->re_db_input($_POST['fund_code']):'';
         $sweep_fee = isset($_POST['sweep_fee'])?$instance->re_db_input($_POST['sweep_fee']):'';
-        $min_threshold = isset($_POST['min_threshold'])?$instance->re_db_input($_POST['min_threshold']):'';
-        $max_threshold = isset($_POST['max_threshold'])?$instance->re_db_input($_POST['max_threshold']):'';
-        $min_rate = isset($_POST['min_rate'])?$instance->re_db_input($_POST['min_rate']):'';
-        $max_rate = isset($_POST['max_rate'])?$instance->re_db_input($_POST['max_rate']):'';
+        $min_threshold = isset($_POST['min_threshold'])?$_POST['min_threshold']:array();
+        $max_threshold = isset($_POST['max_threshold'])?$_POST['max_threshold']:array();
+        $min_rate = isset($_POST['min_rate'])?$_POST['min_rate']:array();
+        $max_rate = isset($_POST['max_rate'])?$_POST['max_rate']:array();
         $investment_banking_type = isset($_POST['investment_banking_type'])?$instance->re_db_input($_POST['investment_banking_type']):'';
         $ria_specific_type = isset($_POST['ria_specific_type'])?$instance->re_db_input($_POST['ria_specific_type']):'';
         $based = isset($_POST['based_type'])?$instance->re_db_input($_POST['based_type']):'';
@@ -135,10 +136,10 @@
         $class_type = isset($return['class_type'])?$instance->re_db_output($return['class_type']):0;
         $fund_code = isset($return['fund_code'])?$instance->re_db_output($return['fund_code']):'';
         $sweep_fee = isset($return['sweep_fee'])?$instance->re_db_output($return['sweep_fee']):0;
-        $min_threshold = isset($return['min_threshold'])?$instance->re_db_output($return['min_threshold']):'';
-        $max_threshold = isset($return['max_threshold'])?$instance->re_db_output($return['max_threshold']):'';
-        $min_rate = isset($return['min_rate'])?$instance->re_db_output($return['min_rate']):'';
-        $max_rate = isset($return['max_rate'])?$instance->re_db_output($return['max_rate']):'';
+        //$min_threshold = isset($return['min_threshold'])?$instance->re_db_output($return['min_threshold']):'';
+        //$max_threshold = isset($return['max_threshold'])?$instance->re_db_output($return['max_threshold']):'';
+        //$min_rate = isset($return['min_rate'])?$instance->re_db_output($return['min_rate']):'';
+        //$max_rate = isset($return['max_rate'])?$instance->re_db_output($return['max_rate']):'';
         $investment_banking_type = isset($return['ria_specific'])?$instance->re_db_output($return['ria_specific']):'';
         $ria_specific_type = isset($return['ria_specific_type'])?$instance->re_db_output($return['ria_specific_type']):'';
         $based = isset($return['based'])?$instance->re_db_output($return['based']):0;
@@ -148,7 +149,7 @@
         $type = isset($return['type'])?$instance->re_db_output($return['type']):'';
         $var = isset($return['var'])?$instance->re_db_output($return['var']):0;
         $reg_type = isset($return['reg_type'])?$instance->re_db_output($return['reg_type']):'';
-        
+        $return_rates = $instance->edit_product_rates($id,$category);//echo '<pre>';print_r($return_rates);exit;
     }
     else if(isset($_POST['add_notes'])&& $_POST['add_notes']=='Add Notes'){
         $_POST['user_id']=$_SESSION['user_name'];
@@ -257,7 +258,7 @@
         $category = $instance->re_db_input($_GET['category']);
         $return = $instance->product_status($id,$status,$category);
         if($return==true){
-            header('location:'.CURRENT_PAGE.'?view_product&category='.$category);exit;
+            header('location:'.CURRENT_PAGE.'?action=view_product&category='.$category);exit;
         }
         else{
             header('location:'.CURRENT_PAGE);exit;

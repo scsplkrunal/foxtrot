@@ -79,7 +79,6 @@
                         			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         	            <thead>
                         	                <tr>
-                                                <th class="text-center">#NO</th>
                                                 <th>OPTIONS</th>
                                                 <th class="text-center">ACTION</th>
                                             </tr>
@@ -90,7 +89,6 @@
                                                 foreach($return_objective as $key=>$val){
                                                     ?>
                                                     <tr>
-                                                        <td class="text-center"><?php echo ++$count ; ?></td>
                                                         <td><?php echo $val['option']; ?></td>
                                                         <td class="text-center">
                                                             <a href="<?php echo CURRENT_PAGE; ?>?action=edit_objective&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
@@ -170,7 +168,6 @@
                         			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         	            <thead>
                         	                <tr>
-                                                <th class="text-center">#NO</th>
                                                 <th>OPTIONS</th>
                                                 <th class="text-center">ACTION</th>
                                             </tr>
@@ -181,7 +178,6 @@
                                                 foreach($return_income as $key=>$val){
                                                     ?>
                                                     <tr>
-                                                        <td class="text-center"><?php echo ++$count ; ?></td>
                                                         <td><?php echo $val['option']; ?></td>
                                                         <td class="text-center">
                                                             <a href="<?php echo CURRENT_PAGE; ?>?action=edit_income&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
@@ -260,7 +256,6 @@
                         			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         	            <thead>
                         	                <tr>
-                                                <th class="text-center">#NO</th>
                                                 <th>OPTIONS</th>
                                                 <th class="text-center">ACTION</th>
                                             </tr>
@@ -271,7 +266,6 @@
                                                 foreach($return_horizon as $key=>$val){
                                                     ?>
                                                     <tr>
-                                                        <td class="text-center"><?php echo ++$count ; ?></td>
                                                         <td><?php echo $val['option']; ?></td>
                                                         <td class="text-center">
                                                             <a href="<?php echo CURRENT_PAGE; ?>?action=edit_horizon&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
@@ -350,7 +344,6 @@
                         			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         	            <thead>
                         	                <tr>
-                                                <th class="text-center">#NO</th>
                                                 <th>OPTIONS</th>
                                                 <th class="text-center">ACTION</th>
                                             </tr>
@@ -361,7 +354,6 @@
                                                 foreach($return_networth as $key=>$val){
                                                     ?>
                                                     <tr>
-                                                        <td class="text-center"><?php echo ++$count ; ?></td>
                                                         <td><?php echo $val['option']; ?></td>
                                                         <td class="text-center">
                                                             <a href="<?php echo CURRENT_PAGE; ?>?action=edit_networth&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
@@ -440,7 +432,6 @@
                         			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         	            <thead>
                         	                <tr>
-                                                <th class="text-center">#NO</th>
                                                 <th>OPTIONS</th>
                                                 <th class="text-center">ACTION</th>
                                             </tr>
@@ -451,7 +442,6 @@
                                                 foreach($return_risk_tolerance as $key=>$val){
                                                     ?>
                                                     <tr>
-                                                        <td class="text-center"><?php echo ++$count ; ?></td>
                                                         <td><?php echo $val['option']; ?></td>
                                                         <td class="text-center">
                                                             <a href="<?php echo CURRENT_PAGE; ?>?action=edit_risk_tolerance&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
@@ -530,7 +520,6 @@
                         			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         	            <thead>
                         	                <tr>
-                                                <th class="text-center">#NO</th>
                                                 <th>OPTIONS</th>
                                                 <th class="text-center">ACTION</th>
                                             </tr>
@@ -541,7 +530,6 @@
                                                 foreach($return_annual_expenses as $key=>$val){
                                                     ?>
                                                     <tr>
-                                                        <td class="text-center"><?php echo ++$count ; ?></td>
                                                         <td><?php echo $val['option']; ?></td>
                                                         <td class="text-center">
                                                             <a href="<?php echo CURRENT_PAGE; ?>?action=edit_annual_expenses&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
@@ -620,7 +608,6 @@
                         			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         	            <thead>
                         	                <tr>
-                                                <th class="text-center">#NO</th>
                                                 <th>OPTIONS</th>
                                                 <th class="text-center">ACTION</th>
                                             </tr>
@@ -631,7 +618,6 @@
                                                 foreach($return_liqudity_needs as $key=>$val){
                                                     ?>
                                                     <tr>
-                                                        <td class="text-center"><?php echo ++$count ; ?></td>
                                                         <td><?php echo $val['option']; ?></td>
                                                         <td class="text-center">
                                                             <a href="<?php echo CURRENT_PAGE; ?>?action=edit_liqudity_needs&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
@@ -710,7 +696,6 @@
                         			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         	            <thead>
                         	                <tr>
-                                                <th class="text-center">#NO</th>
                                                 <th>OPTIONS</th>
                                                 <th class="text-center">ACTION</th>
                                             </tr>
@@ -721,7 +706,6 @@
                                                 foreach($return_liquid_net_worth as $key=>$val){
                                                     ?>
                                                     <tr>
-                                                        <td class="text-center"><?php echo ++$count ; ?></td>
                                                         <td><?php echo $val['option']; ?></td>
                                                         <td class="text-center">
                                                             <a href="<?php echo CURRENT_PAGE; ?>?action=edit_liquid_net_worth&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
@@ -800,7 +784,6 @@
                         			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         	            <thead>
                         	                <tr>
-                                                <th class="text-center">#NO</th>
                                                 <th>OPTIONS</th>
                                                 <th class="text-center">ACTION</th>
                                             </tr>
@@ -811,7 +794,6 @@
                                                 foreach($return_special_expenses as $key=>$val){
                                                     ?>
                                                     <tr>
-                                                        <td class="text-center"><?php echo ++$count ; ?></td>
                                                         <td><?php echo $val['option']; ?></td>
                                                         <td class="text-center">
                                                             <a href="<?php echo CURRENT_PAGE; ?>?action=edit_special_expenses&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
@@ -890,7 +872,6 @@
                         			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         	            <thead>
                         	                <tr>
-                                                <th class="text-center">#NO</th>
                                                 <th>OPTIONS</th>
                                                 <th class="text-center">ACTION</th>
                                             </tr>
@@ -901,7 +882,6 @@
                                                 foreach($return_portfolio as $key=>$val){
                                                     ?>
                                                     <tr>
-                                                        <td class="text-center"><?php echo ++$count ; ?></td>
                                                         <td><?php echo $val['option']; ?></td>
                                                         <td class="text-center">
                                                             <a href="<?php echo CURRENT_PAGE; ?>?action=edit_portfolio&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
@@ -979,7 +959,6 @@
                     			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
                     	            <thead>
                     	                <tr>
-                                            <th class="text-center">#NO</th>
                                             <th>OPTIONS</th>
                                             <th class="text-center">ACTION</th>
                                         </tr>
@@ -990,7 +969,6 @@
                                             foreach($return_time_for_exp as $key=>$val){
                                                 ?>
                                                 <tr>
-                                                    <td class="text-center"><?php echo ++$count ; ?></td>
                                                     <td><?php echo $val['option']; ?></td>
                                                     <td class="text-center">
                                                         <a href="<?php echo CURRENT_PAGE; ?>?action=edit_time_for_exp&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
@@ -1068,7 +1046,6 @@
                     			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
                     	            <thead>
                     	                <tr>
-                                            <th class="text-center">#NO</th>
                                             <th>OPTIONS</th>
                                             <th class="text-center">ACTION</th>
                                         </tr>
@@ -1079,7 +1056,6 @@
                                             foreach($return_account_use as $key=>$val){
                                                 ?>
                                                 <tr>
-                                                    <td class="text-center"><?php echo ++$count ; ?></td>
                                                     <td><?php echo $val['option']; ?></td>
                                                     <td class="text-center">
                                                         <a href="<?php echo CURRENT_PAGE; ?>?action=edit_account_use&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>

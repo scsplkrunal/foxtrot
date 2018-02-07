@@ -401,7 +401,6 @@
 			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
 	            <thead>
 	                <tr>
-                        <th class="text-center">#NO</th>
                         <th>Company/Practice Name</th>
                         <th>Manager Name</th>
                         <th>Practice Type</th>
@@ -417,7 +416,6 @@
                         foreach($return as $key=>$val){
                             ?>
                             <tr>
-                                <td class="text-center"><?php echo ++$count; ?></td>
                                 <td><?php echo $val['company_name']; ?></td>
                                 <td><?php foreach($get_manager as $statekey=>$stateval){ if($val['manager_name'] == $stateval['id']){echo $stateval['first_name'].' '.$stateval['middle_name'].' '.$stateval['last_name']; }} ?></td>
                                 <td><?php echo $val['company_type']; ?></td>

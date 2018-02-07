@@ -31,12 +31,12 @@
         			else if($action=='0'){
         				$this->errors = 'Please select action.';
         			}
-                    else if($parameter_1=='' && $action != 5){
+                    /*else if($parameter_1=='' && $action != 5){
         				$this->errors = 'Please enter parameter1.';
         			}
         			else if($parameter_2==''&& $action != 5){
         				$this->errors = 'Please select parameter2.';
-        			}
+        			}*/
         			if($this->errors!=''){
         				return $this->errors;
         			}

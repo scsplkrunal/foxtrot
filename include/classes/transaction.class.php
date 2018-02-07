@@ -5,7 +5,7 @@ class transaction extends db{
     public $errors = '';
     public $table = TRANSACTION_MASTER;
     
-    public function insert_update($data){
+    public function insert_update($data){//echo '<pre>';print_r($data);exit;
             
 			$id = isset($data['id'])?$this->re_db_input($data['id']):0;
             $trade_number = isset($data['trade_number'])?$this->re_db_input($data['trade_number']):0;
@@ -23,8 +23,8 @@ class transaction extends db{
             $trade_date = isset($data['trade_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['trade_date']))):'0000-00-00';
             $settlement_date = isset($data['settlement_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['settlement_date']))):'0000-00-00';
             $split = isset($data['split'])?$this->re_db_input($data['split']):'';
-            $split_broker = isset($data['split_broker'])?$this->re_db_input($data['split_broker']):'';
-            $split_rate = isset($data['split_rate'])?$this->re_db_input($data['split_rate']):'';
+            $split_broker = isset($data['split_broker'])?$data['split_broker']:array();
+            $split_rate = isset($data['split_rate'])?$data['split_rate']:array();
             $another_level = isset($data['another_level'])?$this->re_db_input($data['another_level']):'';
             $cancel = isset($data['cancel'])?$this->re_db_input($data['cancel']):'';
             $buy_sell = isset($data['buy_sell'])?$this->re_db_input($data['buy_sell']):'';
@@ -65,9 +65,9 @@ class transaction extends db{
             else if($split==''){
 				$this->errors = 'Please enter split commission .';
 			}
-            /*else if($split_rate==''){
+            else if($split_rate==array()){
 				$this->errors = 'Please enter split rate commission received.';
-			}*/
+			}
             else if($hold_commission=='1' && $hold_resoan==''){
                 $this->errors = 'Please enter commission hold resons.';
             }
@@ -84,8 +84,18 @@ class transaction extends db{
                         `hold_resoan`='".$hold_resoan."',`hold_commission`='".$hold_commission."'".$this->insert_common_sql();
 						
                         $res = $this->re_db_query($q);
+                        $last_inserted_id = $this->re_db_insert_id();
                         
-						if($res){
+                        foreach($split_rate as $key_rate=>$val_rate)
+                        {
+                            if($val_rate != '' && $split_broker[$key_rate]>0)
+                            {
+                				$q = "INSERT INTO `".TRANSACTION_TRADE_SPLITS."` SET `transaction_id`='".$last_inserted_id."',`split_broker`='".$split_broker[$key_rate]."',`split_rate`='".$val_rate."'".$this->insert_common_sql();
+                				$res = $this->re_db_query($q);
+                            }
+                        }
+                            
+                        if($res){
 						    $_SESSION['success'] = INSERT_MESSAGE;
 							return true;
 						}
@@ -101,7 +111,20 @@ class transaction extends db{
                         `another_level`='".$another_level."',`cancel`='".$cancel."',`buy_sell`='".$buy_sell."',
                         `hold_resoan`='".$hold_resoan."',`hold_commission`='".$hold_commission."'".$this->update_common_sql()." WHERE `id`='".$id."'";
                         $res = $this->re_db_query($q);
-						if($res){
+                        
+                        $q = "UPDATE `".TRANSACTION_TRADE_SPLITS."` SET `is_delete`='1' WHERE `transaction_id`='".$id."'";
+				        $res = $this->re_db_query($q);
+                        
+                        foreach($split_rate as $key_rate=>$val_rate)
+                        {
+                            if($val_rate != '' && $split_broker[$key_rate]>0)
+                            {
+                				$q = "INSERT INTO `".TRANSACTION_TRADE_SPLITS."` SET `transaction_id`='".$id."',`split_broker`='".$split_broker[$key_rate]."',`split_rate`='".$val_rate."'".$this->insert_common_sql();
+                				$res = $this->re_db_query($q);
+                            }
+                        }
+                            
+                        if($res){
 						    $_SESSION['success'] = UPDATE_MESSAGE;
 							return true;
 						}
@@ -128,7 +151,7 @@ class transaction extends db{
             }
 			return $return;
 		}
-     public function delete($id){
+        public function delete($id){
 			$id = trim($this->re_db_input($id));
 			if($id>0 && ($status==0 || $status==1) ){
 				$q = "UPDATE `".$this->table."` SET `is_delete`='1' WHERE `id`='".$id."'";
@@ -146,6 +169,21 @@ class transaction extends db{
 			     $_SESSION['warning'] = UNKWON_ERROR;
 				return false;
 			}
+		}
+        public function edit_splits($id){
+			$return = array();
+			$q = "SELECT `at`.*
+					FROM `".TRANSACTION_TRADE_SPLITS."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`transaction_id`='".$id."'";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			while($row = $this->re_db_fetch_array($res)){
+    			     //print_r($row);exit;
+                     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
 		}
         public function search_transcation($data){
             //echo '<pre>';print_r($data);exit;

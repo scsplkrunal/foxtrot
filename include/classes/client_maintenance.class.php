@@ -506,7 +506,7 @@
 		public function select(){
 			$return = array();
 			
-			$q = "SELECT `at`.*,ac.type as account_type,bm.first_name as broker
+			$q = "SELECT `at`.*,ac.type as account_type,bm.first_name as broker_fname,bm.last_name as broker_lname
 					FROM `".$this->table."` AS `at`
                     LEFT JOIN `".ACCOUNT_TYPE."` as ac on ac.id=at.account_type
                     LEFT JOIN `".BROKER_MASTER."` as bm on bm.id=at.broker_name

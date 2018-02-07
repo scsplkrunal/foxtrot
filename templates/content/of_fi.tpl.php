@@ -53,7 +53,7 @@
                                                 <td><?php echo $val['total_scan']; ?></td>
                                                 <td><?php echo $val['total_match']; ?></td>
                                                 <td class="text-center">
-                                                    <a target="_blank" href="<?php echo CURRENT_PAGE; ?>?action=print&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-success"><i class="fa fa-print"></i> Print</a>
+                                                    <a href="<?php echo CURRENT_PAGE; ?>?open=ofac_view&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-success"><i class="fa fa-eye"></i> View</a>
                                                     <a onclick="return conf('<?php echo CURRENT_PAGE; ?>?action=delete&id=<?php echo $val['id']; ?>');" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
                                                 </td>
                                             </tr>
@@ -113,7 +113,7 @@
                                                     <td><?php echo $val['total_scan']; ?></td>
                                                     <td><?php echo $val['total_match']; ?></td>
                                                     <td class="text-center">
-                                                        <a target="_blank" href="<?php echo CURRENT_PAGE; ?>?action=print_fincen&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-success"><i class="fa fa-print"></i> Print</a>
+                                                        <a href="<?php echo CURRENT_PAGE; ?>?open=fincen_view&id=<?php echo $val['id']; ?>" class="btn btn-sm btn-success"><i class="fa fa-eye"></i> View</a>
                                                         <a onclick="return conf('<?php echo CURRENT_PAGE; ?>?action=delete_fincen&id=<?php echo $val['id']; ?>');" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
                                                     </td>
                                                 </tr>
@@ -128,6 +128,42 @@
                     </div>
                 </div>
         </div>
+        <div id="ofac_Modal" class="modal fade" role="dialog" aria-hidden="true" tabindex="-1">
+        	<div class="modal-dialog modal-lg">
+        		<!-- Modal content-->
+        		<div class="modal-content">
+                    <div class="modal-header" style="margin-bottom: 0px !important;">
+            			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+            			<h4 class="modal-title">OFAC Scan View</h4>
+            		</div>
+                    
+                    <div class="modal-body" id="output_screen_content">Loading...</div>
+        			
+                    <div class="modal-footer" style="margin-bottom: 0px !important;">
+            			<a href="<?php echo SITE_URL;?>report_ofac_client_check.php?open=ofac_print&id=<?php if(isset($_GET['id']) && $_GET['id'] != ''){ echo $_GET['id']; }else{ echo '0';}?> " class="btn btn-warning">Output to Printer</a>
+                        <a href="<?php echo SITE_URL;?>report_ofac_client_check.php?id=<?php if(isset($_GET['id']) && $_GET['id'] != ''){ echo $_GET['id']; }else{ echo '0';}?> " class="btn btn-warning">Output to PDF</a>
+            		</div>
+        		</div>
+        	</div>
+        </div>
+        <div id="fincen_Modal" class="modal fade" role="dialog" aria-hidden="true" tabindex="-1">
+        	<div class="modal-dialog modal-lg">
+        		<!-- Modal content-->
+        		<div class="modal-content">
+                    <div class="modal-header" style="margin-bottom: 0px !important;">
+            			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+            			<h4 class="modal-title">FINCEN Scan View</h4>
+            		</div>
+                    
+                    <div class="modal-body" id="fincen_output_screen_content">Loading...</div>
+        			
+                    <div class="modal-footer" style="margin-bottom: 0px !important;">
+            			<a href="<?php echo SITE_URL;?>report_fincen_client_check.php?open=fincen_print&id=<?php if(isset($_GET['id']) && $_GET['id'] != ''){ echo $_GET['id']; }else{ echo '0';}?> " class="btn btn-warning">Output to Printer</a>
+                        <a href="<?php echo SITE_URL;?>report_fincen_client_check.php?id=<?php if(isset($_GET['id']) && $_GET['id'] != ''){ echo $_GET['id']; }else{ echo '0';}?> " class="btn btn-warning">Output to PDF</a>
+            		</div>
+        		</div>
+        	</div>
+        </div>
    </div>
 </div>
 <?php if(isset($_GET['open']) && $_GET['open'] == "report"){?>
@@ -140,6 +176,54 @@ window.open('report_ofac_client_check.php','_blank');
 <script>
 location.href=location.href.replace(/&?open=([^&]$|[^&]*)/i, "");
 window.open('report_fincen_client_check.php','_blank');
+</script>
+<?php } ?>
+<?php if(isset($_GET['open']) && $_GET['open'] == "ofac_view" && isset($_GET['id']) && $_GET['id'] != ''){?>
+<script>
+//location.href=location.href.replace(/&?open=([^&]$|[^&]*)/i, "");
+$(document).ready(function(){
+    
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) 
+        {
+            document.getElementById("output_screen_content").innerHTML = this.responseText;
+        }
+    };
+    xmlhttp.open("GET", "ajax_ofacscan_view.php?id="+<?php echo $_GET['id']; ?>, true);
+    xmlhttp.send();
+
+
+    $('#ofac_Modal').modal({
+    		show: true
+    	});
+       //location.href=location.href.replace(/&?open=([^&]$|[^&]*)/i, ""); 
+});
+
+</script>
+<?php } ?>
+<?php if(isset($_GET['open']) && $_GET['open'] == "fincen_view" && isset($_GET['id']) && $_GET['id'] != ''){?>
+<script>
+//location.href=location.href.replace(/&?open=([^&]$|[^&]*)/i, "");
+$(document).ready(function(){
+    
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) 
+        {
+            document.getElementById("fincen_output_screen_content").innerHTML = this.responseText;
+        }
+    };
+    xmlhttp.open("GET", "ajax_fincenscan_view.php?id="+<?php echo $_GET['id']; ?>, true);
+    xmlhttp.send();
+
+
+    $('#fincen_Modal').modal({
+    		show: true
+    	});
+       //location.href=location.href.replace(/&?open=([^&]$|[^&]*)/i, ""); 
+});
+
 </script>
 <?php } ?>
 <script type="text/javascript">

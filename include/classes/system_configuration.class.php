@@ -56,7 +56,7 @@
             else
             {
                 
-                $q = "SELECT * FROM `".$this->table."` WHERE `is_delete`='0' AND `user_id`='".$user_id."'";
+                $q = "SELECT * FROM `".$this->table."` WHERE `is_delete`='0' AND `id`='1'";
     			$res = $this->re_db_query($q);
     			$return = $this->re_db_num_rows($res);
     			if($return>0){
@@ -67,7 +67,7 @@
     			        
                         $q = "UPDATE `".$this->table."` SET `company_name`='".$company_name."',`address1`='".$address1."',`address2`='".$address2."',`city`='".$city."',
                                 `state`='".$state."',`zip`='".$zip."',`minimum_check_amount`='".$minimum_check_amount."',`finra`='".$finra."',`sipc`='".$sipc."',`brocker_pick_lists`='".$brocker_pick_lists."',
-                                `branch_pick_lists`='".$branch_pick_lists."',`brocker_statement`='".$brocker_statement."' ".$con." ".$this->update_common_sql()." where `user_id`='".$user_id."'";
+                                `branch_pick_lists`='".$branch_pick_lists."',`brocker_statement`='".$brocker_statement."' ".$con." ".$this->update_common_sql()." where `id`='1'";
                                 
     					$res = $this->re_db_query($q);
                         $id = $this->re_db_insert_id();
@@ -141,11 +141,11 @@
 		 * @param int id
 		 * @return array of record if success, error message if any errors
 		 * */
-		public function edit($id){
+		public function edit(){
 			$return = array();
 			$q = "SELECT `at`.*
 					FROM `".$this->table."` AS `at`
-                    WHERE `at`.`is_delete`='0' AND `at`.`user_id`='".$id."'";
+                    WHERE `at`.`is_delete`='0' ORDER BY `at`.`id` ASC LIMIT 1";
 			$res = $this->re_db_query($q);
             if($this->re_db_num_rows($res)>0){
     			$return = $this->re_db_fetch_array($res);

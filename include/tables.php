@@ -79,4 +79,5 @@
     define('FINCEN_CHECK_DATA','ft_fincen_check_data_detail');
     define('IMPORT_FTP_MASTER','ft_import_ftp_master');
     define('IMPORT_CURRENT_FILES','ft_import_current_files');
+    define('TRANSACTION_TRADE_SPLITS','ft_transaction_trade_splits');
 ?>

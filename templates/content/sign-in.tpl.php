@@ -9,10 +9,10 @@
             <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
 			<form class="form-validate" action="<?php echo CURRENT_PAGE; ?>" method="post">
 				<div class="form-group">
-					<input type="text" name="username" id="username" class="form-control" placeholder="Username" value="<?php echo $username; ?>" autofocus="true" required="required" />
+					<input type="text" name="username" id="username" autocomplete="off" class="form-control" placeholder="Username" value="<?php echo $username; ?>" autofocus="true" required="required" />
 				</div>
 				<div class="form-group">
-					<input type="password" name="password" id="password" class="form-control" placeholder="Password" required="required" />
+					<input type="password" name="password" id="password" autocomplete="off" class="form-control" placeholder="Password" required="required" />
 				</div>
 				<button class="btn btn-warning bg-orange-active btn-block" type="submit" name="submit" value="submit"><i class="ti-unlock"></i> Sign In</button>
 			</form>

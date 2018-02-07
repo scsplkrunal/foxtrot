@@ -3,8 +3,10 @@ require_once("include/config.php");
 require_once(DIR_FS."islogin.php");
 $instance = new client_ress();
 $get_client_ress_data = array();
-$get_logo = $instance->get_system_logo($_SESSION['user_id']);
+$get_logo = $instance->get_system_logo();
 $system_logo = isset($get_logo['logo'])?$instance->re_db_input($get_logo['logo']):'';
+$get_company_name = $instance->get_company_name();
+$system_company_name = isset($get_company_name['company_name'])?$instance->re_db_input($get_company_name['company_name']):'';
 //print_r($get_logo);exit;
 $from_broker = '';
 if(isset($_GET['from_broker']) && $_GET['from_broker'] != '')
@@ -32,21 +34,28 @@ else
     $pdf->SetFont('times','',10);
     $html='<table border="0">
                 <tr>
-                   <td width="100%" style="font-size:10px;font-weight:bold;text-align:left;">'.date('d/m/Y h:i:s A').'</td>
-                </tr>
+                   <td width="50%" style="font-size:10px;font-weight:bold;text-align:left;">'.date('d/m/Y h:i:s A').'</td>';
+                   if(isset($system_company_name) && $system_company_name != '')
+                   {
+                        $html.='<td width="50%" style="font-size:10px;font-weight:bold;text-align:right;">'.$system_company_name.'</td>';
+                   }
+        $html.='</tr>
             </table>';
     $pdf->writeHTML($html, false, 0, false, 0);
     $pdf->Ln(5);
     
-    $pdf->SetFont('times','B',12);
-    $pdf->SetFont('times','',10);
-    $html='<table border="0" width="100%">
-                <tr>
-                    <td align="center">'.$img.'</td>
-                </tr>
-            </table>';
-    $pdf->writeHTML($html, false, 0, false, 0);
-    $pdf->Ln(5);
+    if(isset($system_logo) && $system_logo != '')
+    {
+        $pdf->SetFont('times','B',12);
+        $pdf->SetFont('times','',10);
+        $html='<table border="0" width="100%">
+                    <tr>
+                        <td align="center">'.$img.'</td>
+                    </tr>
+                </table>';
+        $pdf->writeHTML($html, false, 0, false, 0);
+        $pdf->Ln(5);
+    }
     
     $pdf->SetFont('times','B',12);
     $pdf->SetFont('times','',10);
@@ -91,7 +100,8 @@ else
                     <td><h4>TO BROKER</h4></td>
                     <td><h4>REASSIGMENT DATE </h4></td>
                 </tr>';
-    $pdf->Line(10, 77, 287, 77);$count=0;
+    //$pdf->Line(10, 77, 287, 77);
+    $count=0;
     if($get_client_ress_data != array())
     {
         foreach($get_client_ress_data as $trans_key=>$trans_data)

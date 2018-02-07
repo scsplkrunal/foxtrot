@@ -48,7 +48,7 @@
         }
     }
     else if($action=='view'){
-        $return = $instance->edit($_SESSION['user_id']);
+        $return = $instance->edit();
         $id = isset($return['id'])?$instance->re_db_output($return['id']):0;
         $company_name = isset($return['company_name'])?$instance->re_db_output($return['company_name']):'';
         $address1 = isset($return['address1'])?$instance->re_db_output($return['address1']):'';

@@ -85,7 +85,6 @@
     			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
     	            <thead>
     	                <tr>
-                            <th class="text-center">#NO</th>
                             <th>Broker Document Description</th>
                             <th>Required</th>
                             <th>Status</th>
@@ -98,7 +97,6 @@
                     foreach($return as $key=>$val){
                         ?>
     	                   <tr>
-                                <td class="text-center"><?php echo ++$count; ?></td>
                                 <td><?php  echo $val['desc']; ?></td>
                                 <td><?php if($val['required']=='1'){ echo 'Required';} else { echo 'Not required';}?></td>
                                 <td class="text-center">

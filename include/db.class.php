@@ -769,6 +769,8 @@ class db
             imagecopyresized($new_image, $old_image, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
     
             $imgt($new_image, $updir."thumb_".$img);
+            //imagealphablending($imgt,true);
+
             return true;    
         }
     }
@@ -878,11 +880,11 @@ class db
         $insert_common_sql = " , `created_ip`='".$this->get_client_ip()."', `created_by`='".$_SESSION['user_id']."', `created_time`='".CURRENT_DATETIME."' ";
         return $insert_common_sql;
     }
-    public function get_system_logo($id){
+    public function get_system_logo(){
     	$return = array();
     	$q = "SELECT `at`.`logo`
     			FROM `".SYSTEM_CONFIGURATION."` AS `at`
-                WHERE `at`.`is_delete`='0' AND `at`.`user_id`='".$id."'";
+                WHERE `at`.`is_delete`='0' ORDER BY `at`.`id` ASC LIMIT 1";
     	$res = $this->re_db_query($q);
         if($this->re_db_num_rows($res)>0){
     		$return = $this->re_db_fetch_array($res);
@@ -894,6 +896,17 @@ class db
     	$q = "SELECT `at`.`image`
     			FROM `".USER_MASTER."` AS `at`
                 WHERE `at`.`is_delete`='0' AND `at`.`id`='".$id."'";
+    	$res = $this->re_db_query($q);
+        if($this->re_db_num_rows($res)>0){
+    		$return = $this->re_db_fetch_array($res);
+        }
+    	return $return;
+    }
+    public function get_company_name(){
+    	$return = array();
+    	$q = "SELECT `at`.`company_name`
+    			FROM `".SYSTEM_CONFIGURATION."` AS `at`
+                WHERE `at`.`is_delete`='0' ORDER BY `at`.`id` ASC LIMIT 1";
     	$res = $this->re_db_query($q);
         if($this->re_db_num_rows($res)>0){
     		$return = $this->re_db_fetch_array($res);
