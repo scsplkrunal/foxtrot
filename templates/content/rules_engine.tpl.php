@@ -8,7 +8,6 @@
     			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
     	            <thead>
     	                <tr>
-                            <th class="text-center">#NO</th>
                             <th>In Force</th>
                             <th>Rule</th>
                             <th>Action</th>
@@ -25,7 +24,6 @@
                                 if($get_val['rule']==$val['id']){
                                 ?>
             	                   <tr>
-                                        <td class="text-center"><?php echo ++$count; ?></td>
                                         <td><input type="checkbox" class="checkbox" <?php if(isset($get_val['in_force']) && $get_val['in_force']==1){?>checked="true"<?php } ?> value="1" name="data[<?php echo $key; ?>][in_force]"/></td>
                                         <td><?php echo $val['rule'];?></td><input type="hidden" value="<?php echo $val['id'];?>" name="data[<?php echo $key; ?>][rule]"/>
                                         <td>
@@ -68,7 +66,6 @@
                     foreach($get_rules as $key=>$val){
                         ?>
     	                   <tr>
-                                <td class="text-center"><?php echo ++$count; ?></td>
                                 <td><input type="checkbox" class="checkbox" value="1" name="data[<?php echo $key; ?>][in_force]"/></td>
                                 <td><?php echo $val['rule'];?></td><input type="hidden" value="<?php echo $val['id'];?>" name="data[<?php echo $key; ?>][rule]"/>
                                 <td>

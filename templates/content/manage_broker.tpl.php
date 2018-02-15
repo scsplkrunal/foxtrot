@@ -14,8 +14,9 @@ $(function() {
 #table-scroll {
   height:300px;
   overflow:auto;  
-  margin-top:20px;
+  margin-top:0px;
 }
+
 span.multiselect-native-select {
 	position: relative
 }
@@ -108,7 +109,7 @@ function add_split(doc1){
                         '</select>'+
                     '</td>'+
                     '<td>'+
-                        '<input type="number" step="0.001" name="split[rap]['+flag2+']" value="" class="form-control" />'+
+                        '<input type="number" step="0.001" name="split[rate]['+flag2+']" value="" class="form-control" />'+
                     '</td>'+
                     '<td>'+
                         '<div id="demo-dp-range">'+
@@ -138,7 +139,9 @@ function add_split(doc1){
             
     $(html).insertAfter('#add_more_split');
 }
-
+$(document).on('click','.remove-row',function(){
+    $(this).closest('.tr').remove();
+});
 $(document).on('click','.remove-rowdiv',function(){
     $(this).closest('.main_div').remove();
 });var flag1=0;
@@ -235,11 +238,15 @@ function addlevel(leval){
         if(radio=='1')
         {
             $('.dollar').css('display','');
+            $(".dollar").children().prop('disabled',false);
+            $(".percentage").children().prop('disabled',true);
             $('.percentage').css('display','none');
         }
         else if(radio == '2'){
            $('.percentage').css('display','');
-            $('.dollar').css('display','none');
+           $(".percentage").children().prop('disabled',false);
+           $(".dollar").children().prop('disabled',true);
+           $('.dollar').css('display','none');
         }
         
     
@@ -249,17 +256,102 @@ $(document).ready(function(){
         if(radio=='1')
         {
             $('.dollar').css('display','');
+            $(".dollar").children().prop('disabled',false);
+            $(".percentage").children().prop('disabled',true);
             $('.percentage').css('display','none');
         }
         else if(radio == '2'){
-            $('.percentage').css('display','');
-            $('.dollar').css('display','none');
+           $('.percentage').css('display','');
+           $(".percentage").children().prop('disabled',false);
+           $(".dollar").children().prop('disabled',true);
+           $('.dollar').css('display','none');
         }
         
     });
 $(document).on('click','.remove-row',function(){
     $(this).closest('.tr').remove();
-});var flag=0,test=0;
+});
+var flag=0;
+function addlevel_new(leval){
+        
+    if(flag==0){
+        flag=leval+1;
+        }
+    else{ flag++ ; }
+
+    var html = '<tr class="tr">'+
+                    '<td>'+
+                    '<div class="input-group dollar_new">'+
+                        '<input type="number" name="leval[from]['+flag+']" class="form-control" />'+
+                        '<span class="input-group-addon">$</span>'+
+                    '</div>'+
+                    '<div class="input-group percentage_new" style="display: none;">'+
+                        '<input type="number" step="0.001" name="leval[from]['+flag+']" class="form-control" />'+
+                        '<span class="input-group-addon">%</span>'+
+                    '</div>'+
+                    '</td>'+
+                    '<td>'+
+                    '<div class="input-group dollar_new">'+
+                        '<input type="number" name="leval[to]['+flag+']" class="form-control" />'+
+                        '<span class="input-group-addon">$</span>'+
+                    '</div>'+
+                    '<div class="input-group percentage_new" style="display: none;">'+
+                        '<input type="number" step="0.001" name="leval[to]['+flag+']" class="form-control" />'+
+                        '<span class="input-group-addon">%</span>'+
+                    '</div>'+
+                    '</td>'+
+                    '<td>'+
+                        '<input type="number" step="0.001" name="leval[per]['+flag+']" value="" class="form-control" />'+
+                    '</td>'+
+                    '<td>'+
+                        '<button type="button" tabindex="-1" class="btn remove-row btn-icon btn-circle"><i class="fa fa-minus"></i></button>'+
+                    '</td>'+
+                '</tr>';
+                
+            
+    $(html).insertAfter('#add_level_new');
+    
+    
+    var radio = $('input[name=transaction_type_general_new]:checked').val();
+        if(radio=='1')
+        {
+            $('.dollar_new').css('display','');
+            $(".dollar_new").children().prop('disabled',false);
+            $(".percentage_new").children().prop('disabled',true);
+            $('.percentage_new').css('display','none');
+        }
+        else if(radio == '2'){
+          
+           $('.percentage_new').css('display','');
+           $(".percentage_new").children().prop('disabled',false);
+           $(".dollar_new").children().prop('disabled',true);
+           $('.dollar_new').css('display','none');
+        }
+        
+    
+}
+$(document).ready(function(){    
+    var radio = $('input[name=transaction_type_general_new]:checked').val();
+        if(radio=='1')
+        {
+            $('.dollar_new').css('display','');
+            $(".dollar_new").children().prop('disabled',false);
+            $(".percentage_new").children().prop('disabled',true);
+            $('.percentage_new').css('display','none');
+        }
+        else if(radio == '2'){
+           
+           $('.percentage_new').css('display','');
+           $(".percentage_new").children().prop('disabled',false);
+           $(".dollar_new").children().prop('disabled',true);
+           $('.dollar_new').css('display','none');
+        }
+        
+    });
+$(document).on('click','.remove-row',function(){
+    $(this).closest('.tr').remove();
+});
+var flag=0,test=0;
 function addMoreDocs(note_doc){
     $('#demo-dp-range .input-daterange').datepicker({
         format: "mm/dd/yyyy",
@@ -279,7 +371,12 @@ function addMoreDocs(note_doc){
                         '<input type="checkbox" name="data[docs_receive]['+test+']" class="checkbox" value="1" id="docs_receive"/>'+
                     '</td>'+
                     '<td>'+
-                        '<input class="form-control" value="" name="data[docs_description]['+test+']" id="docs_description" type="text" />'+
+                        '<select name="data[docs_description]['+test+']" id="docs_description" class="form-control">'+
+                            '<option value="">Select Documents</option>'+
+                            <?php foreach($select_broker_docs as $key_broker_doc=>$val_broker_doc){?>
+                            '<option value="<?php echo $val_broker_doc['id'];?>" ><?php echo $val_broker_doc['desc'];?></option>'+
+                            <?php } ?>
+                        '</select>'+
                     '</td>'+
                     '<td>'+
                         '<div id="demo-dp-range">'+
@@ -365,29 +462,34 @@ var waitingDialog = waitingDialog || (function ($) {
 
 </script>
 <div class="container">
-<h1>Broker Maintenance</h1>
+<h1 class="topfixedtitle">Broker Maintenance</h1>
 <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
-<div class="col-lg-12 well">
+<div class="col-lg-12 well fixedwell">
     <div class="tab-content col-md-12">
          <?php
         if($action=='add_new'||($action=='edit' && $id>0)){
             ?>
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs topfixedtabs">
           <!--<li class="active"><a href="#tab_default" data-toggle="pill">Home</a></li>-->
           <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="general"){ echo "active"; }else if(!isset($_GET['tab'])){echo "active";}else{ echo '';} ?>"><a href="#tab_a" data-toggle="pill">General</a></li>
-          <?php if(isset($_SESSION['last_insert_id']) && $_SESSION['last_insert_id']!=''){?>
           <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="payouts"){ echo "active"; } ?>"><a href="#tab_b" data-toggle="pill">Payouts</a></li>
           <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="charges"){ echo "active"; } ?>"><a href="#tab_c" data-toggle="pill">Charges</a></li>
           <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="licences"){ echo "active"; } ?>"><a href="#tab_d" data-toggle="pill">Licences</a></li>
-          <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="registers"){ echo "active"; } ?>"><a href="#tab_e" data-toggle="pill">Registers</a></li>
+          <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="registers"){ echo "active"; } ?>"><a href="#tab_e" data-toggle="pill">Series Registrations</a></li>
+          <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="required_docs"){ echo "active"; } ?>"><a href="#tab_f" data-toggle="pill">Required Docs</a></li>
+          <?php /*if(isset($_SESSION['last_insert_id']) && $_SESSION['last_insert_id']!=''){?>
+          <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="payouts"){ echo "active"; } ?>"><a href="#tab_b" data-toggle="pill">Payouts</a></li>
+          <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="charges"){ echo "active"; } ?>"><a href="#tab_c" data-toggle="pill">Charges</a></li>
+          <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="licences"){ echo "active"; } ?>"><a href="#tab_d" data-toggle="pill">Licences</a></li>
+          <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="registers"){ echo "active"; } ?>"><a href="#tab_e" data-toggle="pill">Series Registrations</a></li>
           <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="required_docs"){ echo "active"; } ?>"><a href="#tab_f" data-toggle="pill">Required Docs</a></li>
           <?php }else{ ?>
           <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="payouts"){ echo "active"; } ?>" style="pointer-events: none;"><a href="#tab_b" data-toggle="pill">Payouts</a></li>
           <li class="<<?php if(isset($_GET['tab'])&&$_GET['tab']=="charges"){ echo "active"; } ?>"  style="pointer-events: none;"><a href="#tab_c" data-toggle="pill">Charges</a></li>
           <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="licences"){ echo "active"; } ?>" style="pointer-events: none;"><a href="#tab_d" data-toggle="pill">Licences</a></li>
-          <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="registers"){ echo "active"; } ?>" style="pointer-events: none;"><a href="#tab_e" data-toggle="pill">Registers</a></li>
+          <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="registers"){ echo "active"; } ?>" style="pointer-events: none;"><a href="#tab_e" data-toggle="pill">Series Registrations</a></li>
           <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="required_docs"){ echo "active"; } ?>" style="pointer-events: none;"><a href="#tab_f" data-toggle="pill">Required Docs</a></li>
-          <?php } ?>
+          <?php } */?>
           <div class="panel-control" style="float: right;">
     			<div class="btn-group dropdown">
     				<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
@@ -398,22 +500,7 @@ var waitingDialog = waitingDialog || (function ($) {
     		</div>
        </ul>
        <form method="post">
-                <div class="panel-footer">
-                    <div class="selectwrap">
-                         <?php if($action=='edit' && $id>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;"><input type="button" name="previous" value="&laquo; Previous" /></a><?php } ?>
-                         <?php if($action=='edit' && $id>0){?>
-                            <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 12% !important;"/></a>
-                         <?php } ?>
-                         <a href="#broker_notes" data-toggle="modal"><input type="button" onclick="get_broker_notes();" name="notes" value="Notes" /></a>
-                         <a href="#client_transactions" data-toggle="modal"><input type="button" name="transactions" value="Transactions" /></a>
-                         <a href="#broker_attach" data-toggle="modal"><input type="button"  onclick="get_broker_attach();" name="attach" value="Attachments" /></a>
-                         <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
-                         <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
-                         <?php if($action=='edit' && $id>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a" style="float: right;"><input type="button" name="next" value="Next &raquo;" /></a><?php } ?>
-                    </div>
-                 </div>
-                 
-            <br /><br />
+            <br />
             <div class="tab-content">                 
             <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="general"){ echo "active"; }else if(!isset($_GET['tab'])){echo "active";}else{ echo '';} ?>" id="tab_a">
                 
@@ -997,246 +1084,22 @@ var waitingDialog = waitingDialog || (function ($) {
                         <div class="panel-overlay-wrap">
                             <div class="panel">
             					<div class="panel-body">
-                                <h4>Payout </h4>
-                                   <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
-                                    <div class="row">
-                                        <!--<div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Description </label>
-                                                <input type="text" name="description" id="description" disabled="true" value="" class="form-control" />
-                                            </div>
-                                        </div>-->
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Payout on </label><br />
-                                                <label class="radio-inline">
-                                                  <input type="radio" class="radio" <?php if(isset($edit_payout['transaction_type_general']) && $edit_payout['transaction_type_general']=='1'){?>checked="true"<?php } ?> name="transaction_type_general" value="1"  checked="checked" onclick="display_icon(this.value);"/> Amount
-                                                </label>
-                                                <label class="radio-inline">
-                                                  <input type="radio" class="radio" <?php if(isset($edit_payout['transaction_type_general']) && $edit_payout['transaction_type_general']=='2'){?>checked="true"<?php } ?> name="transaction_type_general" value="2" onclick="display_icon(this.value);"/> Percentage
-                                                </label>
-                                            </div>
-                                        </div>
-                                   </div>
+                                <h4>Payout Schedule <a href="#broker_payout_schedule" data-toggle="modal" class="btn btn-sm btn-success" style="display: inline !important; float: right !important;"><i class="fa fa-plus"></i> Add New Payout</a></h4>
                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>Payout Grid </label>
-                                                <div class="table-responsive">
-                                                    <table class="table table-bordered table-stripped table-hover">
-                                                        <thead>
-                                                            <th>From</th>
-                                                            <th>To</th>
-                                                            <th>Rate</th>
-                                                            <th>Add Level</th>
-                                                        </thead>
-                                                        <tbody>
-                                                                <?php $doc_id1=0; 
-                                                            if(isset($_GET['action']) && $_GET['action']=='edit' && !empty($edit_grid)){ 
-                                                            foreach($edit_grid as $regkey=>$regval){ $doc_id1++; 
-                                                                    ?>
-                                                                <tr>
-                                                                    <td>
-                                                                        <?php if(isset($edit_payout['transaction_type_general']) && $edit_payout['transaction_type_general'] == '1'){?>
-                                                                        <div class="input-group">
-                                                                          <input type="number" name="leval[from][<?php echo $doc_id1;?>]" value="<?php echo $regval['from']; ?>" class="form-control" />
-                                                                          <span class="input-group-addon">$</span>
-                                                                        </div>
-                                                                        <?php } else if(isset($edit_payout['transaction_type_general']) && $edit_payout['transaction_type_general'] == '2'){?>
-                                                                        <div class="input-group">
-                                                                          <input type="number" step="0.001" name="leval[from][<?php echo $doc_id1;?>]" value="<?php echo $regval['from']; ?>" class="form-control" />
-                                                                          <span class="input-group-addon">%</span>
-                                                                        </div>
-                                                                        <?php } ?>
-                                                                    </td>
-                                                                    <td>
-                                                                        <?php if(isset($edit_payout['transaction_type_general']) && $edit_payout['transaction_type_general'] == '1'){?>
-                                                                        <div class="input-group">
-                                                                          <input type="number" name="leval[to][<?php echo $doc_id1;?>]" value="<?php echo $regval['to']; ?>" class="form-control" />
-                                                                          <span class="input-group-addon">$</span>
-                                                                        </div>
-                                                                        <?php } else if(isset($edit_payout['transaction_type_general']) && $edit_payout['transaction_type_general'] == '2'){?>
-                                                                        <div class="input-group">
-                                                                          <input type="number" step="0.001" name="leval[to][<?php echo $doc_id1;?>]" value="<?php echo $regval['to']; ?>" class="form-control" />
-                                                                          <span class="input-group-addon">%</span>
-                                                                        </div>
-                                                                        <?php } ?>
-                                                                        <!--<div class="input-group">
-                                                                          <input type="number" step="0.001" name="leval[to][<?php echo $doc_id1;?>]" value="<?php echo $regval['to']; ?>" class="form-control" />
-                                                                          <?php if(isset($edit_payout['transaction_type_general']) && $edit_payout['transaction_type_general'] == '1'){?>
-                                                                          <span class="input-group-addon">$</span>
-                                                                          <?php } else if(isset($edit_payout['transaction_type_general']) && $edit_payout['transaction_type_general'] == '2'){?>
-                                                                          <span class="input-group-addon">%</span>
-                                                                          <?php } ?>
-                                                                        </div>-->
-                                                                    </td>
-                                                                    <td><input type="number" step="0.001" name="leval[per][<?php echo $doc_id1;?>]" value="<?php echo $regval['per']; ?>" class="form-control" />
-                                                                        <!--select name="leval[per][<?php echo $doc_id1;?>]"  class="form-control" >
-                                                                            <option value="">Select Percentages</option>
-                                                                            <?php foreach($select_percentage as $key => $val) {?>
-                                                                            <option <?php if(isset($regval['per']) && $regval['per']== $key){?>selected="true"<?php }?> value="<?php echo $key?>"><?php echo $val['percentage']?></a></option>
-                                                                            <?php } ?>
-                                                                        </select-->
-                                                                    </td>
-                                                                    <td>
-                                                                        <button type="button" tabindex="-1" class="btn remove-row btn-icon btn-circle"><i class="fa fa-minus"></i></button>
-                                                                    </td>
-                                                                </tr>
-                                                            <?php } }  $doc_id1++;?>
-                                                                 <tr id="add_level">
-                                                                    <td>
-                                                                        <div class="input-group dollar">
-                                                                        <input type="number"  name="leval[from][<?php  echo $doc_id1;?>]" class="form-control" max="999999999"/>
-                                                                        <span class="input-group-addon">$</span>
-                                                                        </div>
-                                                                        <div class="input-group percentage" style="display: none;">
-                                                                        <input type="number"  step="0.001" name="leval[from][<?php  echo $doc_id1;?>]" class="form-control" max="999999999"/>
-                                                                        <span class="input-group-addon">%</span>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <div class="input-group dollar">
-                                                                        <input type="number" name="leval[to][<?php  echo $doc_id1;?>]" class="form-control" max="999999999"/>
-                                                                        <span class="input-group-addon">$</span>
-                                                                        </div>
-                                                                        <div class="input-group percentage" style="display: none;">
-                                                                        <input type="number" step="0.001" name="leval[to][<?php  echo $doc_id1;?>]" class="form-control" max="999999999"/>
-                                                                        <span class="input-group-addon">%</span>
-                                                                        </div>
-                                                                        <!--<div class="input-group">
-                                                                        <input type="number" step="0.001" name="leval[to][<?php  echo $doc_id1;?>]" class="form-control" max="999999999"/>
-                                                                        <span class="input-group-addon dollar" id="dollar_to">$</span>
-                                                                        <span class="input-group-addon percentage" id="percentage_to" style="display: none;">%</span>
-                                                                        </div>-->
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="number" step="0.001" name="leval[per][<?php echo $doc_id1;?>]" value="" class="form-control" />
-                                                                        <!--select name="leval[per][<?php  echo $doc_id1;?>]"  class="form-control" >
-                                                                            <option value="">Select Percentages</option>
-                                                                            <?php foreach($select_percentage as $key => $val) {?>
-                                                                            <option value="<?php echo $key?>"><?php echo $val['percentage']?></a></option>
-                                                                            <?php } ?>
-                                                                        </select-->
-                                                                    </td>
-                                                                    <td>
-                                                                        <button type="button" onclick="addlevel(<?php  echo $doc_id1;?>);" class="btn btn-purple btn-icon btn-circle"><i class="fa fa-plus"></i></button>
-                                                                    </td>
-                                                                </tr>
-                                                                <?php   ?>
-                                                            
-                                                      </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                   </div>
-                                   </div>
-                                   <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Apply to Product Categories </label><br />
-                                                <select name="product_category1"  class="form-control">
-                                                    <option value="">Select Product Category</option>
-                                                    <option <?php if(isset($edit_payout['product_category1']) && $edit_payout['product_category1']=='0'){?> selected="true"<?php } ?> value="0">All Product Categories</option>
-                                                    <?php foreach($product_category as $key=>$val){?>
-                                                    <option value="<?php echo $val['id'];?>" <?php if(isset($edit_payout['product_category1']) && $edit_payout['product_category1']==$val['id']){?> selected="true"<?php } ?>><?php echo $val['type'];?></option>
-                                                    <?php } ?>
-                                                </select>
-                                                <!--<input type="checkbox" name="product_category_all" id="product_category_all" value="0"  class="checkbox" style="display: inline;"/>&nbsp;<label>All</label><br />
-                                                <input type="checkbox" name="product_category1" <?php if(isset($edit_payout['product_category1']) && $edit_payout['product_category1']=='1'){?>checked="true"<?php } ?> id="product_category1" value="1" class="checkbox" style="display: inline;"/>&nbsp;<label>Mutual Funds</label>&nbsp;&nbsp;
-                                                <input type="checkbox" name="product_category2" <?php if(isset($edit_payout['product_category2']) && $edit_payout['product_category2']=='1'){?>checked="true"<?php } ?> id="product_category2" value="1" class="checkbox" style="display: inline;"/>&nbsp;<label>Mutual Fund Trials</label>&nbsp;&nbsp;
-                                                <input type="checkbox" name="product_category3" <?php if(isset($edit_payout['product_category3']) && $edit_payout['product_category3']=='1'){?>checked="true"<?php } ?> id="product_category3" value="1" class="checkbox" style="display: inline;"/>&nbsp;<label>Stocks</label>&nbsp;&nbsp;
-                                                <input type="checkbox" name="product_category4" <?php if(isset($edit_payout['product_category4']) && $edit_payout['product_category4']=='1'){?>checked="true"<?php } ?> id="product_category4" value="1" class="checkbox" style="display: inline;"/>&nbsp;<label>Bonds</label>&nbsp;&nbsp;-->
-                                            </div>
-                                        </div>
-                                   </div>
-                                   <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
-                                   <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Basis </label><br />
-                                                <input type="radio" name="basis" <?php if(isset($edit_payout['basis']) && $edit_payout['basis']=='1'){?>checked="true"<?php } ?>  class="radio" style="display: inline;" value="1"/>&nbsp;<label>Net Earnings</label>&nbsp;&nbsp;
-                                                <input type="radio" name="basis" <?php if(isset($edit_payout['basis']) && $edit_payout['basis']=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Gross Concessions</label>&nbsp;&nbsp;
-                                                <input type="radio" name="basis" <?php if(isset($edit_payout['basis']) && $edit_payout['basis']=='3'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="3"/>&nbsp;<label>Principal</label>&nbsp;&nbsp;
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Cumulative </label><br />
-                                                <input type="radio" name="cumulative" <?php if(isset($edit_payout['cumulative']) && $edit_payout['cumulative']=='1'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="1"/>&nbsp;<label>Payroll-To-Date</label>&nbsp;&nbsp;
-                                                <input type="radio" name="cumulative" <?php if(isset($edit_payout['cumulative']) && $edit_payout['cumulative']=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Month-To-Date</label>&nbsp;&nbsp;
-                                                <input type="radio" name="cumulative" <?php if(isset($edit_payout['cumulative']) && $edit_payout['cumulative']=='3'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="3"/>&nbsp;<label>Year-To-Date</label>&nbsp;&nbsp;
-                                            </div>
-                                        </div>
-                                   </div>
-                                   <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Year </label><br />
-                                                <input type="radio" name="year" <?php if(isset($edit_payout['year']) && $edit_payout['year']=='1'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="1"/>&nbsp;<label>Calendar</label>&nbsp;&nbsp;
-                                                <input type="radio" name="year" <?php if(isset($edit_payout['year']) && $edit_payout['year']=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Rolling</label>&nbsp;&nbsp;
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Reset </label>
-                                                <div id="demo-dp-range">
-                                                    <div class="input-daterange input-group" id="datepicker">
-                                                        <input type="text" name="reset"  value="<?php if(isset($edit_payout['reset']) && $edit_payout['reset']!=''){ echo date('m/d/Y',strtotime($edit_payout['reset'])); } ?>"  class="form-control"  />
-                                                        <label class="input-group-addon btn" for="reset">
-                                                           <span class="fa fa-calendar"></span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                   </div>
-                                   <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Calculation Detail </label><br />
-                                                <input type="radio" name="calculation_detail" <?php if(isset($edit_payout['calculation_detail']) && $edit_payout['calculation_detail']=='1'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="1"/>&nbsp;<label>Intra-Trade</label>&nbsp;&nbsp;
-                                                <input type="radio" name="calculation_detail" <?php if(isset($edit_payout['calculation_detail']) && $edit_payout['calculation_detail']=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Inter-Trade</label>&nbsp;&nbsp;
-                                                <input type="radio" name="calculation_detail" <?php if(isset($edit_payout['calculation_detail']) && $edit_payout['calculation_detail']=='3'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="3"/>&nbsp;<label>Payroll-Period</label>&nbsp;&nbsp;
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Clearing Charge Deducted From</label><br />
-                                                <input type="radio" name="clearing_charge_deducted_from" <?php if(isset($edit_payout['clearing_charge_deducted_from']) && $edit_payout['clearing_charge_deducted_from']=='1'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="1"/>&nbsp;<label>Net</label>&nbsp;&nbsp;
-                                                <input type="radio" name="clearing_charge_deducted_from" <?php if(isset($edit_payout['clearing_charge_deducted_from']) && $edit_payout['clearing_charge_deducted_from']=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Gross</label>&nbsp;&nbsp;
-                                            </div>
-                                        </div>
-                                   </div>
-                                   </div>
-                                   <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Description</label>
-                                                <select name="description_type"  class="form-control">
-                                                    <option value="0">Select Option</option>
-                                                    <option <?php if(isset($edit_payout['description_type']) && $edit_payout['description_type']=='1'){?>selected="true"<?php }?> value="1">This is product type</option>
-                                                    <option <?php if(isset($edit_payout['description_type']) && $edit_payout['description_type']=='2'){?>selected="true"<?php }?> value="2">This is product type</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Team Members </label>
-                                                <select name="team_member"  class="multiselect-ui form-control" multiple="multiple" >
-                                                    <option value="">Select Broker</option>
-                                                    <?php foreach($select_broker as $key => $val) {?>
-                                                    <option <?php if(isset($edit_payout['team_member']) && $edit_payout['team_member']==$key){?>selected="true"<?php }?> value="<?php echo $key?>"><?php echo $val['first_name']?></a></option>
-                                                    <?php } ?>
-                                                </select>
-                                            </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Select Payout Schedule </label><br />
+                                            <select name="select_payout_schedule"  class="form-control">
+                                                <option value="">Select Payout Schedule</option>
+                                                <?php foreach($get_payout_schedule as $key=>$val){?>
+                                                <option value="<?php echo $val['id'];?>" ><?php echo $val['payout_schedule_name'];?></option>
+                                                <?php } ?>
+                                            </select>
                                         </div>
                                     </div>
-                                   
-                                    <br />
-                                    
+                                </div>
+                                   <br />
                                     <h4>Overrides </h4>
-                                    
                                     <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
                                     <!--<div class="row">
                                         <div class="col-md-6">
@@ -1454,7 +1317,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                         <?php $doc_id3=0; 
                                                                 if(isset($_GET['action']) && $_GET['action']=='edit' && !empty($edit_split)){
                                                                 foreach($edit_split as $regkey=>$regval){
-                                                                    $doc_id3 = $regval['id'];
+                                                                    //$doc_id3 = $regval['id'];
                                                             ?>
                                                             <tr>
                                                                 <?php $doc_id3++; ?>
@@ -1467,7 +1330,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                     </select>
                                                                 </td>
                                                                 <td>
-                                                                    <input type="number" step="0.001" name="split[rap][<?php echo $doc_id3;?>]" value="<?php echo $regval['rap'];?>" class="form-control" />
+                                                                    <input type="number" step="0.001" name="split[rate][<?php echo $doc_id3;?>]" value="<?php echo $regval['rate'];?>" class="form-control" />
                                                                     <!--select name="split[rate][<?php echo $doc_id3;?>]"  class="form-control" >
                                                                         <option value="">Select Percentages</option>
                                                                         <?php foreach($select_percentage as $key => $val) {?>
@@ -1478,7 +1341,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                 <td>
                                                                     <div id="demo-dp-range">
                                                                         <div class="input-daterange input-group" id="datepicker">
-                                                                            <input type="text" name="split[start][<?php echo $doc_id3;?>]"  class="form-control" value="<?php echo date('m-d-Y',strtotime($regval['start']))?>" />
+                                                                            <input type="text" name="split[start][<?php echo $doc_id3;?>]"  class="form-control" value="<?php echo date('m/d/Y',strtotime($regval['start']))?>" />
                                                                             <label class="input-group-addon btn" for="split[start][<?php echo $doc_id3;?>]">
                                                                                <span class="fa fa-calendar"></span>
                                                                             </label>
@@ -1488,7 +1351,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                 <td>
                                                                     <div id="demo-dp-range">
                                                                         <div class="input-daterange input-group" id="datepicker">
-                                                                            <input type="text" name="split[until][<?php echo $doc_id3;?>]"  class="form-control" value="<?php echo date('m-d-Y',strtotime($regval['until']))?>" />
+                                                                            <input type="text" name="split[until][<?php echo $doc_id3;?>]"  class="form-control" value="<?php echo date('m/d/Y',strtotime($regval['until']))?>" />
                                                                             <label class="input-group-addon btn" for="split[until][<?php echo $doc_id3;?>]">
                                                                                <span class="fa fa-calendar"></span>
                                                                             </label>
@@ -1497,7 +1360,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                 </td>
                                                                 
                                                                 <td>
-                                                                    <button type="button" tabindex="-1" class="btn remove-rowdiv btn-icon btn-circle"><i class="fa fa-minus"></i></button><br />
+                                                                    <button type="button" tabindex="-1" class="btn remove-row btn-icon btn-circle"><i class="fa fa-minus"></i></button><br />
                                                                 </td>
                                                             </tr>
                                                             <?php } } $doc_id3++ ; ?>
@@ -1512,7 +1375,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                     </select>
                                                                 </td>
                                                                 <td>
-                                                                    <input type="number" step="0.001" name="split[rap][<?php echo $doc_id3;?>]" value="" class="form-control" />
+                                                                    <input type="number" step="0.001" name="split[rate][<?php echo $doc_id3;?>]" value="" class="form-control" />
                                                                     <!--select name="split[rate][<?php echo $doc_id3;?>]"  class="form-control" >
                                                                         <option value="">Select Percentages</option>
                                                                         <?php foreach($select_percentage as $key => $val) {?>
@@ -1550,107 +1413,6 @@ var waitingDialog = waitingDialog || (function ($) {
                                             </div>
                                         </div>
                                     </div>
-                                   <!-- <?php $doc_id3=0; 
-                                        if(isset($_GET['action']) && $_GET['action']=='edit' && !empty($edit_split)){
-                                        foreach($edit_split as $regkey=>$regval){
-                                            $doc_id3 = $regval['id'];
-                                    ?>
-                                    <button type="button" tabindex="-1" style="float:right;" class="btn remove-rowdiv btn-icon btn-circle"><i class="fa fa-minus"></i></button><br />
-                                   
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Receiving Rep </label>
-                                                <select name="split[rap][<?php echo $doc_id3;?>]"  class="form-control" >
-                                                    <option value="0">Select Broker</option>
-                                                    <option value="1">Broker1</option>
-                                                    <option value="2">Broker2</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Rate </label>
-                                                <select name="split[rate][<?php echo $doc_id3;?>]"  class="form-control" >
-                                                    <option value="">Select Percentages</option>
-                                                    <?php foreach($select_percentage as $key => $val) {?>
-                                                    <option <?php if(isset($regval['per']) && $regval['per']==$key){?>selected="true"<?php } ?> value="<?php echo $key?>"><?php echo $val['percentage']?></option>
-                                                    <?php } ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Start </label>
-                                                <div id="demo-dp-range">
-                                                    <div class="input-daterange input-group" id="datepicker">
-                                                        <input type="text" name="split[start][<?php echo $doc_id3;?>]"  class="form-control" value="<?php echo $regval['start']?>" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Until </label>
-                                                <div id="demo-dp-range">
-                                                    <div class="input-daterange input-group" id="datepicker">
-                                                        <input type="text" name="split[until][<?php echo $doc_id3;?>]"  class="form-control" value="<?php echo $regval['until']?>" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <?php }} $doc_id3++; ?>
-                                    <button type="button" onclick="add_split(<?php echo $doc_id3;?>);"  style="float: right;" class="btn btn-purple btn-icon btn-circle"><i class="fa fa-plus"></i></button><br />
-                                    <div id="add_more_split">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Receiving Rep </label>
-                                                <select name="split[rap][<?php echo $doc_id3;?>]"  class="form-control" >
-                                                    <option value="0">Select Broker</option>
-                                                    <option value="1">Broker1</option>
-                                                    <option value="2">Broker2</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Rate </label>
-                                                <select name="split[rate][<?php echo $doc_id3;?>]"  class="form-control" >
-                                                    <option value="">Select Percentages</option>
-                                                    <?php foreach($select_percentage as $key => $val) {?>
-                                                    <option value="<?php echo $key?>"><?php echo $val['percentage']?></a></option>
-                                                    <?php } ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Start </label>
-                                                <div id="demo-dp-range">
-                                                    <div class="input-daterange input-group" id="datepicker">
-                                                        <input type="text" name="split[start][<?php echo $doc_id3;?>]"  class="form-control" value="" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Until </label>
-                                                <div id="demo-dp-range">
-                                                    <div class="input-daterange input-group" id="datepicker">
-                                                        <input type="text" name="split[until][<?php echo $doc_id3;?>]"  class="form-control" value="" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    </div>-->
                                 </div><br />
                                </div>
                             </div>
@@ -1663,12 +1425,11 @@ var waitingDialog = waitingDialog || (function ($) {
                     
                  </div>
                  <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="charges"){ echo "active"; } ?>" id="tab_c">
-                 <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
+                 <?php require_once(DIR_FS_INCLUDES."alerts.php");?>
                         <div class="panel-overlay-wrap">
                             <div class="panel">
                                 <div class="panel-heading">
-                                    
-                                    <h2 class="panel-title" style="font-size: 25px;"><input type="checkbox" class="checkbox" name="pass_through" style="display: inline !important;"/><b> None (Pass Through)</b></h2>
+                                    <h2 class="panel-title" style="font-size: 25px;"><input type="checkbox" class="checkbox" value="1" name="pass_through1" id="pass_through1" style="display: inline !important;" onclick="pass_through_check();"<?php if(isset($edit_charge_check['none_check']) && $edit_charge_check['none_check'] == 1){echo 'checked="true"';}?> /><b> None (Pass Through)</b></h2>
                                 </div>
             					<div class="panel-body">
                                     <div class="row">
@@ -1715,11 +1476,12 @@ var waitingDialog = waitingDialog || (function ($) {
                                            </div>
                                         </div>
                                     </div>
+                                    
                                     <?php 
                                     foreach($charge_type_arr as $charge_type){
                                         ?>
                                         <div class="row">
-                                             <div class="col-md-12">
+                                             <div class="col-md-12 pass_through_charge">
                                                 <div class="form-group">
                                                     <h4><b><?php echo $charge_type['charge_type']; ?></b></h4>
                                                 </div>
@@ -1731,7 +1493,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                         foreach($charge_name_arr as $charge_name){ 
                                         ?>
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-4 pass_through_charge">
                                                 <div class="form-group">
                                                     <h4 style="float: right;"><?php echo $charge_name['charge_name']; ?></h4>
                                                 </div>
@@ -1743,7 +1505,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                 if($charge_detail['account_type']=='1' && $charge_detail['account_process']=='1')
                                                 {
                                                     ?>
-                                                    <div class="col-md-2">
+                                                    <div class="col-md-2 pass_through_charge">
                                                         <div class="form-group">
                                                           <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="<?php echo (isset($broker_charge[$charge_type['charge_type_id']][$charge_name['charge_name_id']]['1']['1']) && $broker_charge[$charge_type['charge_type_id']][$charge_name['charge_name_id']]['1']['1']!='')?$broker_charge[$charge_type['charge_type_id']][$charge_name['charge_name_id']]['1']['1']:'0.00'; ?>" name="inp_type[<?php echo $charge_type['charge_type_id']; ?>][<?php echo $charge_name['charge_name_id']; ?>][1][1]" type="text" />
                                                        </div>
@@ -1752,7 +1514,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                     if(count($charge_detail_arr)=='2')
                                                     {
                                                         ?>
-                                                        <div class="col-md-2">
+                                                        <div class="col-md-2 pass_through_charge">
                                                             <div class="form-group">
                                                            </div>
                                                         </div>
@@ -1762,7 +1524,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                 else if($charge_detail['account_type']=='1' && $charge_detail['account_process']=='2')
                                                 {
                                                     ?>
-                                                    <div class="col-md-2">
+                                                    <div class="col-md-2 pass_through_charge">
                                                         <div class="form-group">
                                                           <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="<?php echo (isset($broker_charge[$charge_type['charge_type_id']][$charge_name['charge_name_id']]['1']['2']) && $broker_charge[$charge_type['charge_type_id']][$charge_name['charge_name_id']]['1']['2']!='')?$broker_charge[$charge_type['charge_type_id']][$charge_name['charge_name_id']]['1']['2']:'0.00'; ?>" name="inp_type[<?php echo $charge_type['charge_type_id']; ?>][<?php echo $charge_name['charge_name_id']; ?>][1][2]" type="text" />
                                                        </div>
@@ -1770,9 +1532,8 @@ var waitingDialog = waitingDialog || (function ($) {
                                                     <?php
                                                 }
                                                 else if($charge_detail['account_type']=='2' && $charge_detail['account_process']=='1')
-                                                {
-                                                    ?>
-                                                    <div class="col-md-2">
+                                                {?>
+                                                    <div class="col-md-2 pass_through_charge">
                                                         <div class="form-group">
                                                           <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="<?php echo (isset($broker_charge[$charge_type['charge_type_id']][$charge_name['charge_name_id']]['2']['1']) && $broker_charge[$charge_type['charge_type_id']][$charge_name['charge_name_id']]['2']['1']!='')?$broker_charge[$charge_type['charge_type_id']][$charge_name['charge_name_id']]['2']['1']:'0.00'; ?>" name="inp_type[<?php echo $charge_type['charge_type_id']; ?>][<?php echo $charge_name['charge_name_id']; ?>][2][1]" type="text" />
                                                        </div>
@@ -1782,7 +1543,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                 else if($charge_detail['account_type']=='2' && $charge_detail['account_process']=='2')
                                                 {
                                                     ?>
-                                                    <div class="col-md-2">
+                                                    <div class="col-md-2 pass_through_charge">
                                                         <div class="form-group">
                                                           <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="<?php echo (isset($broker_charge[$charge_type['charge_type_id']][$charge_name['charge_name_id']]['2']['2']) && $broker_charge[$charge_type['charge_type_id']][$charge_name['charge_name_id']]['2']['2']!='')?$broker_charge[$charge_type['charge_type_id']][$charge_name['charge_name_id']]['2']['2']:'0.00'; ?>" name="inp_type[<?php echo $charge_type['charge_type_id']; ?>][<?php echo $charge_name['charge_name_id']; ?>][2][2]" type="text" />
                                                        </div>
@@ -1792,7 +1553,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                 else
                                                 {
                                                     ?>
-                                                    <div class="col-md-2">
+                                                    <div class="col-md-2 pass_through_charge">
                                                         <div class="form-group">
                                                        </div>
                                                     </div>
@@ -1838,13 +1599,19 @@ var waitingDialog = waitingDialog || (function ($) {
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label>Product Category </label>
-                                                                    <select name="product_category"  class="form-control">
+                                                                    <select class="form-control" name="product_category" style="display: inline !important;">
+                                                                        <option value="">Select Category</option>
+                                                                        <?php foreach($product_category as $key=>$val){?>
+                                                                        <option value="<?php echo $val['id'];?>" <?php if(isset($row2) && $row2==$val['id']){echo "selected='selected'";} ?>><?php echo $val['type'];?></option>
+                                                                        <?php } ?>
+                                                                    </select>
+                                                                    <!--<select name="product_category"  class="form-control">
                                                                         <option <?php if(isset($_GET['action'])&&$_GET['action']=='edit'){if(isset($row2) && $row2==0){ ?> selected="true"<?php } } ?> value="0">Select Category</option>
                                                                         <option <?php if(isset($_GET['action'])&&$_GET['action']=='edit'){if(isset($row2) && $row2==1){ ?> selected="true"<?php } } ?> value="1">Active</option>
                                                                         <option <?php if(isset($_GET['action'])&&$_GET['action']=='edit'){if(isset($row2) && $row2==2){ ?> selected="true"<?php } } ?> value="2">Received</option>
                                                                         <option <?php if(isset($_GET['action'])&&$_GET['action']=='edit'){if(isset($row2) && $row2==3){ ?> selected="true"<?php } } ?> value="3">Terminated</option>
                                                                         <option <?php if(isset($_GET['action'])&&$_GET['action']=='edit'){if(isset($row2) && $row2==4){ ?> selected="true"<?php } } ?> value="4">Reason</option>
-                                                                    </select>
+                                                                    </select>-->
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1898,15 +1665,16 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
-                                                                <div class="form-group">
-                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="<?php echo $val['fee']; ?>" name="data1[<?php echo $stateval['id'] ?>][fee]" type="text" />
+                                                                <div class="input-group">
+                                                                  <span class="input-group-addon">$</span>
+                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)"  value="<?php echo $val['fee']; ?>" name="data1[<?php echo $stateval['id'] ?>][fee]" type="text" maxlength="4" placeholder="$0-$9,999" />
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
                                                                     <div id="demo-dp-range">
                     					                                <div class="input-daterange input-group" id="datepicker">
-                                                                            <input type="text" name="data1[<?php echo $stateval['id'] ?>][received]" id="data1[<?php echo $stateval['id'] ?>][received]" value="<?php echo $val['received']; ?>" class="form-control" />
+                                                                            <input type="text" name="data1[<?php echo $stateval['id'] ?>][received]" id="data1[<?php echo $stateval['id'] ?>][received]" value="<?php echo date('m/d/Y',strtotime($val['received'])); ?>" class="form-control" />
                     					                                </div>
                     					                            </div>
                                                                </div>
@@ -1915,7 +1683,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                 <div class="form-group">
                                                                   <div id="demo-dp-range">
                 					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="data1[<?php echo $stateval['id'] ?>][terminated]" id="data1[<?php echo $stateval['id'] ?>][terminated]" value="<?php echo $val['terminated']; ?>" class="form-control" />
+                                                                        <input type="text" name="data1[<?php echo $stateval['id'] ?>][terminated]" id="data1[<?php echo $stateval['id'] ?>][terminated]" value="<?php echo date('m/d/Y',strtotime($val['terminated'])); ?>" class="form-control" />
                 					                                </div>
                 					                              </div>
                                                                </div>
@@ -1944,8 +1712,9 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
-                                                                <div class="form-group">
-                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="" name="data1[<?php echo $stateval['id'] ?>][fee]" type="text" />
+                                                                <div class="input-group">
+                                                                  <span class="input-group-addon">$</span>
+                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="" name="data1[<?php echo $stateval['id'] ?>][fee]" type="text" maxlength="4" placeholder="$0-$9,999" />
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
@@ -2038,19 +1807,19 @@ var waitingDialog = waitingDialog || (function ($) {
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
                                                                         <label><?php echo $stateval['name']; ?></label>
-                                                                    
-                                                               </div>
+                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
-                                                                <div class="form-group">
-                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="<?php echo $val['fee']; ?>" name="data2[<?php echo $stateval['id'] ?>][fee]"  type="text" />
+                                                                <div class="input-group">
+                                                                  <span class="input-group-addon">$</span>
+                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="<?php echo $val['fee']; ?>" name="data2[<?php echo $stateval['id'] ?>][fee]"  type="text" maxlength="4" placeholder="$0-$9,999" />
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
                                                                     <div id="demo-dp-range">
                     					                                <div class="input-daterange input-group" id="datepicker">
-                                                                            <input type="text" name="data2[<?php echo $stateval['id'] ?>][received]" id="data2[<?php echo $stateval['id'] ?>][received]" value="<?php echo $val['received']; ?>" class="form-control" />
+                                                                            <input type="text" name="data2[<?php echo $stateval['id'] ?>][received]" id="data2[<?php echo $stateval['id'] ?>][received]" value="<?php echo date('m/d/Y',strtotime($val['received'])); ?>" class="form-control" />
                     					                                </div>
                     					                            </div>
                                                                </div>
@@ -2059,7 +1828,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                 <div class="form-group">
                                                                   <div id="demo-dp-range">
                 					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="data2[<?php echo $stateval['id'] ?>][terminated]" id="data2[<?php echo $stateval['id'] ?>][terminated]" value="<?php echo $val['terminated']?>" class="form-control" />
+                                                                        <input type="text" name="data2[<?php echo $stateval['id'] ?>][terminated]" id="data2[<?php echo $stateval['id'] ?>][terminated]" value="<?php echo date('m/d/Y',strtotime($val['terminated']))?>" class="form-control" />
                 					                                </div>
                 					                              </div>
                                                                </div>
@@ -2086,8 +1855,9 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
-                                                                <div class="form-group">
-                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="" name="data2[<?php echo $stateval['id'] ?>][fee]" type="text" />
+                                                                <div class="input-group">
+                                                                  <span class="input-group-addon">$</span>
+                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="" name="data2[<?php echo $stateval['id'] ?>][fee]" type="text" maxlength="4" placeholder="$0-$9,999" />
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
@@ -2129,7 +1899,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                             <div class="panel-overlay-wrap">
                                                 <div class="panel">
                                                    <div class="panel-heading">
-                                                         <?php if(isset($edit_licences_ria) && !empty($edit_licences_ria)) {foreach($edit_licences_ria as $key=>$val)
+                                                        <?php if(isset($edit_licences_ria) && !empty($edit_licences_ria)) {foreach($edit_licences_ria as $key=>$val)
                                                         {   $row1 = $val['waive_home_state_fee'];  }  } ?>
                                                         <h4 class="panel-title" style="font-size: 20px;"><input type="checkbox" value="1" <?php if(isset($_GET['action'])&&$_GET['action']=='edit'&& (isset($row1) && $row1==1 )){ ?>checked="true"<?php } ?>  class="checkbox" name="pass_through"  style="display: inline !important;"/> Waive Home State Fee</h4>
                                                     </div>
@@ -2167,7 +1937,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <?php if(isset($_GET['action']) && $_GET['action']=='edit' && !empty($edit_licences_ria)){
+                                                        <?php if(isset($_GET['action']) && $_GET['action']=='edit' && !empty($edit_licences_ria)){ 
                                                                 foreach($edit_licences_ria as $key=>$val){ 
                                                              foreach($get_state_new as $statekey=>$stateval) { if($val['state_id']== $stateval['id']) {?>
                                                         <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
@@ -2184,15 +1954,16 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
-                                                                <div class="form-group">
-                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="<?php echo $val['fee'] ?>" name="data3[<?php echo $stateval['id'] ?>][fee]" type="text" />
+                                                                <div class="input-group">
+                                                                  <span class="input-group-addon">$</span>
+                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="<?php echo $val['fee'] ?>" name="data3[<?php echo $stateval['id'] ?>][fee]" type="text" maxlength="4" placeholder="$0-$9,999" />
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-group">
                                                                     <div id="demo-dp-range">
                     					                                <div class="input-daterange input-group" id="datepicker">
-                                                                            <input type="text" name="data3[<?php echo $stateval['id'] ?>][received]" id="data3[<?php echo $stateval['id'] ?>][received]" value="<?php echo $val['received'] ?>" class="form-control" />
+                                                                            <input type="text" name="data3[<?php echo $stateval['id'] ?>][received]" id="data3[<?php echo $stateval['id'] ?>][received]" value="<?php echo date('m/d/Y',strtotime($val['received'])) ?>" class="form-control" />
                     					                                </div>
                     					                            </div>
                                                                </div>
@@ -2201,7 +1972,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                 <div class="form-group">
                                                                   <div id="demo-dp-range">
                 					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="data3[<?php echo $stateval['id'] ?>][terminated]" id="data3[<?php echo $stateval['id'] ?>][terminated]" value="<?php echo $val['terminated'] ?>" class="form-control" />
+                                                                        <input type="text" name="data3[<?php echo $stateval['id'] ?>][terminated]" id="data3[<?php echo $stateval['id'] ?>][terminated]" value="<?php echo date('m/d/Y',strtotime($val['terminated'])) ?>" class="form-control" />
                 					                                </div>
                 					                              </div>
                                                                </div>
@@ -2212,7 +1983,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                </div>
                                                             </div>
                                                         </div></div>
-                                                        <?php } } }  } else{?>
+                                                        <?php } } }  } else{ ?> 
                                                         <?php foreach($get_state_new as $statekey=>$stateval){?>
                                                         <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
                                                         <div class="row">
@@ -2228,8 +1999,9 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
-                                                                <div class="form-group">
-                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="" name="data3[<?php echo $stateval['id'] ?>][fee]" type="text" />
+                                                                <div class="input-group">
+                                                                <span class="input-group-addon">$</span>
+                                                                  <input class="form-control charge" onkeypress="return isFloatNumber(this,event)" value="" name="data3[<?php echo $stateval['id'] ?>][fee]" type="text" maxlength="4" placeholder="$0-$9,999" />
                                                                </div>
                                                             </div>
                                                             <div class="col-md-2">
@@ -2304,14 +2076,14 @@ var waitingDialog = waitingDialog || (function ($) {
                                                             <td>
                                                                 <div id="demo-dp-range">
                 					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="data4[<?php echo $regval['id'];?>][approval_date]"  value="<?php echo $val['approval_date'];?>" class="form-control" />
+                                                                        <input type="text" name="data4[<?php echo $regval['id'];?>][approval_date]"  value="<?php echo date('m/d/Y',strtotime($val['approval_date']));?>" class="form-control" />
                 					                                </div>
              					                                </div>
                                                             </td>
                                                             <td>
                                                                 <div id="demo-dp-range">
                 					                                <div class="input-daterange input-group" id="datepicker">
-                                                                        <input type="text" name="data4[<?php echo $regval['id'];?>][expiration_date]" value="<?php echo $val['expiration_date'];?>" class="form-control" />
+                                                                        <input type="text" name="data4[<?php echo $regval['id'];?>][expiration_date]" value="<?php echo date('m/d/Y',strtotime($val['expiration_date']));?>" class="form-control" />
                 					                                </div>
              					                                </div>
                                                             </td>
@@ -2340,7 +2112,8 @@ var waitingDialog = waitingDialog || (function ($) {
                                                             <td><input class="form-control" value="" name="data4[<?php echo $regval['id'];?>][register_reason]"  type="text" /></td>
                                                             <input type="hidden" name="data4[<?php echo $regval['id'];?>][type]" value="<?php echo $regval['type']; ?>"/>
                                                         </tr>
-                                                        <?php } } ?>
+                                                        <?php }
+                                                         } ?>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -2383,7 +2156,14 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                 <td>
                                                                     <input type="checkbox" name="data[docs_receive][<?php echo $doc_id;?>]" <?php if($val['received']==1){ ?>checked="true"<?php } ?> value="1" class="checkbox" id="docs_receive"/>
                                                                 </td>
-                                                                <td><input class="form-control" value="<?php echo $val['description']?>" name="data[docs_description][<?php echo $doc_id;?>]" id="docs_description" type="text" /></td>
+                                                                <td>
+                                                                    <select name="data[docs_description][<?php echo $doc_id;?>]" id="docs_description" class="form-control">
+                                                                        <option value="">Select Documents</option>
+                                                                        <?php foreach($select_broker_docs as $key_broker_doc=>$val_broker_doc){?>
+                                                                        <option value="<?php echo $val_broker_doc['id'];?>" <?php if($val['description'] != '' && $val['description']==$val_broker_doc['id']){echo "selected='selected'";} ?>><?php echo $val_broker_doc['desc'];?></option>
+                                                                        <?php } ?>
+                                                                    </select>
+                                                                </td>
                                                                 <td>
                                                                     <div id="demo-dp-range">
                     					                                <div class="input-daterange input-group" id="datepicker">
@@ -2398,15 +2178,22 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                     <button type="button" tabindex="-1" class="btn remove-row btn-icon btn-circle"><i class="fa fa-minus"></i></button>
                                                                 </td>
                                                             </tr>
-                                                      <?php } }  ?>
+                                                      <?php } }$doc_id  ++;  ?>
                                                       <?php 
-                                                        if(isset($select_docs) ){  
-                                                        foreach($select_docs as $key=>$val){   $doc_id  ++; ;?>
+                                                        /*if(isset($select_docs) ){  
+                                                        foreach($select_docs as $key=>$val){    ;?>
                                                       <tr id="add_row_docs">
                                                             <td>
                                                                 <input type="checkbox" value="1" name="data[docs_receive][<?php echo $doc_id;?>]" class="checkbox" id="docs_receive"/>
                                                             </td>
-                                                            <td><input class="form-control" value="<?php echo $val['desc']?>" name="data[docs_description][<?php echo $doc_id;?>]" id="docs_description" type="text" /></td>
+                                                            <td>
+                                                                <select name="data[docs_description][<?php echo $doc_id;?>]" id="docs_description" class="form-control">
+                                                                    <option value="">Select Documents</option>
+                                                                    <?php foreach($select_broker_docs as $key_broker_doc=>$val_broker_doc){?>
+                                                                    <option value="<?php echo $val_broker_doc['id'];?>" ><?php echo $val_broker_doc['desc'];?></option>
+                                                                    <?php } ?>
+                                                                </select>
+                                                            </td>
                                                             <td>
                                                                 <div id="demo-dp-range">
                 					                                <div class="input-daterange input-group" id="datepicker">
@@ -2421,12 +2208,19 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                 <button type="button" tabindex="-1" class="btn remove-row btn-icon btn-circle"><i class="fa fa-minus"></i></button>
                                                             </td>
                                                         </tr>
-                                                   <?php } }  $doc_id  ++;?>
+                                                   <?php } }  $doc_id  ++;*/?>
                                                    <tr id="add_row_docs">
                                                             <td>
                                                                 <input type="checkbox" value="1" name="data[docs_receive][<?php echo $doc_id;?>]" class="checkbox" id="docs_receive"/>
                                                             </td>
-                                                            <td><input class="form-control" value="" name="data[docs_description][<?php echo $doc_id;?>]" id="docs_description" type="text" /></td>
+                                                            <td>
+                                                                <select name="data[docs_description][<?php echo $doc_id;?>]" id="docs_description" class="form-control">
+                                                                    <option value="">Select Documents</option>
+                                                                    <?php foreach($select_broker_docs as $key_broker_doc=>$val_broker_doc){?>
+                                                                    <option value="<?php echo $val_broker_doc['id'];?>" ><?php echo $val_broker_doc['desc'];?></option>
+                                                                    <?php } ?>
+                                                                </select>
+                                                            </td>
                                                             <td>
                                                                 <div id="demo-dp-range">
                 					                                <div class="input-daterange input-group" id="datepicker">
@@ -2452,7 +2246,7 @@ var waitingDialog = waitingDialog || (function ($) {
                         </div>
                  </div>
               </div>
-              <div class="panel-footer">
+              <div class="panel-footer fixedbtmenu">
                     <div class="selectwrap">
                          <?php if($action=='edit' && $id>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;"><input type="button" name="previous" value="&laquo; Previous" /></a><?php } ?>
                          <?php if($action=='edit' && $id>0){?>
@@ -2468,14 +2262,14 @@ var waitingDialog = waitingDialog || (function ($) {
                  </div>   
             </form>
                  <?php } ?>
-                <!-- Lightbox strart -->							
-        	<!-- Modal for add client notes -->
+            <!-- Lightbox strart -->							
+        	<!-- Modal for add broker notes -->
         	<div id="broker_notes" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
         		<div class="modal-dialog">
         		<div class="modal-content">
         		<div class="modal-header" style="margin-bottom: 0px !important;">
         			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-        			<h4 class="modal-title">Branch's Notes</h4>
+        			<h4 class="modal-title">Brokers's Notes</h4>
         		</div>
         		<div class="modal-body">
                 
@@ -2497,7 +2291,218 @@ var waitingDialog = waitingDialog || (function ($) {
         		</div><!-- End of Modal content -->
         		</div><!-- End of Modal dialog -->
         </div><!-- End of Modal -->
-            <!-- Lightbox strart -->	
+        <!-- Lightbox strart -->							
+        	<!-- Modal for add broker notes -->
+        	<div id="broker_payout_schedule" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        		<div class="modal-dialog" style="width: 880px !important;">
+        		<div class="modal-content">
+        		<div class="modal-header" style="margin-bottom: 0px !important;">
+        			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+        			<h4 class="modal-title">Payout Schedule</h4>
+        		</div>
+        		<div class="modal-body" >
+                
+                <div class="col-md-12">
+                    <div id="msg_payout">
+                    </div>
+                </div>
+                <form method="post" name="form_payout_schedule" id="form_payout_schedule" onsubmit="return payout_schedule_submit();">
+                <div class="row" style="padding: 0px 5px 0px 5px !important;">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Schedule Name </label><br />
+                            <input type="text" name="schedule_name" id="schedule_name" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Payout on </label><br />
+                            <label class="radio-inline">
+                              <input type="radio" class="radio" name="transaction_type_general_new" value="1"  checked="checked" onclick="display_icon_new(this.value);"/> Amount
+                            </label>
+                            <label class="radio-inline">
+                              <input type="radio" class="radio" name="transaction_type_general_new" value="2" onclick="display_icon_new(this.value);"/> Percentage
+                            </label>
+                        </div>
+                    </div>
+                </div>
+               <div class="row" style="padding: 0px 5px 0px 5px !important;">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Payout Grid </label>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-stripped table-hover">
+                                    <thead>
+                                        <th>From</th>
+                                        <th>To</th>
+                                        <th>Rate</th>
+                                        <th>Add Level</th>
+                                    </thead>
+                                    <tbody>
+                                            <?php $doc_id1=1; ?>
+                                            <tr id="add_level_new">
+                                                <td>
+                                                    <div class="input-group dollar_new">
+                                                    <input type="number"  name="leval[from][<?php  echo $doc_id1;?>]" class="form-control" max="999999999"/>
+                                                    <span class="input-group-addon">$</span>
+                                                    </div>
+                                                    <div class="input-group percentage_new" style="display: none;">
+                                                    <input type="number"  step="0.001" name="leval[from][<?php  echo $doc_id1;?>]" class="form-control" max="999999999" disabled="true"/>
+                                                    <span class="input-group-addon">%</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="input-group dollar_new">
+                                                    <input type="number" name="leval[to][<?php  echo $doc_id1;?>]" class="form-control" max="999999999"/>
+                                                    <span class="input-group-addon">$</span>
+                                                    </div>
+                                                    <div class="input-group percentage_new" style="display: none;">
+                                                    <input type="number" step="0.001" name="leval[to][<?php  echo $doc_id1;?>]" class="form-control" max="999999999" disabled="true"/>
+                                                    <span class="input-group-addon">%</span>
+                                                    </div>
+                                                    <!--<div class="input-group">
+                                                    <input type="number" step="0.001" name="leval[to][<?php  echo $doc_id1;?>]" class="form-control" max="999999999"/>
+                                                    <span class="input-group-addon dollar" id="dollar_to">$</span>
+                                                    <span class="input-group-addon percentage" id="percentage_to" style="display: none;">%</span>
+                                                    </div>-->
+                                                </td>
+                                                <td>
+                                                    <input type="number" step="0.001" name="leval[per][<?php echo $doc_id1;?>]" value="" class="form-control" />
+                                                    <!--select name="leval[per][<?php  echo $doc_id1;?>]"  class="form-control" >
+                                                        <option value="">Select Percentages</option>
+                                                        <?php foreach($select_percentage as $key => $val) {?>
+                                                        <option value="<?php echo $key?>"><?php echo $val['percentage']?></a></option>
+                                                        <?php } ?>
+                                                    </select-->
+                                                </td>
+                                                <td>
+                                                    <button type="button" onclick="addlevel_new(<?php  echo $doc_id1;?>);" class="btn btn-purple btn-icon btn-circle"><i class="fa fa-plus"></i></button>
+                                                </td>
+                                            </tr>
+                                            <?php   ?>
+                                  </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+               </div>
+                   
+               <div class="row" style="padding: 0px 5px 0px 5px !important;">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Apply to Product Categories </label><br />
+                            <select name="product_category"  class="form-control">
+                                <option value="">Select Product Category</option>
+                                <option <?php if(isset($edit_payout['product_category1']) && $edit_payout['product_category1']=='0'){?> selected="true"<?php } ?> value="0">All Product Categories</option>
+                                <?php foreach($product_category as $key=>$val){?>
+                                <option value="<?php echo $val['id'];?>" <?php if(isset($edit_payout['product_category1']) && $edit_payout['product_category1']==$val['id']){?> selected="true"<?php } ?>><?php echo $val['type'];?></option>
+                                <?php } ?>
+                            </select>
+                            <!--<input type="checkbox" name="product_category_all" id="product_category_all" value="0"  class="checkbox" style="display: inline;"/>&nbsp;<label>All</label><br />
+                            <input type="checkbox" name="product_category1" <?php if(isset($edit_payout['product_category1']) && $edit_payout['product_category1']=='1'){?>checked="true"<?php } ?> id="product_category1" value="1" class="checkbox" style="display: inline;"/>&nbsp;<label>Mutual Funds</label>&nbsp;&nbsp;
+                            <input type="checkbox" name="product_category2" <?php if(isset($edit_payout['product_category2']) && $edit_payout['product_category2']=='1'){?>checked="true"<?php } ?> id="product_category2" value="1" class="checkbox" style="display: inline;"/>&nbsp;<label>Mutual Fund Trials</label>&nbsp;&nbsp;
+                            <input type="checkbox" name="product_category3" <?php if(isset($edit_payout['product_category3']) && $edit_payout['product_category3']=='1'){?>checked="true"<?php } ?> id="product_category3" value="1" class="checkbox" style="display: inline;"/>&nbsp;<label>Stocks</label>&nbsp;&nbsp;
+                            <input type="checkbox" name="product_category4" <?php if(isset($edit_payout['product_category4']) && $edit_payout['product_category4']=='1'){?>checked="true"<?php } ?> id="product_category4" value="1" class="checkbox" style="display: inline;"/>&nbsp;<label>Bonds</label>&nbsp;&nbsp;-->
+                        </div>
+                    </div>
+               </div>
+               <div class="row" style="padding: 0px 5px 0px 5px !important;">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Basis </label><br />
+                            <input type="radio" name="basis" <?php if(isset($edit_payout['basis']) && $edit_payout['basis']=='1'){?>checked="true"<?php } ?>  class="radio" style="display: inline;" value="1"/>&nbsp;<label>Net Earnings</label>&nbsp;&nbsp;
+                            <input type="radio" name="basis" <?php if(isset($edit_payout['basis']) && $edit_payout['basis']=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Gross Concessions</label>&nbsp;&nbsp;
+                            <input type="radio" name="basis" <?php if(isset($edit_payout['basis']) && $edit_payout['basis']=='3'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="3"/>&nbsp;<label>Principal</label>&nbsp;&nbsp;
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Cumulative </label><br />
+                            <input type="radio" name="cumulative" <?php if(isset($edit_payout['cumulative']) && $edit_payout['cumulative']=='1'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="1"/>&nbsp;<label>Payroll-To-Date</label>&nbsp;&nbsp;
+                            <input type="radio" name="cumulative" <?php if(isset($edit_payout['cumulative']) && $edit_payout['cumulative']=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Month-To-Date</label>&nbsp;&nbsp;
+                            <input type="radio" name="cumulative" <?php if(isset($edit_payout['cumulative']) && $edit_payout['cumulative']=='3'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="3"/>&nbsp;<label>Year-To-Date</label>&nbsp;&nbsp;
+                        </div>
+                    </div>
+               </div>
+               <div class="row" style="padding: 0px 5px 0px 5px !important;">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Year </label><br />
+                            <input type="radio" name="year" <?php if(isset($edit_payout['year']) && $edit_payout['year']=='1'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="1"/>&nbsp;<label>Calendar</label>&nbsp;&nbsp;
+                            <input type="radio" name="year" <?php if(isset($edit_payout['year']) && $edit_payout['year']=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Rolling</label>&nbsp;&nbsp;
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Reset </label>
+                            <div id="demo-dp-range">
+                                <div class="input-daterange input-group" id="datepicker">
+                                    <input type="text" name="reset"  value="<?php if(isset($edit_payout['reset']) && $edit_payout['reset']!=''){ echo date('m/d/Y',strtotime($edit_payout['reset'])); } ?>"  class="form-control"  />
+                                    <label class="input-group-addon btn" for="reset">
+                                       <span class="fa fa-calendar"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+               </div>
+               <div class="row" style="padding: 0px 5px 0px 5px !important;">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Calculation Detail </label><br />
+                            <input type="radio" name="calculation_detail" <?php if(isset($edit_payout['calculation_detail']) && $edit_payout['calculation_detail']=='1'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="1"/>&nbsp;<label>Intra-Trade</label>&nbsp;&nbsp;
+                            <input type="radio" name="calculation_detail" <?php if(isset($edit_payout['calculation_detail']) && $edit_payout['calculation_detail']=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Inter-Trade</label>&nbsp;&nbsp;
+                            <input type="radio" name="calculation_detail" <?php if(isset($edit_payout['calculation_detail']) && $edit_payout['calculation_detail']=='3'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="3"/>&nbsp;<label>Payroll-Period</label>&nbsp;&nbsp;
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Clearing Charge Deducted From</label><br />
+                            <input type="radio" name="clearing_charge_deducted_from" <?php if(isset($edit_payout['clearing_charge_deducted_from']) && $edit_payout['clearing_charge_deducted_from']=='1'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="1"/>&nbsp;<label>Net</label>&nbsp;&nbsp;
+                            <input type="radio" name="clearing_charge_deducted_from" <?php if(isset($edit_payout['clearing_charge_deducted_from']) && $edit_payout['clearing_charge_deducted_from']=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Gross</label>&nbsp;&nbsp;
+                        </div>
+                    </div>
+               </div>
+               <div class="row" style="padding: 0px 5px 0px 5px !important;">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Description</label>
+                            <select name="description_type"  class="form-control">
+                                <option value="0">Select Option</option>
+                                <option <?php if(isset($edit_payout['description_type']) && $edit_payout['description_type']=='1'){?>selected="true"<?php }?> value="1">This is product type</option>
+                                <option <?php if(isset($edit_payout['description_type']) && $edit_payout['description_type']=='2'){?>selected="true"<?php }?> value="2">This is product type</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Team Members </label>
+                            <select name="team_member"  class="multiselect-ui form-control" multiple="multiple" >
+                                <option value="">Select Broker</option>
+                                <?php foreach($select_broker as $key => $val) {?>
+                                <option <?php if(isset($edit_payout['team_member']) && $edit_payout['team_member']==$key){?>selected="true"<?php }?> value="<?php echo $key?>"><?php echo $val['first_name']?></a></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="selectwrap">
+                         <input type="hidden" name="id"  value="<?php echo $id; ?>" />
+                         <input type="hidden" name="submit_new_payout" value="Save"  />
+                         <button type="submit" name="submit_new_payout" value="Save">Save</button>
+                         <!--<input type="submit" name="submit_new_payout" value="Save"/>-->	
+                         <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
+                    </div>
+                </div>
+                </form>
+        		</div>
+                </div><!-- End of Modal body -->
+        		</div><!-- End of Modal content -->
+        		</div><!-- End of Modal dialog -->
+            </div>
+        <!-- End of Modal -->
+        <!-- Lightbox strart -->	
         <!-- Lightbox strart -->							
         	<!-- Modal for add client notes -->
         	<div id="broker_attach" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
@@ -3078,6 +3083,35 @@ $(document).on('click','.remove-row',function(){
 });*/
 </script>
 <script type="text/javascript">
+$(document).ready(function(){
+
+    var check = $('#pass_through1').prop('checked');
+    if(check == true)
+    {
+        $('.pass_through_charge').css('display','none');
+    }
+    else
+    {
+        //document.getElementById("pass_through1").value = '';
+        //$('#pass_through1').removeAttr( "checked" );
+        $('.pass_through_charge').css('display','block');
+    }
+});
+function pass_through_check()
+{   
+    var check = $('#pass_through1').prop('checked');
+    if(check == true)
+    {
+        $('.pass_through_charge').css('display','none');
+    }
+    else
+    {
+        //document.getElementById("pass_through1").value = '';
+        //$('#pass_through').removeAttr("value");
+        //$('#pass_through1').removeAttr( "checked" );//prop('checked',false);
+        $('.pass_through_charge').css('display','block');
+    }
+}
 function open_newnotes()
 {
     document.getElementById("add_row_notes").style.display = "";
@@ -3097,6 +3131,23 @@ function display_icon(value)
     else if(value == '2'){
         $('.percentage').css('display','');
         $('.dollar').css('display','none');
+    }
+    
+}
+function display_icon_new(value)
+{
+    if(value=='1')
+    {
+        $('.dollar_new').css('display','');
+        $(".dollar_new").children().prop('disabled',false);
+        $(".percentage_new").children().prop('disabled',true);
+        $('.percentage_new').css('display','none');
+    }
+    else if(value == '2'){
+        $('.percentage_new').css('display','');
+        $(".percentage_new").children().prop('disabled',false);
+        $(".dollar_new").children().prop('disabled',true);
+        $('.dollar_new').css('display','none');
     }
     
 }
@@ -3136,7 +3187,37 @@ function openedit(note_id){
     console.log(name);
 }
 </script>
-<script>
+<script type="text/javascript">
+
+function payout_schedule_submit()
+{
+   $('#msg_payout').html('<div class="alert alert-info"><i class="fa fa-spinner fa-spin"></i> Please wait...</div>');
+
+   var url = "manage_broker.php"; // the script where you handle the form input.
+   console.log($("#form_payout_schedule").serialize());
+   
+   $.ajax({
+      type: "POST",
+      url: url,
+      data: $("#form_payout_schedule").serialize(), // serializes the form's elements.
+      success: function(data){
+          if(data=='1'){
+            //alert("hiii");
+            $( "#form_payout_schedule" ).load(window.location.href + " #form_payout_schedule" );
+            $('#msg_payout').html('<div class="alert alert-success alert-dismissable" style="opacity: 500;"><a href="#" class="close" data-dismiss="alert" aria-label="close">x</a><strong>Success!</strong> Data Successfully Saved.</div>');  
+          }
+          else{
+               $('#msg_payout').html('<div class="alert alert-danger">'+data+'</div>');
+          }
+          
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+           $('#msg_payout').html('<div class="alert alert-danger">Something went wrong, Please try again.</div>')
+      }
+      
+   });
+   return false;
+}
 //submit share form data
 function notessubmit(note_id)
 {

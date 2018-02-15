@@ -16,6 +16,7 @@
             $password = isset($data['password'])?trim($this->re_db_input($data['password'])):'';
 			$confirm_password = isset($data['confirm_password'])?trim($this->re_db_input($data['confirm_password'])):'';
             $folder_location = isset($data['folder_location'])?$this->re_db_input($data['folder_location']):'';
+            $ftp_file_type = isset($data['ftp_file_type'])?$this->re_db_input($data['ftp_file_type']):'';
             $status = isset($data['status'])?$this->re_db_input($data['status']):1;
             
 			if($host_name==''){
@@ -35,6 +36,9 @@
 			}
             else if($status==''){
 				$this->errors = 'Please select status.';
+			}
+            else if($ftp_file_type==''){
+				$this->errors = 'Please select file type.';
 			}
             if($this->errors!=''){
 				return $this->errors;
@@ -58,7 +62,7 @@
 			else if($id>=0){
 				if($id==0){
 				    
-					$q = "INSERT INTO `".IMPORT_FTP_MASTER."` SET `host_name`='".$host_name."',`user_name`='".$user_name."',`password`='".md5($password)."',`folder_location`='".$folder_location."',`status`='".$status."'".$this->insert_common_sql();
+					$q = "INSERT INTO `".IMPORT_FTP_MASTER."` SET `host_name`='".$host_name."',`user_name`='".$user_name."',`password`='".$this->encryptor($password)."',`folder_location`='".$folder_location."',`status`='".$status."',`ftp_file_type`='".$ftp_file_type."'".$this->insert_common_sql();
 					$res = $this->re_db_query($q);
                     $id = $this->re_db_insert_id();
 					if($res){
@@ -76,7 +80,7 @@
 						$con .= " , `password`='".$this->encryptor($password)."' ";
 					}
                         
-				    $q = "UPDATE `".IMPORT_FTP_MASTER."` SET `host_name`='".$host_name."',`user_name`='".$user_name."',`folder_location`='".$folder_location."',`status`='".$status."' ".$con." ".$this->update_common_sql()." WHERE `id`='".$id."'";
+				    $q = "UPDATE `".IMPORT_FTP_MASTER."` SET `host_name`='".$host_name."',`user_name`='".$user_name."',`folder_location`='".$folder_location."',`status`='".$status."',`ftp_file_type`='".$ftp_file_type."' ".$con." ".$this->update_common_sql()." WHERE `id`='".$id."'";
                     $res = $this->re_db_query($q);
 					if($res){
 					    $_SESSION['success'] = UPDATE_MESSAGE;
@@ -245,6 +249,12 @@
                             if (array_key_exists($file_type_checkkey, $file_type_array)) 
                             {
                                 $q = "INSERT INTO `".IMPORT_CURRENT_FILES."` SET `imported_date`='".date('Y-m-d')."',`last_processed_date`='',`file_name`='".$ext_filename."',`file_type`='".$file_type_array[$file_type_checkkey]."',`batch`=''".$this->insert_common_sql();
+                    			$res = $this->re_db_query($q);
+                                $id = $this->re_db_insert_id();
+                            }
+                            else
+                            {
+                                $q = "INSERT INTO `".IMPORT_CURRENT_FILES."` SET `imported_date`='".date('Y-m-d')."',`last_processed_date`='',`file_name`='".$ext_filename."',`file_type`='-',`batch`=''".$this->insert_common_sql();
                     			$res = $this->re_db_query($q);
                                 $id = $this->re_db_insert_id();
                             }

@@ -1,5 +1,6 @@
 <?php
     require_once("include/config.php");
+    require_once(DIR_FS."islogin.php");
     
     $instance = new client_ress();
     $get_broker =$instance->select_broker();
@@ -11,7 +12,6 @@
         $to_broker= isset($_POST['to_broker'])?$instance->re_db_input($_POST['to_broker']):'';
         $output = isset($_POST['output'])?$instance->re_db_input($_POST['output']):'';
         $broker_name = isset($_POST['broker_name'])?$instance->re_db_input($_POST['broker_name']):'';
-        $return_from_broker_client = $instance->select_from_broker_client($from_broker);      
         $return = $instance->insert_update($_POST);
         
         if($return===true){

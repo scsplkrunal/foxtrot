@@ -21,8 +21,10 @@ class client_ress extends db{
 				return $this->errors;
 			}
 			else{
+			    $q="UPDATE `".CLIENT_MASTER."` SET `broker_old_name`='0' WHERE `broker_name`='".$to_broker."'";
+                $res = $this->re_db_query($q);
+             
 				$q="UPDATE `".CLIENT_MASTER."` SET `broker_name`='".$to_broker."',`broker_old_name`='".$from_broker."',`ressign_date`='".$date."' WHERE `broker_name`='".$from_broker."'";
-                
                 $res = $this->re_db_query($q);
 				if($res){
 				    $_SESSION['success'] = UPDATE_MESSAGE;
@@ -35,27 +37,6 @@ class client_ress extends db{
 			
 			}
     }
-    public function select_from_broker_client($from_broker){
-		$return = array();
-        $con ='';
-        if($from_broker != '')
-        {
-            $con .= "and `broker_name` = ".$from_broker."";
-        }
-		
-		$q = "SELECT `at`.id
-				FROM `".CLIENT_MASTER."` AS `at`
-                WHERE `at`.`is_delete`='0' ".$con."
-                ORDER BY `at`.`id` ASC";
-		$res = $this->re_db_query($q);
-        if($this->re_db_num_rows($res)>0){
-            $a = 0;
-			while($row = $this->re_db_fetch_array($res)){
-			     $return[] = $row['id'];   
-			}
-        }
-		return $return;
-	}
     
     public function select_broker(){
 		$return = array();

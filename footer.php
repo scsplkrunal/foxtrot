@@ -1,8 +1,9 @@
-<footer>
-<div class="sectionwrapper">
+</div>
+<footer style="<?php if(CURRENT_FILE == 'home.php'){ echo 'display : block !important';}else { echo 'display : none !important';} ?> ">
+<div class="sectionwrapper footerwrapp">
 	<div class="container">
 		<div class="footerwrapper">
-			<div class="copyrights">2017 &copy; Web based <a href="#">FoxTrot</a></div>
+			<div class="copyrights">2017 &copy; Copyright Web based <a href="#">FoxTrot</a></div>
 			<div class="footersocial">
 				<a href="#" target="_blank"><i class="fa fa-facebook"></i></a>
 				<a href="#" target="_blank"><i class="fa fa-twitter"></i></a>

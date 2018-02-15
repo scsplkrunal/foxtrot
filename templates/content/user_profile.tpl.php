@@ -52,7 +52,7 @@
 			</div>
             <div class="row">
 				<div class="col-sm-6 form-group">
-					<label>Upload Image <?php if($action=='edit'){ }else{?><span class="text-red">*</span><?php } ?></label>
+					<label>Upload Image </label>
 				    <input type="file" class="form-control" name="file_image" onchange="readURL(this);" id="file_image" value="<?php echo $user_image;?>" />
                 </div>
                 <div class="col-sm-6 form-group">

@@ -219,7 +219,6 @@
     			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
     	            <thead>
     	                <tr>
-                            <th class="text-center">#NO</th>
                             <th>Batch Date</th>
                             <th>Description</th>
                             <th>Product Category</th>
@@ -234,7 +233,6 @@
                     foreach($return as $key=>$val){
                         ?>
     	                   <tr>
-                                <td class="text-center"><?php echo ++$count; ?></td>
                                 <td><?php echo $val['batch_date'];?></td>
                                 <td><?php echo $val['batch_desc'];?></td>
                                 <td><?php foreach($product_category as $ke=>$va){ if(isset($val['pro_category']) && $val['pro_category']==$va['id']){ echo $va['type']; } }?></td>

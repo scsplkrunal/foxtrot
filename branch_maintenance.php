@@ -1,5 +1,6 @@
 <?php
     require_once("include/config.php");
+    require_once(DIR_FS."islogin.php");
     //echo '<pre>';print_r($_FILES);exit;
     $search_text = '';
     $name = '';

@@ -35,7 +35,6 @@
                 			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
                 	            <thead>
                 	                <tr>
-                                        <th class="text-center">#NO</th>
                                         <th>DATE</th>
                                         <th>TOTAL SCAN</th>
                                         <th>TOTAL MATCH</th>
@@ -48,7 +47,6 @@
                                         foreach($return as $key=>$val){
                                             ?>
                                             <tr>
-                                                <td class="text-center"><?php echo ++$count; ?></td>
                                                 <td><?php echo date('m/d/Y',strtotime($val['created_time'])); ?></td>
                                                 <td><?php echo $val['total_scan']; ?></td>
                                                 <td><?php echo $val['total_match']; ?></td>
@@ -95,7 +93,6 @@
                     			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
                     	            <thead>
                     	                <tr>
-                                            <th class="text-center">#NO</th>
                                             <th>DATE</th>
                                             <th>TOTAL SCAN</th>
                                             <th>TOTAL MATCH</th>
@@ -108,7 +105,6 @@
                                             foreach($return_fincen as $key=>$val){
                                                 ?>
                                                 <tr>
-                                                    <td class="text-center"><?php echo ++$count; ?></td>
                                                     <td><?php echo date('m/d/Y',strtotime($val['created_time'])); ?></td>
                                                     <td><?php echo $val['total_scan']; ?></td>
                                                     <td><?php echo $val['total_match']; ?></td>

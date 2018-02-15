@@ -14,8 +14,10 @@ function GeFileList()
 	//415171403
     // Note: For testing UserID and Password will be supplied by DST
     HTTPDL.UserID = UserID.value;
+    HTTPDL.ftpType = ftpType.value;
     HTTPDL.Password = Password.value;
     var list = HTTPDL.GetFileListAsXML();
+    //alert(list);
     var dlist = "No file list returned";
     //HTTPs Download Guide Product Guide
     var xmldoc = MSXML3;
@@ -34,11 +36,32 @@ function GeFileList()
             {
                 var file = node.getAttribute("name");
                 var display = node.getAttribute("short-name");
-                dlist += "<input type=\"checkbox\" class=\"checkbox\" name=\"sfile\" style=\"display:inline;\" value=\"";
-                dlist += file;
-                dlist += "\">&nbsp;";
-                dlist += display;
-                dlist += "<br>";
+                if(HTTPDL.ftpType == 1)
+                {
+                    var file_type_array = ["01", "02", "03", "07", "08", "09", "17", "84", "85", "86", "87"];
+                    var file_name_array = display.split('.');
+                    var get_file_first_string = file_name_array[0];
+                    var get_file_last_character = get_file_first_string.slice(-2);
+                    //alert(file_type_array);
+                    for (var i = 0; i < file_type_array.length; i++) {
+                        if (file_type_array[i] === get_file_last_character) {
+                            
+                            dlist += "<input type=\"checkbox\" class=\"checkbox\" name=\"sfile\" style=\"display:inline;\" value=\"";
+                            dlist += file;
+                            dlist += "\">&nbsp;";
+                            dlist += display;
+                            dlist += "<br>";
+                        }
+                    }
+                }
+                else
+                {
+                    dlist += "<input type=\"checkbox\" class=\"checkbox\" name=\"sfile\" style=\"display:inline;\" value=\"";
+                    dlist += file;
+                    dlist += "\">&nbsp;";
+                    dlist += display;
+                    dlist += "<br>";
+                }
                 node = nodeList.nextNode();
             }
             //HTTPs Download Guide Product Guide            
@@ -55,6 +78,7 @@ function GeFileList()
 	
 	//document.getElementByID("FileList").innerHTML=dlist;
 	document.getElementById("FileList").innerHTML=dlist;
+    
     //FileList.innerHTML = dlist;
 }
 function Download()
@@ -116,7 +140,7 @@ PostResult( msg );
 </div>
 </div>
 </div>-->
-<div class="sectionwrapper">
+<div class="sectionwrapper" style="flex: 1; overflow: auto;">
   <div class="container">
   <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
     <div class="row">
@@ -508,6 +532,18 @@ PostResult( msg );
                                     </div>
                                 </div>
                            </div>
+                           <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>File Type <span class="text-red">*</span></label><br />
+                                        <select name="ftp_file_type" id="ftp_file_type" class="form-control">
+                                            <option value="">Select FileType</option>
+                                            <option value="1" <?php if($ftp_file_type != '' && $ftp_file_type == 1){echo "selected='selected'";} ?>>DST FANMAIL</option>
+                                            <option value="2" <?php if($ftp_file_type != '' && $ftp_file_type == 2){echo "selected='selected'";} ?>>DST IDC</option>
+                                        </select>
+                                    </div>
+                                </div>
+                           </div>
                            </div>
                            <div class="panel-footer">
                                 <div class="selectwrap">
@@ -606,9 +642,10 @@ PostResult( msg );
                     					</ul>
                     				</div>
                     			</div>
-                                <h3 class="panel-title"><i class="fa fa-file"></i> Download Files</h3>
+                                <h3 class="panel-title"><i class="fa fa-file"></i> Download Files (Only used with Internet Explorer)</h3>
                     		</div>
-                            <div class="panel-body" onunload="TerminateDownload()">
+                            
+                            <div class="panel-body" onunload="TerminateDownload()" id="fetch_file_div" style="display: none;">
                             
                             <object id="HTTPDL" style="height: 0px !important; width: 0px !important;" classid="CLSID:2DEA82A9-7FEF-4F68-8091-B800ECF54C9F" codeBase="./dsthttpdl.dll"></object>
                         	<!--<object style="display:none" id="SOME_ID" classid="clsid:SOME_CLASS_ID" codebase="./somePath.dll"></object>-->
@@ -627,6 +664,7 @@ PostResult( msg );
                                         <label>Destination Directory (local): </label><br />
                                         <input type="text" value="<?php echo $return_ftp_host['folder_location'];?>" id="DestDir" disabled="true" class="form-control"/></p>
                                         <input type="hidden" class="form-control" name="Password" id="Password" disabled="true" value="<?php echo $instance->decryptor($return_ftp_host['password']);?>"  />
+                                        <input type="hidden" class="form-control" name="ftpType" id="ftpType" disabled="true" value="<?php echo $return_ftp_host['ftp_file_type'];?>"  />
                                     </div>
                                 </div>
                             </div>
@@ -840,6 +878,13 @@ PostResult( msg );
     border-color: #2e6da4 !important;
     }
 </style>
+<script type="text/javascript">
+    var isIE = /*@cc_on!@*/false || !!document.documentMode;
+    if(isIE == true)
+    {
+        $('#fetch_file_div').css('display','block');
+    }
+</script>
 <script type="text/javascript">
 var waitingDialog = waitingDialog || (function ($) {
     'use strict';

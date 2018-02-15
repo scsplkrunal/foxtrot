@@ -1,5 +1,6 @@
 <?php
     require_once("include/config.php");
+    require_once(DIR_FS."islogin.php");
     //print_r($_POST);exit;
     $action = isset($_GET['action'])&&$_GET['action']!=''?$dbins->re_db_input($_GET['action']):'view';
     $id = isset($_GET['id'])&&$_GET['id']!=''?$dbins->re_db_input($_GET['id']):0;
@@ -11,6 +12,7 @@
     $folder_location = '';
     $status = 1;
     $process_file = '';
+    $ftp_file_type = '';
     
     $instance = new import();
     
@@ -39,6 +41,7 @@
         $password = isset($_POST['password'])?$instance->re_db_input($_POST['password']):'';
         $confirm_password = isset($_POST['confirm_password'])?$instance->re_db_input($_POST['confirm_password']):'';
         $folder_location = isset($_POST['folder_location'])?$instance->re_db_input($_POST['folder_location']):'';
+        $ftp_file_type = isset($_POST['ftp_file_type'])?$instance->re_db_input($_POST['ftp_file_type']):'';
         $status = isset($_POST['status'])?$instance->re_db_input($_POST['status']):'';
         
         $return = $instance->insert_update_ftp($_POST);   
@@ -70,6 +73,7 @@
         $user_name = isset($return['user_name'])?$instance->re_db_output($return['user_name']):'';
         $password = isset($return['password'])?$instance->re_db_output($return['password']):'';
         $folder_location = isset($return['folder_location'])?$instance->re_db_output($return['folder_location']):'';
+        $ftp_file_type = isset($return['ftp_file_type'])?$instance->re_db_output($return['ftp_file_type']):'';
         $status = isset($return['status'])?$instance->re_db_output($return['status']):'';
     }
     else if(isset($action) && $action=='open_ftp')

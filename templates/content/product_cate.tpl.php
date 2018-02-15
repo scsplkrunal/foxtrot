@@ -1,35 +1,54 @@
 <script>
 function addMoreThreshold(){
     var html = '<div class="row main_row" style="padding: 5px;">'+
-                    '<div class="col-md-5">'+
+                    '<div class="col-md-6">'+
                         '<div class="row" style="padding: 5px;">'+
-                            '<div class="col-md-6">'+
-                                '<div class="form-group">'+
-                                    '<input type="text" value="" maxlength="5" class="form-control" name="min_rate[]" id="min_rate" placeholder="0.0%"  />'+
-                                '</div>'+
-                            '</div>'+
-                            '<div class="col-md-6">'+
-                                '<div class="form-group">'+
-                                    '<input type="text" value="" maxlength="5" class="form-control" name="max_rate[]" id="max_rate" placeholder="99.9%" />'+
-                                '</div>'+
-                            '</div>'+
-                        '</div>'+
-                    '</div>'+
-                    '<div class="col-md-5">'+
-                        '<div class="row" style="padding: 5px;">'+
-                            '<div class="col-md-6">'+
-                                '<div class="form-group">'+
+                            '<div class="col-md-5">'+
+                                '<div class="input-group">'+
+                                    '<span class="input-group-addon">$</span>'+
                                     '<input type="number" value=""  maxlength="9" class="form-control" id="min_threshold" name="min_threshold[]" placeholder="$0"  />'+
                                 '</div>'+
                             '</div>'+
-                            '<div class="col-md-6">'+
+                            '<div class="col-md-2">'+
                                 '<div class="form-group">'+
+                                    '<label>To </label>'+
+                                '</div>'+
+                            '</div>'+
+                            '<div class="col-md-5">'+
+                                '<div class="input-group">'+
+                                    '<span class="input-group-addon">$</span>'+
                                     '<input type="number" value=""  maxlength="9" class="form-control" id="max_threshold" name="max_threshold[]" placeholder="$99,999,999"  />'+
                                 '</div>'+
                             '</div>'+
                         '</div>'+
                     '</div>'+
-                    '<div class="col-md-1">'+
+                    '<div class="col-md-6">'+
+                        '<div class="row" style="padding: 5px;">'+
+                            '<div class="col-md-4">'+
+                                '<div class="form-group">'+
+                                    '<label>with a Rate of </label>'+
+                                '</div>'+
+                            '</div>'+
+                            '<div class="col-md-6">'+
+                                '<div class="input-group">'+
+                                    '<input type="number" value="" maxlength="5" step="0.01" class="form-control" name="min_rate[]" id="min_rate" placeholder="0.0%"  />'+
+                                    '<span class="input-group-addon">%</span>'+
+                                '</div>'+
+                            '</div>'+
+                            '<div class="col-md-2">'+
+                                '<div class="form-group">'+
+                                    '<button type="button" tabindex="-1" class="btn remove-row btn-icon btn-circle"><i class="fa fa-minus"></i></button>'+
+                                '</div>'+
+                            '</div>'+
+                            /*'<div class="col-md-6">'+
+                                '<div class="form-group">'+
+                                    '<input type="text" value="" maxlength="5" class="form-control" name="max_rate[]" id="max_rate" placeholder="99.9%" />'+
+                                '</div>'+
+                            '</div>'+*/
+                        '</div>'+
+                    '</div>'+
+                    
+                    /*'<div class="col-md-1">'+
                         '<div class="row" style="padding: 5px;">'+
                             '<div class="col-md-12">'+
                                 '<div class="form-group">'+
@@ -37,7 +56,7 @@ function addMoreThreshold(){
                                 '</div>'+
                             '</div>'+
                         '</div>'+
-                    '</div>'+
+                    '</div>'+*/
                 '</div>';
                 
             
@@ -223,7 +242,7 @@ $(document).on('click','.remove-row',function(){
                                 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Product Name </label><br />
+                                        <label>Product Name <span class="text-red">*</span></label><br />
                                         <input type="text" maxlength="40" class="form-control" name="name" value="<?php echo $name; ?>"  />
                                     </div>
                                 </div>
@@ -238,7 +257,7 @@ $(document).on('click','.remove-row',function(){
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Sponsor </label><br />
+                                        <label>Sponsor <span class="text-red">*</span></label><br />
                                         <select class="form-control" name="sponsor">
                                             <option value="">Select Sponsor</option>
                                              <?php foreach($get_sponsor as $key=>$val){?>
@@ -268,6 +287,7 @@ $(document).on('click','.remove-row',function(){
                                     </div>
                                 </div>
                             </div>
+                            <?php if(isset($_GET['category']) && $_GET['category'] == 1){ ?>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -305,49 +325,45 @@ $(document).on('click','.remove-row',function(){
                                         <input type="text" maxlength="7" value="<?php echo $fund_code; ?>" class="form-control" name="fund_code"  />
                                     </div>
                                 </div>
-                            </div>
-                            
+                            </div><br />
                             <div class="row" style="padding: 5px;" id="add_more_threshold">
-                                <div class="col-md-5">
-                                    <label>Rate </label><br />
-                                    <div class="row" style="padding: 5px;">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>From </label><br />
-                                                <input type="text" value=""  maxlength="5" class="form-control" name="min_rate[]" id="min_rate" placeholder="0.0%"  />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>To</label><br />
-                                                <input type="text" value=""  maxlength="5" class="form-control" name="max_rate[]" id="max_rate" placeholder="99.9%" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-5">
+                                <div class="col-md-6">
                                     <label>Threshold </label><br />
                                     <div class="row" style="padding: 5px;">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>From </label><br />
+                                        <div class="col-md-5">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">$</span>
                                                 <input type="number" value=""  maxlength="9" class="form-control" id="min_threshold" name="min_threshold[]" placeholder="$0"  />
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>To</label><br />
+                                        <div class="col-md-2">
+                                            <label>To </label>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">$</span>
                                                 <input type="number" value=""  maxlength="9" class="form-control" id="max_threshold" name="max_threshold[]" placeholder="$99,999,999"  />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-1">
-                                    <label>&nbsp;</label><br />
+                                <div class="col-md-6">
+                                    <label>Rate </label><br />
                                     <div class="row" style="padding: 5px;">
-                                        <div class="col-md-12">
+                                        <div class="col-md-4">
                                             <div class="form-group">
-                                                <label>&nbsp;</label><br />
+                                                <label>with a Rate of </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <input type="number" value="" step="0.01"  maxlength="5" class="form-control" name="min_rate[]" id="min_rate" placeholder="0.00%"  />
+                                                <span class="input-group-addon">%</span>
+                                                <!--<input type="text" value=""  maxlength="5" class="form-control" name="max_rate[]" id="max_rate" placeholder="99.9%" />-->
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
                                                 <button type="button" onclick="addMoreThreshold();" class="btn btn-purple btn-icon btn-circle"><i class="fa fa-plus"></i></button>
                                             </div>
                                         </div>
@@ -360,43 +376,52 @@ $(document).on('click','.remove-row',function(){
                             foreach($return_rates as $keyedit_rates=>$valedit_rates){
                             ?>
                            <div class="row main_row" style="padding: 5px;">
-                                <div class="col-md-5">
+                                <div class="col-md-6">
                                     <div class="row" style="padding: 5px;">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input type="text" value="<?php echo $valedit_rates['min_rate']; ?>" onblur="minrate(this.value)"   maxlength="5" class="form-control" name="min_rate[]" id="min_rate" placeholder="0.0%"  />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input type="text" value="<?php echo $valedit_rates['max_rate']; ?>"  onblur="maxrate(this.value)"  maxlength="5" class="form-control" name="max_rate[]" id="max_rate" placeholder="99.9%" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="row" style="padding: 5px;">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
+                                        <div class="col-md-5">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">$</span>
                                                 <input type="number" onblur="minthreshold(this.value)" value="<?php echo $valedit_rates['min_threshold']; ?>"  maxlength="9" class="form-control" id="min_threshold" name="min_threshold[]" placeholder="$0"  />
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
+                                        <div class="col-md-2">
+                                            <label>To </label>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">$</span>
                                                 <input type="number" onblur="maxthreshold(this.value)" value="<?php echo $valedit_rates['max_threshold']; ?>"  maxlength="9" class="form-control" id="max_threshold" name="max_threshold[]" placeholder="$99,999,999"  />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-1">
+                                <div class="col-md-6">
                                     <div class="row" style="padding: 5px;">
-                                        <div class="col-md-12">
+                                        <div class="col-md-4">
                                             <div class="form-group">
-                                               <button type="button" tabindex="-1" class="btn remove-row btn-icon btn-circle"><i class="fa fa-minus"></i></button>
+                                                <label>with a Rate of </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <input type="number" value="<?php echo $valedit_rates['min_rate']; ?>" step="0.01" onblur="minrate(this.value)"   maxlength="5" class="form-control" name="min_rate[]" id="min_rate" placeholder="0.0%"  />
+                                                <span class="input-group-addon">%</span>
+                                            </div>
+                                        </div>
+                                        <!--<div class="col-md-6">
+                                            <div class="form-group">
+                                                <input type="text" value="<?php echo $valedit_rates['max_rate']; ?>"  onblur="maxrate(this.value)"  maxlength="5" class="form-control" name="max_rate[]" id="max_rate" placeholder="99.9%" />
+                                            </div>
+                                        </div>-->
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <button type="button" tabindex="-1" class="btn remove-row btn-icon btn-circle"><i class="fa fa-minus"></i></button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                
+                                
                            </div>
                            <?php } }?>
                            <div class="row" style="padding: 5px;">
@@ -408,6 +433,7 @@ $(document).on('click','.remove-row',function(){
                                 </div>
                            </div>
                            </div><br />
+                           <?php } ?>
                            <div style="display: block; border: 1px solid #ddd;">
                            <div class="row" style="padding: 5px;">
                                 <div class="col-md-6">
@@ -458,7 +484,8 @@ $(document).on('click','.remove-row',function(){
                                 </div>
                             </div>
                             </div>
-                            <br />   
+                            <br />  
+                           <?php if(isset($_GET['category']) && ($_GET['category'] == 2 || $_GET['category'] == 3)){ ?> 
                            <div style="display: block; border: 1px solid #ddd;">
                            <div class="row" style="padding: 5px;">
                                 <div class="col-md-12">
@@ -477,6 +504,8 @@ $(document).on('click','.remove-row',function(){
                             </div>
                             </div>
                             <br />
+                           <?php } ?>
+                           <?php if(isset($_GET['category']) && ($_GET['category'] == 3 || $_GET['category'] == 7 || $_GET['category'] == 8)){ ?>
                            <div style="display: block; border: 1px solid #ddd;">
                             <div class="row" style="padding: 5px;">
                             
@@ -510,7 +539,9 @@ $(document).on('click','.remove-row',function(){
                                 </div>
                             </div>
                             </div>
-                            <br />  
+                            <br /> 
+                           <?php } ?>
+                           <?php if(isset($_GET['category']) && $_GET['category'] == 4){ ?> 
                            <div style="display: block; border: 1px solid #ddd;">
                             <div class="row" style="padding: 5px;">
                            
@@ -529,10 +560,12 @@ $(document).on('click','.remove-row',function(){
                             </div>
                             </div>
                             <br />
+                           <?php } ?>
+                           <?php if(isset($_GET['category']) && ($_GET['category'] == 9 || $_GET['category'] == 10)){ ?>
                            <div style="display: block; border: 1px solid #ddd;">
                             <div class="row" style="padding: 5px;">
                                 <div class="col-md-12">
-                                    <h4><b>Agency Tax Credits, Alternative Investments, Hedge Funds, Secondary Limited Partnerships</b></h4><br />
+                                    <h4><b>Partnerships, Alternative Investments, REITs, Agency Tax Credits, Hedge Funds</b></h4><br />
                                 </div>
                             </div>
                            
@@ -559,7 +592,8 @@ $(document).on('click','.remove-row',function(){
                                 </div>
                             </div>
                           </div><br />
-                         </div>  
+                          <?php } ?>
+                    </div>  
                     <div class="tab-pane" id="tab_bb"> 
                         <div class="row">
                                 <div class="col-md-12">

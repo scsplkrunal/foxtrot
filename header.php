@@ -1,3 +1,6 @@
+<?php 
+require_once("include/config.php");
+require_once(DIR_FS."islogin.php");?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,12 +39,10 @@
 </head>
 <body>
 <?php 
-require_once("include/config.php"); 
-require_once("islogin.php"); 
 $instance_header = new header_class();
 ?>
-<header>
-<div class="sectionwrapper">
+<header style="<?php if(isset($_GET['action']) && ($_GET['action'] == 'edit' || $_GET['action'] == 'add_new' || $_GET['action'] == 'add_sponsor' || $_GET['action'] == 'edit_sponsor' || $_GET['action'] == 'add_product' || $_GET['action'] == 'edit_product')){ echo 'display : none !important';} ?> ">
+<div class="sectionwrapper headerwrapper">
   <div class="container">
     <div class="headertop">
       <div class="sitelogo"><a href="home.php" title="Foxtrot"><img src="images/sitelogo.png" alt="Foxtrot" /></a></div>
@@ -51,7 +52,7 @@ $instance_header = new header_class();
 		<div class="userlogin">
 			<ul class="nav navbar-nav">
                  <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $_SESSION['user_name']." ";?>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php if(isset($_SESSION['user_name'])){echo $_SESSION['user_name']." ";}?>
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="sign-out.php">Logout</a></li>
@@ -175,6 +176,7 @@ $instance_header = new header_class();
   </div>
 </div>
 </header>
+<div class="contentmain" style="<?php if(isset($_GET['action']) && ($_GET['action'] == 'edit' || $_GET['action'] == 'add_new' || $_GET['action'] == 'add_sponsor' || $_GET['action'] == 'edit_sponsor' || $_GET['action'] == 'add_product' || $_GET['action'] == 'edit_product')){ echo 'padding : 0px !important';} ?>">
 <script type="text/javascript">
 $(document).ready(function() {
     $('input:text:visible:first', this).focus();
