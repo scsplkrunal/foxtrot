@@ -36,8 +36,8 @@
             $m_zip = isset($data['m_zip'])?$this->re_db_input($data['m_zip']):'';
             $telephone = isset($data['telephone'])?$this->re_db_input($data['telephone']):'';
             $facsimile = isset($data['facsimile'])?$this->re_db_input($data['facsimile']):'';
-            $e_date = isset($data['e_date'])?$this->re_db_input($data['e_date']):'';
-            $i_date = isset($data['i_date'])?$this->re_db_input($data['i_date']):'';
+            $e_date = isset($data['e_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['e_date']))):'';
+            $i_date = isset($data['i_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['i_date']))):'';
             $payout_level = isset($data['payout_level'])?$this->re_db_input($data['payout_level']):'';
             $clearing_charge_calculation = isset($data['clearing_charge_calculation'])?$this->re_db_input($data['clearing_charge_calculation']):'';
             $sliding_scale_commision = isset($data['sliding_scale_commision'])?$this->re_db_input($data['sliding_scale_commision']):'';

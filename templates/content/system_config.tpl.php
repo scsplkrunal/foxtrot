@@ -1,7 +1,7 @@
 <div class="container">
 <h1>System Configuration</h1> 
+ <div class="col-lg-12 well">
  <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
-    <div class="col-lg-12 well">
         <div class="panel">        
         <div class="panel-heading">
             <h3 class="panel-title"><i class="fa fa-pencil-square-o"></i> Add System Configuration</h3>
@@ -106,12 +106,12 @@
                 </div>
             </div>
             </div>
-            <div class="panel-footer">
+            <div class="panel-footer fixedbtmenu">
                 <div class="selectwrap">
-					<input type="submit" name="submit" class="btn btn-warning btn-lg btn3d " value="Save"/>
+					<input type="button" name="cancel" class="btn btn-warning btn-lg btn3d " onclick="<?php echo CURRENT_PAGE;?>" value="Cancel" style="float: right;"/>
+                    <input type="submit" name="submit" class="btn btn-warning btn-lg btn3d " value="Save" style="float: right;"/>
                     <!-- <input type="button" name="proceed" onclick="waitingDialog.show();" class="btn btn-warning btn-lg btn3d " value="Proceed"/> -->
-					<input type="button" name="cancel" class="btn btn-warning btn-lg btn3d " onclick="<?php echo CURRENT_PAGE;?>" value="Cancel"/>
-                </div>
+				</div>
             </div>
         </form>
         </div>

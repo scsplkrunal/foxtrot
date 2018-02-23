@@ -2,8 +2,8 @@
 
     
 <div class="container">
-    <h1>Multi-Company Maintenance</h1>
-    <div class="col-lg-12 well">
+    <h1 class="<?php if($action=='add_new'||($action=='edit' && $id>0)){ echo 'topfixedtitle';}?>">Multi-Company Maintenance</h1>
+    <div class="col-lg-12 well <?php if($action=='add_new'||($action=='edit' && $id>0)){ echo 'fixedwell';}?>">
         <div class="tab-content col-md-12">
             <div class="tab-pane active" id="tab_a">
     <!-- Add table data and some process -->
@@ -12,7 +12,7 @@
     if($action=='add_new'||($action=='edit' && $id>0)){
         ?>
         <form method="post">
-            <ul class="nav nav-tabs ">
+            <ul class="nav nav-tabs <?php if($action=='add_new'||($action=='edit' && $id>0)){ echo 'topfixedtabs';}?>">
                 <li class="active"><a href="#tab_aa" data-toggle="tab">General</a></li>
                 <li><a href="#tab_bb" data-toggle="tab">Commissions</a></li>
                 <li><a href="#tab_cc" data-toggle="tab">Registrations</a></li>
@@ -27,21 +27,7 @@
             </ul>
             <div class="tab-content panel"> 
             
-                <div class="panel-footer">
-                <div class="selectwrap" >
-                    <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-                        <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous"style="float: left;" class="previous next_previous_a" style="float: left;"><input type="button" name="next" value="&laquo; Previous" /></a><?php } ?>
-                        <?php if($action=='edit' && $id>0){?>
-                        <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 9% !important;"/></a>
-                        <?php } ?>
-                        <a href="#company_notes" data-toggle="modal"><input type="button" onclick="get_company_notes();" name="notes" value="Notes" /></a>
-                        <a href="#company_attach" data-toggle="modal"><input type="button"  onclick="get_company_attach();" name="attach" value="Attachments" /></a>
-                        <a href="#company_transactions" data-toggle="modal"><input type="button"  name="transactions" value="Transactions" /></a>
-                        <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
-                        <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
-                        <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" style="float: right;" class="next next_previous_a" style="float: right;"><input type="button" name="previous" value="Next &raquo;" /></a><?php } ?>
-                </div><br />
-           </div>        
+                 
                 <div class="tab-pane active" id="tab_aa">
                     <div class="row">
                         <div class="col-md-12">
@@ -172,7 +158,7 @@
                                 <label>Date Established <span class="text-red">*</span> </label><br />
                                 <div id="demo-dp-range">
 	                                <div class="input-daterange input-group" id="datepicker">
-                                        <input type="text" name="e_date" id="e_date" value="<?php if($action=='edit'){echo $e_date;} ?>" class="form-control" />
+                                        <input type="text" name="e_date" id="e_date" value="<?php if($action=='edit'){echo date('m/d/Y',strtotime($e_date));} ?>" class="form-control" />
 	                                </div>
 	                            </div>
                             </div>
@@ -182,7 +168,7 @@
                                 <label>Inactive Date </label><br />
                                 <div id="demo-dp-range">
                                     <div class="input-daterange input-group" id="datepicker">
-                                        <input type="text" name="i_date" id="i_date" value="<?php if($action=='edit'){echo $i_date;} ?>" class="form-control" />
+                                        <input type="text" name="i_date" id="i_date" value="<?php if($action=='edit'){echo date('m/d/Y',strtotime($i_date));} ?>" class="form-control" />
                                     </div>
                                 </div>
                             </div>
@@ -335,6 +321,7 @@
                         </div>
                     </div>
                 </div>
+                </div>
                 <div class="tab-pane" id="tab_cc">
                     <div class="row">
                         <div class="form-group">
@@ -353,22 +340,26 @@
                         </div>
                     </div>
                 </div>
-                <div class="panel-footer">
+                <div class="panel-footer fixedbtmenu">
                     <div class="selectwrap" >
                         <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
                         <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous"style="float: left;" class="previous next_previous_a" style="float: left;"><input type="button" name="next" value="&laquo; Previous" /></a><?php } ?>
-                         <?php if($action=='edit' && $id>0){?>
-                        <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 9% !important;"/></a>
+                        <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a"><input type="button" name="previous" value="Next &raquo;" /></a><?php } ?>
+                        
+                        <?php if($action=='edit' && $id>0){?>
+                        <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 12% !important;"/></a>
                         <?php } ?>
                         <a href="#company_notes" data-toggle="modal"><input type="button" onclick="get_company_notes();" name="notes" value="Notes" /></a>
-                        <a href="#company_attach" data-toggle="modal"><input type="button"  onclick="get_company_attach();" name="attach" value="Attachments" /></a>
-                        <a href="#company_transactions" data-toggle="modal"><input type="button"  name="transactions" value="Transactions" /></a>
-                        <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
-                        <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
-                        <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" style="float: right;" class="next next_previous_a" style="float: right;"><input type="button" name="previous" value="Next &raquo;" /></a><?php } ?>
+                        <a href="#company_transactions" data-toggle="modal"><input type="button"  name="transactions" value="Transactions"/></a>
+                        <a href="#company_attach" data-toggle="modal"><input type="button"  onclick="get_company_attach();" name="attach" value="Attachments" style="margin-right: 12% !important;" /></a>
+                        
+                        <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" style="float: right;"/></a>
+                        <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save" style="float: right;"/>	
+                        
+                        
                     </div><br />
                 </div>
-                </div>                    
+                                    
                             
         </form> 
         </div>
@@ -401,11 +392,11 @@
 			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
 	            <thead>
 	                <tr>
-                        <th>Company/Practice Name</th>
-                        <th>Manager Name</th>
-                        <th>Practice Type</th>
-                        <th>Establish Date</th>
-                        <th>Termination Date</th>
+                        <th>COMPANY/PRACTICE NAME</th>
+                        <th>MANAGER NAME</th>
+                        <th>PRACTICE TYPE</th>
+                        <th>ESTABLISH DATE</th>
+                        <th>TERMINATION DATE</th>
                         <th class="text-center">STATUS</th>
                         <th class="text-center">ACTION</th>
                     </tr>
@@ -419,8 +410,8 @@
                                 <td><?php echo $val['company_name']; ?></td>
                                 <td><?php foreach($get_manager as $statekey=>$stateval){ if($val['manager_name'] == $stateval['id']){echo $stateval['first_name'].' '.$stateval['middle_name'].' '.$stateval['last_name']; }} ?></td>
                                 <td><?php echo $val['company_type']; ?></td>
-                                <td><?php echo $val['e_date']; ?></td>
-                                <td><?php echo $val['i_date']; ?></td>
+                                <td><?php echo date('m/d/Y',strtotime($val['e_date'])); ?></td>
+                                <td><?php echo date('m/d/Y',strtotime($val['i_date'])); ?></td>
                                 <td class="text-center">
                                     <?php
                                         if($val['status']==1){
@@ -449,7 +440,7 @@
 	</div>
     <?php } ?>
     <?php if($action=='edit' && $id>0){?>
-    <div class="row">
+    <!--<div class="row">
         <div class="col-md-12">
             <div class="form-group"><br /><div class="selectwrap">
                 <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;">&laquo; Previous</a>
@@ -457,7 +448,7 @@
             </div>
          </div>
          </div>
-     </div>
+     </div>-->
     <?php } ?>
     </div>
     <!-- Lightbox strart -->							
@@ -1002,7 +993,7 @@ function delete_notes(note_id){
 </script>
 <script>
 $('#demo-dp-range .input-daterange').datepicker({
-        format: "yyyy-mm-dd",
+        format: "mm/dd/yyyy",
         todayBtn: "linked",
         autoclose: true,
         todayHighlight: true

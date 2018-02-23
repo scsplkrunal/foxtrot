@@ -14,19 +14,34 @@ require_once(DIR_FS."islogin.php");?>
 <link href="css/bootstrap.min.css" rel="stylesheet" />
 <!-- font-awesome -->
 <link href="css/font-awesome.min.css" rel="stylesheet" />
-<!-- font-awesome -->
-<!--<link href="css/nifty.min.css" rel="stylesheet" />-->
-<!-- common-styles -->
 <link href="css/style.css" rel="stylesheet" />
-<!-- Fevicon -->
 <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
 <link href="<?php echo SITE_CSS; ?>bootstrap-datepicker.min.css" rel="stylesheet"/>
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+<!--<link href="<?php echo SITE_CSS; ?>datatables.css" rel="stylesheet"/>
+<link href="<?php echo SITE_CSS; ?>datatables.min.css" rel="stylesheet"/>-->
 <script src="js/jquery.min.js"></script>
 <script src="<?php echo SITE_JS; ?>bootstrap-datepicker.min.js"></script>
+<!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>-->
+<!--<script src="<?php echo SITE_JS; ?>datatables.js"></script>
+<script src="<?php echo SITE_JS; ?>datatables.min.js"></script>-->
 
+<!-- Datatables-->
+<link rel="stylesheet" href="<?php echo SITE_PLUGINS; ?>datatables/dataTables.bootstrap.min.css" />
+<link rel="stylesheet" href="<?php echo SITE_PLUGINS; ?>datatables/buttons.dataTables.min.css" />
+<script src="<?php echo SITE_PLUGINS; ?>datatables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="<?php echo SITE_PLUGINS; ?>datatables/dataTables.bootstrap.min.js"></script>
+<script src="<?php echo SITE_PLUGINS; ?>datatables/dataTables.buttons.min.js"></script>
+<script src="<?php echo SITE_PLUGINS; ?>datatables/jszip.min.js"></script>
+<script src="<?php echo SITE_PLUGINS; ?>datatables/pdfmake.min.js"></script>
+<script src="<?php echo SITE_PLUGINS; ?>datatables/vfs_fonts.js"></script>        
+<script src="<?php echo SITE_PLUGINS; ?>datatables/buttons.html5.min.js"></script>  
+<script src="<?php echo SITE_PLUGINS; ?>datatables/buttons.colVis.min.js"></script>      
+  
+     
 <script src="<?php echo SITE_JS; ?>validator.js"></script>
- <script src="<?php echo SITE_JS; ?>multipleselection.js"></script>
+<script src="<?php echo SITE_JS; ?>multipleselection.js"></script>
 <script src="<?php echo SITE_JS; ?>custom.js"></script>
 <script src="<?php echo SITE_PLUGINS; ?>bootbox/bootbox.min.js"></script>
 <script src="<?php echo SITE_PLUGINS; ?>masked-input/jquery.maskedinput.min.js"></script>
@@ -41,7 +56,7 @@ require_once(DIR_FS."islogin.php");?>
 <?php 
 $instance_header = new header_class();
 ?>
-<header style="<?php if(isset($_GET['action']) && ($_GET['action'] == 'edit' || $_GET['action'] == 'add_new' || $_GET['action'] == 'add_sponsor' || $_GET['action'] == 'edit_sponsor' || $_GET['action'] == 'add_product' || $_GET['action'] == 'edit_product')){ echo 'display : none !important';} ?> ">
+<header style="<?php if(isset($_GET['action']) && ($_GET['action'] == 'edit' || $_GET['action'] == 'add_new' || $_GET['action'] == 'add_sponsor' || $_GET['action'] == 'edit_sponsor' || $_GET['action'] == 'add_product' || $_GET['action'] == 'edit_product' || $_GET['action'] == 'add' || $_GET['action'] == 'edit_transaction' || $_GET['action'] == 'add_batches' || $_GET['action'] == 'edit_batches')){ echo 'display : none !important';} ?> ">
 <div class="sectionwrapper headerwrapper">
   <div class="container">
     <div class="headertop">
@@ -176,7 +191,7 @@ $instance_header = new header_class();
   </div>
 </div>
 </header>
-<div class="contentmain" style="<?php if(isset($_GET['action']) && ($_GET['action'] == 'edit' || $_GET['action'] == 'add_new' || $_GET['action'] == 'add_sponsor' || $_GET['action'] == 'edit_sponsor' || $_GET['action'] == 'add_product' || $_GET['action'] == 'edit_product')){ echo 'padding : 0px !important';} ?>">
+<div class="contentmain" style="<?php if(isset($_GET['action']) && ($_GET['action'] == 'edit' || $_GET['action'] == 'add_new' || $_GET['action'] == 'add_sponsor' || $_GET['action'] == 'edit_sponsor' || $_GET['action'] == 'add_product' || $_GET['action'] == 'edit_product' || $_GET['action'] == 'add' || $_GET['action'] == 'edit_transaction' || $_GET['action'] == 'add_batches' || $_GET['action'] == 'edit_batches')){ echo 'padding : 0px !important';} ?>">
 <script type="text/javascript">
 $(document).ready(function() {
     $('input:text:visible:first', this).focus();

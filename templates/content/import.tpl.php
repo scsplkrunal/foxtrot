@@ -144,7 +144,7 @@ PostResult( msg );
   <div class="container">
   <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
     <div class="row">
-        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 pull-left">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
 		  <div class="graphbox">
 		        <div class="graphboxtitle">Import </div>
 				<div class="graphboxcontent">
@@ -731,138 +731,7 @@ PostResult( msg );
             </div>
             </div>
         </div>
-        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 pull-right">
-			<div class="graphbox">
-				<div class="graphboxtitle">Daily Importing <i class="fa fa-times-circle"></i><i class="fa fa-chevron-circle-down"></i></div>
-				<div class="graphboxcontent">
-                    <table width='100%'> 
-                        <tr>
-                            <td>Completed file</td>
-                            <td>16</td>
-                            <td rowspan="5" width='60%'><div id="container1" style="min-width: 200px; height: 200px; max-width: 200px; margin:  auto"></div></td>
-                        </tr>
-                        <tr>
-                            <td>Partially Completed</td>
-                            <td>4</td>
-                        </tr>
-                        <tr>
-                            <td>New file</td>
-                            <td>4</td>
-                        </tr>
-                    </table>
-					<div class="graphimg">
-                    <!--img src="images/graphimg.jpg" alt="Graph Image" / --></div>
-				</div>
-			</div>
-   
-			<div class="graphbox">
-				<div class="graphboxtitle">Commissions <i class="fa fa-times-circle"></i><i class="fa fa-chevron-circle-down"></i></div>
-				<div class="graphboxcontent">
-                    <table width='100%'> 
-                        <tr>
-                            <td>Direct</td>
-                            <td>$45.000</td>
-                            <td rowspan="5" style="width: 60%;"><div id="container_commission" style="min-width: 200px; height: 200px; max-width: 3000px; margin:  auto"></div></td>
-                        </tr>
-                        <tr>
-                            <td>Pending</td>
-                            <td>$12.8000</td>
-                        </tr>
-                        <tr>
-                            <td>Advisory</td>
-                            <td>$26.8000</td>
-                        </tr>
-                        <tr>
-                            <td>Clearing</td>
-                            <td>$8.5000</td>
-                        </tr>
-                        <tr>
-                            <td>Others</td>
-                            <td>$2.3000</td>
-                        </tr>
-                        </table>
-        				</div>
-                        <div class="graphboxtitle" style="border-top: 2px solid #dfdfdf; font-weight: 10 !important; font-size: 15px !important;">
-                        <table>
-                            <tr>
-                                <td style="width: 28.5% !important;">Total file</td>
-                                <td>$192.000</td>
-                                <td rowspan="5" style="width: 60%;"></td>
-                            </tr>
-                        </table>
-                        </div>
-            </div>
-            <div class="graphbox">
-    				<div class="graphboxtitle">Compliance <i class="fa fa-times-circle"></i><i class="fa fa-chevron-circle-down"></i></div>
-    				<div class="graphboxcontent">
-    					<div class="graphimg">
-                         <table width='100%'> 
-                            <tr>
-                                <td align='center'>Complated file</td>
-                            </tr>
-                            <tr>
-                                <td align='center'>4</td>
-                            </tr>
-                            <tr>
-                                <td align='center'>Pendding file</td>
-                            </tr>
-                            <tr>
-                                <td align='center'>4</td>
-                            </tr>
-                            <tr>
-                                <td> <div id="container3" ></div> </td>
-                            </tr>
-                        </table>
-    				</div>
-    			</div>
-            </div>
-            <div class="graphbox">
-    				<div class="graphboxtitle">Payroll <i class="fa fa-times-circle"></i><i class="fa fa-chevron-circle-down"></i></div>
-    				<div class="graphboxcontent">
-                        <table width='100%'> 
-                            <tr>
-                                <td>Last Cutoff</td>
-                                <td>15-11-2017</td>
-                                <td rowspan="9" style="width: 60%;"><div id="container_payroll" style="min-width: 200px; height: 200px; max-width: 3000px; margin:  auto"></div></td>
-                            </tr>
-                            <tr>
-                                <td>Gross Commission</td>
-                                <td>$325k</td>
-                            </tr>
-                            <tr>
-                                <td>Average Payout Rate</td>
-                                <td>$346.512.1</td>
-                            </tr>
-                            <tr>
-                                <td>Charges</td>
-                                <td>$1.5k</td>
-                            </tr>
-                            <tr>
-                                <td>Net Commission</td>
-                                <td>$228k</td>
-                            </tr>
-                            <tr>
-                                <td>Adjustment</td>
-                                <td>$4.5k</td>
-                            </tr>
-                            <tr>
-                                <td>Total Check Amount</td>
-                                <td>$265k</td>
-                            </tr>
-                            <tr>
-                                <td>Balance Carried Forword</td>
-                                <td>$45k</td>
-                            </tr>
-                            <tr>
-                                <td>Retention</td>
-                                <td>$415k</td>
-                            </tr>
-                        </table>
-    					<!--p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes.</p-->
-    					<div class="graphimg"><!--img src="images/graphimg.jpg" alt="Graph Image" /--></div>
-    				</div>
-    			</div>
-			</div>
+        
 		</div>
     </div>
   </div>

@@ -18,7 +18,7 @@
 								</ul>
 							</div>
 						</div>
-                        <h3 class="panel-title"><i class="ti-pencil-alt"></i> <?php echo $action=='add_new'?'Add':'Edit'; ?> Payroll Adjustment Category</h3>
+                        <h3 class="panel-title"><i class="fa fa-pencil-square-o"></i> <?php echo $action=='add_new'?'Add':'Edit'; ?> Payroll Adjustment Category</h3>
 					</div>
                     <div class="panel-body">
                         <div class="row">
@@ -35,9 +35,10 @@
                     </div>
                     <div class="panel-footer">
                         <div class="selectwrap">
+                            <label></label>
                             <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-        					<input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
-                            <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
+        					<a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" style="float: right;"/></a>
+                            <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save" style="float: right;"/>	
                         </div>
                    </div>
                 </div>

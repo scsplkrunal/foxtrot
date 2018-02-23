@@ -14,15 +14,15 @@
     if(isset($_POST['batches'])&& $_POST['batches']=='Save'){ 
         //echo '<pre>';print_r($_POST);exit();
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
-        $pro_category = isset($_POST['pro_categoryx'])?$instance->re_db_input($_POST['pro_category']):'';
-        $batch_number = isset($_POST['batch_number'])?$instance->re_db_input($_POST['batch_number']):'';
+        $pro_category = isset($_POST['pro_category'])?$instance->re_db_input($_POST['pro_category']):'';
+        //$batch_number = isset($_POST['batch_number'])?$instance->re_db_input($_POST['batch_number']):'';
         $batch_desc = isset($_POST['batch_desc'])?$instance->re_db_input($_POST['batch_desc']):'';
         $sponsor = isset($_POST['sponsor'])?$instance->re_db_input($_POST['sponsor']):'';
         $batch_date = isset($_POST['batch_date'])?$instance->re_db_input($_POST['batch_date']):'';
         $deposit_date = isset($_POST['deposit_date'])?$instance->re_db_input($_POST['deposit_date']):'';
         $trade_start_date = isset($_POST['trade_start_date'])?$instance->re_db_input($_POST['trade_start_date']):'';
         $trade_end_date = isset($_POST['trade_end_date'])?$instance->re_db_input($_POST['trade_end_date']):'';
-        $check_amount = isset($_POST['check_amount'])?$instance->re_db_input($_POST['check_amount']):'';
+        $check_amount = isset($_POST['check_amount'])?$instance->re_db_input($_POST['check_amount']):0;
         $commission_amount = isset($_POST['commission_amount'])?$instance->re_db_input($_POST['commission_amount']):'';
         $split = isset($_POST['split'])?$instance->re_db_input($_POST['split']):'';
         $prompt_for_check_amount = isset($_POST['prompt_for_check_amount'])?$instance->re_db_input($_POST['prompt_for_check_amount']):'';
@@ -45,7 +45,7 @@
         $id = isset($return['id'])?$instance->re_db_output($return['id']):0;
 
         $pro_category = isset($return['pro_category'])?$instance->re_db_output($return['pro_category']):'';
-        $batch_number = isset($return['batch_number'])?$instance->re_db_output($return['batch_number']):'';
+        $batch_number = isset($return['id'])?$instance->re_db_output($return['id']):'';
         $batch_desc = isset($return['batch_desc'])?$instance->re_db_output($return['batch_desc']):'';
         $sponsor = isset($return['sponsor'])?$instance->re_db_output($return['sponsor']):'';
         $batch_date = isset($return['batch_date'])?$instance->re_db_output($return['batch_date']):'';

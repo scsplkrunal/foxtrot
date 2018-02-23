@@ -1,7 +1,7 @@
 <div class="container">
 <h1>Data Interfaces</h1>
+<div class="col-lg-12 well">
 <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
-    <div class="col-lg-12 well">
         <ul class="nav nav-pills nav-stacked col-md-2">
           <li <?php if(isset($_GET['dim'])&& $_GET['dim']=='1'){ ?> class="active"<?php }else if(!isset($_GET['dim'])){?> class="active"<?php }?>><a href="<?php echo CURRENT_PAGE; ?>?dim=1">DST IDC</a></li>
           <li <?php if(isset($_GET['dim'])&& $_GET['dim']=='2'){ ?> class="active"<?php }?>><a href="<?php echo CURRENT_PAGE; ?>?dim=2">DST FANMail</a></li>
@@ -67,9 +67,10 @@
                                 <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
                                 <input type="hidden" name="dim_id" id="dim_id" value="1" />
                                 <input type="hidden" name="is_authorized" id="is_authorized" value="1" />
-            					<input type="submit" onclick="waitingDialog.show();" name="submit" value="Save"/>	
-                                <input type="button" name="clear" value="Clear" />
-                            </div><br />				
+            					<input type="button" name="clear" value="Clear" style="float: right;"/>
+                                <input type="submit" onclick="waitingDialog.show();" name="submit" value="Save" style="float: right;"/>	
+                            </div>
+                            <br />				
     					</div>
 				    </form> 
                 </div>
@@ -127,8 +128,8 @@
                                 <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
                                 <input type="hidden" name="dim_id" id="dim_id" value="2" />
                                 <input type="hidden" name="is_authorized" id="is_authorized" value="1" />
-            					<input type="submit" onclick="waitingDialog.show();" name="submit" value="Save"/>	
-                                <input type="button" name="clear" value="Clear" />
+            					<input type="button" name="clear" value="Clear" style="float: right;"/>
+                                <input type="submit" onclick="waitingDialog.show();" name="submit" value="Save" style="float: right;"/>	
                             </div>				
     					</div>
 				    </form> 
@@ -187,8 +188,8 @@
                                 <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
                                 <input type="hidden" name="dim_id" id="dim_id" value="3" />
                                 <input type="hidden" name="is_authorized" id="is_authorized" value="1" />
-            					<input type="submit" onclick="waitingDialog.show();" name="submit" value="Save"/>	
-                                <input type="button" name="clear" value="Clear" />
+            					<input type="button" name="clear" value="Clear" style="float: right;"/>
+                                <input type="submit" onclick="waitingDialog.show();" name="submit" value="Save" style="float: right;"/>	
                             </div>	<br />			
     					</div>
 				    </form> 
@@ -247,8 +248,8 @@
                                 <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
                                 <input type="hidden" name="dim_id" id="dim_id" value="4" />
                                 <input type="hidden" name="is_authorized" id="is_authorized" value="1" />
-            					<input type="submit" onclick="waitingDialog.show();" name="submit" value="Save"/>	
-                                <input type="button" name="clear" value="Clear" />
+            					<input type="button" name="clear" value="Clear" style="float: right;"/>
+                                <input type="submit" onclick="waitingDialog.show();" name="submit" value="Save" style="float: right;"/>	
                             </div>				
     					</div>
 				    </form> 
@@ -297,8 +298,8 @@
                                 <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
                                 <input type="hidden" name="dim_id" id="dim_id" value="5" />
                                 <input type="hidden" name="is_authorized" id="is_authorized" value="0" />
-            					<input type="submit" onclick="waitingDialog.show();" name="submit" value="Save"/>	
-                                <input type="button" name="clear" value="Clear" />
+            					<input type="button" name="clear" value="Clear" style="float: right;" />
+                                <input type="submit" onclick="waitingDialog.show();" name="submit" value="Save" style="float: right;"/>	
                             </div><br />				
     					</div>
 				    </form> 
@@ -347,8 +348,8 @@
                                 <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
                                 <input type="hidden" name="dim_id" id="dim_id" value="6" />
                                 <input type="hidden" name="is_authorized" id="is_authorized" value="0" />
-            					<input type="submit" onclick="waitingDialog.show();" name="submit" value="Save"/>	
-                                <input type="button" name="clear" value="Clear" />
+            					<input type="button" name="clear" value="Clear" style="float: right;"/>
+                                <input type="submit" onclick="waitingDialog.show();" name="submit" value="Save" style="float: right;"/>	
                             </div>								
     					</div>
 				    </form> 
@@ -397,8 +398,8 @@
                                 <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
                                 <input type="hidden" name="dim_id" id="dim_id" value="7" />
                                 <input type="hidden" name="is_authorized" id="is_authorized" value="0" />
-            					<input type="submit" onclick="waitingDialog.show();" name="submit" value="Save"/>	
-                                <input type="button" name="clear" value="Clear" />
+            					<input type="button" name="clear" value="Clear" style="float: right;"/>
+                                <input type="submit" onclick="waitingDialog.show();" name="submit" value="Save" style="float: right;"/>	
                             </div><br />								
     					</div>
 				    </form> 
@@ -447,8 +448,8 @@
                                 <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
                                 <input type="hidden" name="dim_id" id="dim_id" value="8" />
                                 <input type="hidden" name="is_authorized" id="is_authorized" value="0" />
-            					<input type="submit" onclick="waitingDialog.show();" name="submit" value="Save"/>	
-                                <input type="button" name="clear" value="Clear" />
+            					<input type="button" name="clear" value="Clear" style="float: right;"/>
+                                <input type="submit" onclick="waitingDialog.show();" name="submit" value="Save" style="float: right;"/>	
                             </div>				
     					</div>
 				    </form> 

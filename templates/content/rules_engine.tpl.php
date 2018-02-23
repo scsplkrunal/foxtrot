@@ -1,8 +1,8 @@
 <div class="container">
     <h1>Rules Engine</h1>
-    <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
-    <div class="col-lg-12 well">
     
+    <div class="col-lg-12 well">
+        <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
         <form method="post">
             <div class="table-responsive">
     			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -109,14 +109,15 @@
                     </tbody>
                 </table>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group "><br /><div class="selectwrap">
-                        <input type="submit" name="rule" onclick="waitingDialog.show();" value="Save"/>	
-                        <a href="<?php echo SITE_URL.'branch_maintenance.php';?>"><input type="button" name="cancel" value="Cancel" /></a>
-                        </div>
+            <div class="panel-footer">
+                <!--<div class="col-md-12">
+                    <div class="form-group "><br />-->
+                    <div class="selectwrap">
+                        <a href="<?php echo SITE_URL.'branch_maintenance.php';?>"><input type="button" name="cancel" value="Cancel" style="float: right;" /></a>
+                        <input type="submit" name="rule" onclick="waitingDialog.show();" value="Save" style="float: right;" />	
                     </div>
-                 </div>
+                   <!-- </div>
+                 </div>-->
             </div>
         </form>
     

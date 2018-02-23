@@ -1,12 +1,12 @@
 <div class="container">
-<h1>Branch Maintenance</h1>
+<h1 class="<?php if($action=='add_new'||($action=='edit' && $id>0)){ echo 'topfixedtitle';}?>">Branch Maintenance</h1>
+<div class="col-lg-12 well <?php if($action=='add_new'||($action=='edit' && $id>0)){ echo 'fixedwell';}?>">
 <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
-<div class="col-lg-12 well">
 <div class="tab-content col-md-12">
 <?php
 if($action=='add_new'||($action=='edit' && $id>0)){
     ?><form name="frm2" method="POST">
-    <div class="panel-footer">
+    <!--<div class="panel-footer">
         <div class="selectwrap">
             <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
             <?php if($action=='edit' && $id>0){?>
@@ -24,7 +24,7 @@ if($action=='add_new'||($action=='edit' && $id>0)){
             <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" style="float: right;"><input type="button" value="Next &raquo;" style="float: right;"/></a>
             <?php } ?>
         </div><br />
-   </div>
+   </div>-->
     <div class="panel">            
     
        <div class="panel-heading">
@@ -268,25 +268,26 @@ if($action=='add_new'||($action=='edit' && $id>0)){
             </div>
         </div>
        </div>
-       <div class="panel-footer">
+       <div class="panel-footer fixedbtmenu">
             <div class="selectwrap">
                 <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
                 <?php if($action=='edit' && $id>0){?>
                 <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" style="float: left;"><input type="button" value="&laquo; Previous" style="float: right;"/></a>
                 <?php } ?>
                 <?php if($action=='edit' && $id>0){?>
-                <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 10%;"/></a>
+                <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next"><input type="button" value="Next &raquo;"/></a>
                 <?php } ?>
-                <a href="#branch_notes" data-toggle="modal"><input type="button" onclick="get_branch_notes();" name="notes" value="Notes" /></a>
-                <a href="#branch_attach" data-toggle="modal"><input type="button"  onclick="get_branch_attach();" name="attach" value="Attachments" /></a>
-                <a href="#" data-toggle="modal"><input type="button" value="Transactions" /></a>
-				
-                <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
-                <a href="<?php echo CURRENT_PAGE.'?action=view';?>"><input type="button" name="cancel" value="Cancel" /></a>
                 
                 <?php if($action=='edit' && $id>0){?>
-                <a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" style="float: right;"><input type="button" value="Next &raquo;" style="float: right;"/></a>
+                <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 12% !important;"/></a>
                 <?php } ?>
+                <a href="#branch_notes" data-toggle="modal"><input type="button" onclick="get_branch_notes();" name="notes" value="Notes" /></a>
+                <a href="#" data-toggle="modal"><input type="button" value="Transactions" /></a>
+                <a href="#branch_attach" data-toggle="modal"><input type="button"  onclick="get_branch_attach();" name="attach" value="Attachments" style="margin-right: 12% !important;"/></a>
+				
+                <a href="<?php echo CURRENT_PAGE.'?action=view';?>"><input type="button" name="cancel" value="Cancel" style="float: right;"/></a>
+                <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save" style="float: right;"/>	
+                
             </div><br />
        </div>
     
@@ -315,8 +316,8 @@ if($action=='add_new'||($action=='edit' && $id>0)){
 			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
 	            <thead>
 	                <tr>
-                        <th>Branch Name</th>
-                        <th>Status</th>
+                        <th>BRANCH NAME</th>
+                        <th class="text-center">STATUS</th>
                         <th class="text-center">ACTION</th>
                     </tr>
 	            </thead>

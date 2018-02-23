@@ -67,9 +67,9 @@ $(document).on('click','.remove-row',function(){
 });
 </script>
 <div class="container">
-<h1>  Product Maintenance  </h1>
+<h1 class="<?php if($action=='add_product'||($action=='edit_product' && $id>0)){ echo 'topfixedtitle';}?>">  Product Maintenance  </h1>
+<div class="col-lg-12 well <?php if($action=='add_product'||($action=='edit_product' && $id>0)){ echo 'fixedwell';}?>">
 <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
-<div class="col-lg-12 well">
             <?php
                     if(isset($_GET['action']) && $_GET['action']=='view_product') {?>
                 <div class="panel">
@@ -108,10 +108,10 @@ $(document).on('click','.remove-row',function(){
             			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
             	            <thead>
             	                <tr>
-                                    <th>Product Name</th>
-                                    <th>Cusip</th>
-                                    <th>Sponsor Name</th>
-                                    <th>Status</th>
+                                    <th>PRODUCT NAME</th>
+                                    <th>CUSIP</th>
+                                    <th>SPONSOR NAME</th>
+                                    <th class="text-center">STATUS</th>
                                     <th class="text-center">ACTION</th>
                                 </tr>
             	            </thead>
@@ -185,7 +185,7 @@ $(document).on('click','.remove-row',function(){
                 <?php
                     }else if($action=='add_product' || ($action=='edit_product' && $id>0)){
                 ?>   
-                <ul class="nav nav-tabs ">
+                <ul class="nav nav-tabs <?php if($action=='add_product'||($action=='edit_product' && $id>0)){ echo 'topfixedtabs';}?>">
                   <li class="active"><a href="#tab_aa" data-toggle="tab">General</a></li>
                   <li><a href="#tab_bb" data-toggle="tab">Suitability</a></li>
                   <!--<li><a href="#tab_ee" data-toggle="tab">Documents</a></li>-->
@@ -197,7 +197,7 @@ $(document).on('click','.remove-row',function(){
 					</div>
 				</ul> 
                  <form name="frm" method="POST" onsubmit="return validation();" enctype="multipart/form-data">    
-                 <div class="panel-footer">
+                 <!--<div class="panel-footer">
                         <div class="selectwrap col-md-12">
                             <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
                             <?php if($_GET['action']=='edit_product' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous&category=<?php echo $category;?>" class="previous next_previous_a" style="float: left;" ><input type="button" style="float: left;" name="Previous" value="&laquo; Previous" /></a> <?php } ?>
@@ -211,7 +211,7 @@ $(document).on('click','.remove-row',function(){
                             <a href="<?php echo CURRENT_PAGE.'?action=view_product';?>"><input type="button" name="cancel" value="Cancel" /></a>
                             <?php if($_GET['action']=='edit_product' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next&category=<?php echo $category;?>" class="next next_previous_a" style="float: right;"><input type="button" name="Next" value="Next &raquo;" /></a><?php } ?>
                         </div>
-                 </div><br /><br />
+                 </div><br /><br />-->
                  <div class="tab-content col-md-12 panel">
                     
                     <div class="tab-pane active" id="tab_aa"> 
@@ -326,9 +326,64 @@ $(document).on('click','.remove-row',function(){
                                     </div>
                                 </div>
                             </div><br />
-                            <div class="row" style="padding: 5px;" id="add_more_threshold">
+                            <label>Threshold </label><br />
+                           <?php
+                            if($return_rates != '')
+                            {
+                            foreach($return_rates as $keyedit_rates=>$valedit_rates){
+                            ?>
+                           <div class="row main_row" style="padding: 5px;">
                                 <div class="col-md-6">
-                                    <label>Threshold </label><br />
+                                    <div class="row" style="padding: 5px;">
+                                        <div class="col-md-5">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">$</span>
+                                                <input type="number" value="<?php echo $valedit_rates['min_threshold']; ?>"  maxlength="9" class="form-control" id="min_threshold" name="min_threshold[]" placeholder="$0"  />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>To </label>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">$</span>
+                                                <input type="number" value="<?php echo $valedit_rates['max_threshold']; ?>"  maxlength="9" class="form-control" id="max_threshold" name="max_threshold[]" placeholder="$99,999,999"  />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row" style="padding: 5px;">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>with a Rate of </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <input type="number" value="<?php echo $valedit_rates['min_rate']; ?>" step="0.01" maxlength="5" class="form-control" name="min_rate[]" id="min_rate" placeholder="0.0%"  />
+                                                <span class="input-group-addon">%</span>
+                                            </div>
+                                        </div>
+                                        <!--<div class="col-md-6">
+                                            <div class="form-group">
+                                                <input type="text" value="<?php echo $valedit_rates['max_rate']; ?>"  onblur="maxrate(this.value)"  maxlength="5" class="form-control" name="max_rate[]" id="max_rate" placeholder="99.9%" />
+                                            </div>
+                                        </div>-->
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <button type="button" tabindex="-1" class="btn remove-row btn-icon btn-circle"><i class="fa fa-minus"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                
+                           </div>
+                           <?php } }?>
+                           <div class="row" style="padding: 5px;" id="add_more_threshold">
+                                <div class="col-md-6">
+                                    <!--<label>Threshold </label><br />-->
                                     <div class="row" style="padding: 5px;">
                                         <div class="col-md-5">
                                             <div class="input-group">
@@ -348,7 +403,7 @@ $(document).on('click','.remove-row',function(){
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Rate </label><br />
+                                    <!--<label>Rate </label><br />-->
                                     <div class="row" style="padding: 5px;">
                                         <div class="col-md-4">
                                             <div class="form-group">
@@ -370,60 +425,6 @@ $(document).on('click','.remove-row',function(){
                                     </div>
                                 </div>
                            </div>
-                           <?php
-                            if($return_rates != '')
-                            {
-                            foreach($return_rates as $keyedit_rates=>$valedit_rates){
-                            ?>
-                           <div class="row main_row" style="padding: 5px;">
-                                <div class="col-md-6">
-                                    <div class="row" style="padding: 5px;">
-                                        <div class="col-md-5">
-                                            <div class="input-group">
-                                                <span class="input-group-addon">$</span>
-                                                <input type="number" onblur="minthreshold(this.value)" value="<?php echo $valedit_rates['min_threshold']; ?>"  maxlength="9" class="form-control" id="min_threshold" name="min_threshold[]" placeholder="$0"  />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <label>To </label>
-                                        </div>
-                                        <div class="col-md-5">
-                                            <div class="input-group">
-                                                <span class="input-group-addon">$</span>
-                                                <input type="number" onblur="maxthreshold(this.value)" value="<?php echo $valedit_rates['max_threshold']; ?>"  maxlength="9" class="form-control" id="max_threshold" name="max_threshold[]" placeholder="$99,999,999"  />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="row" style="padding: 5px;">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label>with a Rate of </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="input-group">
-                                                <input type="number" value="<?php echo $valedit_rates['min_rate']; ?>" step="0.01" onblur="minrate(this.value)"   maxlength="5" class="form-control" name="min_rate[]" id="min_rate" placeholder="0.0%"  />
-                                                <span class="input-group-addon">%</span>
-                                            </div>
-                                        </div>
-                                        <!--<div class="col-md-6">
-                                            <div class="form-group">
-                                                <input type="text" value="<?php echo $valedit_rates['max_rate']; ?>"  onblur="maxrate(this.value)"  maxlength="5" class="form-control" name="max_rate[]" id="max_rate" placeholder="99.9%" />
-                                            </div>
-                                        </div>-->
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <button type="button" tabindex="-1" class="btn remove-row btn-icon btn-circle"><i class="fa fa-minus"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                
-                           </div>
-                           <?php } }?>
                            <div class="row" style="padding: 5px;">
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -434,6 +435,7 @@ $(document).on('click','.remove-row',function(){
                            </div>
                            </div><br />
                            <?php } ?>
+                           <?php if(isset($_GET['category']) && $_GET['category'] == 11 ){ ?>
                            <div style="display: block; border: 1px solid #ddd;">
                            <div class="row" style="padding: 5px;">
                                 <div class="col-md-6">
@@ -451,6 +453,8 @@ $(document).on('click','.remove-row',function(){
                                 </div>
                             </div>
                             </div><br />
+                           <?php } ?>
+                           <?php if(isset($_GET['category']) && $_GET['category'] == 12 ){ ?>
                            <div style="display: block; border: 1px solid #ddd;">
                            <div class="row" style="padding: 5px;">
                                 <div class="col-md-6">
@@ -485,6 +489,7 @@ $(document).on('click','.remove-row',function(){
                             </div>
                             </div>
                             <br />  
+                           <?php } ?>
                            <?php if(isset($_GET['category']) && ($_GET['category'] == 2 || $_GET['category'] == 3)){ ?> 
                            <div style="display: block; border: 1px solid #ddd;">
                            <div class="row" style="padding: 5px;">
@@ -660,19 +665,22 @@ $(document).on('click','.remove-row',function(){
                     </div>
                    
                 </div>
-                <div class="panel-footer">
+                <div class="panel-footer fixedbtmenu">
                         <div class="selectwrap">
                             <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
                             <?php if($_GET['action']=='edit_product' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous&category=<?php echo $category;?>" class="previous next_previous_a" style="float: left;"><input type="button" name="Previous" value="&laquo; Previous" /></a><?php } ?>
-        					<?php if($action=='edit_product' && $id>0){?>
-                            <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 10%;"/></a>
+        					<?php if($_GET['action']=='edit_product' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next&category=<?php echo $category;?>" class="next next_previous_a"><input type="button" name="Next" value="Next &raquo;" /></a><?php } ?>
+                            
+                            <?php if($action=='edit_product' && $id>0){?>
+                            <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 12%;"/></a>
                             <?php } ?>
                             <a href="#product_notes" data-toggle="modal"><input type="button" onclick="get_product_notes();" name="notes" value="Notes" /></a>
-                            <a href="#product_attach" data-toggle="modal"><input type="button"  onclick="get_product_attach();" name="attach" value="Attachments" /></a>
-                            <a href="#client_attachment" data-toggle="modal"><input type="button" name="attach" value="Transaction" /></a>
-                            <input type="submit" name="product" onclick="waitingDialog.show();" value="Save"/>	
-                            <a href="<?php echo CURRENT_PAGE.'?action=view_product';?>"><input type="button" name="cancel" value="Cancel" /></a>
-                            <?php if($_GET['action']=='edit_product' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next&category=<?php echo $category;?>" class="next next_previous_a" style="float: right;"><input type="button" name="Next" value="Next &raquo;" /></a><?php } ?>
+                            <a href="#product_transactions" data-toggle="modal"><input type="button" name="attach" value="Transactions" /></a>
+                            <a href="#product_attach" data-toggle="modal"><input type="button"  onclick="get_product_attach();" name="attach" value="Attachments" style="margin-right: 12%;"/></a>
+                            
+                            <a href="<?php echo CURRENT_PAGE.'?action=view_product';?>"><input type="button" name="cancel" value="Cancel" style="float: right;"/></a>
+                            <input type="submit" name="product" onclick="waitingDialog.show();" value="Save" style="float: right;"/>	
+                            
                         </div>
                     </div>
 			    </form> 
@@ -738,6 +746,46 @@ $(document).on('click','.remove-row',function(){
 		</div><!-- End of Modal content -->
 		</div><!-- End of Modal dialog -->
 </div><!-- End of Modal -->
+<!-- Lightbox strart -->							
+<!-- Modal for transaction list -->
+<div id="product_transactions" class="modal fade inputpopupwrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+	<div class="modal-content">
+	<div class="modal-header" style="margin-bottom: 0px !important;">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+		<h4 class="modal-title">Product's Transactions</h4>
+	</div>
+	<div class="modal-body">
+    <form method="post">
+    <div class="inputpopup">
+        <div class="table-responsive" id="table-scroll" style="margin: 0px 5px 0px 5px;">
+            <table class="table table-bordered table-stripped table-hover">
+                <thead>
+                    <th>Trade No</th>
+                    <th>Date</th>
+                    <th>Product</th>
+                    <th>Client No</th>
+                    <th>Trade Amount</th>
+                </thead>
+                <tbody>
+                <?php foreach($get_product_transactions As $key_trans=>$val_trans){?>
+                    <tr>
+                        <td><?php echo $val_trans['id'];?></td>
+                        <td><?php echo date('m/d/Y',strtotime($val_trans['trade_date']));?></td>
+                        <td><?php echo $val_trans['product_name'];?></td>
+                        <td><?php echo $val_trans['client_number'];?></td>
+                        <td><?php echo '$'.$val_trans['charge_amount'];?></td>
+                    </tr>
+                <?php } ?>
+              </tbody>
+            </table>
+        </div>
+	</div>
+    </form>
+    </div><!-- End of Modal body -->
+	</div><!-- End of Modal content -->
+	</div><!-- End of Modal dialog -->
+</div><!-- End of Modal -->
 <!-- Lightbox strart -->
               <!-- Lightbox strart -->							
                 <!-- Modal for transaction list -->
@@ -754,7 +802,6 @@ $(document).on('click','.remove-row',function(){
                         <div class="table-responsive" id="table-scroll" style="margin: 0px 5px 0px 5px;">
                             <table class="table table-bordered table-stripped table-hover">
                                 <thead>
-                                    <th>#NO</th>
                                     <th>User Initials</th>
                                     <th>Date of Change</th>
                                     <th>Field Changed</th>
@@ -779,7 +826,6 @@ $(document).on('click','.remove-row',function(){
                                     }?>
                                     <tr>
                                     
-                                        <td><?php echo ++$count; ?></td>
                                         <td><?php echo $val['user_initial'];?></td>
                                         <td><?php echo date('m/d/Y',strtotime($val['modified_time']));?></td>
                                         <td><?php echo $feild_name;?></td>

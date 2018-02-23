@@ -41,8 +41,8 @@
         <div class="panel-footer">
             <div class="selectwrap">
 				<div class="selectwrap">
-					<input type="submit" name="submit"  value="Proceed"/>	
-                    <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
+                    <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" style="float: right;"/></a>
+					<input type="submit" name="submit"  value="Proceed" style="float: right;"/>	
                 </div>
             </div>
         </div>

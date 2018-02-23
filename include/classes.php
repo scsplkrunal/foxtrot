@@ -22,4 +22,5 @@
     include_once(DIR_FS_CLASSES."rules_engine.class.php");
     include_once(DIR_FS_CLASSES."client_ress.class.php");
     include_once(DIR_FS_CLASSES."home.class.php");
+    include_once(DIR_FS_CLASSES."payout_schedule_master.class.php");
 ?>

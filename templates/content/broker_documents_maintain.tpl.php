@@ -1,14 +1,13 @@
 <div class="container">
     <h1>Broker Documents</h1>
-    <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
     <div class="col-lg-12 well">
-    
+    <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
         <?php  
     
     if((isset($_GET['action']) && $_GET['action']=='add') || (isset($_GET['action']) && ($_GET['action']=='edit' && $id>0))){
         ?>
         <form name="frm2" method="POST">
-            <div class="row">
+            <!--<div class="row">
                 <div class="col-md-12">
                     <div class="form-group"><br /><div class="selectwrap">
                         <input type="submit" name="batches" onclick="waitingDialog.show();" value="Save"/>	
@@ -16,7 +15,7 @@
                     </div>
                  </div>
                  </div>
-             </div> 
+             </div> -->
         <div class="panel">            
         
             <div class="panel-footer">
@@ -56,14 +55,16 @@
                 </div>
                 
            </div>
-           <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group "><br /><div class="selectwrap">
-                        <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
-                        <a href="<?php echo CURRENT_PAGE.'?action=view';?>"><input type="button" name="cancel" value="Cancel" /></a>
+           <div class="panel-footer">
+                <!--<div class="col-md-12">
+                    <div class="form-group "><br />-->
+                    <div class="selectwrap">
+                        <label></label>
+                        <a href="<?php echo CURRENT_PAGE.'?action=view';?>"><input type="button" name="cancel" value="Cancel" style="float: right;"/></a>
+                        <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save" style="float: right;"/>	
                     </div>
-                 </div>
-                 </div>
+                 <!--</div>
+                 </div>-->
              </div></div>
         </form>
         <?php

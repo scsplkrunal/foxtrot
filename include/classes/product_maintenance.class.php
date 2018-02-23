@@ -299,6 +299,22 @@
             }
 			return $return;
 		} 
+        public function get_transaction_on_product($id,$category){
+			$return = array();
+			
+            $q = "SELECT `at`.*,`pro`.`name` as `product_name`
+					FROM `".TRANSACTION_MASTER."` AS `at`
+                    LEFT JOIN `product_category_".$category."` AS `pro` on `pro`.`id`=`at`.`product`
+                    WHERE `at`.`is_delete`='0' and `at`.`product`=".$id." and `at`.`product_cate`=".$category."
+                    ORDER BY `at`.`id` DESC";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                }
+            }
+            return $return;
+		} 
         public function get_next_product($id,$category){
 			$return = array();
 			

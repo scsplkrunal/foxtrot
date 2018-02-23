@@ -8,7 +8,7 @@ class transaction extends db{
     public function insert_update($data){//echo '<pre>';print_r($data);exit;
             
 			$id = isset($data['id'])?$this->re_db_input($data['id']):0;
-            $trade_number = isset($data['trade_number'])?$this->re_db_input($data['trade_number']):0;
+            //$trade_number = isset($data['trade_number'])?$this->re_db_input($data['trade_number']):0;
             $client_name = isset($data['client_name'])?$this->re_db_input($data['client_name']):'0';
             $client_number = isset($data['client_number'])?$this->re_db_input($data['client_number']):'0';
             $broker_name = isset($data['broker_name'])?$this->re_db_input($data['broker_name']):'0';
@@ -32,10 +32,7 @@ class transaction extends db{
             $hold_resoan = isset($data['hold_resoan'])?$this->re_db_input($data['hold_resoan']):'';
             
             	
-            if($trade_number=='0'){
-				$this->errors = 'Please enter trade number.';
-			}
-			else if($client_name=='0'){
+            if($client_name=='0'){
 				$this->errors = 'Please select client name.';
 			}
             else if($broker_name=='0'){
@@ -77,7 +74,7 @@ class transaction extends db{
 			else{
 				if($id>=0){
 					if($id==0){
-						$q = "INSERT INTO ".$this->table." SET `trade_number`='".$trade_number."',`client_name`='".$client_name."',`client_number`='".$client_number."',`broker_name`='".$broker_name."',
+						$q = "INSERT INTO ".$this->table." SET `client_name`='".$client_name."',`client_number`='".$client_number."',`broker_name`='".$broker_name."',
                         `product_cate`='".$product_cate."',`sponsor`='".$sponsor."',`product`='".$product."',`batch`='".$batch."',
                         `invest_amount`='".$invest_amount."',`commission_received_date`='".$commission_received_date."',`trade_date`='".$trade_date."',`settlement_date`='".$settlement_date."',`charge_amount`='".$charge_amount."',`commission_received`='".$commission_received."',`split`='".$split."',
                         `another_level`='".$another_level."',`cancel`='".$cancel."',`buy_sell`='".$buy_sell."',
@@ -105,7 +102,7 @@ class transaction extends db{
 						}
 					}
 					else if($id>0){
-						$q = "UPDATE ".$this->table." SET `trade_number`='".$trade_number."',`client_name`='".$client_name."',`client_number`='".$client_number."',`broker_name`='".$broker_name."',
+						$q = "UPDATE ".$this->table." SET `client_name`='".$client_name."',`client_number`='".$client_number."',`broker_name`='".$broker_name."',
                         `product_cate`='".$product_cate."',`sponsor`='".$sponsor."',`product`='".$product."',`batch`='".$batch."',
                         `invest_amount`='".$invest_amount."',`commission_received_date`='".$commission_received_date."',`trade_date`='".$trade_date."',`settlement_date`='".$settlement_date."',`charge_amount`='".$charge_amount."',`commission_received`='".$commission_received."',`split`='".$split."',
                         `another_level`='".$another_level."',`cancel`='".$cancel."',`buy_sell`='".$buy_sell."',

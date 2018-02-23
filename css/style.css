@@ -21,6 +21,10 @@ a:focus {
 	text-decoration:none;
 	outline:none;
 }
+h1{
+    margin-top: 2px !important;
+    margin-bottom: 2px !important;
+}
 ::-webkit-input-placeholder { /* Chrome */
  color: inherit;
  opacity: 1;
@@ -472,6 +476,20 @@ select::-ms-expand {
 	position: fixed;
 	z-index: 999;
 	top: 0;
+	left: 0;
+	right: 0;
+	max-width: 1170px;
+	width: 100%;
+	margin: 0 auto;
+	padding: 20px 0 12px;
+	background-color: #e9eef2;
+}
+/*.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+    padding: 2px;
+}*/
+.topfixedtitle_list {
+	position: fixed;
+	z-index: 999;
 	left: 0;
 	right: 0;
 	max-width: 1170px;

@@ -38,7 +38,7 @@
     $dba_name = '';
     $eft_info = '';
     $start_date = '';
-    $transaction_type = '';
+    $transaction_type_general = '';
     $routing = '';
     $account_no = '';
     $summarize_trailers = '';
@@ -110,7 +110,7 @@
 		$dba_name_general = isset($_POST['dba_name_general'])?$instance->re_db_input($_POST['dba_name_general']):'';
 		$eft_info_general = isset($_POST['eft_info_general'])?$instance->re_db_input($_POST['eft_info_general']):'';
         $start_date_general = isset($_POST['start_date_general'])?$instance->re_db_input($_POST['start_date_general']):'';
-		$transaction_type_general = isset($_POST['transaction_type_general'])?$instance->re_db_input($_POST['transaction_type_general']):'';
+		$transaction_type_general = isset($_POST['transaction_type_general1'])?$instance->re_db_input($_POST['transaction_type_general1']):'';
 		$routing_general = isset($_POST['routing_general'])?$instance->re_db_input($_POST['routing_general']):'';
 		$account_no_general = isset($_POST['account_no_general'])?$instance->re_db_input($_POST['account_no_general']):'';
 		$summarize_trailers_general = isset($_POST['summarize_trailers_general'])?$instance->re_db_input($_POST['summarize_trailers_general']):0;
@@ -125,17 +125,17 @@
         $ria_general = isset($_POST['ria_general'])?$instance->re_db_input($_POST['ria_general']):0;
 		$insurance_general = isset($_POST['insurance_general'])?$instance->re_db_input($_POST['insurance_general']):0;//echo '<pre>';print_r($_POST);exit;
     
-        echo '<pre>';print_r($_POST);exit;
+        //echo '<pre>';print_r($_POST);exit;
         $return = $instance->insert_update($_POST);
         
         $return1 = $instance->insert_update_general($_POST);
         
         //payout tab
-        $return2 = $instance->insert_update_payout($_POST);   
+        $return2 = $instance->insert_update_payout($_POST); 
         $return3 = $instance->insert_update_payout_grid($instance->reArrayFiles_grid($_POST['leval']),$_POST['id']);
         $return4 = $instance->insert_update_payout_override($instance->reArrayFiles_override($_POST['override']),$_POST['id'],$_POST['override']['receiving_rep1']);
         $return5 = $instance->insert_update_payout_split($instance->reArrayFiles_split($_POST['split']),$_POST['id']);
-        
+        //echo '<pre>';print_r($return5);exit;
         //security tab
         $return6 = $instance->insert_update_licences($_POST);
         
@@ -309,7 +309,7 @@
     else if($action=='edit' && $id>0){
         $return = $instance->edit($id);
         $broker_data = $instance->get_broker_changes($id);
-        $edit_general = $instance->edit_general($id);
+        $edit_general = $instance->edit_general($id);//print_r($edit_general);exit;
         $edit_licences_securities = $instance->edit_licences_securities($id);
         $edit_licences_ria = $instance->edit_licences_ria($id);
         $edit_licences_insurance = $instance->edit_licences_insurance($id);
@@ -336,44 +336,44 @@
         $pay_method = isset($return['pay_method'])?$instance->re_db_output($return['pay_method']):'';
     	$branch_manager = isset($return['branch_manager'])?$instance->re_db_output($return['branch_manager']):'';
     	
-    	$home = isset($return['home'])?$instance->re_db_output($edit_general['home']):'';
-        $home_address1_general = isset($return['home_address1_general'])?$instance->re_db_output($edit_general['home_address1_general']):'';
-        $home_address2_general = isset($return['home_address2_general'])?$instance->re_db_output($edit_general['home_address2_general']):'';
-        $business_address1_general = isset($return['business_address1_general'])?$instance->re_db_output($edit_general['business_address1_general']):'';
-        $business_address2_general = isset($return['business_address2_general'])?$instance->re_db_output($edit_general['business_address2_general']):'';
-        $city = isset($return['city'])?$instance->re_db_output($edit_general['city']):'';
-        $state_id = isset($return['state_id'])?$instance->re_db_output($edit_general['state_id']):'';
-        $zip_code = isset($return['zip_code'])?$instance->re_db_output($edit_general['zip_code']):'';
-        $telephone = isset($return['telephone'])?$instance->re_db_output($edit_general['telephone']):'';
-        $cell = isset($return['cell'])?$instance->re_db_output($edit_general['cell']):'';
-        $fax = isset($return['fax'])?$instance->re_db_output($edit_general['fax']):'';
-        $gender = isset($return['gender'])?$instance->re_db_output($edit_general['gender']):'';
-        $marital_status = isset($return['marital_status'])?$instance->re_db_output($edit_general['marital_status']):'';
-        $spouse = isset($return['spouse'])?$instance->re_db_output($edit_general['spouse']):'';
-        $children = isset($return['children'])?$instance->re_db_output($edit_general['children']):'';
-        $email1 = isset($return['email1'])?$instance->re_db_output($edit_general['email1']):'';
-    	$email2 = isset($return['email2'])?$instance->re_db_output($edit_general['email2']):'';
-    	$web_id = isset($return['web_id'])?$instance->re_db_output($edit_general['web_id']):'';
-    	$web_password = isset($return['web_password'])?$instance->re_db_output($edit_general['web_password']):'';
-        $dob = isset($return['dob'])?$instance->re_db_output($edit_general['dob']):'';
-        $prospect_date = isset($return['prospect_date'])?$instance->re_db_output($edit_general['prospect_date']):'';
-        $reassign_broker = isset($return['reassign_broker'])?$instance->re_db_output($edit_general['reassign_broker']):'';
-        $u4 = isset($return['u4'])?$instance->re_db_output($edit_general['u4']):'';
-        $u5 = isset($return['u5'])?$instance->re_db_output($edit_general['u5']):'';
-        $day_after_u5 = isset($return['day_after_u5'])?$instance->re_db_output($edit_general['day_after_u5']):'';
-        $dba_name = isset($return['dba_name'])?$instance->re_db_output($edit_general['dba_name']):'';
-        $eft_information = isset($return['eft_information'])?$instance->re_db_output($edit_general['eft_information']):'';
-        $start_date = isset($return['start_date'])?$instance->re_db_output($edit_general['start_date']):'';
-        $transaction_type = isset($return['transaction_type'])?$instance->re_db_output($edit_general['transaction_type']):'';
-        $routing = isset($return['routing'])?$instance->re_db_output($edit_general['routing']):'';
-        $account_no = isset($return['account_no'])?$instance->re_db_output($edit_general['account_no']):'';
-        $cfp = isset($return['cfp'])?$instance->re_db_output($edit_general['cfp']):'';
-        $chfp = isset($return['chfp'])?$instance->re_db_output($edit_general['chfp']):'';
-        $cpa = isset($return['cpa'])?$instance->re_db_output($edit_general['cpa']):'';
-        $clu = isset($return['clu'])?$instance->re_db_output($edit_general['clu']):'';
-        $cfa = isset($return['cfa'])?$instance->re_db_output($edit_general['cfa']):'';
-        $ria = isset($return['ria'])?$instance->re_db_output($edit_general['ria']):'';
-        $insurance = isset($return['insurance'])?$instance->re_db_output($edit_general['insurance']):'';
+    	$home = isset($edit_general['home'])?$instance->re_db_output($edit_general['home']):'';
+        $home_address1_general = isset($edit_general['home_address1_general'])?$instance->re_db_output($edit_general['home_address1_general']):'';
+        $home_address2_general = isset($edit_general['home_address2_general'])?$instance->re_db_output($edit_general['home_address2_general']):'';
+        $business_address1_general = isset($edit_general['business_address1_general'])?$instance->re_db_output($edit_general['business_address1_general']):'';
+        $business_address2_general = isset($edit_general['business_address2_general'])?$instance->re_db_output($edit_general['business_address2_general']):'';
+        $city = isset($edit_general['city'])?$instance->re_db_output($edit_general['city']):'';
+        $state_id = isset($edit_general['state_id'])?$instance->re_db_output($edit_general['state_id']):'';
+        $zip_code = isset($edit_general['zip_code'])?$instance->re_db_output($edit_general['zip_code']):'';
+        $telephone = isset($edit_general['telephone'])?$instance->re_db_output($edit_general['telephone']):'';
+        $cell = isset($edit_general['cell'])?$instance->re_db_output($edit_general['cell']):'';
+        $fax = isset($edit_general['fax'])?$instance->re_db_output($edit_general['fax']):'';
+        $gender = isset($edit_general['gender'])?$instance->re_db_output($edit_general['gender']):'';
+        $marital_status = isset($edit_general['marital_status'])?$instance->re_db_output($edit_general['marital_status']):'';
+        $spouse = isset($edit_general['spouse'])?$instance->re_db_output($edit_general['spouse']):'';
+        $children = isset($edit_general['children'])?$instance->re_db_output($edit_general['children']):'';
+        $email1 = isset($edit_general['email1'])?$instance->re_db_output($edit_general['email1']):'';
+    	$email2 = isset($edit_general['email2'])?$instance->re_db_output($edit_general['email2']):'';
+    	$web_id = isset($edit_general['web_id'])?$instance->re_db_output($edit_general['web_id']):'';
+    	$web_password = isset($edit_general['web_password'])?$instance->re_db_output($edit_general['web_password']):'';
+        $dob = isset($edit_general['dob'])?$instance->re_db_output($edit_general['dob']):'';
+        $prospect_date = isset($edit_general['prospect_date'])?$instance->re_db_output($edit_general['prospect_date']):'';
+        $reassign_broker = isset($edit_general['reassign_broker'])?$instance->re_db_output($edit_general['reassign_broker']):'';
+        $u4 = isset($edit_general['u4'])?$instance->re_db_output($edit_general['u4']):'';
+        $u5 = isset($edit_general['u5'])?$instance->re_db_output($edit_general['u5']):'';
+        $day_after_u5 = isset($edit_general['day_after_u5'])?$instance->re_db_output($edit_general['day_after_u5']):'';
+        $dba_name = isset($edit_general['dba_name'])?$instance->re_db_output($edit_general['dba_name']):'';
+        $eft_information = isset($edit_general['eft_information'])?$instance->re_db_output($edit_general['eft_information']):'';
+        $start_date = isset($edit_general['start_date'])?$instance->re_db_output($edit_general['start_date']):'';
+        $transaction_type_general = isset($edit_general['transaction_type'])?$instance->re_db_output($edit_general['transaction_type']):'';
+        $routing = isset($edit_general['routing'])?$instance->re_db_output($edit_general['routing']):'';
+        $account_no = isset($edit_general['account_no'])?$instance->re_db_output($edit_general['account_no']):'';
+        $cfp = isset($edit_general['cfp'])?$instance->re_db_output($edit_general['cfp']):'';
+        $chfp = isset($edit_general['chfp'])?$instance->re_db_output($edit_general['chfp']):'';
+        $cpa = isset($edit_general['cpa'])?$instance->re_db_output($edit_general['cpa']):'';
+        $clu = isset($edit_general['clu'])?$instance->re_db_output($edit_general['clu']):'';
+        $cfa = isset($edit_general['cfa'])?$instance->re_db_output($edit_general['cfa']):'';
+        $ria = isset($edit_general['ria'])?$instance->re_db_output($edit_general['ria']):'';
+        $insurance = isset($edit_general['insurance'])?$instance->re_db_output($edit_general['insurance']):'';
         //echo '<pre>';print_r($edit_licences_securities);exit;
            
     }

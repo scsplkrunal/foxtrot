@@ -1,7 +1,7 @@
 <div class="container">
 <h1>Client Suitability</h1>
+<div class="col-lg-12 well">
 <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
-    <div class="col-lg-12 well">
         <ul class="nav nav-pills nav-stacked col-md-2">
           <li <?php if((isset($_GET['action'])&& $_GET['action']=='add_new_objective') || (isset($_GET['action'])&& $_GET['action']=='view_objective') || (isset($_GET['action'])&& $_GET['action']=='edit_objective')){ ?> class="active"<?php }if($action=='view_objective'){?>class="active" <?php }?>><a href="client_suitability.php?action=view_objective" >Objective</a></li>
           <li <?php if((isset($_GET['action'])&& $_GET['action']=='add_new_income') || (isset($_GET['action'])&& $_GET['action']=='view_income') || (isset($_GET['action'])&& $_GET['action']=='edit_income')){ ?> class="active"<?php }if($action=='view_income'){?>class="active" <?php }?>><a href="client_suitability.php?action=view_income" >Income</a></li>
@@ -34,7 +34,7 @@
                     								</ul>
                     			 				</div>
                     						</div>
-                                            <h3 class="panel-title"><i class="ti-pencil-alt"></i> <?php echo $action=='add_new_objective'?'Add':'Edit'; ?> Client Suitability Objective</h3>
+                                            <h3 class="panel-title"><i class="fa fa-pencil-square-o"></i> <?php echo $action=='add_new_objective'?'Add':'Edit'; ?> Client Suitability Objective</h3>
                                             <div class="panel-body">
                                                 <div class="row">
                                                     <div class="col-md-6">
@@ -51,9 +51,10 @@
                                             
                                             <div class="panel-footer">
                                                 <div class="selectwrap">
+                                                    <label></label>
                                                     <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-                                					<input type="submit"  onclick="waitingDialog.show();" name="submit_objective" value="Save"/>	
-                                                    <a href="<?php echo CURRENT_PAGE;?>?action=view_objective"><input type="button" name="cancel" value="Cancel" /></a>
+                                                    <a href="<?php echo CURRENT_PAGE;?>?action=view_objective"><input type="button" name="cancel" value="Cancel" style="float: right;" /></a>
+                                					<input type="submit"  onclick="waitingDialog.show();" name="submit_objective" value="Save" style="float: right;"/>	
                                                 </div>
                                             </div>
                                         </div>
@@ -123,7 +124,7 @@
                     								</ul>
                     			 				</div>
                     						</div>
-                                            <h3 class="panel-title"><i class="ti-pencil-alt"></i> <?php echo $action=='add_new_income'?'Add':'Edit'; ?> Client Suitability Income</h3>
+                                            <h3 class="panel-title"><i class="fa fa-pencil-square-o"></i> <?php echo $action=='add_new_income'?'Add':'Edit'; ?> Client Suitability Income</h3>
                                             <div class="panel-body">
                                                 <div class="row">
                                                     <div class="col-md-6">
@@ -140,9 +141,10 @@
                                             
                                             <div class="panel-footer">
                                                 <div class="selectwrap">
+                                                    <label></label>
                                                     <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-                                					<input type="submit"  onclick="waitingDialog.show();" name="submit_income" value="Save"/>	
-                                                    <a href="<?php echo CURRENT_PAGE;?>?action=view_income"><input type="button" name="cancel" value="Cancel" /></a>
+                                					<a href="<?php echo CURRENT_PAGE;?>?action=view_income"><input type="button" name="cancel" value="Cancel" style="float: right;"/></a>
+                                                    <input type="submit"  onclick="waitingDialog.show();" name="submit_income" value="Save" style="float: right;"/>	
                                                 </div>
                                             </div>
                                         </div>
@@ -211,7 +213,7 @@
                     								</ul>
                     							</div>
                     						</div>
-                                            <h3 class="panel-title"><i class="ti-pencil-alt"></i> <?php echo $action=='add_new_horizon'?'Add':'Edit'; ?> Client Suitability Horizon</h3>
+                                            <h3 class="panel-title"><i class="fa fa-pencil-square-o"></i> <?php echo $action=='add_new_horizon'?'Add':'Edit'; ?> Client Suitability Horizon</h3>
                                             <div class="panel-body">
                                                 <div class="row">
                                                     <div class="col-md-6">
@@ -228,9 +230,10 @@
                                             
                                             <div class="panel-footer">
                                                 <div class="selectwrap">
+                                                    <label></label>
                                                     <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-                                					<input type="submit"  onclick="waitingDialog.show();" name="submit_horizon" value="Save"/>	
-                                                    <a href="<?php echo CURRENT_PAGE;?>?action=view_horizon"><input type="button" name="cancel" value="Cancel" /></a>
+                                					<a href="<?php echo CURRENT_PAGE;?>?action=view_horizon"><input type="button" name="cancel" value="Cancel" style="float: right;"/></a>
+                                                    <input type="submit"  onclick="waitingDialog.show();" name="submit_horizon" value="Save" style="float: right;"/>	
                                                 </div>
                                             </div>
                                         </div>
@@ -299,7 +302,7 @@
                     								</ul>
                     			 				</div>
                     						</div>
-                                            <h3 class="panel-title"><i class="ti-pencil-alt"></i> <?php echo $action=='add_new_networth'?'Add':'Edit'; ?> Client Suitability Networth</h3>
+                                            <h3 class="panel-title"><i class="fa fa-pencil-square-o"></i> <?php echo $action=='add_new_networth'?'Add':'Edit'; ?> Client Suitability Networth</h3>
                                             <div class="panel-body">
                                                 <div class="row">
                                                     <div class="col-md-6">
@@ -316,9 +319,10 @@
                                             
                                             <div class="panel-footer">
                                                 <div class="selectwrap">
+                                                    <label></label>
                                                     <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-                                					<input type="submit"  onclick="waitingDialog.show();" name="submit_networth" value="Save"/>	
-                                                    <a href="<?php echo CURRENT_PAGE;?>?action=view_networth"><input type="button" name="cancel" value="Cancel" /></a>
+                                					<a href="<?php echo CURRENT_PAGE;?>?action=view_networth"><input type="button" name="cancel" value="Cancel" style="float: right;" /></a>
+                                                    <input type="submit"  onclick="waitingDialog.show();" name="submit_networth" value="Save" style="float: right;"/>	
                                                 </div>
                                             </div>
                                         </div>
@@ -387,7 +391,7 @@
                     								</ul>
                     			 				</div>
                     						</div>
-                                            <h3 class="panel-title"><i class="ti-pencil-alt"></i> <?php echo $action=='add_new_risk_tolerance'?'Add':'Edit'; ?> Client Suitability Risk Tolerance</h3>
+                                            <h3 class="panel-title"><i class="fa fa-pencil-square-o"></i> <?php echo $action=='add_new_risk_tolerance'?'Add':'Edit'; ?> Client Suitability Risk Tolerance</h3>
                                             <div class="panel-body">
                                                 <div class="row">
                                                     <div class="col-md-6">
@@ -404,9 +408,10 @@
                                             
                                             <div class="panel-footer">
                                                 <div class="selectwrap">
+                                                    <label></label>
                                                     <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-                                					<input type="submit"  onclick="waitingDialog.show();" name="submit_risk_tolerance" value="Save"/>	
-                                                    <a href="<?php echo CURRENT_PAGE;?>?action=view_risk_tolerance"><input type="button" name="cancel" value="Cancel" /></a>
+                                					<a href="<?php echo CURRENT_PAGE;?>?action=view_risk_tolerance"><input type="button" name="cancel" value="Cancel" style="float:right;"/></a>
+                                                    <input type="submit"  onclick="waitingDialog.show();" name="submit_risk_tolerance" value="Save" style="float:right;"/>	
                                                 </div>
                                             </div>
                                         </div>
@@ -475,7 +480,7 @@
                     								</ul>
                     			 				</div>
                     						</div>
-                                            <h3 class="panel-title"><i class="ti-pencil-alt"></i> <?php echo $action=='add_new_annual_expenses'?'Add':'Edit'; ?> Client Suitability Annual Expenses</h3>
+                                            <h3 class="panel-title"><i class="fa fa-pencil-square-o"></i> <?php echo $action=='add_new_annual_expenses'?'Add':'Edit'; ?> Client Suitability Annual Expenses</h3>
                                             <div class="panel-body">
                                                 <div class="row">
                                                     <div class="col-md-6">
@@ -492,9 +497,10 @@
                                             
                                             <div class="panel-footer">
                                                 <div class="selectwrap">
+                                                    <label></label>
                                                     <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-                                					<input type="submit"  onclick="waitingDialog.show();" name="submit_annual_expenses" value="Save"/>	
-                                                    <a href="<?php echo CURRENT_PAGE;?>?action=view_annual_expenses"><input type="button" name="cancel" value="Cancel" /></a>
+                                					<a href="<?php echo CURRENT_PAGE;?>?action=view_annual_expenses"><input type="button" name="cancel" value="Cancel" style="float: right;" /></a>
+                                                    <input type="submit"  onclick="waitingDialog.show();" name="submit_annual_expenses" value="Save" style="float: right;"/>	
                                                 </div>
                                             </div>
                                         </div>
@@ -563,7 +569,7 @@
                     								</ul>
                     			 				</div>
                     						</div>
-                                            <h3 class="panel-title"><i class="ti-pencil-alt"></i> <?php echo $action=='add_new_liqudity_needs'?'Add':'Edit'; ?> Client Suitability Liqudity Needs</h3>
+                                            <h3 class="panel-title"><i class="fa fa-pencil-square-o"></i> <?php echo $action=='add_new_liqudity_needs'?'Add':'Edit'; ?> Client Suitability Liqudity Needs</h3>
                                             <div class="panel-body">
                                                 <div class="row">
                                                     <div class="col-md-6">
@@ -580,9 +586,10 @@
                                             
                                             <div class="panel-footer">
                                                 <div class="selectwrap">
+                                                    <label></label>
                                                     <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-                                					<input type="submit"  onclick="waitingDialog.show();" name="submit_liqudity_needs" value="Save"/>	
-                                                    <a href="<?php echo CURRENT_PAGE;?>?action=view_liqudity_needs"><input type="button" name="cancel" value="Cancel" /></a>
+                                					<a href="<?php echo CURRENT_PAGE;?>?action=view_liqudity_needs"><input type="button" name="cancel" value="Cancel" style="float: right;"/></a>
+                                                    <input type="submit"  onclick="waitingDialog.show();" name="submit_liqudity_needs" value="Save" style="float: right;"/>	
                                                 </div>
                                             </div>
                                         </div>
@@ -651,7 +658,7 @@
                     								</ul>
                     			 				</div>
                     						</div>
-                                            <h3 class="panel-title"><i class="ti-pencil-alt"></i> <?php echo $action=='add_new_liquid_net_worth'?'Add':'Edit'; ?> Client Suitability Liquid Net Worth</h3>
+                                            <h3 class="panel-title"><i class="fa fa-pencil-square-o"></i> <?php echo $action=='add_new_liquid_net_worth'?'Add':'Edit'; ?> Client Suitability Liquid Net Worth</h3>
                                             <div class="panel-body">
                                                 <div class="row">
                                                     <div class="col-md-6">
@@ -668,9 +675,10 @@
                                             
                                             <div class="panel-footer">
                                                 <div class="selectwrap">
+                                                    <label></label>
                                                     <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-                                					<input type="submit"  onclick="waitingDialog.show();" name="submit_liquid_net_worth" value="Save"/>	
-                                                    <a href="<?php echo CURRENT_PAGE;?>?action=view_liquid_net_worth"><input type="button" name="cancel" value="Cancel" /></a>
+                                					<a href="<?php echo CURRENT_PAGE;?>?action=view_liquid_net_worth"><input type="button" name="cancel" value="Cancel" style="float: right;" /></a>
+                                                    <input type="submit"  onclick="waitingDialog.show();" name="submit_liquid_net_worth" value="Save" style="float: right;" />	
                                                 </div>
                                             </div>
                                         </div>
@@ -739,7 +747,7 @@
                     								</ul>
                     			 				</div>
                     						</div>
-                                            <h3 class="panel-title"><i class="ti-pencil-alt"></i> <?php echo $action=='add_new_special_expenses'?'Add':'Edit'; ?> Client Suitability Special Expenses</h3>
+                                            <h3 class="panel-title"><i class="fa fa-pencil-square-o"></i> <?php echo $action=='add_new_special_expenses'?'Add':'Edit'; ?> Client Suitability Special Expenses</h3>
                                             <div class="panel-body">
                                                 <div class="row">
                                                     <div class="col-md-6">
@@ -756,9 +764,10 @@
                                             
                                             <div class="panel-footer">
                                                 <div class="selectwrap">
+                                                    <label></label>
                                                     <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-                                					<input type="submit"  onclick="waitingDialog.show();" name="submit_special_expenses" value="Save"/>	
-                                                    <a href="<?php echo CURRENT_PAGE;?>?action=view_special_expenses"><input type="button" name="cancel" value="Cancel" /></a>
+                                					<a href="<?php echo CURRENT_PAGE;?>?action=view_special_expenses"><input type="button" name="cancel" value="Cancel" style="float: right;" /></a>
+                                                    <input type="submit"  onclick="waitingDialog.show();" name="submit_special_expenses" value="Save" style="float: right;"/>	
                                                 </div>
                                             </div>
                                         </div>
@@ -827,7 +836,7 @@
                     								</ul>
                     			 				</div>
                     						</div>
-                                            <h3 class="panel-title"><i class="ti-pencil-alt"></i> <?php echo $action=='add_new_portfolio'?'Add':'Edit'; ?> Client Suitability Portfolio</h3>
+                                            <h3 class="panel-title"><i class="fa fa-pencil-square-o"></i> <?php echo $action=='add_new_portfolio'?'Add':'Edit'; ?> Client Suitability Portfolio</h3>
                                             <div class="panel-body">
                                                 <div class="row">
                                                     <div class="col-md-6">
@@ -844,9 +853,10 @@
                                             
                                             <div class="panel-footer">
                                                 <div class="selectwrap">
+                                                    <label></label>
                                                     <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-                                					<input type="submit"  onclick="waitingDialog.show();" name="submit_portfolio" value="Save"/>	
-                                                    <a href="<?php echo CURRENT_PAGE;?>?action=view_portfolio"><input type="button" name="cancel" value="Cancel" /></a>
+                                					<a href="<?php echo CURRENT_PAGE;?>?action=view_portfolio"><input type="button" name="cancel" value="Cancel" style="float: right;"/></a>
+                                                    <input type="submit"  onclick="waitingDialog.show();" name="submit_portfolio" value="Save" style="float: right;"/>	
                                                 </div>
                                             </div>
                                         </div>
@@ -914,7 +924,7 @@
                 								</ul>
                 			 				</div>
                 						</div>
-                                        <h3 class="panel-title"><i class="ti-pencil-alt"></i> <?php echo $action=='add_new_time_for_exp'?'Add':'Edit'; ?> Client Suitability Time for Special Exp</h3>
+                                        <h3 class="panel-title"><i class="fa fa-pencil-square-o"></i> <?php echo $action=='add_new_time_for_exp'?'Add':'Edit'; ?> Client Suitability Time for Special Exp</h3>
                                         <div class="panel-body">
                                             <div class="row">
                                                 <div class="col-md-6">
@@ -931,9 +941,10 @@
                                         
                                         <div class="panel-footer">
                                             <div class="selectwrap">
+                                                <label></label>
                                                 <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-                            					<input type="submit"  onclick="waitingDialog.show();" name="submit_time_for_exp" value="Save"/>	
-                                                <a href="<?php echo CURRENT_PAGE;?>?action=view_time_for_exp"><input type="button" name="cancel" value="Cancel" /></a>
+                            					<a href="<?php echo CURRENT_PAGE;?>?action=view_time_for_exp"><input type="button" name="cancel" value="Cancel" style="float: right;"/></a>
+                                                <input type="submit"  onclick="waitingDialog.show();" name="submit_time_for_exp" value="Save" style="float: right;"/>	
                                             </div>
                                         </div>
                                     </div>
@@ -1001,7 +1012,7 @@
                 								</ul>
                 			 				</div>
                 						</div>
-                                        <h3 class="panel-title"><i class="ti-pencil-alt"></i> <?php echo $action=='add_new_account_use'?'Add':'Edit'; ?> Client Suitability Acoount Use</h3>
+                                        <h3 class="panel-title"><i class="fa fa-pencil-square-o"></i> <?php echo $action=='add_new_account_use'?'Add':'Edit'; ?> Client Suitability Acoount Use</h3>
                                         <div class="panel-body">
                                             <div class="row">
                                                 <div class="col-md-6">
@@ -1018,9 +1029,10 @@
                                         
                                         <div class="panel-footer">
                                             <div class="selectwrap">
+                                                <label></label>
                                                 <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-                            					<input type="submit"  onclick="waitingDialog.show();" name="submit_account_use" value="Save"/>	
-                                                <a href="<?php echo CURRENT_PAGE;?>?action=view_account_use"><input type="button" name="cancel" value="Cancel" /></a>
+                            					<a href="<?php echo CURRENT_PAGE;?>?action=view_account_use"><input type="button" name="cancel" value="Cancel" style="float: right;" /></a>
+                                                <input type="submit"  onclick="waitingDialog.show();" name="submit_account_use" value="Save" style="float: right;"/>	
                                             </div>
                                         </div>
                                     </div>

@@ -15,12 +15,13 @@
     $product_cate ='';
     $split_broker = array();
     $split_rate = array();
+    $return_splits = array();
     
     
     if(isset($_POST['transaction'])&& $_POST['transaction']=='Save'){ 
         //echo '<pre>';print_r($_POST);exit();
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
-        $trade_number = isset($_POST['trade_number'])?$instance->re_db_input($_POST['trade_number']):0;
+        //$trade_number = isset($_POST['trade_number'])?$instance->re_db_input($_POST['trade_number']):0;
         $client_name = isset($_POST['client_name'])?$instance->re_db_input($_POST['client_name']):'';
         $client_number = isset($_POST['client_number'])?$instance->re_db_input($_POST['client_number']):'';
         $broker_name = isset($_POST['broker_name'])?$instance->re_db_input($_POST['broker_name']):'';
@@ -59,7 +60,7 @@
         
        // echo '<pre>';print_r($return);exit;
         $id = isset($return['id'])?$instance->re_db_output($return['id']):0;
-        $trade_number = isset($return['trade_number'])?$instance->re_db_output($return['trade_number']):0;
+        $trade_number = isset($return['id'])?$instance->re_db_output($return['id']):0;
         $client_name = isset($return['client_name'])?$instance->re_db_output($return['client_name']):'';
         $client_number = isset($return['client_number'])?$instance->re_db_output($return['client_number']):'';
         $broker_name = isset($return['broker_name'])?$instance->re_db_output($return['broker_name']):'';

@@ -47,6 +47,7 @@
     $instance = new product_maintenance();
     $product_category = $instance->select_category();
     $get_sponsor = $instance->select_sponsor();
+    $get_product_transactions = $instance->get_transaction_on_product($id,$category);//print_r($get_product_transactions);exit;
     
     if(isset($_POST['next'])&& $_POST['next']=='Next'){
         

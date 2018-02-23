@@ -38,7 +38,8 @@ $(document).on('click','.remove-row',function(){
 });
 </script>
 <div class="container">
-    <h1>Transactions</h1> <div class="col-lg-12 well">
+<h1 class="<?php if($action=='add'||($action=='edit_transaction' && $id>0)){ echo 'topfixedtitle';}?>">Transactions</h1> 
+    <div class="col-lg-12 well <?php if($action=='add'||($action=='edit_transaction' && $id>0)){ echo 'fixedwell';}?>">
     <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
    
     
@@ -49,7 +50,7 @@ $(document).on('click','.remove-row',function(){
           //if((isset($_GET['action']) && ($_GET['action']=='edit_transaction')) || isset($product_cate)){ get_product($product_cate); }
         ?>
         <form name="frm2" method="POST" >
-            <div class="row">
+            <!--<div class="row">
                 <div class="col-md-12">
                     <div class="form-group"><br /><div class="selectwrap">
                         <input type="submit" name="transaction" onclick="waitingDialog.show();" value="Save"/>	
@@ -57,7 +58,7 @@ $(document).on('click','.remove-row',function(){
                     </div>
                  </div>
                  </div>
-             </div> 
+             </div> -->
         <div class="panel">            
        
             <div class="panel-footer">
@@ -80,8 +81,8 @@ $(document).on('click','.remove-row',function(){
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Trade Number <span class="text-red">*</span></label><br />
-                        <input type="text" name="trade_number" id="trade_number" value="<?php if(isset($trade_number)) {echo $trade_number;}?>" class="form-control" />
+                        <label>Trade Number </label><br />
+                        <input type="text" name="trade_number" id="trade_number" value="<?php if(isset($trade_number)) {echo $trade_number;}else{echo '0';}?>" disabled="true" class="form-control" />
                     </div>
                 </div>
             </div>
@@ -178,7 +179,7 @@ $(document).on('click','.remove-row',function(){
                         <select class="form-control" name="batch">
                             <option value="0">Select Batch</option>
                              <?php foreach($get_batch as $key=>$val){?>
-                            <option value="<?php echo $val['id'];?>" <?php if(isset($batch) && $batch==$val['id']){?> selected="true"<?php } ?>><?php echo $val['batch_number'].' '.$val['batch_desc'];?></option>
+                            <option value="<?php echo $val['id'];?>" <?php if(isset($batch) && $batch==$val['id']){?> selected="true"<?php } ?>><?php echo $val['id'].' '.$val['batch_desc'];?></option>
                             <?php } ?>
                         </select>
                     </div>
@@ -341,14 +342,15 @@ $(document).on('click','.remove-row',function(){
                 </div>
             </div>
           </div>
-           <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group "><br /><div class="selectwrap">
-                        <input type="submit" name="transaction" onclick="waitingDialog.show();" value="Save"/>	
-                        <a href="<?php echo CURRENT_PAGE.'?action=view';?>"><input type="button" name="cancel" value="Cancel" /></a>
+           <div class="panel-footer fixedbtmenu">
+               <!-- <div class="col-md-12">
+                    <div class="form-group "><br />-->
+                    <div class="selectwrap">
+                        <a href="<?php echo CURRENT_PAGE.'?action=view';?>"><input type="button" name="cancel" value="Cancel" style="float: right;"/></a>
+                        <input type="submit" name="transaction" onclick="waitingDialog.show();" value="Save" style="float: right;"/>	
                     </div>
-                 </div>
-                 </div>
+                 <!--</div>
+                 </div>-->
              </div></div>
         </form>
         <?php
@@ -409,12 +411,12 @@ $(document).on('click','.remove-row',function(){
                         ?>
     	                   <tr>
                                 
-                                <td><?php echo $val['trade_number'];?></td>
-                                <td><?php echo $val['trade_date'];?></td>
+                                <td><?php echo $val['id'];?></td>
+                                <td><?php echo date('m/d/Y',strtotime($val['trade_date']));?></td>
                                 <td><?php foreach($get_client as $key1 => $val1){ if($val1['id']==$val['client_name']) {echo $val1['mi'];}}?></td>
                                 <td><?php echo $val['client_number'];?></td>
                                 <td><?php foreach($get_broker as $key1 => $val1){ if($val1['id']==$val['broker_name']) {echo $val1['first_name'];}}?></td>
-                                <td><?php foreach($get_batch as $key1 => $val1){ if($val1['id']==$val['batch']) {echo $val1['batch_number'];}}?></td>
+                                <td><?php foreach($get_batch as $key1 => $val1){ if($val1['id']==$val['batch']) {echo $val1['id'];}}?></td>
                                 <td><?php echo $val['invest_amount'];?></td>
                                 <td><?php echo $val['commission_received'];?></td>
                                 <!--td class="text-center">

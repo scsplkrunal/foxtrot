@@ -1,6 +1,6 @@
 <div class="container">
-    <h1 >User Profiles</h1>
-	<div class="col-lg-12 well">
+    <h1 class="<?php if($action=='add_new'||($action=='edit' && $id>0)){ echo 'topfixedtitle';}?>">User Profiles</h1>
+	<div class="col-lg-12 well <?php if($action=='add_new'||($action=='edit' && $id>0)){ echo 'fixedwell';}?>">
 	<div class="row">
     <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
     <!-- Add table data and some process -->
@@ -19,7 +19,7 @@
     		</div>
             <h3 class="panel-title"><i class="fa fa-pencil-square-o"></i><?php echo $action=='add_new'?'Add':'Edit'; ?> User</h3>
     	</div>
-		<div class="col-sm-12">
+		<div class="panel-body">
 			<div class="row">
 				<div class="col-sm-6 form-group">
 					<label>First Name <span class="text-red">*</span></label>
@@ -97,12 +97,15 @@
                     <?php }?>
 				</div>	
 			</div>
-            <div class="selectwrap">
-                <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-				<input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
-                <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
-            </div>				
+            				
 		</div>
+        <div class="panel-footer fixedbtmenu">
+        <div class="selectwrap">
+            <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
+			<a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" style="float: right;"/></a>
+            <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save" style="float: right;"/>	
+        </div>
+        </div>
 	</form> 
         <?php }else{?>
         <div class="panel">

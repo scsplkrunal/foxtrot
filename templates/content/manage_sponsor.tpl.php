@@ -107,17 +107,14 @@ $(document).on('click','.remove-row',function(){
 
 </script>
 <div class="container">
-<h1>Sponsor Maintenance</h1>
+<h1 class="<?php if($action=='add_sponsor'||($action=='edit_sponsor' && $_GET['sponsor_id']>0)){ echo 'topfixedtitle';}?>">Sponsor Maintenance</h1>
+<div class="col-lg-12 well <?php if($action=='add_sponsor'||($action=='edit_sponsor' && $_GET['sponsor_id']>0)){ echo 'fixedwell';}?>">
 <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
-<div class="col-lg-12 well">
-
-
-    <?php  
-    
+<?php  
     if((isset($_GET['action']) && $_GET['action']=='add_sponsor') || (isset($_GET['action']) && ($_GET['action']=='edit_sponsor' && $sponsor_id>0))){
         ?>
         <form name="frm2" method="POST" >
-            <div class="row">
+            <!--<div class="row">
                 <div class="col-md-12">
                     <div class="form-group"><br /><div class="selectwrap">
                        <?php if($_GET['action']=='edit_sponsor' && $_GET['sponsor_id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=previous" class="previous next_previous_a" style="float: left;"><input type="button" name="previous" value="&laquo; Previous" /></a><?php } ?>
@@ -133,16 +130,9 @@ $(document).on('click','.remove-row',function(){
                     </div>
                  </div>
                  </div>
-             </div></div>
-            <br />
+             </div>
+            <br />-->
         <div class="panel">            
-        
-            <div class="panel-footer">
-                <div class="selectwrap" style="float: right;">
-                    <input type="hidden" name="sponsor_id" id="sponsor_id" value="<?php echo $sponsor_id; ?>" />
-    				
-                </div><br />
-           </div>
             <div class="panel-heading">
                 <div class="panel-control" style="float: right;">
     				<div class="btn-group dropdown">
@@ -295,25 +285,25 @@ $(document).on('click','.remove-row',function(){
                 </div>
             </div>
            </div>
-           <div class="row" id="sticky">
-                <div class="col-md-12">
-                    <div class="form-group"><br /><div class="selectwrap">
-                        <?php if($_GET['action']=='edit_sponsor' && $_GET['sponsor_id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=previous" class="previous next_previous_a" style="float: left;"><input type="button" name="previous" value="&laquo; Previous" /></a><?php } ?>
-                        <?php if($action=='edit_sponsor' && $sponsor_id>0){?>
-                        <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 5%;"/></a>
-                        <?php } ?>
-                        <a href="#sponsor_notes" data-toggle="modal"><input type="button" onclick="get_sponsor_notes();" name="notes" value="Notes" /></a>
-                        <a href="#sponsor_attach" data-toggle="modal"><input type="button"  onclick="get_sponsor_attach();" name="attach" value="Attachments" /></a>
-                        <a href="#client_transactions" data-toggle="modal"><input type="button"  name="transactions" value="Transactions" /></a>
-                        <input type="submit" name="sponser" onclick="waitingDialog.show();" value="Save"/>	
-                        <a href="<?php echo CURRENT_PAGE.'?action=view_sponsor';?>"><input type="button" name="cancel" value="Cancel" /></a>
-                        <?php if($_GET['action']=='edit_sponsor' && $_GET['sponsor_id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=next" class="next next_previous_a" style="float: right;"><input type="button" name="next" value="Next &raquo;" /></a><?php } ?>
-                    
-                    </div>
-                 </div>
-                 </div>
-             </div></div>
-        </form>
+           <div class="panel-footer fixedbtmenu">
+            <div class="selectwrap">
+                <input type="hidden" name="sponsor_id" id="sponsor_id" value="<?php echo $sponsor_id; ?>" />
+                <?php if($_GET['action']=='edit_sponsor' && $_GET['sponsor_id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=previous" class="previous next_previous_a" style="float: left;"><input type="button" name="previous" value="&laquo; Previous" /></a><?php } ?>
+                <?php if($_GET['action']=='edit_sponsor' && $_GET['sponsor_id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=next" class="next next_previous_a"><input type="button" name="next" value="Next &raquo;" /></a><?php } ?>
+                
+                <?php if($action=='edit_sponsor' && $sponsor_id>0){?>
+                <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 12% !important;"/></a>
+                <?php } ?>
+                <a href="#sponsor_notes" data-toggle="modal"><input type="button" onclick="get_sponsor_notes();" name="notes" value="Notes" /></a>
+                <a href="#client_transactions" data-toggle="modal"><input type="button"  name="transactions" value="Transactions" /></a>
+                <a href="#sponsor_attach" data-toggle="modal"><input type="button"  onclick="get_sponsor_attach();" name="attach" value="Attachments" style="margin-right: 12% !important;"/></a>
+                
+                <a href="<?php echo CURRENT_PAGE.'?action=view_sponsor';?>"><input type="button" name="cancel" value="Cancel" style="float: right;"/></a>
+                <input type="submit" name="sponser" onclick="waitingDialog.show();" value="Save" style="float: right;"/>	
+            </div>
+           </div>
+      </div>
+    </form>
         <?php
             }if((isset($_GET['action']) && $_GET['action']=='view_sponsor') || $action=='view_sponsor'){?>
         <div class="panel">
@@ -338,8 +328,8 @@ $(document).on('click','.remove-row',function(){
     			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
     	            <thead>
     	                <tr>
-                            <th>Sponsor Name</th>
-                            <th>Status</th>
+                            <th>SPONSOR NAME</th>
+                            <th class="text-center">STATUS</th>
                             <th class="text-center">ACTION</th>
                         </tr>
     	            </thead>

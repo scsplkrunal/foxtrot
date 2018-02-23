@@ -39,15 +39,15 @@ $(document).on('click','.remove-row',function(){
 });
 </script>
 <div class="container">
-<h1>Client Maintenance</h1>
+<h1 class="<?php if($action=='add_new'||($action=='edit' && $id>0)){ echo 'topfixedtitle';}?>">Client Maintenance</h1>
+<div class="col-lg-12 well <?php if($action=='add_new'||($action=='edit' && $id>0)){ echo 'fixedwell';}?>">
 <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
-    <div class="col-lg-12 well">
         <div class="tab-content col-md-12">
             <div class="tab-pane active" id="tab_a">
                     <?php
                     if($action=='add_new'||($action=='edit' && $id>0)){
                         ?>
-                            <ul class="nav nav-tabs ">
+                            <ul class="nav nav-tabs <?php if($action=='add_new'||($action=='edit' && $id>0)){ echo 'topfixedtabs';}?>">
                               <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="primary"){ echo "active"; }else if(!isset($_GET['tab'])){echo "active";}else{ echo '';} ?>"><a href="#tab_aa" data-toggle="tab">Primary</a></li>
                               <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="account_no"){ echo "active"; } ?>"><a href="#tab_dd" data-toggle="tab">Account No's</a></li>
                               <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="employment"){ echo "active"; } ?>"><a href="#tab_bb" data-toggle="tab">Employment</a></li>
@@ -62,7 +62,7 @@ $(document).on('click','.remove-row',function(){
     								</ul>
     							</div>
     						</ul><form method="post">
-                            <div class="panel-footer"><br />
+                            <!--<div class="panel-footer"><br />
                                     <div class="selectwrap">
                                         <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;"><input type="button" name="previos" value="&laquo; Previous" /></a><?php } ?>
                                         <?php if($action=='edit' && $id>0){?>
@@ -77,7 +77,7 @@ $(document).on('click','.remove-row',function(){
                                         <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a" style="float: right;"><input type="button" name="next" value="Next &raquo;" /></a><?php } ?>
                                     </div>
                                  </div>
-                                <br />
+                                <br />-->
                             <!-- Tab 1 is started -->
                             <div class="tab-content">
                                 
@@ -928,19 +928,20 @@ $(document).on('click','.remove-row',function(){
                                 </div>
                                  
                             </div>
-                            <div class="panel-footer"><br />
+                            <div class="panel-footer fixedbtmenu"><br />
                                     <div class="selectwrap">
                                         <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;"><input type="button" name="previos" value="&laquo; Previous" /></a><?php } ?>
+                                        <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a"><input type="button" name="next" value="Next &raquo;" /></a><?php } ?>
                                         <?php if($action=='edit' && $id>0){?>
-                                        <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" style="margin-left: 3% !important;" value="View Changes"/></a>
+                                        <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" style="margin-left: 5% !important;" value="View Changes"/></a>
                                         <?php } ?>
                                         <a href="#client_notes" data-toggle="modal"><input type="button" onclick="get_client_notes();" name="notes" value="Notes" /></a>
                                         <a href="#client_transactions" data-toggle="modal"><input type="button"  name="transactions" value="Transactions" /></a>
                                         <a href="#joint_account" data-toggle="modal"><input type="button" onclick="get_client_account();" name="joint_account" value="Joint Account" /></a>
-                                        <a href="#client_attach" data-toggle="modal"><input type="button"  onclick="get_client_attach();" name="attach" value="Attachments" /></a>
-                                        <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
-                                        <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" /></a>
-                                        <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a" style="float: right;"><input type="button" name="next" value="Next &raquo;" /></a><?php } ?>
+                                        <a href="#client_attach" data-toggle="modal"><input type="button"  onclick="get_client_attach();" name="attach" value="Attachments" style="margin-right: 5% !important;" /></a>
+                                        
+                                        <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" style="float: right;"/></a>
+                                        <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save" style="float: right;"/>	
                                     </div>
                                  </div>
                                  </form>
@@ -969,11 +970,11 @@ $(document).on('click','.remove-row',function(){
             			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
             	            <thead>
             	                <tr>
-                                    <th>Name</th>
-                                    <th>File</th>
-                                    <th>Account Type</th>
-                                    <th>Broker Name</th>
-                                    <th>Status</th>
+                                    <th>NAME</th>
+                                    <th>FILE</th>
+                                    <th>ACCOUNT TYPE</th>
+                                    <th>BROKER NAME</th>
+                                    <th class="text-center">STATUS</th>
                                     <th class="text-center">ACTION</th>
                                 </tr>
             	            </thead>
