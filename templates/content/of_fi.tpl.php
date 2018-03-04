@@ -32,7 +32,7 @@
                 		</div>
                 		<div class="panel-body">
                         <div class="table-responsive" id="register_data">
-                			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                			<table id="data-table1" class="table table-striped table-bordered" cellspacing="0" width="100%">
                 	            <thead>
                 	                <tr>
                                         <th>DATE</th>
@@ -90,7 +90,7 @@
                     		</div>
                     		<div class="panel-body">
                             <div class="table-responsive" id="register_data">
-                    			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    			<table id="data-table2" class="table table-striped table-bordered" cellspacing="0" width="100%">
                     	            <thead>
                     	                <tr>
                                             <th>DATE</th>
@@ -162,6 +162,31 @@
         </div>
    </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        
+        $('#data-table1').DataTable({
+        "pageLength": 25,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "dom": '<"toolbar">frtip',
+        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 3 ] }, 
+                        { "bSearchable": false, "aTargets": [ 3 ] }]
+        });
+        $('#data-table2').DataTable({
+        "pageLength": 25,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "dom": '<"toolbar">frtip',
+        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 3 ] }, 
+                        { "bSearchable": false, "aTargets": [ 3 ] }]
+        });
+} );
+</script>
 <?php if(isset($_GET['open']) && $_GET['open'] == "report"){?>
 <script>
 location.href=location.href.replace(/&?open=([^&]$|[^&]*)/i, "");

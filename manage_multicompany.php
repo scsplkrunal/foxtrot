@@ -56,9 +56,6 @@
         
         $return = $instance->insert_update($_POST);
         
-        
-        
-        
         if($return===true){
             header("location:".CURRENT_PAGE);
         }

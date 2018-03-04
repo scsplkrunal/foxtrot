@@ -28,7 +28,7 @@
                     else if($parameter2=='0'&& $action=='5'){
         				$this->errors = 'Please select broker2.';
         			}
-        			else if($action=='0'){
+        			else if(isset($in_force) && $in_force != 0 && $action=='0'){
         				$this->errors = 'Please select action.';
         			}
                     /*else if($parameter_1=='' && $action != 5){

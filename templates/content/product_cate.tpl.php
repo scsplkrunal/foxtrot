@@ -73,7 +73,7 @@ $(document).on('click','.remove-row',function(){
             <?php
                     if(isset($_GET['action']) && $_GET['action']=='view_product') {?>
                 <div class="panel">
-            		<div class="panel-heading">
+            		<!--<div class="panel-heading">
                         <div class="panel-control">
                             <div class="btn-group dropdown" style="float: right;">
                                 <button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
@@ -83,29 +83,28 @@ $(document).on('click','.remove-row',function(){
                                 </ul>
             				</div>
             			</div>
-                    </div><br />
+                    </div><br />-->
             		<div class="panel-body">
-                                
-                        <div class="panel-control" style="float: right;" >
+                        <!--<div class="panel-control" style="float: right;" >
                          <form method="post">
                             <div class="row"> 
                             <div class="col-md-5"></div>
                                 <!--div class="col-md-3">
-                                    <select class="form-control" name="search_product_category">
+                                    <!--<select class="form-control" name="search_product_category">
                                         <?php foreach($product_category as $key=>$val){?>
                                         <option value="<?php echo $val['id'];?>" <?php if($search_product_category==$val['id']){echo "selected='selected'";} ?>><?php echo $val['type'];?></option>
                                         <?php } ?>
                                     </select>
                                  </div--> 
-                                    <input type="hidden" name="search_product_category" value="<?php echo $category; ?>"/> 
+                                   <!-- <input type="hidden" name="search_product_category" value="<?php echo $category; ?>"/> 
                                     <input type="text" name="search_text_product" style=" width:60% !important;"  placeholder="Search Name , Cusip , Ticker" id="search_text_product" value="<?php echo $search_text_product;?>"/>
                                     <button type="submit" name="search_product" id="submit" value="Search"><i class="fa fa-search"></i> Search</button>
                                  
                             </div>
                         </form>
-                        </div><br /><br />
+                        </div><br /><br />-->
                        <div class="table-responsive">
-            			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            			<table id="data-table" class="table table-striped1 table-bordered" cellspacing="0" width="100%">
             	            <thead>
             	                <tr>
                                     <th>PRODUCT NAME</th>
@@ -672,15 +671,13 @@ $(document).on('click','.remove-row',function(){
         					<?php if($_GET['action']=='edit_product' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next&category=<?php echo $category;?>" class="next next_previous_a"><input type="button" name="Next" value="Next &raquo;" /></a><?php } ?>
                             
                             <?php if($action=='edit_product' && $id>0){?>
-                            <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 12%;"/></a>
+                            <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 10%;"/></a>
                             <?php } ?>
                             <a href="#product_notes" data-toggle="modal"><input type="button" onclick="get_product_notes();" name="notes" value="Notes" /></a>
                             <a href="#product_transactions" data-toggle="modal"><input type="button" name="attach" value="Transactions" /></a>
-                            <a href="#product_attach" data-toggle="modal"><input type="button"  onclick="get_product_attach();" name="attach" value="Attachments" style="margin-right: 12%;"/></a>
-                            
+                            <a href="#product_attach" data-toggle="modal"><input type="button"  onclick="get_product_attach();" name="attach" value="Attachments" style="margin-right: 10%;"/></a>
                             <a href="<?php echo CURRENT_PAGE.'?action=view_product';?>"><input type="button" name="cancel" value="Cancel" style="float: right;"/></a>
-                            <input type="submit" name="product" onclick="waitingDialog.show();" value="Save" style="float: right;"/>	
-                            
+                            <input type="submit" name="product" onclick="waitingDialog.show();" value="Save" style="float: right;"/>
                         </div>
                     </div>
 			    </form> 
@@ -1304,6 +1301,37 @@ $(document).on('click','.remove-row',function(){
         </div>
     
 </div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        
+        $('#data-table').DataTable({
+        "pageLength": 25,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "dom": '<"toolbar">frtip',
+        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 4 ] }, 
+                        { "bSearchable": false, "aTargets": [ 4 ] }]
+        });
+        
+        $("div.toolbar").html('<div class="panel-control">'+
+                    '<div class="btn-group dropdown" style="float: right;">'+
+                        '<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>'+
+    					'<ul class="dropdown-menu dropdown-menu-right" style="">'+
+                            '<li><a href="<?php echo CURRENT_PAGE; ?>?action=add_product&category=<?php echo $category; ?>"><i class="fa fa-plus"></i> Add New</a></li>'+
+                            '<li><a href="<?php echo CURRENT_PAGE; ?>?action=select_cat"><i class="fa fa-minus"></i> Back To Category</a></li>'+
+                        '</ul>'+
+    				'</div>'+
+    			'</div>');
+} );
+</script>
+<style type="text/css">
+.toolbar {
+    float: right;
+    padding-left: 5px;
+}
+</style>
 <script>
 function set_Category(val){
     var category = val;

@@ -971,7 +971,81 @@
            
             }*/
         }
-        
+        public function reArrayFiles_alias($file_post){
+               $file_ary = array();
+               foreach($file_post as $key=>$val)
+               {
+                    $reindexed_filepost[$key] = array_values($val);
+               }
+               
+               $file_count = count($reindexed_filepost['alias_name']);
+               $file_keys = array_keys($reindexed_filepost);
+               for ($i=0; $i<$file_count; $i++) { 
+                   foreach ($file_keys as $key) {      
+                        if(isset($reindexed_filepost[$key][$i]))
+                        {
+                            $file_ary[$i][$key] = $reindexed_filepost[$key][$i];   
+                        }
+                        else
+                        {
+                            $file_ary[$i][$key] = '';
+                        }
+                   }
+               }
+               return $file_ary;
+        }
+        public function insert_update_alias($data ,$id){//echo '<pre>';print_r($data);exit;
+           $id = isset($id)?$this->re_db_input($id):0;
+           $flag8=0;
+           if($id==0)
+           {
+                foreach($data as $key=>$val)
+                {   
+                    $alias_name=isset($val['alias_name'])?$this->re_db_input($val['alias_name']):'';
+                    $sponsor_company=isset($val['sponsor_company'])?$this->re_db_input($val['sponsor_company']):0;
+                    $date=isset($val['date'])?$this->re_db_input(date('Y-m-d',strtotime($val['date']))):'0000-00-00';
+                    if($alias_name!='' && $sponsor_company!='' && $date!=''){
+                        
+                        $q = "INSERT INTO `".BROKER_ALIAS."` SET `broker_id`='".$_SESSION['last_insert_id']."' ,`alias_name`='".$alias_name."' ,`sponsor_company`='".$sponsor_company."' , 
+                        `date`='".$date."' ".$this->insert_common_sql();
+        				$res = $this->re_db_query($q);
+                    }
+                    else
+                    {
+                        $res='';
+                    }
+                }    
+           }
+           else
+           {
+                foreach($data as $key=>$val)
+                {   
+                    $alias_name=isset($val['alias_name'])?$this->re_db_input($val['alias_name']):'';
+                    $sponsor_company=isset($val['sponsor_company'])?$this->re_db_input($val['sponsor_company']):0;
+                    $date=isset($val['date'])?$this->re_db_input(date('Y-m-d',strtotime($val['date']))):'0000-00-00';
+                    if($alias_name!='' && $sponsor_company!='' && $date!=''){
+                        if($flag8==0){
+                            $qq="update `".BROKER_ALIAS."` SET is_delete=1 where `broker_id`=".$id."";
+                            $res = $this->re_db_query($qq);
+                            $flag8=1;
+                        }
+                        $q = "INSERT INTO `".BROKER_ALIAS."` SET `broker_id`='".$_SESSION['last_insert_id']."' ,`alias_name`='".$alias_name."' ,`sponsor_company`='".$sponsor_company."' , 
+                        `date`='".$date."' ".$this->insert_common_sql();
+        				$res = $this->re_db_query($q);
+                    }
+                    else
+                    {
+                        $res='';
+                    }
+                }    
+           }
+           
+            if($res){
+			      
+                $_SESSION['success'] = INSERT_MESSAGE;
+				return true;
+			}
+        }
         public function insert_update_register($data){
            $id = isset($data['id'])?$this->re_db_input($data['id']):0;
            
@@ -1492,6 +1566,22 @@
 			
 			$q = "SELECT `at`.*
 					FROM `".BROKER_PAYOUT_SPLIT."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`broker_id`='".$id."'";
+            $res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+		}
+        public function edit_alias($id){
+			$return = array();
+			
+			$q = "SELECT `at`.*
+					FROM `".BROKER_ALIAS."` AS `at`
                     WHERE `at`.`is_delete`='0' AND `at`.`broker_id`='".$id."'";
             $res = $this->re_db_query($q);
             if($this->re_db_num_rows($res)>0){

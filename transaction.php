@@ -7,19 +7,20 @@
     $id = isset($_GET['id'])&&$_GET['id']!=''?$dbins->re_db_input($_GET['id']):0;
     
     $instance = new transaction();
+    $instance_batch = new batches();
     $product_category = $instance->select_category();
     $get_sponsor = $instance->select_sponsor();
     $get_broker =$instance->select_broker();
     $get_client= $instance->select_client();
     $get_batch = $instance->select_batch();
     $product_cate ='';
+    $product = '';
     $split_broker = array();
     $split_rate = array();
     $return_splits = array();
     
-    
     if(isset($_POST['transaction'])&& $_POST['transaction']=='Save'){ 
-        //echo '<pre>';print_r($_POST);exit();
+        //echo '<pre>';print_r($_SESSION['batch_id']);exit();
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
         //$trade_number = isset($_POST['trade_number'])?$instance->re_db_input($_POST['trade_number']):0;
         $client_name = isset($_POST['client_name'])?$instance->re_db_input($_POST['client_name']):'';
@@ -43,22 +44,41 @@
         $buy_sell = isset($_POST['buy_sell'])?$instance->re_db_input($_POST['buy_sell']):'';
         $hold_commission = isset($_POST['hold_commission'])?$instance->re_db_input($_POST['hold_commission']):'';
         $hold_resoan = isset($_POST['hold_resoan'])?$instance->re_db_input($_POST['hold_resoan']):'';
+        $posting_date = isset($_POST['posting_date'])?$instance->re_db_input($_POST['posting_date']):'';
         
         
         $return = $instance->insert_update($_POST);
         
         if($return===true){
-            header("location:".CURRENT_PAGE."?action=view");exit;
+            if(isset($_SESSION['batch_id']) && $_SESSION['batch_id'] >0)
+            {
+                header("location:".SITE_URL."batches.php?action=edit_batches&id=".$_SESSION['batch_id']);
+                $_SESSION['batch_id'] ='';
+                exit;
+            }
+            else{
+                header("location:".CURRENT_PAGE."?action=view");exit;
+            }
         }
         else{
             $error = !isset($_SESSION['warning'])?$return:'';
         }
  
     }
+    else if(isset($_GET['action'])&&$_GET['action']=='add' && isset($_GET['batch_id'])&&$_GET['batch_id']>0)
+    {
+        $batch = $instance->re_db_input($_GET['batch_id']);
+        $_SESSION['batch_id'] = isset($batch)?$instance->re_db_output($batch):'';
+        $get_batch_data = $instance_batch->edit_batches($batch);
+        $product_cate = isset($get_batch_data['pro_category'])?$instance->re_db_output($get_batch_data['pro_category']):0;
+        $sponsor = isset($get_batch_data['sponsor'])?$instance->re_db_output($get_batch_data['sponsor']):0;
+        
+    }
     else if($action=='edit_transaction' && $id>0){
         $return = $instance->edit_transaction($id);
-        
-       // echo '<pre>';print_r($return);exit;
+        $batch_id = isset($return['batch'])?$instance->re_db_output($return['batch']):'';
+        $batch_date = $instance->get_batch_date($batch_id);
+        //echo '<pre>';print_r($batch_date);exit;
         $id = isset($return['id'])?$instance->re_db_output($return['id']):0;
         $trade_number = isset($return['id'])?$instance->re_db_output($return['id']):0;
         $client_name = isset($return['client_name'])?$instance->re_db_output($return['client_name']):'';
@@ -80,6 +100,7 @@
         $buy_sell = isset($return['buy_sell'])?$instance->re_db_output($return['buy_sell']):'';
         $hold_commission = isset($return['hold_commission'])?$instance->re_db_output($return['hold_commission']):'';
         $hold_resoan = isset($return['hold_resoan'])?$instance->re_db_output($return['hold_resoan']):'';
+        $posting_date = isset($return['posting_date'])?$instance->re_db_output($return['posting_date']):'';
         $return_splits = $instance->edit_splits($id);
              
     }

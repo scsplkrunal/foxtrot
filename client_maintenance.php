@@ -199,11 +199,11 @@
         if($return===true){
             if($action == 'edit')
             {
-                header("location:".CURRENT_PAGE."?action=".$action."&id=".$id."&tab=primary");exit;
+                header("location:".CURRENT_PAGE);exit;
             }
             else
             {
-                header("location:".CURRENT_PAGE."?action=".$action."&tab=primary");exit;
+                header("location:".CURRENT_PAGE);exit;
             }
         }
         else{

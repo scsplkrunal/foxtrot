@@ -64,7 +64,7 @@
                                             
                            <?php } if(isset($_GET['action'])=='' || $_GET['action']=='view_objective' || $action=='view_objective' ){ ?> 
                         <div class="panel">
-                            <div class="panel-heading">
+                            <!--<div class="panel-heading">
                                 <div class="panel-control">
                                     <div class="btn-group dropdown" style="float: right;">
                     					<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
@@ -74,10 +74,10 @@
                     				</div>
                     			</div>
                                 <h3 class="panel-title">Objective</h3>
-                    		</div>
+                    		</div>-->
                             <div class="panel-body">
                                 <div class="table-responsive" id="register_data">
-                        			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        			<table id="data-table1" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         	            <thead>
                         	                <tr>
                                                 <th>OPTIONS</th>
@@ -154,7 +154,7 @@
                                             
                            <?php } if(isset($_GET['action'])=='' || $_GET['action']=='view_income' || $action=='view_income' ){ ?> 
                         <div class="panel">
-                            <div class="panel-heading">
+                            <!--<div class="panel-heading">
                                 <div class="panel-control">
                                     <div class="btn-group dropdown" style="float: right;">
                     					<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
@@ -164,10 +164,10 @@
                     				</div>
                     			</div>
                                 <h3 class="panel-title">Income</h3>
-                    		</div>
+                    		</div>-->
                             <div class="panel-body">
                                 <div class="table-responsive" id="register_data">
-                        			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        			<table id="data-table2" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         	            <thead>
                         	                <tr>
                                                 <th>OPTIONS</th>
@@ -243,7 +243,7 @@
                                             
                            <?php } if(isset($_GET['action'])=='' || $_GET['action']=='view_horizon') { ?> 
                         <div class="panel">
-                            <div class="panel-heading">
+                            <!--<div class="panel-heading">
                                 <div class="panel-control">
                                     <div class="btn-group dropdown" style="float: right;">
                     					<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
@@ -253,10 +253,10 @@
                     				</div>
                     			</div>
                                 <h3 class="panel-title">Horizon</h3>
-                    		</div>
+                    		</div>-->
                             <div class="panel-body">
                                 <div class="table-responsive" id="register_data">
-                        			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        			<table id="data-table3" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         	            <thead>
                         	                <tr>
                                                 <th>OPTIONS</th>
@@ -332,7 +332,7 @@
                                             
                            <?php } if(isset($_GET['action'])=='' || $_GET['action']=='view_networth') { ?> 
                         <div class="panel">
-                            <div class="panel-heading">
+                            <!--<div class="panel-heading">
                                 <div class="panel-control">
                                     <div class="btn-group dropdown" style="float: right;">
                     					<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
@@ -342,10 +342,10 @@
                     				</div>
                     			</div>
                                 <h3 class="panel-title">Networth</h3>
-                    		</div>
+                    		</div>-->
                             <div class="panel-body">
                                 <div class="table-responsive" id="register_data">
-                        			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        			<table id="data-table4" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         	            <thead>
                         	                <tr>
                                                 <th>OPTIONS</th>
@@ -421,7 +421,7 @@
                                             
                            <?php } if(isset($_GET['action'])=='' || $_GET['action']=='view_risk_tolerance') { ?> 
                         <div class="panel">
-                            <div class="panel-heading">
+                            <!--<div class="panel-heading">
                                 <div class="panel-control">
                                     <div class="btn-group dropdown" style="float: right;">
                     					<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
@@ -431,10 +431,10 @@
                     				</div>
                     			</div>
                                 <h3 class="panel-title">Risk Tolerance</h3>
-                    		</div>
+                    		</div>-->
                             <div class="panel-body">
                                 <div class="table-responsive" id="register_data">
-                        			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        			<table id="data-table5" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         	            <thead>
                         	                <tr>
                                                 <th>OPTIONS</th>
@@ -510,7 +510,7 @@
                                             
                            <?php } if(isset($_GET['action'])=='' || $_GET['action']=='view_annual_expenses') { ?> 
                         <div class="panel">
-                            <div class="panel-heading">
+                            <!--<div class="panel-heading">
                                 <div class="panel-control">
                                     <div class="btn-group dropdown" style="float: right;">
                     					<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
@@ -520,10 +520,10 @@
                     				</div>
                     			</div>
                                 <h3 class="panel-title">Annual Expenses</h3>
-                    		</div>
+                    		</div>-->
                             <div class="panel-body">
                                 <div class="table-responsive" id="register_data">
-                        			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        			<table id="data-table6" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         	            <thead>
                         	                <tr>
                                                 <th>OPTIONS</th>
@@ -599,7 +599,7 @@
                                             
                            <?php } if(isset($_GET['action'])=='' || $_GET['action']=='view_liqudity_needs') { ?> 
                         <div class="panel">
-                            <div class="panel-heading">
+                            <!--<div class="panel-heading">
                                 <div class="panel-control">
                                     <div class="btn-group dropdown" style="float: right;">
                     					<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
@@ -609,10 +609,10 @@
                     				</div>
                     			</div>
                                 <h3 class="panel-title">Liqudity Needs</h3>
-                    		</div>
+                    		</div>-->
                             <div class="panel-body">
                                 <div class="table-responsive" id="register_data">
-                        			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        			<table id="data-table7" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         	            <thead>
                         	                <tr>
                                                 <th>OPTIONS</th>
@@ -688,7 +688,7 @@
                                             
                            <?php } if(isset($_GET['action'])=='' || $_GET['action']=='view_liquid_net_worth') { ?> 
                         <div class="panel">
-                            <div class="panel-heading">
+                            <!--<div class="panel-heading">
                                 <div class="panel-control">
                                     <div class="btn-group dropdown" style="float: right;">
                     					<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
@@ -698,10 +698,10 @@
                     				</div>
                     			</div>
                                 <h3 class="panel-title">Liqid Net Worth</h3>
-                    		</div>
+                    		</div>-->
                             <div class="panel-body">
                                 <div class="table-responsive" id="register_data">
-                        			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        			<table id="data-table8" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         	            <thead>
                         	                <tr>
                                                 <th>OPTIONS</th>
@@ -777,7 +777,7 @@
                                             
                            <?php } if(isset($_GET['action'])=='' || $_GET['action']=='view_special_expenses') { ?> 
                         <div class="panel">
-                            <div class="panel-heading">
+                            <!--<div class="panel-heading">
                                 <div class="panel-control">
                                     <div class="btn-group dropdown" style="float: right;">
                     					<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
@@ -787,10 +787,10 @@
                     				</div>
                     			</div>
                                 <h3 class="panel-title">Special Expenses</h3>
-                    		</div>
+                    		</div>-->
                             <div class="panel-body">
                                 <div class="table-responsive" id="register_data">
-                        			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        			<table id="data-table9" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         	            <thead>
                         	                <tr>
                                                 <th>OPTIONS</th>
@@ -866,7 +866,7 @@
                                             
                            <?php } if(isset($_GET['action'])=='' || $_GET['action']=='view_portfolio') { ?> 
                         <div class="panel">
-                            <div class="panel-heading">
+                            <!--<div class="panel-heading">
                                 <div class="panel-control">
                                     <div class="btn-group dropdown" style="float: right;">
                     					<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
@@ -876,10 +876,10 @@
                     				</div>
                     			</div>
                                 <h3 class="panel-title">Portfolio</h3>
-                    		</div>
+                    		</div>-->
                             <div class="panel-body">
                                 <div class="table-responsive" id="register_data">
-                        			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        			<table id="data-table10" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         	            <thead>
                         	                <tr>
                                                 <th>OPTIONS</th>
@@ -954,7 +954,7 @@
                                         
                        <?php } if(isset($_GET['action'])=='' || $_GET['action']=='view_time_for_exp') { ?> 
                     <div class="panel">
-                        <div class="panel-heading">
+                        <!--<div class="panel-heading">
                             <div class="panel-control">
                                 <div class="btn-group dropdown" style="float: right;">
                 					<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
@@ -964,10 +964,10 @@
                 				</div>
                 			</div>
                             <h3 class="panel-title">Timeframe For Special Exp</h3>
-                		</div>
+                		</div>-->
                         <div class="panel-body">
                             <div class="table-responsive" id="register_data">
-                    			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    			<table id="data-table11" class="table table-striped table-bordered" cellspacing="0" width="100%">
                     	            <thead>
                     	                <tr>
                                             <th>OPTIONS</th>
@@ -1042,7 +1042,7 @@
                                         
                        <?php } if(isset($_GET['action'])=='' || $_GET['action']=='view_account_use') { ?> 
                     <div class="panel">
-                        <div class="panel-heading">
+                        <!--<div class="panel-heading">
                             <div class="panel-control">
                                 <div class="btn-group dropdown" style="float: right;">
                 					<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
@@ -1052,10 +1052,10 @@
                 				</div>
                 			</div>
                             <h3 class="panel-title">Account Use</h3>
-                		</div>
+                		</div>-->
                         <div class="panel-body">
                             <div class="table-responsive" id="register_data">
-                    			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    			<table id="data-table12" class="table table-striped table-bordered" cellspacing="0" width="100%">
                     	            <thead>
                     	                <tr>
                                             <th>OPTIONS</th>
@@ -1092,6 +1092,300 @@
     color: #fff;
     background-color: #337ab7 !important;
     border-color: #2e6da4 !important;
+}
+</style>
+<script type="text/javascript">
+    $(document).ready(function() {
+        
+        $('#data-table1').DataTable({
+        "pageLength": 25,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "dom": '<"toolbar1">frtip',
+        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 1 ] }, 
+                        { "bSearchable": false, "aTargets": [ 1 ] }]
+        });
+        
+        $("div.toolbar1").html('<div class="panel-control">'+
+                    '<div class="btn-group dropdown" style="float: right;">'+
+                        '<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>'+
+    					'<ul class="dropdown-menu dropdown-menu-right" style="">'+
+    						'<li><a href="<?php echo CURRENT_PAGE; ?>?action=add_new_objective"><i class="fa fa-plus"></i> Add New</a></li>'+
+                        '</ul>'+
+    				'</div>'+
+    			'</div>');
+                
+       $('#data-table2').DataTable({
+        "pageLength": 25,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "dom": '<"toolbar2">frtip',
+        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 1 ] }, 
+                        { "bSearchable": false, "aTargets": [ 1 ] }]
+        });
+        
+        $("div.toolbar2").html('<div class="panel-control">'+
+                    '<div class="btn-group dropdown" style="float: right;">'+
+                        '<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>'+
+    					'<ul class="dropdown-menu dropdown-menu-right" style="">'+
+    						'<li><a href="<?php echo CURRENT_PAGE; ?>?action=add_new_income"><i class="fa fa-plus"></i> Add New</a></li>'+
+                        '</ul>'+
+    				'</div>'+
+    			'</div>');
+                
+       $('#data-table3').DataTable({
+        "pageLength": 25,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "dom": '<"toolbar3">frtip',
+        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 1 ] }, 
+                        { "bSearchable": false, "aTargets": [ 1 ] }]
+        });
+        
+        $("div.toolbar3").html('<div class="panel-control">'+
+                    '<div class="btn-group dropdown" style="float: right;">'+
+                        '<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>'+
+    					'<ul class="dropdown-menu dropdown-menu-right" style="">'+
+    						'<li><a href="<?php echo CURRENT_PAGE; ?>?action=add_new_horizon"><i class="fa fa-plus"></i> Add New</a></li>'+
+                        '</ul>'+
+    				'</div>'+
+    			'</div>');
+                
+       $('#data-table4').DataTable({
+        "pageLength": 25,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "dom": '<"toolbar4">frtip',
+        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 1 ] }, 
+                        { "bSearchable": false, "aTargets": [ 1 ] }]
+        });
+        
+        $("div.toolbar4").html('<div class="panel-control">'+
+                    '<div class="btn-group dropdown" style="float: right;">'+
+                        '<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>'+
+    					'<ul class="dropdown-menu dropdown-menu-right" style="">'+
+    						'<li><a href="<?php echo CURRENT_PAGE; ?>?action=add_new_networth"><i class="fa fa-plus"></i> Add New</a></li>'+
+                        '</ul>'+
+    				'</div>'+
+    			'</div>');
+                
+       $('#data-table5').DataTable({
+        "pageLength": 25,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "dom": '<"toolbar5">frtip',
+        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 1 ] }, 
+                        { "bSearchable": false, "aTargets": [ 1 ] }]
+        });
+        
+        $("div.toolbar5").html('<div class="panel-control">'+
+                    '<div class="btn-group dropdown" style="float: right;">'+
+                        '<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>'+
+    					'<ul class="dropdown-menu dropdown-menu-right" style="">'+
+    						'<li><a href="<?php echo CURRENT_PAGE; ?>?action=add_new_risk_tolerance"><i class="fa fa-plus"></i> Add New</a></li>'+
+                        '</ul>'+
+    				'</div>'+
+    			'</div>');
+                
+       $('#data-table6').DataTable({
+        "pageLength": 25,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "dom": '<"toolbar6">frtip',
+        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 1 ] }, 
+                        { "bSearchable": false, "aTargets": [ 1 ] }]
+        });
+        
+        $("div.toolbar6").html('<div class="panel-control">'+
+                    '<div class="btn-group dropdown" style="float: right;">'+
+                        '<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>'+
+    					'<ul class="dropdown-menu dropdown-menu-right" style="">'+
+    						'<li><a href="<?php echo CURRENT_PAGE; ?>?action=add_new_annual_expenses"><i class="fa fa-plus"></i> Add New</a></li>'+
+                        '</ul>'+
+    				'</div>'+
+    			'</div>');
+       
+       $('#data-table7').DataTable({
+        "pageLength": 25,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "dom": '<"toolbar7">frtip',
+        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 1 ] }, 
+                        { "bSearchable": false, "aTargets": [ 1 ] }]
+        });
+        
+        $("div.toolbar7").html('<div class="panel-control">'+
+                    '<div class="btn-group dropdown" style="float: right;">'+
+                        '<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>'+
+    					'<ul class="dropdown-menu dropdown-menu-right" style="">'+
+    						'<li><a href="<?php echo CURRENT_PAGE; ?>?action=add_new_liqudity_needs"><i class="fa fa-plus"></i> Add New</a></li>'+
+                        '</ul>'+
+    				'</div>'+
+    			'</div>');
+                
+       $('#data-table8').DataTable({
+        "pageLength": 25,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "dom": '<"toolbar8">frtip',
+        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 1 ] }, 
+                        { "bSearchable": false, "aTargets": [ 1 ] }]
+        });
+        
+        $("div.toolbar8").html('<div class="panel-control">'+
+                    '<div class="btn-group dropdown" style="float: right;">'+
+                        '<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>'+
+    					'<ul class="dropdown-menu dropdown-menu-right" style="">'+
+    						'<li><a href="<?php echo CURRENT_PAGE; ?>?action=add_new_liquid_net_worth"><i class="fa fa-plus"></i> Add New</a></li>'+
+                        '</ul>'+
+    				'</div>'+
+    			'</div>');
+       
+       $('#data-table9').DataTable({
+        "pageLength": 25,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "dom": '<"toolbar9">frtip',
+        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 1 ] }, 
+                        { "bSearchable": false, "aTargets": [ 1 ] }]
+        });
+        
+        $("div.toolbar9").html('<div class="panel-control">'+
+                    '<div class="btn-group dropdown" style="float: right;">'+
+                        '<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>'+
+    					'<ul class="dropdown-menu dropdown-menu-right" style="">'+
+    						'<li><a href="<?php echo CURRENT_PAGE; ?>?action=add_new_special_expenses"><i class="fa fa-plus"></i> Add New</a></li>'+
+                        '</ul>'+
+    				'</div>'+
+    			'</div>');
+                
+       $('#data-table10').DataTable({
+        "pageLength": 25,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "dom": '<"toolbar10">frtip',
+        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 1 ] }, 
+                        { "bSearchable": false, "aTargets": [ 1 ] }]
+        });
+        
+        $("div.toolbar10").html('<div class="panel-control">'+
+                    '<div class="btn-group dropdown" style="float: right;">'+
+                        '<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>'+
+    					'<ul class="dropdown-menu dropdown-menu-right" style="">'+
+    						'<li><a href="<?php echo CURRENT_PAGE; ?>?action=add_new_portfolio"><i class="fa fa-plus"></i> Add New</a></li>'+
+                        '</ul>'+
+    				'</div>'+
+    			'</div>');
+                
+       $('#data-table11').DataTable({
+        "pageLength": 25,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "dom": '<"toolbar11">frtip',
+        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 1 ] }, 
+                        { "bSearchable": false, "aTargets": [ 1 ] }]
+        });
+        
+        $("div.toolbar11").html('<div class="panel-control">'+
+                    '<div class="btn-group dropdown" style="float: right;">'+
+                        '<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>'+
+    					'<ul class="dropdown-menu dropdown-menu-right" style="">'+
+    						'<li><a href="<?php echo CURRENT_PAGE; ?>?action=add_new_time_for_exp"><i class="fa fa-plus"></i> Add New</a></li>'+
+                        '</ul>'+
+    				'</div>'+
+    			'</div>');
+                
+       $('#data-table12').DataTable({
+        "pageLength": 25,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "dom": '<"toolbar12">frtip',
+        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 1 ] }, 
+                        { "bSearchable": false, "aTargets": [ 1 ] }]
+        });
+        
+        $("div.toolbar12").html('<div class="panel-control">'+
+                    '<div class="btn-group dropdown" style="float: right;">'+
+                        '<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>'+
+    					'<ul class="dropdown-menu dropdown-menu-right" style="">'+
+    						'<li><a href="<?php echo CURRENT_PAGE; ?>?action=add_new_account_use"><i class="fa fa-plus"></i> Add New</a></li>'+
+                        '</ul>'+
+    				'</div>'+
+    			'</div>');
+} );
+</script>
+<style type="text/css">
+.toolbar1 {
+    float: right;
+    padding-left: 5px;
+}
+.toolbar2 {
+    float: right;
+    padding-left: 5px;
+}
+.toolbar3 {
+    float: right;
+    padding-left: 5px;
+}
+.toolbar4 {
+    float: right;
+    padding-left: 5px;
+}
+.toolbar5 {
+    float: right;
+    padding-left: 5px;
+}
+.toolbar6 {
+    float: right;
+    padding-left: 5px;
+}
+.toolbar7 {
+    float: right;
+    padding-left: 5px;
+}
+.toolbar8 {
+    float: right;
+    padding-left: 5px;
+}
+.toolbar9 {
+    float: right;
+    padding-left: 5px;
+}
+.toolbar10 {
+    float: right;
+    padding-left: 5px;
+}
+.toolbar11 {
+    float: right;
+    padding-left: 5px;
+}
+.toolbar12 {
+    float: right;
+    padding-left: 5px;
 }
 </style>
 <script>

@@ -16,10 +16,11 @@ class transaction extends db{
             $sponsor = isset($data['sponsor'])?$this->re_db_input($data['sponsor']):'';
             $product = isset($data['product'])?$this->re_db_input($data['product']):'';
             $batch = isset($data['batch'])?$this->re_db_input($data['batch']):'';
-            $invest_amount = isset($data['invest_amount'])?$this->re_db_input($data['invest_amount']):'';
-            $charge_amount = isset($data['charge_amount'])?$this->re_db_input($data['charge_amount']):'';
-            $commission_received = isset($data['commission_received'])?$this->re_db_input($data['commission_received']):'';
+            $invest_amount = isset($data['invest_amount'])?$this->re_db_input($data['invest_amount']):0;
+            $charge_amount = isset($data['charge_amount'])?$this->re_db_input($data['charge_amount']):0;
+            $commission_received = isset($data['commission_received'])?$this->re_db_input($data['commission_received']):0;
             $commission_received_date = isset($data['commission_received_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['commission_received_date']))):'0000-00-00';
+            $posting_date = isset($data['posting_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['posting_date']))):'0000-00-00';
             $trade_date = isset($data['trade_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['trade_date']))):'0000-00-00';
             $settlement_date = isset($data['settlement_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['settlement_date']))):'0000-00-00';
             $split = isset($data['split'])?$this->re_db_input($data['split']):'';
@@ -76,7 +77,7 @@ class transaction extends db{
 					if($id==0){
 						$q = "INSERT INTO ".$this->table." SET `client_name`='".$client_name."',`client_number`='".$client_number."',`broker_name`='".$broker_name."',
                         `product_cate`='".$product_cate."',`sponsor`='".$sponsor."',`product`='".$product."',`batch`='".$batch."',
-                        `invest_amount`='".$invest_amount."',`commission_received_date`='".$commission_received_date."',`trade_date`='".$trade_date."',`settlement_date`='".$settlement_date."',`charge_amount`='".$charge_amount."',`commission_received`='".$commission_received."',`split`='".$split."',
+                        `invest_amount`='".$invest_amount."',`commission_received_date`='".$commission_received_date."',`posting_date`='".$posting_date."',`trade_date`='".$trade_date."',`settlement_date`='".$settlement_date."',`charge_amount`='".$charge_amount."',`commission_received`='".$commission_received."',`split`='".$split."',
                         `another_level`='".$another_level."',`cancel`='".$cancel."',`buy_sell`='".$buy_sell."',
                         `hold_resoan`='".$hold_resoan."',`hold_commission`='".$hold_commission."'".$this->insert_common_sql();
 						
@@ -104,7 +105,7 @@ class transaction extends db{
 					else if($id>0){
 						$q = "UPDATE ".$this->table." SET `client_name`='".$client_name."',`client_number`='".$client_number."',`broker_name`='".$broker_name."',
                         `product_cate`='".$product_cate."',`sponsor`='".$sponsor."',`product`='".$product."',`batch`='".$batch."',
-                        `invest_amount`='".$invest_amount."',`commission_received_date`='".$commission_received_date."',`trade_date`='".$trade_date."',`settlement_date`='".$settlement_date."',`charge_amount`='".$charge_amount."',`commission_received`='".$commission_received."',`split`='".$split."',
+                        `invest_amount`='".$invest_amount."',`commission_received_date`='".$commission_received_date."',`posting_date`='".$posting_date."',`trade_date`='".$trade_date."',`settlement_date`='".$settlement_date."',`charge_amount`='".$charge_amount."',`commission_received`='".$commission_received."',`split`='".$split."',
                         `another_level`='".$another_level."',`cancel`='".$cancel."',`buy_sell`='".$buy_sell."',
                         `hold_resoan`='".$hold_resoan."',`hold_commission`='".$hold_commission."'".$this->update_common_sql()." WHERE `id`='".$id."'";
                         $res = $this->re_db_query($q);
@@ -145,6 +146,19 @@ class transaction extends db{
 			$res = $this->re_db_query($q);
             if($this->re_db_num_rows($res)>0){
     			$return = $this->re_db_fetch_array($res);
+            }
+			return $return;
+		}
+        public function get_batch_date($batch_id=''){
+			$return = array();
+			
+			$q = "SELECT batch_date
+					FROM `".BATCH_MASTER."`
+                    WHERE is_delete='0' and id =".$batch_id."
+                    ";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $return = $this->re_db_fetch_array($res);
             }
 			return $return;
 		}

@@ -5,7 +5,7 @@
         public $errors = '';
         public $table = BATCH_MASTER;
         
-        public function insert_update($data){
+        public function insert_update($data){//echo '<pre>';print_r($data);exit;
             
 			$id = isset($data['id'])?$this->re_db_input($data['id']):0;
             $pro_category= isset($data['pro_category'])?$this->re_db_input($data['pro_category']):'';
@@ -103,6 +103,35 @@
             }
 			return $return;
 		}
+        public function get_commission_total($id=''){
+			$return = array();
+			
+			$q = "SELECT SUM(commission_received) as posted_commission_amount
+					FROM `".TRANSACTION_MASTER."`
+                    WHERE is_delete='0' and batch=".$id."
+                    ";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $return = $this->re_db_fetch_array($res);
+            }
+			return $return;
+		}
+        public function get_trade_date($id=''){
+			$return = '';
+			
+			$q = "SELECT `trade_date`
+					FROM `".TRANSACTION_MASTER."`
+                    WHERE is_delete='0' and batch=".$id." 
+                    ORDER BY `id` DESC LIMIT 1
+                    ";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                while($row = $this->re_db_fetch_array($res)){
+    			     $return = $row['trade_date'];
+    			}
+            }
+			return $return;
+		}
         public function search_batch($data){
             
             $search_type= isset($data['search_type'])?$this->re_db_input($data['search_type']):'';
@@ -148,11 +177,34 @@
 		}
         public function delete($id){
 			$id = trim($this->re_db_input($id));
-			if($id>0 && ($status==0 || $status==1) ){
+			if($id>0){
 				$q = "UPDATE `".$this->table."` SET `is_delete`='1' WHERE `id`='".$id."'";
+				$res = $this->re_db_query($q);
+                $q = "UPDATE `".TRANSACTION_MASTER."` SET `is_delete`='1' WHERE `batch`='".$id."'";
 				$res = $this->re_db_query($q);
 				if($res){
 				    $_SESSION['success'] = DELETE_MESSAGE;
+					return true;
+				}
+				else{
+				    $_SESSION['warning'] = UNKWON_ERROR;
+					return false;
+				}
+			}
+			else{
+			     $_SESSION['warning'] = UNKWON_ERROR;
+				return false;
+			}
+		}
+        public function unpost_trades($id){
+			$id = trim($this->re_db_input($id));
+			if($id>0){
+				$q = "UPDATE `".TRANSACTION_MASTER."` SET `commission_received`='0',`commission_received_date`='',`posting_date`='' WHERE `batch`='".$id."'";
+				$res = $this->re_db_query($q);
+                $q = "UPDATE `".$this->table."` SET `commission_amount`= '0' WHERE `id`='".$id."'";
+				$res = $this->re_db_query($q);
+				if($res){
+				    $_SESSION['success'] = 'Trades are successfully unposted';
 					return true;
 				}
 				else{

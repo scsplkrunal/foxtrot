@@ -125,7 +125,7 @@
         $ria_general = isset($_POST['ria_general'])?$instance->re_db_input($_POST['ria_general']):0;
 		$insurance_general = isset($_POST['insurance_general'])?$instance->re_db_input($_POST['insurance_general']):0;//echo '<pre>';print_r($_POST);exit;
     
-        //echo '<pre>';print_r($_POST);exit;
+        //echo '<pre>';print_r($_POST['alias']);exit;
         $return = $instance->insert_update($_POST);
         
         $return1 = $instance->insert_update_general($_POST);
@@ -151,6 +151,8 @@
         //requered documents tab
         $return10 = $instance->insert_update_req_doc($instance->reArrayFiles($_POST['data']),$id);
         
+        //alias & appoinments
+        $return12 = $instance->insert_update_alias($instance->reArrayFiles_alias($_POST['alias']),$id);
         //charges tab
         $return11 = $instance->insert_update_charges($_POST);
         
@@ -158,11 +160,11 @@
         if($return===true){
             if($action == 'edit')
             {
-                header("location:".CURRENT_PAGE."?action=".$action."&id=".$id);exit;
+                header("location:".CURRENT_PAGE);exit;
             }
             else
             {
-                header("location:".CURRENT_PAGE."?action=".$action);exit;
+                header("location:".CURRENT_PAGE);exit;
             }
         }
         else{
@@ -318,8 +320,9 @@
         $edit_payout = $instance->edit_payout($id);
         $edit_grid = $instance->edit_grid($id);
         $edit_override = $instance->edit_override($id);
-        $edit_split =$instance->edit_split($id);
+        $edit_split = $instance->edit_split($id);
         $edit_charge_check =$instance->edit_charge_check($id);
+        $edit_alias = $instance->edit_alias($id);
         //echo '<pre>';print_r($edit_charge_check);exit;//echo '<pre>';print_r($edit_override);exit;
         
         $_SESSION['last_insert_id']=$id;

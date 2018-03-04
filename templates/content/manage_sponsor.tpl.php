@@ -62,8 +62,8 @@ function sticky_relocate() {
 }
 
 $(function() {
-    $(window).scroll(sticky_relocate);
-    sticky_relocate();
+    //$(window).scroll(sticky_relocate);
+    //sticky_relocate();
 });
 
 var dir = 1;
@@ -292,14 +292,13 @@ $(document).on('click','.remove-row',function(){
                 <?php if($_GET['action']=='edit_sponsor' && $_GET['sponsor_id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=next" class="next next_previous_a"><input type="button" name="next" value="Next &raquo;" /></a><?php } ?>
                 
                 <?php if($action=='edit_sponsor' && $sponsor_id>0){?>
-                <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 12% !important;"/></a>
+                <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 10% !important;"/></a>
                 <?php } ?>
                 <a href="#sponsor_notes" data-toggle="modal"><input type="button" onclick="get_sponsor_notes();" name="notes" value="Notes" /></a>
                 <a href="#client_transactions" data-toggle="modal"><input type="button"  name="transactions" value="Transactions" /></a>
-                <a href="#sponsor_attach" data-toggle="modal"><input type="button"  onclick="get_sponsor_attach();" name="attach" value="Attachments" style="margin-right: 12% !important;"/></a>
-                
+                <a href="#sponsor_attach" data-toggle="modal"><input type="button"  onclick="get_sponsor_attach();" name="attach" value="Attachments" style="margin-right: 10% !important;"/></a>
                 <a href="<?php echo CURRENT_PAGE.'?action=view_sponsor';?>"><input type="button" name="cancel" value="Cancel" style="float: right;"/></a>
-                <input type="submit" name="sponser" onclick="waitingDialog.show();" value="Save" style="float: right;"/>	
+                <input type="submit" name="sponser" onclick="waitingDialog.show();" value="Save" style="float: right;"/>
             </div>
            </div>
       </div>
@@ -307,7 +306,7 @@ $(document).on('click','.remove-row',function(){
         <?php
             }if((isset($_GET['action']) && $_GET['action']=='view_sponsor') || $action=='view_sponsor'){?>
         <div class="panel">
-    		<div class="panel-heading">
+    		<!--<div class="panel-heading">
                 <div class="panel-control">
                     <div class="btn-group dropdown" style="float: right;">
                         <button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
@@ -316,16 +315,16 @@ $(document).on('click','.remove-row',function(){
     					</ul>
     				</div>
     			</div>
-            </div><br />
-    		<div class="panel-body">
-            <div class="panel-control" style="float: right;">
+            </div><br />-->
+    		<div class="table-responsive panel-body">
+            <!--<div class="panel-control" style="float: right;">
              <form method="post">
                 <input type="text" name="search_text_sponsor" id="search_text_sponsor" value="<?php echo $search_text_sponsor;?>"/>
                 <button type="submit" name="search_sponsor" id="submit" value="Search"><i class="fa fa-search"></i> Search</button>
             </form>
-            </div><br /><br />
-                <div class="table-responsive">
-    			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            </div><br /><br />-->
+                <div class="">
+    			<table id="data-table" class="table table-striped1 table-bordered">
     	            <thead>
     	                <tr>
                             <th>SPONSOR NAME</th>
@@ -554,7 +553,36 @@ $(document).on('click','.remove-row',function(){
 </div><!-- End of Modal -->                                            
     </div>
 </div>
-
+<script type="text/javascript">
+    $(document).ready(function() {
+        
+        $('#data-table').DataTable({
+        "pageLength": 25,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "dom": '<"toolbar">frtip',
+        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 2 ] }, 
+                        { "bSearchable": false, "aTargets": [ 2 ] }]
+        });
+        
+        $("div.toolbar").html('<div class="panel-control">'+
+                    '<div class="btn-group dropdown" style="float: right;">'+
+                        '<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>'+
+    					'<ul class="dropdown-menu dropdown-menu-right" style="">'+
+    						'<li><a href="<?php echo CURRENT_PAGE; ?>?action=add_sponsor"><i class="fa fa-plus"></i> Add New</a></li>'+
+                        '</ul>'+
+    				'</div>'+
+    			'</div>');
+} );
+</script>
+<style type="text/css">
+.toolbar {
+    float: right;
+    padding-left: 5px;
+}
+</style>
 <script>
 function open_newnotes()
 {

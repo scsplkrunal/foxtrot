@@ -5,7 +5,7 @@ function GeFileList()
     //HTTPDL_result.value = "";
     HTTPDL.Host = "filetransfer.financialtrans.com";
     HTTPDL.UseProxy = false;
-    HTTPDL.LocalDirectory = "E:\idc_file_foxtrot";
+    HTTPDL.LocalDirectory = "E:\foxtrot_idc_file";
     HTTPDL.UseHttps = true;
     // Note: Test System Information
     HTTPDL.Target = "/tf/FANMail";
@@ -38,7 +38,7 @@ function GeFileList()
                 var display = node.getAttribute("short-name");
                 if(HTTPDL.ftpType == 1)
                 {
-                    var file_type_array = ["01", "02", "03", "07", "08", "09", "17", "84", "85", "86", "87"];
+                    var file_type_array = ["07", "08", "09", "C1"];
                     var file_name_array = display.split('.');
                     var get_file_first_string = file_name_array[0];
                     var get_file_last_character = get_file_first_string.slice(-2);
@@ -161,34 +161,23 @@ PostResult( msg );
                             <div class="panel-overlay-wrap">
                                 <div class="panel-body" style="border: 1px solid #DFDFDF; margin-top: 17px;">
                                     <div class="row">
-                                        <div class="row">
+                                        <!--<div class="row">
                                         <div class="col-md-5"></div>
-                                       
                                             <a class="btn btn-sm btn-warning col-md-1" href="<?php echo CURRENT_PAGE; ?>?action=open_ftp"> Fetch</a>
                                             <!--<a href="<?php echo CURRENT_PAGE; ?>?action=open_ftp"><button type="button"  name="fetch" value="fetch" style="display: inline;"> Fetch</button></a>-->
-                                            <button type="submit" class="btn btn-sm btn-default col-md-2"  name="progress_all" value="progress_all" style="display: inline;"> Process All</button>
-                                        
-                                        <div class="col-md-4"style="float: right; padding-right: 20px !important;">
-                                            <label style="display: inline;">Sort By </label>
-                                            <select name="file_type" id="file_type" class="form-control" style="width: 75%; display: inline; float: right;">
-                                                <option value="0">File Type</option>
-                                                <option value="1" >DFA</option>
-                                                <option value="2" >NAA/AMP/NFA</option>
-                                                <option value="3" >SFR</option>
-                                            </select> 
+                                            <!--<button type="submit" class="btn btn-sm btn-default col-md-2"  name="progress_all" value="progress_all" style="display: inline;"> Process All</button>
                                         </div>
-                                        </div>
-                                    
-                                        <br />
-                                        <div class="table-responsive" id="table-scroll" style="margin: 0px 5px 0px 5px;">
-                                            <table class="table table-bordered table-stripped table-hover">
+                                        <br />-->
+                                        <div class="table-responsive" style="margin: 0px 5px 0px 5px;">
+                                            <table id="data-table" class="table table-bordered table-stripped table-hover">
                                                 <thead>
                                                     <th>Imported</th>
                                                     <th>Last Proccessed</th>
                                                     <th>File Name</th>
                                                     <th>File Type</th>
+                                                    <th>Source</th>
                                                     <th></th>
-                                                    <th></th>
+                                                    <th>Action</th>
                                                     
                                                 </thead>
                                                 <tbody>
@@ -204,6 +193,7 @@ PostResult( msg );
                                                         <td style="width: 10%;">-</td>
                                                         <td style="width: 10%;"><?php echo $val['file_name'];?></td>
                                                         <td style="width: 15%;"><?php echo $val['file_type'];?></td>
+                                                        <td></td>
                                                         <td style="width: 20%;">
                                                         <div class="progress">
                                                             <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:40%">
@@ -214,10 +204,11 @@ PostResult( msg );
                                                         <td style="width: 30%;">
                                                         <form method="post">
                                                         <select name="process_file_<?php echo $val['id'];?>" id="process_file_<?php echo $val['id'];?>" class="form-control" style=" width: 75% !important;display: inline;">
-                                                            <option value="0">Select</option>
+                                                            <option value="0">Select Options</option>
                                                             <option value="1" >Delete File</option>
                                                             <option value="2" >Reprocess</option>
                                                             <option value="3" >Review Process</option>
+                                                            <option value="4" >Resolve Exceptions</option>
                                                         </select>
                                                         <input type="hidden" name="id" id="id" value="<?php echo $val['id'];?>" />
                                                         <button type="submit" class="btn btn-sm btn-warning" name="go" value="go" style="display: inline;"> Go</button>
@@ -241,221 +232,94 @@ PostResult( msg );
                                 <div class="panel-overlay-wrap">
                                     <div class="panel-body" style="border: 1px solid #DFDFDF; margin-top: 17px;">
                                         <div class="row">
-                                        <div class="col-md-4"style="float: right;">
-                                            <label style="display: inline;">Sort By </label>
-                                            <select name="file_type" id="file_type" class="form-control" style="width: 75%; display: inline; float: right;">
-                                                <option value="0">File Type</option>
-                                                <option value="1" >DFA</option>
-                                                <option value="2" >NAA/AMP/NFA</option>
-                                                <option value="3" >SFR</option>
-                                            </select>
-                                        </div>
-                                        </div><br />
-                                        <div class="row">
-                                            <div class="table-responsive" id="table-scroll" style="margin: 0px 5px 0px 5px;">
-                                                <table class="table table-bordered table-stripped table-hover">
+                                            <div class="table-responsive" style="margin: 0px 5px 0px 5px;">
+                                                <table id="data-table1" class="table table-bordered table-stripped table-hover">
                                                     <thead>
                                                         <th>Imported</th>
                                                         <th>Last Proccessed</th>
                                                         <th>File Name</th>
                                                         <th>File Type</th>
+                                                        <th>Source</th>
                                                         <th></th>
-                                                        <th></th>
-                                                        <th></th>
+                                                        <th>Action</th>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td>04/01/2018</td>
-                                                            <td>04/02/2018</td>
-                                                            <td>file_name1.txt</td>
-                                                            <td>DST Commissions</td>
+                                                            <td style="width: 15%;">04/01/2018</td>
+                                                            <td style="width: 10%;">04/02/2018</td>
+                                                            <td style="width: 10%;">file_name1.txt</td>
+                                                            <td style="width: 15%;">DST Commissions</td>
+                                                            <td></td>
                                                             <td>
-                                                            <div class="progress">
-                                                                <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%">
-                                                                  40% Complete (success)
+                                                            <div class="progress" style="width: 20%;">
+                                                                <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:40%">
+                                                                  0% Complete
                                                                 </div>
                                                             </div>
                                                             </td>
-                                                            <td>
-                                                            <select name="account_use" id="account_use" class="form-control">
-                                                                <option value="0">Select</option>
+                                                            <td style="width: 30%;">
+                                                            <form method="post">
+                                                            <select name="account_use" id="account_use" class="form-control" style=" width: 75% !important;display: inline;">
+                                                                <option value="0">Select Options</option>
                                                                 <option value="1" >View</option>
                                                                 <option value="2" >Reprocess</option>
                                                             </select>
-                                                            </td>
-                                                            <td>
+                                                            <input type="hidden" name="id" id="id" value="<?php echo $val['id'];?>" />
                                                             <button type="submit" class="btn btn-sm btn-warning" name="go" value="go" style="display: inline;"> Go</button>
+                                                            </form>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td>03/01/2018</td>
-                                                            <td>05/02/2018</td>
-                                                            <td>file_name2.txt</td>
-                                                            <td>FCC Trailers</td>
+                                                            <td style="width: 15%;">04/01/2018</td>
+                                                            <td style="width: 10%;">04/02/2018</td>
+                                                            <td style="width: 10%;">file_name2.txt</td>
+                                                            <td style="width: 15%;">DST Commissions</td>
+                                                            <td></td>
                                                             <td>
-                                                            <div class="progress">
-                                                                <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">
-                                                                  60% Complete (success)
+                                                            <div class="progress" style="width: 20%;">
+                                                                <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:40%">
+                                                                  0% Complete
                                                                 </div>
                                                             </div>
                                                             </td>
-                                                            <td>
-                                                            <select name="account_use" id="account_use" class="form-control">
-                                                                <option value="0">Select</option>
-                                                                <option value="1" >Delete File</option>
+                                                            <td style="width: 30%;">
+                                                            <form method="post">
+                                                            <select name="account_use" id="account_use" class="form-control" style=" width: 75% !important;display: inline;">
+                                                                <option value="0">Select Options</option>
+                                                                <option value="1" >View</option>
                                                                 <option value="2" >Reprocess</option>
-                                                                <option value="3" >Review Process</option>
                                                             </select>
-                                                            </td>
-                                                            <td>
+                                                            <input type="hidden" name="id" id="id" value="<?php echo $val['id'];?>" />
                                                             <button type="submit" class="btn btn-sm btn-warning" name="go" value="go" style="display: inline;"> Go</button>
+                                                            </form>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td>01/01/2018</td>
-                                                            <td>10/02/2018</td>
-                                                            <td>file_name3.txt</td>
-                                                            <td>Unknown</td>
+                                                            <td style="width: 15%;">04/01/2018</td>
+                                                            <td style="width: 10%;">04/02/2018</td>
+                                                            <td style="width: 10%;">file_name3.txt</td>
+                                                            <td style="width: 15%;">DST Commissions</td>
+                                                            <td></td>
                                                             <td>
-                                                            <div class="progress">
-                                                                <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:90%">
-                                                                  90% Complete (success)
+                                                            <div class="progress" style="width: 20%;">
+                                                                <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:40%">
+                                                                  0% Complete
                                                                 </div>
                                                             </div>
                                                             </td>
-                                                            <td>
-                                                            <select name="account_use" id="account_use" class="form-control">
-                                                                <option value="0">Select</option>
-                                                                <option value="1" >Delete File</option>
+                                                            <td style="width: 30%;">
+                                                            <form method="post">
+                                                            <select name="account_use" id="account_use" class="form-control" style=" width: 75% !important;display: inline;">
+                                                                <option value="0">Select Options</option>
+                                                                <option value="1" >View</option>
                                                                 <option value="2" >Reprocess</option>
-                                                                <option value="3" >Review Process</option>
                                                             </select>
-                                                            </td>
-                                                            <td>
+                                                            <input type="hidden" name="id" id="id" value="<?php echo $val['id'];?>" />
                                                             <button type="submit" class="btn btn-sm btn-warning" name="go" value="go" style="display: inline;"> Go</button>
+                                                            </form>
                                                             </td>
                                                         </tr>
-                                                        <tr>
-                                                            <td>01/01/2018</td>
-                                                            <td>10/02/2018</td>
-                                                            <td>file_name3.txt</td>
-                                                            <td>Unknown</td>
-                                                            <td>
-                                                            <div class="progress">
-                                                                <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:90%">
-                                                                  90% Complete (success)
-                                                                </div>
-                                                            </div>
-                                                            </td>
-                                                            <td>
-                                                            <select name="account_use" id="account_use" class="form-control">
-                                                                <option value="0">Select</option>
-                                                                <option value="1" >Delete File</option>
-                                                                <option value="2" >Reprocess</option>
-                                                                <option value="3" >Review Process</option>
-                                                            </select>
-                                                            </td>
-                                                            <td>
-                                                            <button type="submit" class="btn btn-sm btn-warning" name="go" value="go" style="display: inline;"> Go</button>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>01/01/2018</td>
-                                                            <td>10/02/2018</td>
-                                                            <td>file_name3.txt</td>
-                                                            <td>Unknown</td>
-                                                            <td>
-                                                            <div class="progress">
-                                                                <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:90%">
-                                                                  90% Complete (success)
-                                                                </div>
-                                                            </div>
-                                                            </td>
-                                                            <td>
-                                                            <select name="account_use" id="account_use" class="form-control">
-                                                                <option value="0">Select</option>
-                                                                <option value="1" >Delete File</option>
-                                                                <option value="2" >Reprocess</option>
-                                                                <option value="3" >Review Process</option>
-                                                            </select>
-                                                            </td>
-                                                            <td>
-                                                            <button type="submit" class="btn btn-sm btn-warning" name="go" value="go" style="display: inline;"> Go</button>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>01/01/2018</td>
-                                                            <td>10/02/2018</td>
-                                                            <td>file_name3.txt</td>
-                                                            <td>Unknown</td>
-                                                            <td>
-                                                            <div class="progress">
-                                                                <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:90%">
-                                                                  90% Complete (success)
-                                                                </div>
-                                                            </div>
-                                                            </td>
-                                                            <td>
-                                                            <select name="account_use" id="account_use" class="form-control">
-                                                                <option value="0">Select</option>
-                                                                <option value="1" >Delete File</option>
-                                                                <option value="2" >Reprocess</option>
-                                                                <option value="3" >Review Process</option>
-                                                            </select>
-                                                            </td>
-                                                            <td>
-                                                            <button type="submit" class="btn btn-sm btn-warning" name="go" value="go" style="display: inline;"> Go</button>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>01/01/2018</td>
-                                                            <td>10/02/2018</td>
-                                                            <td>file_name3.txt</td>
-                                                            <td>Unknown</td>
-                                                            <td>
-                                                            <div class="progress">
-                                                                <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:90%">
-                                                                  90% Complete (success)
-                                                                </div>
-                                                            </div>
-                                                            </td>
-                                                            <td>
-                                                            <select name="sort_file_archive" id="sort_file_archive" class="form-control">
-                                                                <option value="0">Select</option>
-                                                                <option value="1" >Delete File</option>
-                                                                <option value="2" >Reprocess</option>
-                                                                <option value="3" >Review Process</option>
-                                                            </select>
-                                                            </td>
-                                                            <td>
-                                                            <button type="submit" class="btn btn-sm btn-warning" name="go" value="go" style="display: inline;"> Go</button>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>01/01/2018</td>
-                                                            <td>10/02/2018</td>
-                                                            <td>file_name3.txt</td>
-                                                            <td>Unknown</td>
-                                                            <td>
-                                                            <div class="progress">
-                                                                <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:90%">
-                                                                  90% Complete (success)
-                                                                </div>
-                                                            </div>
-                                                            </td>
-                                                            <td>
-                                                            <select name="account_use" id="account_use" class="form-control">
-                                                                <option value="0">Select</option>
-                                                                <option value="1" >Delete File</option>
-                                                                <option value="2" >Reprocess</option>
-                                                                <option value="3" >Review Process</option>
-                                                            </select>
-                                                            </td>
-                                                            <td>
-                                                            <button type="submit" class="btn btn-sm btn-warning" name="go" value="go" style="display: inline;"> Go</button>
-                                                            </td>
-                                                        </tr>
-                                                  </tbody>
+                                                    </tbody>
                                                 </table>
                                             </div>
                                         </div>
@@ -559,7 +423,7 @@ PostResult( msg );
                             }else{?>
                         <div class="panel">
                         <form method="post" enctype="multipart/form-data">
-                    		<div class="panel-heading">
+                    		<!--<div class="panel-heading">
                                 <div class="panel-control">
                                     <div class="btn-group dropdown" style="float: right;">
                                         <button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
@@ -569,10 +433,10 @@ PostResult( msg );
                     					</ul>
                     				</div>
                     			</div>
-                            </div><br />
+                            </div><br />-->
                     		<div class="panel-body">
                                 <div class="table-responsive">
-                    			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    			<table id="data-table2" class="table table-striped table-bordered" cellspacing="0" width="100%">
                     	            <thead>
                     	                <tr>
                                             <th>Host Name</th>
@@ -735,6 +599,7 @@ PostResult( msg );
 		</div>
     </div>
   </div>
+  
 <style>
 #table-scroll {
   height:500px;
@@ -746,6 +611,66 @@ PostResult( msg );
     background-color: #337ab7 !important;
     border-color: #2e6da4 !important;
     }
+</style>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#data-table').DataTable({
+        "pageLength": 25,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "dom": '<"toolbar">frtip',
+        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 5,6 ] }, 
+                        { "bSearchable": false, "aTargets": [ 5,6 ] }]
+        });
+        $("div.toolbar").html('<a class="btn btn-sm btn-warning" href="<?php echo CURRENT_PAGE; ?>?action=open_ftp"> Fetch</a>'+
+                    '<button type="submit" class="btn btn-sm btn-default"  name="progress_all" value="progress_all" style="display: inline;"> Process All</button>');
+} );
+$(document).ready(function() {
+        $('#data-table1').DataTable({
+        "pageLength": 25,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "dom": '<"toolbar1">frtip',
+        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 5,6 ] }, 
+                        { "bSearchable": false, "aTargets": [ 5,6 ] }]
+        });
+        
+        
+} );
+$(document).ready(function() {
+        $('#data-table2').DataTable({
+        "pageLength": 25,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "dom": '<"toolbar2">frtip',
+        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 3 ] }, 
+                        { "bSearchable": false, "aTargets": [ 3 ] }]
+        });
+        $("div.toolbar2").html('<div class="panel-control">'+
+                    '<div class="btn-group dropdown" style="float: right;">'+
+                        '<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>'+
+    					'<ul class="dropdown-menu dropdown-menu-right" style="">'+
+    						'<li><a href="<?php echo CURRENT_PAGE; ?>?tab=open_ftp&action=add_ftp"><i class="fa fa-plus"></i> Add new FTP Site</a></li>'+
+                            '<li><a href="<?php echo CURRENT_PAGE; ?>"><i class="fa fa-minus"></i> Back to List of Current Files Page</a></li>'+
+                        '</ul>'+
+    				'</div>'+
+    			'</div>');
+} );
+</script>
+<style type="text/css">
+.toolbar {
+    float: left;
+}
+.toolbar2 {
+    float: right;
+    padding-left: 5px;
+}
 </style>
 <script type="text/javascript">
     var isIE = /*@cc_on!@*/false || !!document.documentMode;

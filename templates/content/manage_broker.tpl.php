@@ -352,6 +352,48 @@ $(document).on('click','.remove-row',function(){
     $(this).closest('.tr').remove();
 });
 var flag=0,test=0;
+function addMoreAlias(note_doc){
+    $('#demo-dp-range .input-daterange').datepicker({
+        format: "mm/dd/yyyy",
+        todayBtn: "linked",
+        autoclose: true,
+        todayHighlight: true
+    });
+        if(test==0){
+        test=note_doc+1;
+        }
+    else{ test++ ; }
+    var html = '<tr class="tr">'+
+                    '<td>'+
+                        '<input type="text" name="alias[alias_name]['+test+']" value="" max="20" class="form-control"/>'+
+                    '</td>'+
+                    '<td>'+
+                        '<select name="alias[sponsor_company]['+test+']" class="form-control">'+
+                            '<option value="0">All Companies</option>'+
+                            <?php foreach($get_sponsor as $key_sponsor=>$val_sponsor){?>
+                            '<option value="<?php echo $val_sponsor['id'];?>"><?php echo $val_sponsor['name'];?></option>'+
+                            <?php } ?>
+                        '</select>'+
+                    '</td>'+
+                    '<td>'+
+                        '<div id="demo-dp-range">'+
+                            '<div class="input-daterange input-group" id="datepicker">'+
+                                '<input type="text" name="alias[date]['+test+']" value="<?php echo date('m/d/Y');?>" class="form-control" />'+
+                            '</div>'+
+                        '</div>'+
+                    '</td>'+
+                    '<td>'+
+                        '<button type="button" tabindex="-1" class="btn remove-row btn-icon btn-circle"><i class="fa fa-minus"></i></button>'+
+                    '</td>'+
+                '</tr>';
+                
+            
+    $(html).insertBefore('#add_row_alias');
+}
+$(document).on('click','.remove-row',function(){
+    $(this).closest('.tr').remove();
+});
+var flag=0,test=0;
 function addMoreDocs(note_doc){
     $('#demo-dp-range .input-daterange').datepicker({
         format: "mm/dd/yyyy",
@@ -473,10 +515,12 @@ var waitingDialog = waitingDialog || (function ($) {
           <!--<li class="active"><a href="#tab_default" data-toggle="pill">Home</a></li>-->
           <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="general"){ echo "active"; }else if(!isset($_GET['tab'])){echo "active";}else{ echo '';} ?>"><a href="#tab_a" data-toggle="pill">General</a></li>
           <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="payouts"){ echo "active"; } ?>"><a href="#tab_b" data-toggle="pill">Payouts</a></li>
+          <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="overrides"){ echo "active"; } ?>"><a href="#tab_g" data-toggle="pill">Overrides & Splits</a></li>
           <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="charges"){ echo "active"; } ?>"><a href="#tab_c" data-toggle="pill">Charges</a></li>
           <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="licences"){ echo "active"; } ?>"><a href="#tab_d" data-toggle="pill">Licences</a></li>
           <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="registers"){ echo "active"; } ?>"><a href="#tab_e" data-toggle="pill">Series Registrations</a></li>
           <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="required_docs"){ echo "active"; } ?>"><a href="#tab_f" data-toggle="pill">Required Docs</a></li>
+          <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="alias_appoinments"){ echo "active"; } ?>"><a href="#tab_h" data-toggle="pill">Aliases & Appointments</a></li>
           <?php /*if(isset($_SESSION['last_insert_id']) && $_SESSION['last_insert_id']!=''){?>
           <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="payouts"){ echo "active"; } ?>"><a href="#tab_b" data-toggle="pill">Payouts</a></li>
           <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="charges"){ echo "active"; } ?>"><a href="#tab_c" data-toggle="pill">Charges</a></li>
@@ -592,6 +636,83 @@ var waitingDialog = waitingDialog || (function ($) {
                                                 </div>
                                             </div>
                                        </div>
+                                       <div class="row">
+                                        <div class="col-md-10">
+                                            <label>Professional designations </label><br />
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="input-group">
+                                                                  <span class="input-group-addon">
+                                                                     <input type="checkbox"  name="cfp_general" <?php if(isset($cfp) && $cfp==1){ echo'checked="true"'; }?> id="cfp_general" style="display: inline;" value="1" />
+                                                                  </span>
+                                                                  <label class="form-control">CFP</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="input-group">
+                                                                  <span class="input-group-addon">
+                                                                     <input type="checkbox" name="chfp_general" <?php if(isset($chfp) && $chfp==1){ echo'checked="true"'; }?> id="chfp_general" value="1" style="display: inline;" />
+                                                                  </span>
+                                                                  <label class="form-control">ChFP</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="input-group">
+                                                                  <span class="input-group-addon">
+                                                                     <input type="checkbox"  name="cpa_general" <?php if(isset($cpa) &&$cpa==1){ echo'checked="true"'; }?> id="cpa_general" value="1" style="display: inline;" />
+                                                                  </span>
+                                                                  <label class="form-control">CPA</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="input-group">
+                                                                  <span class="input-group-addon">
+                                                                     <input type="checkbox" name="clu_general" <?php if(isset($clu) &&$clu==1){ echo'checked="true"'; }?> id="clu_general" value="1" style="display: inline;" />
+                                                                  </span>
+                                                                  <label class="form-control">CLU</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="input-group">
+                                                                  <span class="input-group-addon">
+                                                                     <input type="checkbox" name="cfa_general" <?php if(isset($cfa) &&$cfa==1){ echo'checked="true"'; }?> id="cfa_general" value="1" style="display: inline;" />
+                                                                  </span>
+                                                                  <label class="form-control">CFA</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="input-group">
+                                                                  <span class="input-group-addon">
+                                                                     <input type="checkbox" name="ria_general" <?php if(isset($ria) &&$ria==1){ echo'checked="true"'; }?> id="ria_general" value="1" style="display: inline;" />
+                                                                  </span>
+                                                                  <label class="form-control">RIA</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                           </div>
+                                           <div class="col-md-2">
+                                            <label>&nbsp;</label><br />
+                                                <div class="input-group">
+                                                  <span class="input-group-addon">
+                                                     <input type="checkbox" name="insurance_general" <?php if(isset($insurance) &&$insurance==1){ echo'checked="true"'; }?> id="insurance_general" value="1" style="display: inline;" />
+                                                  </span>
+                                                  <label class="form-control">Insurance</label>
+                                                </div>
+                                           </div>
+                                       </div>
+                                       <br />
                                  <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -912,81 +1033,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                             </div>
                                         </div>
                                    </div></div>
-                                   <div class="row">
-                                    <label>Professional designations </label><br />
-                                       <div class="col-md-10">
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div class="input-group">
-                                                              <span class="input-group-addon">
-                                                                 <input type="checkbox"  name="cfp_general" <?php if(isset($cfp) && $cfp==1){ echo'checked="true"'; }?> id="cfp_general" style="display: inline;" value="1" />
-                                                              </span>
-                                                              <label class="form-control">CFP</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="input-group">
-                                                              <span class="input-group-addon">
-                                                                 <input type="checkbox" name="chfp_general" <?php if(isset($chfp) && $chfp==1){ echo'checked="true"'; }?> id="chfp_general" value="1" style="display: inline;" />
-                                                              </span>
-                                                              <label class="form-control">ChFP</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div class="input-group">
-                                                              <span class="input-group-addon">
-                                                                 <input type="checkbox"  name="cpa_general" <?php if(isset($cpa) &&$cpa==1){ echo'checked="true"'; }?> id="cpa_general" value="1" style="display: inline;" />
-                                                              </span>
-                                                              <label class="form-control">CPA</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="input-group">
-                                                              <span class="input-group-addon">
-                                                                 <input type="checkbox" name="clu_general" <?php if(isset($clu) &&$clu==1){ echo'checked="true"'; }?> id="clu_general" value="1" style="display: inline;" />
-                                                              </span>
-                                                              <label class="form-control">CLU</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div class="input-group">
-                                                              <span class="input-group-addon">
-                                                                 <input type="checkbox" name="cfa_general" <?php if(isset($cfa) &&$cfa==1){ echo'checked="true"'; }?> id="cfa_general" value="1" style="display: inline;" />
-                                                              </span>
-                                                              <label class="form-control">CFA</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="input-group">
-                                                              <span class="input-group-addon">
-                                                                 <input type="checkbox" name="ria_general" <?php if(isset($ria) &&$ria==1){ echo'checked="true"'; }?> id="ria_general" value="1" style="display: inline;" />
-                                                              </span>
-                                                              <label class="form-control">RIA</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                       </div>
-                                       <div class="col-md-2">
-                                            <div class="input-group">
-                                              <span class="input-group-addon">
-                                                 <input type="checkbox" name="insurance_general" <?php if(isset($insurance) &&$insurance==1){ echo'checked="true"'; }?> id="insurance_general" value="1" style="display: inline;" />
-                                              </span>
-                                              <label class="form-control">Insurance</label>
-                                            </div>
-                                       </div>
-                                   </div>
+                                   
                                    
                                     </div>
                                     <div class="panel-overlay">
@@ -1000,7 +1047,7 @@ var waitingDialog = waitingDialog || (function ($) {
                         <?php
                     }else{?>
                     <div class="panel">
-            		<div class="panel-heading">
+            		<!--<div class="panel-heading">
                         <div class="panel-control">
                             <div class="btn-group dropdown" style="float: right;">
                                 <button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
@@ -1010,16 +1057,16 @@ var waitingDialog = waitingDialog || (function ($) {
             				</div>
             			</div>
                         <h3 class="panel-title">List</h3>
-            		</div>
+            		</div>-->
             		<div class="panel-body">
-                        <div class="panel-control" style="float: right;">
+                        <!--<div class="panel-control" style="float: right;">
                          <form method="post">
                             <input type="text" name="search_text" id="search_text" value="<?php echo $search_text;?>"/>
                             <button type="submit" name="submit" id="submit" value="Search"><i class="fa fa-search"></i> Search</button>
                         </form>
-                        </div><br /><br />
+                        </div><br /><br />-->
                         <div class="table-responsive">
-            			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            			<table id="data-table" class="table table-striped1 table-bordered" cellspacing="0" width="100%">
             	            <thead class="thead_fixed_title">
             	                <tr>
                                     <th>BROKER NAME</th>
@@ -1338,7 +1385,19 @@ var waitingDialog = waitingDialog || (function ($) {
                                     </div>
                                     <?php } ?>
                                    </div>
-                                   <br />
+                               </div>
+                            </div>
+                            <div class="panel-overlay">
+                                <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
+                            </div>
+                            <input type="hidden" name="id"  value="<?php echo $id; ?>" />
+                		</div>
+                 </div>
+                 <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="overrides"){ echo "active"; } ?>" id="tab_g">
+                <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
+                        <div class="panel-overlay-wrap">
+                            <div class="panel">
+            					<div class="panel-body">
                                     <h4>Overrides </h4>
                                     <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
                                     <!--<div class="row">
@@ -1653,16 +1712,14 @@ var waitingDialog = waitingDialog || (function ($) {
                                             </div>
                                         </div>
                                     </div>
-                                </div><br />
-                               </div>
+                                </div>
+                                <div class="panel-overlay">
+                                    <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
+                                </div>
+                                <input type="hidden" name="id"  value="<?php echo $id; ?>" />
+                                </div>
                             </div>
-                            <div class="panel-overlay">
-                                <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
-                            </div>
-                                    <input type="hidden" name="id"  value="<?php echo $id; ?>" />
-                				
                         </div>
-                    
                  </div>
                  <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="charges"){ echo "active"; } ?>" id="tab_c">
                  <?php require_once(DIR_FS_INCLUDES."alerts.php");?>
@@ -2407,7 +2464,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                                 <td>
                                                                     <div id="demo-dp-range">
                     					                                <div class="input-daterange input-group" id="datepicker">
-                                                                            <input type="text" name="data[docs_date][<?php echo $doc_id;?>]" id="docs_date" value="<?php echo $val['date']?>" class="form-control" />
+                                                                            <input type="text" name="data[docs_date][<?php echo $doc_id;?>]" id="docs_date" value="<?php if(isset($val['date']) && $val['date'] != ''){ echo date('m/d/Y',strtotime($val['date'])); }?>" class="form-control" />
                     					                                </div>
                  					                                </div>
                                                                 </td>
@@ -2485,19 +2542,100 @@ var waitingDialog = waitingDialog || (function ($) {
                             </div>
                         </div>
                  </div>
+                 <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="alias_appoinments"){ echo "active"; } ?>" id="tab_h">
+                 <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
+                        <div class="panel-overlay-wrap">
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    
+                                    <h3 class="panel-title" style="font-size: 25px;"><b>Aliases & Appointments</b></h3>
+                                </div>
+            					<div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-responsive" id="table-scroll">
+                                                <table class="table table-bordered table-stripped table-hover">
+                                                    <thead>
+                                                        <th>Alias</th>
+                                                        <th>Sponsor company</th>
+                                                        <th>Date</th>
+                                                        <th>Add/Remove</th>
+                                                    </thead>
+                                                    <tbody>
+                                                        
+                                                        <?php $doc_id=0; //echo '<pre>';print_r($edit_required_docs);
+                                                        if(isset($_GET['action']) && $_GET['action']=='edit' && isset($edit_required_docs) ){  
+                                                        foreach($edit_alias as $key=>$val){ $doc_id++;?>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" name="alias[alias_name][<?php echo $doc_id;?>]" value="<?php echo $val['alias_name']; ?>" max="20" class="form-control"/>
+                                                                </td>
+                                                                <td>
+                                                                    <select name="alias[sponsor_company][<?php echo $doc_id;?>]" class="form-control">
+                                                                        <option value="0">All Companies</option>
+                                                                        <?php foreach($get_sponsor as $key_sponsor=>$val_sponsor){?>
+                                                                        <option value="<?php echo $val_sponsor['id'];?>" <?php if($val['sponsor_company'] != '' && $val['sponsor_company']==$val_sponsor['id']){echo "selected='selected'";} ?>><?php echo $val_sponsor['name'];?></option>
+                                                                        <?php } ?>
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                    <div id="demo-dp-range">
+                    					                                <div class="input-daterange input-group" id="datepicker">
+                                                                            <input type="text" name="alias[date][<?php echo $doc_id;?>]" value="<?php if(isset($val['date']) && $val['date'] != ''){ echo date('m/d/Y',strtotime($val['date'])); }?>" class="form-control" />
+                    					                                </div>
+                 					                                </div>
+                                                                </td>
+                                                                <td>
+                                                                    <button type="button" tabindex="-1" class="btn remove-row btn-icon btn-circle"><i class="fa fa-minus"></i></button>
+                                                                </td>
+                                                            </tr>
+                                                      <?php } }$doc_id  ++;  ?>
+                                                      
+                                                       <tr id="add_row_alias">
+                                                            <td>
+                                                                <input type="text" name="alias[alias_name][<?php echo $doc_id;?>]" value="" max="20" class="form-control"/>
+                                                            </td>
+                                                            <td>
+                                                                <select name="alias[sponsor_company][<?php echo $doc_id;?>]" class="form-control">
+                                                                    <option value="0">All Companies</option>
+                                                                    <?php foreach($get_sponsor as $key_sponsor=>$val_sponsor){?>
+                                                                    <option value="<?php echo $val_sponsor['id'];?>"><?php echo $val_sponsor['name'];?></option>
+                                                                    <?php } ?>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <div id="demo-dp-range">
+                					                                <div class="input-daterange input-group" id="datepicker">
+                                                                        <input type="text" name="alias[date][<?php echo $doc_id;?>]" value="<?php echo date('m/d/Y');?>" class="form-control" />
+                					                                </div>
+             					                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <button type="button" onclick="addMoreAlias(<?php echo $doc_id; ?>);" class="btn btn-purple btn-icon btn-circle"><i class="fa fa-plus"></i></button>
+                                                            </td>
+                                                        </tr>
+                                                  </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                                <input type="hidden" name="id"  value="<?php echo $id; ?>" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                 </div>
               </div>
               <div class="panel-footer fixedbtmenu">
                     <div class="selectwrap">
                          <?php if($action=='edit' && $id>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;"><input type="button" name="previous" value="&laquo; Previous" /></a><?php } ?>
                          <?php if($action=='edit' && $id>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a" ><input type="button" name="next" value="Next &raquo;" /></a><?php } ?>
                          <?php if($action=='edit' && $id>0){?>
-                            <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 12% !important;"/></a>
+                            <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" value="View Changes" style="margin-left: 10% !important;"/></a>
                          <?php } ?>
                          <a href="#broker_notes" data-toggle="modal"><input type="button" onclick="get_broker_notes();" name="notes" value="Notes" /></a>
                          <a href="#client_transactions" data-toggle="modal"><input type="button" name="transactions" value="Transactions" /></a>
-                         <a href="#broker_attach" data-toggle="modal"><input type="button"  onclick="get_broker_attach();" name="attach" value="Attachments" style="margin-right: 12% !important;"/></a>
-                         
-                         <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" style="float: right;" /></a>
+                         <a href="#broker_attach" data-toggle="modal"><input type="button"  onclick="get_broker_attach();" name="attach" value="Attachments" style="margin-right: 10% !important;"/></a>
+                         <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" style="float: right;"/></a>
                          <input type="submit" name="submit" value="Save" style="float: right;"/>
                     </div>
                  </div>   
@@ -3074,7 +3212,34 @@ var waitingDialog = waitingDialog || (function ($) {
                                 <br />
    </div>
 </div>
-
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#data-table').DataTable({
+        "pageLength": 25,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "dom": '<"toolbar">frtip',
+        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 6 ] }, 
+                        { "bSearchable": false, "aTargets": [ 6 ] }]
+        });
+        $("div.toolbar").html('<div class="panel-control">'+
+                    '<div class="btn-group dropdown" style="float: right;">'+
+                        '<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>'+
+    					'<ul class="dropdown-menu dropdown-menu-right" style="">'+
+    						'<li><a href="<?php echo CURRENT_PAGE; ?>?action=add_new"><i class="fa fa-plus"></i> Add New</a></li>'+
+                        '</ul>'+
+    				'</div>'+
+    			'</div>');
+} );
+</script>
+<style type="text/css">
+.toolbar {
+    float: right;
+    padding-left: 5px;
+}
+</style>
 <script>
 /*function addMoreDocs(){
     var html = '<div class="row">'+

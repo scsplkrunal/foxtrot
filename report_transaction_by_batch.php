@@ -18,7 +18,7 @@ else
 {
     $get_trans_data = $instance->select_data_report();
 }
-$batch_desc = $get_trans_data[0]['batch_desc'];
+$batch_desc = isset($get_trans_data[0]['batch_desc'])?$instance->re_db_input($get_trans_data[0]['batch_desc']):'';
 $total_amount_invested = 0;
 $total_commission_received = 0;
 $total_charges = 0;
@@ -117,7 +117,7 @@ $total_charges = 0;
             $total_commission_received = ($total_commission_received+$trans_data['commission_received']);
             $total_charges = ($total_charges+$trans_data['charge_amount']);
         $html.='<tr>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$trans_data['trade_number'].'</td>
+                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$trans_data['id'].'</td>
                        <td style="font-size:13px;font-weight:normal;text-align:left;">'.$trans_data['broker_name'].'</td>
                        <td style="font-size:13px;font-weight:normal;text-align:left;">'.$trans_data['client_name'].'</td>
                        <td style="font-size:13px;font-weight:normal;text-align:left;">'.date('m-d-Y',strtotime($trans_data['trade_date'])).'</td>

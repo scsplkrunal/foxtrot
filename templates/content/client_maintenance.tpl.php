@@ -933,22 +933,21 @@ $(document).on('click','.remove-row',function(){
                                         <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;"><input type="button" name="previos" value="&laquo; Previous" /></a><?php } ?>
                                         <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a"><input type="button" name="next" value="Next &raquo;" /></a><?php } ?>
                                         <?php if($action=='edit' && $id>0){?>
-                                        <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" style="margin-left: 5% !important;" value="View Changes"/></a>
+                                        <a href="#view_changes" data-toggle="modal"><input type="button" name="view_changes" style="margin-left: 4% !important;" value="View Changes"/></a>
                                         <?php } ?>
                                         <a href="#client_notes" data-toggle="modal"><input type="button" onclick="get_client_notes();" name="notes" value="Notes" /></a>
                                         <a href="#client_transactions" data-toggle="modal"><input type="button"  name="transactions" value="Transactions" /></a>
                                         <a href="#joint_account" data-toggle="modal"><input type="button" onclick="get_client_account();" name="joint_account" value="Joint Account" /></a>
-                                        <a href="#client_attach" data-toggle="modal"><input type="button"  onclick="get_client_attach();" name="attach" value="Attachments" style="margin-right: 5% !important;" /></a>
-                                        
+                                        <a href="#client_attach" data-toggle="modal"><input type="button"  onclick="get_client_attach();" name="attach" value="Attachments" style="margin-right: 4% !important;" /></a>
                                         <a href="<?php echo CURRENT_PAGE;?>"><input type="button" name="cancel" value="Cancel" style="float: right;"/></a>
-                                        <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save" style="float: right;"/>	
+                                        <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save" style="float: right;"/>
                                     </div>
                                  </div>
                                  </form>
                         <?php
                     }else{?>
                     <div class="panel">
-            		<div class="panel-heading">
+            		<!--<div class="panel-heading">
                         <div class="panel-control">
                             <div class="btn-group dropdown" style="float: right;">
                                 <button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
@@ -958,16 +957,16 @@ $(document).on('click','.remove-row',function(){
             				</div>
             			</div>
                         <h3 class="panel-title">List</h3>
-            		</div>
+            		</div>-->
             		<div class="panel-body">
-                        <div class="panel-control" style="float: right;">
+                        <!--<div class="panel-control" style="float: right;">
                         <form method="post">
                             <input type="text" name="search_text" id="search_text" value="<?php echo $search_text;?>"/>
                             <button type="submit" name="submit" id="submit" value="Search"><i class="fa fa-search"></i> Search</button>
                         </form>
-                        </div><br /><br />
+                        </div><br /><br />-->
                         <div class="table-responsive">
-            			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            			<table id="data-table" class="table table-striped1 table-bordered" cellspacing="0" width="100%">
             	            <thead>
             	                <tr>
                                     <th>NAME</th>
@@ -1420,6 +1419,34 @@ $(document).on('click','.remove-row',function(){
             </div><!-- End of Modal -->           
     </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#data-table').DataTable({
+        "pageLength": 25,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "dom": '<"toolbar">frtip',
+        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 5 ] }, 
+                        { "bSearchable": false, "aTargets": [ 5 ] }]
+        });
+        $("div.toolbar").html('<div class="panel-control">'+
+                    '<div class="btn-group dropdown" style="float: right;">'+
+                        '<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>'+
+    					'<ul class="dropdown-menu dropdown-menu-right" style="">'+
+    						'<li><a href="<?php echo CURRENT_PAGE; ?>?action=add_new"><i class="fa fa-plus"></i> Add New</a></li>'+
+                        '</ul>'+
+    				'</div>'+
+    			'</div>');
+} );
+</script>
+<style type="text/css">
+.toolbar {
+    float: right;
+    padding-left: 5px;
+}
+</style>
 <script>
 function open_newnotes()
 {

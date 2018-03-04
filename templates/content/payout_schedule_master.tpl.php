@@ -341,7 +341,7 @@ $(document).on('click','.remove-row',function(){
     }
     else{?>
     <div class="panel">
-		<div class="panel-heading">
+		<!--<div class="panel-heading">
             <div class="panel-control">
                 <div class="btn-group dropdown" style="float: right;">
 					<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
@@ -351,7 +351,7 @@ $(document).on('click','.remove-row',function(){
 				</div>
 			</div>
             <h3 class="panel-title">List</h3>
-		</div>
+		</div>-->
 		<div class="panel-body">
         <div class="table-responsive" id="register_data">
 			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -402,6 +402,36 @@ $(document).on('click','.remove-row',function(){
     color: #fff;
     background-color: #337ab7 !important;
     border-color: #2e6da4 !important;}
+</style>
+<script type="text/javascript">
+    $(document).ready(function() {
+        
+        $('#data-table').DataTable({
+        "pageLength": 25,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "dom": '<"toolbar">frtip',
+        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 2 ] }, 
+                        { "bSearchable": false, "aTargets": [ 2 ] }]
+        });
+        
+        $("div.toolbar").html('<div class="panel-control">'+
+                    '<div class="btn-group dropdown" style="float: right;">'+
+                        '<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>'+
+    					'<ul class="dropdown-menu dropdown-menu-right" style="">'+
+    						'<li><a href="<?php echo CURRENT_PAGE; ?>?action=add_new"><i class="fa fa-plus"></i> Add New</a></li>'+
+                        '</ul>'+
+    				'</div>'+
+    			'</div>');
+} );
+</script>
+<style type="text/css">
+.toolbar {
+    float: right;
+    padding-left: 5px;
+}
 </style>
 <script type="text/javascript">
 var waitingDialog = waitingDialog || (function ($) {

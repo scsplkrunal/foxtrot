@@ -194,18 +194,29 @@ $(document).on('click','.remove-row',function(){
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label>Commission Received Amount <span class="text-red">*</span></label><br />
                         <input type="text" maxlength="12" class="form-control" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 ' name="commission_received"  value="<?php if(isset($commission_received)) {echo $commission_received;}?>"/>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label>Commission Received Date </label><br />
                         <div id="demo-dp-range">
                             <div class="input-daterange input-group" id="datepicker">
-                                <input type="text" name="commission_received_date" id="commission_received_date" value="<?php if(isset($commission_received_date)) {echo date('m/d/Y',strtotime($commission_received_date));}?>" class="form-control" />
+                                <input type="text" name="commission_received_date" id="commission_received_date" value="<?php if(isset($commission_received_date) && $commission_received_date!='0000-00-00 00:00:00') {echo date('m/d/Y',strtotime($commission_received_date));}else if(isset($batch_date)){ echo date('m/d/Y',strtotime($batch_date['batch_date']));}?>" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Posting Date </label><br />
+                        <div id="demo-dp-range">
+                            <div class="input-daterange input-group" id="datepicker">
+                                <input type="text" name="posting_date" id="posting_date" disabled="true" value="<?php if(isset($posting_date) && $posting_date!='0000-00-00'){ echo date('m/d/Y',strtotime($posting_date));}else if(isset($_GET['action']) && $_GET['action']=='add'){ echo date('m/d/Y'); } else { echo '';}?>" class="form-control" />
+                                <input type="hidden" name="posting_date" id="posting_date" value="<?php if(isset($posting_date) && $posting_date!='0000-00-00'){ echo date('m/d/Y',strtotime($posting_date));}else if(isset($_GET['action']) && $_GET['action']=='add'){ echo date('m/d/Y'); } else { echo '';}?>" class="form-control" />
                             </div>
                         </div>
                     </div>
@@ -331,7 +342,7 @@ $(document).on('click','.remove-row',function(){
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Charge Amount </label><br />
-                        <input type="text" maxlength="9" class="form-control" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 ' name="charge_amount"  value="<?php if(isset($charge_amount)) {echo $charge_amount;}?>"/>
+                        <input type="text" maxlength="9" class="form-control" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 ' name="charge_amount"  value="<?php if(isset($charge_amount) && $charge_amount != '') {echo $charge_amount;}else{echo '0';}?>"/>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -356,7 +367,7 @@ $(document).on('click','.remove-row',function(){
         <?php
             }if((isset($_GET['action']) && $_GET['action']=='view') || $action=='view'){?>
         <div class="panel">
-    		<div class="panel-heading">
+    		<!--<div class="panel-heading">
                 <div class="panel-control">
                     <div class="btn-group dropdown" style="float: right;">
                         <button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
@@ -366,9 +377,9 @@ $(document).on('click','.remove-row',function(){
     					</ul>
     				</div>
     			</div>
-            </div><br />
+            </div><br />-->
     		<div class="panel-body">
-                <div class="panel-control">
+                <!--<div class="panel-control">
                     <div class="row">
                         <div class="col-md-6" style="float: right;">
                              <form method="post">
@@ -387,7 +398,7 @@ $(document).on('click','.remove-row',function(){
                             </form>
                         </div>
                     </div>
-                </div><br /><br />
+                </div><br /><br />-->
                 <div class="table-responsive" id="table-scroll">
     			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
     	            <thead>
@@ -485,6 +496,37 @@ $(document).on('click','.remove-row',function(){
   height:400px;
   overflow:auto;  
   margin-top:20px;
+}
+</style>
+<script type="text/javascript">
+    $(document).ready(function() {
+        
+        $('#data-table').DataTable({
+        "pageLength": 25,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "dom": '<"toolbar">frtip',
+        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 8 ] }, 
+                        { "bSearchable": false, "aTargets": [ 8 ] }]
+        });
+        
+        $("div.toolbar").html('<div class="panel-control">'+
+                    '<div class="btn-group dropdown" style="float: right;">'+
+                        '<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>'+
+    					'<ul class="dropdown-menu dropdown-menu-right" style="">'+
+    						'<li><a href="<?php echo CURRENT_PAGE; ?>?action=add"><i class="fa fa-plus"></i> Add New</a></li>'+
+                            '<li><a href="<?php echo CURRENT_PAGE; ?>?action=view_report"><i class="fa fa-minus"></i> Report</a></li>'+
+                        '</ul>'+
+    				'</div>'+
+    			'</div>');
+} );
+</script>
+<style type="text/css">
+.toolbar {
+    float: right;
+    padding-left: 5px;
 }
 </style>
 <script>
@@ -592,5 +634,14 @@ $('#demo-dp-range .input-daterange').datepicker({
         </script>
         <?php
     }
+    /*if($product_cate>0 && $product != ''){
+        ?>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                get_product(<?php echo $product_cate; ?>,'<?php echo $product; ?>');
+            });
+        </script>
+        <?php
+    }*/
 
 ?>

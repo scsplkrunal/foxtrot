@@ -25,6 +25,9 @@ h1{
     margin-top: 2px !important;
     margin-bottom: 2px !important;
 }
+.td_space{
+    padding: 2px !important;
+}
 ::-webkit-input-placeholder { /* Chrome */
  color: inherit;
  opacity: 1;

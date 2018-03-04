@@ -15,12 +15,12 @@ class db
         global $$link;
     
         if (USE_PCONNECT == 'true') {
-          $$link = mysql_pconnect($server, $username, $password);
+          $$link = mysqli_pconnect($server, $username, $password);
         } else {
-          $$link = @mysql_connect($server, $username, $password);
+          $$link = @mysqli_connect($server, $username, $password);
         }
     
-        if ($$link) mysql_select_db($database);
+        if ($$link) mysqli_select_db($$link,$database);
     
         return $$link;
     }
@@ -28,7 +28,7 @@ class db
     public function re_db_close($link = 'db_link')
     {
         global $$link;
-        return mysql_close($$link);
+        return mysqli_close($$link);
     }
     
     public function re_db_error($query, $errno, $error) {
@@ -37,7 +37,7 @@ class db
         die('<font color="#000000"><b>' . $errno . ' - ' . $error . '<br><br>' . $query . '<br><br><small><font color="#ff0000">[RE STOP]</font></small><br><br></b></font>');
 		}
 		else{
-			die('something went wrong, please try again');
+			die('something went wrong, please try agina');
 		}
     }
      
@@ -48,7 +48,7 @@ class db
     	  error_log('QUERY ' . $query . "\n", 3, STORE_PAGE_PARSE_TIME_LOG);
     	}
     	$_start = explode(' ', microtime());
-    	$result = mysql_query($query, $$link) or $this->re_db_error($query, mysql_errno(), mysql_error());
+    	$result = mysqli_query($$link,$query) or $this->re_db_error($query, mysqli_errno($$link), mysqli_error($$link));
     	$_end = explode(' ', microtime());
     	$_time = number_format(($_end[1] + $_end[0] - ($_start[1] + $_start[0])), 8);
     	if ( defined('EXPLAIN_QUERIES') && (EXPLAIN_QUERIES == 'true') )
@@ -70,7 +70,7 @@ class db
     	} # End if EXPLAIN_QUERIES
     	if (defined('STORE_DB_TRANSACTIONS') && (STORE_DB_TRANSACTIONS == 'true'))
     	{
-    	   $result_error = mysql_error();
+    	   $result_error = mysqli_error($$link);
     	   error_log('RESULT ' . $result . ' ' . $result_error . "\n", 3, STORE_PAGE_PARSE_TIME_LOG);
     	}
         return $result;
@@ -78,37 +78,39 @@ class db
       
       
     public function re_db_fetch_array($db_query) {
-        return mysql_fetch_array($db_query, MYSQL_ASSOC);
+        return mysqli_fetch_array($db_query, MYSQLI_ASSOC);
     }
     
-    public function re_db_num_rows($db_query) {
-        return mysql_num_rows($db_query);
+    public function re_db_num_rows($db_query) {        
+        return mysqli_num_rows($db_query);
     }
     
     public function re_db_fetch_assoc($db_query) {
-        return mysql_fetch_assoc($db_query);
+        return mysqli_fetch_assoc($db_query);
     }
     
     public function re_db_affected_rows($db_query) {
-        return mysql_affected_rows($db_query);
+        return mysqli_affected_rows($db_query);
     }
-    public function re_db_mysql_affected_rows_count(){
-		return mysql_affected_rows();
+    public function re_db_mysql_affected_rows_count($link = 'db_link'){
+        global $$link;
+		return mysqli_affected_rows($$link);
 	}
     public function re_db_data_seek($db_query, $row_number) {
-        return mysql_data_seek($db_query, $row_number);
+        return mysqli_data_seek($db_query, $row_number);
     }
     
-    public function re_db_insert_id() {
-        return mysql_insert_id();
+    public function re_db_insert_id($link = 'db_link') {
+        global $$link;
+        return mysqli_insert_id($$link);
     }
     
     public function re_db_free_result($db_query) {
-        return mysql_free_result($db_query);
+        return mysqli_free_result($db_query);
     }
     
     public function re_db_fetch_fields($db_query) {
-        return mysql_fetch_field($db_query);
+        return mysqli_fetch_field($db_query);
     }
     
     public function re_db_output($string)
@@ -119,8 +121,9 @@ class db
         //return $string; //htmlspecialchars($string);
     }
     
-    public function re_db_input($string) 
+    public function re_db_input($string, $link = 'db_link') 
     {
+        global $$link;
     	// Stripslashes
     	if (get_magic_quotes_gpc()) 
     	{
@@ -128,10 +131,11 @@ class db
     	}
     	if (!is_numeric($string)) // Quote if not integer
     	{
-    		$string = mysql_real_escape_string($string);
+    		$string = mysqli_real_escape_string($$link,$string);            
     	}
     	else
     		$string=$string;
+    
     
     	return trim($string);
     }
@@ -722,8 +726,7 @@ class db
     	imagepng( $img2, $newnm);
     	imagedestroy($img2);
     }
-    
-     function createThumbnails($updir, $img, $MaxWe=100,$MaxHe=150){
+    function createThumbnails($updir, $img, $MaxWe=100,$MaxHe=150){
         $arr_image_details = getimagesize($updir.$img); 
         $width = $arr_image_details[0];
         $height = $arr_image_details[1];
@@ -769,8 +772,6 @@ class db
             imagecopyresized($new_image, $old_image, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
     
             $imgt($new_image, $updir."thumb_".$img);
-            //imagealphablending($imgt,true);
-
             return true;    
         }
     }
@@ -913,45 +914,6 @@ class db
         }
     	return $return;
     }
-/*
-    public function send_email($to,$subject,$body,$cc=array(),$bcc=array(),$attachemnt=array()){
-        
-        // Configuring SMTP server settings
-        $mail = new PHPMailer;
-	    $mail->isSMTP(true);
-	    $mail->Host = SMTP_HOST;
-	    $mail->Port = 587; // 465 587
-	    $mail->SMTPSecure = 'tls'; //tls ssl
-	    $mail->SMTPAuth = true;
-	    $mail->setFrom(SMTP_ID,'Foxtrot');
-	    $mail->Username = SMTP_ID;
-	    $mail->Password = SMTP_PASSWORD;
-        
-        foreach($to as $key=>$val){
-            $mail->addAddress($val);
-        }
-        foreach($cc as $key=>$val){
-            $mail->AddCC($val);
-        }
-        foreach($bcc as $key=>$val){
-            $mail->AddBCC($val);
-        }
-        foreach($attachemnt as $key=>$val){
-            $mail->AddAttachment($val,'Attachment');
-        }
-        $mail->AddBCC('scspl.amarshi@gmail.com');
-        $mail->Subject = $subject;
-        $mail->isHTML(true);    
-        $mail->msgHTML($body);
-        
-        // Success or Failure
-        if(! @ $mail->send()){
-        }
-        else {
-        }
-        
-    }
-    */
     public function send_email($to,$subject,$body,$cc=array(),$bcc=array(),$attachemnt=array()){
         
         // Configuring SMTP server settings
@@ -998,6 +960,7 @@ class db
         }
         
     }
+    
     public function buildTree(array $elements, $parentId = 0, $id='id', $parent_key='parent_id') {
         $branch = array();
     
@@ -1026,7 +989,7 @@ class db
 		?>
 		<div class="alert alert-danger alert-dismissable">
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-			<strong>Error!</strong> <?php if(!is_array($msg)) echo $msg; ?>
+			<strong>Error!</strong> <?php echo $msg; ?>
 		</div>
 		<?php
 	}

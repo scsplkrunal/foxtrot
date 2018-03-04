@@ -1,5 +1,5 @@
 <div class="container">
-    <h1 class="<?php if($action=='add_batches'||($action=='edit_batches' && $id>0)){ echo 'topfixedtitle';}?>">Batches</h1>
+    <h1 class="<?php if($action=='add_batches'||($action=='edit_batches' && $id>0)){?>topfixedtitle<?php }?>">Batches</h1>
     <div class="col-lg-12 well <?php if($action=='add_batches'||($action=='edit_batches' && $id>0)){ echo 'fixedwell';}?>">
     <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
         <?php  
@@ -53,22 +53,28 @@
                     </div>
                 </div>
             </div>
+            <script type="text/javascript">
+            $(document).ready(function() {
+                document.getElementById("batch_desc").focus();
+            });
+            </script>
             <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Posted Commission Amount</label><br />
+                        <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input type="text"  class="form-control"  maxlength="12" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 ' name="commission_amount1" value="<?php if(isset($commission_amount) && $commission_amount!='') {echo $commission_amount;}else{echo '0';}?>" <?php if(isset($_GET['action']) && ($action=='edit_batches' || $action=='add_batches')){ echo "disabled='true'";}?> />
+                        <input type="hidden"  class="form-control"  maxlength="12" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 ' name="commission_amount" value="<?php if(isset($commission_amount) && $commission_amount!='') {echo $commission_amount;}else{echo '0';}?>" />
+                        </div>
+                    </div>
+                </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Check Amount </label><br />
                         <div class="input-group">
                         <span class="input-group-addon">$</span>
                         <input type="text"  class="form-control" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 '  maxlength="8" name="check_amount" id="check_amount" value="<?php if(isset($check_amount) && $check_amount!='') {echo $check_amount;}else{echo '0';}?>" />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Posted Commission Amount</label><br />
-                        <div class="input-group">
-                        <span class="input-group-addon">$</span>
-                        <input type="text"  class="form-control"  maxlength="12" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 ' name="commission_amount" value="<?php if(isset($commission_amount) && $commission_amount!='') {echo $commission_amount;}else{echo '0';}?>" <?php if(isset($_GET['action']) && ($action=='edit_batches' || $action=='add_batches')){ echo "disabled='true'";}?> />
                         </div>
                     </div>
                 </div>
@@ -125,7 +131,7 @@
                         <label>Beginning Trade Date</label><br />
                         <div id="demo-dp-range">
                             <div class="input-daterange input-group" id="datepicker">
-                                <input type="text" name="trade_start_date" id="trade_start_date" value="<?php if(isset($trade_start_date)) {echo date('m/d/Y',strtotime($trade_start_date));}?>" class="form-control" <?php if(isset($_GET['action']) && $action=='add_batches'){ echo "disabled='true'";}?>/>
+                                <input type="text" name="trade_start_date" id="trade_start_date" value="<?php if(isset($trade_start_date) && $trade_start_date != '') {echo date('m/d/Y',strtotime($trade_start_date));}?>" class="form-control" <?php if(isset($_GET['action']) && $action=='add_batches'){ echo "disabled='true'";}?>/>
                             </div>
                         </div>
                     </div>
@@ -135,7 +141,7 @@
                         <label>Ending Trade Date</label><br />
                         <div id="demo-dp-range">
                             <div class="input-daterange input-group" id="datepicker">
-                                <input type="text" name="trade_end_date" id="trade_end_date" value="<?php if(isset($trade_end_date)) {echo date('m/d/Y',strtotime($trade_end_date));}?>" class="form-control" <?php if(isset($_GET['action']) && $action=='add_batches'){ echo "disabled='true'";}?>/>
+                                <input type="text" name="trade_end_date" id="trade_end_date" value="<?php if(isset($trade_end_date) && $trade_end_date != '') {echo date('m/d/Y',strtotime($trade_end_date));}?>" class="form-control" <?php if(isset($_GET['action']) && $action=='add_batches'){ echo "disabled='true'";}?>/>
                             </div>
                         </div>
                     </div>
@@ -180,12 +186,9 @@
                     <div class="selectwrap">
                         <?php if($_GET['action']=='edit_batches' && $id>0){?>
                         <a href="report_transaction_by_batch.php?batch_id=<?php echo $id; ?>" target="_blank"><input type="button" name="view_report" value="View Report" /></a>
-                        <?php } ?>
-                        <?php if($_GET['action']=='edit_batches' && $id>0){?>
-                        <a href="#"><input type="button" name="post_trade" value="Post" /></a>
-                        <?php } ?>
-                        <?php if($_GET['action']=='edit_batches' && $id>0){?>
-                        <a href="#"><input type="button" name="unpost_trade" value="Unpost" /></a>
+                        <input type="submit" name="post_trade" value="Post" />
+                        <a onclick="return conf('<?php echo CURRENT_PAGE; ?>?action=unpost_trades&id=<?php echo $id; ?>');"><input type="button" class="confirm" name="unpost_trade" value="Unpost" /></a>
+                        <a onclick="return conf_batch('<?php echo CURRENT_PAGE; ?>?action=batches_delete&id=<?php echo $id; ?>','<?php echo $batch_desc; ?>');"><input type="button" name="delete_trade" value="Delete" /></a>
                         <?php } ?>
                         <a href="<?php echo CURRENT_PAGE.'?action=view_batches';?>"><input type="button" name="cancel" value="Cancel" style="float: right;" /></a>
                         <input type="submit" name="batches" onclick="waitingDialog.show();" value="Save" style="float: right;"/>	
@@ -228,7 +231,7 @@
             </div>
             <br />-->
                 <div class="table-responsive">
-    			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    			<table id="data-table" class="table table-striped1 table-bordered" cellspacing="0" width="100%">
     	            <thead>
     	                <tr>
                             <th>BATCH NUMBER</th>
@@ -247,12 +250,13 @@
                     foreach($return as $key=>$val){
                         ?>
     	                   <tr>
-                                <td><?php echo $val['id'];;?></td>
-                                <td><?php echo date('m/d/Y',strtotime($val['batch_date']));?></td>
-                                <td><?php echo $val['batch_desc'];?></td>
-                                <td><?php foreach($get_sponsor as $ke=>$va){ if(isset($val['sponsor']) && $val['sponsor']==$va['id']){ echo $va['name']; } }?></td>
-                                <td><?php echo '$'.$val['check_amount'];?></td>
-                                <td><?php echo '$'.$val['commission_amount'];?></td>
+                                <td class="td_space"><?php echo $val['id'];;?></td>
+                                <td class="td_space"><?php echo date('m/d/Y',strtotime($val['batch_date']));?></td>
+                                <td class="td_space"><?php echo $val['batch_desc'];?></td>
+                                <td class="td_space"><?php foreach($get_sponsor as $ke=>$va){ if(isset($val['sponsor']) && $val['sponsor']==$va['id']){ echo $va['name']; } }?></td>
+                                <td class="td_space" style="text-align: right;"><?php echo '$'.$val['check_amount'];?></td>
+                                <td class="td_space" style="text-align: right;"><?php echo '$'.$val['commission_amount'];?></td>
+                                
                                 <!--td class="text-center">
                                     <?php
                                         if($val['status']==1){
@@ -267,7 +271,7 @@
                                         }
                                     ?>
                                 </td-->
-                                <td class="text-center">
+                                <td class="text-center td_space">
                                     <a href="<?php echo CURRENT_PAGE; ?>?action=edit_batches&id=<?php echo $val['id']; ?>" class="btn btn-md btn-primary"><i class="fa fa-edit"></i> Edit</a>
                                     <a onclick="return conf('<?php echo CURRENT_PAGE; ?>?action=batches_delete&id=<?php echo $val['id']; ?>');" class="btn btn-md btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
                                 </td>
@@ -296,26 +300,8 @@
         "bInfo": false,
         "bAutoWidth": false,
         "dom": '<"toolbar">frtip',
-        
-        
-        /*'columnDefs': [{
-         'targets': 0,
-         'searchable': false,
-         'orderable': false,
-         'className': 'add_new_batch',
-         'render': function (data, type, full, meta){
-         return'<div class="panel-control">'+
-                    '<div class="btn-group dropdown" style="float: right;">'+
-                        '<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>'+
-    					'<ul class="dropdown-menu dropdown-menu-right" style="">'+
-    						'<li><a href="<?php echo CURRENT_PAGE; ?>?action=add_batches"><i class="fa fa-plus"></i> Add New</a></li>'+
-                            '<li><a href="#"><i class="fa fa-minus"></i> Report</a></li>'+
-    					'</ul>'+
-    				'</div>'+
-    			'</div>';
-             //return '<input type="checkbox" name="id[]" value="' + $('<div/>').text(data).html() + '">';
-         }
-      }],*/
+        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 6 ] }, 
+                        { "bSearchable": false, "aTargets": [ 6 ] }]
         });
         $("div.toolbar").html('<div class="panel-control">'+
                     '<div class="btn-group dropdown" style="float: right;">'+
@@ -326,18 +312,9 @@
     					'</ul>'+
     				'</div>'+
     			'</div>');
-    
-    
-    } );
-    
+} );
+</script>
 
-    
-</script>
-<script type="text/javascript">
-$(document).ready(function() {
-    document.getElementById("batch_desc").focus();
-});
-</script>
 <style>
 .toolbar {
     float: right;
@@ -425,5 +402,29 @@ function open_other()
 function close_other()
 {
     $('#other_div').css('display','none');
+}
+
+function conf_batch(url,batch_desc){
+    bootbox.confirm({
+        message: "Are you sure you want to Delete the "+batch_desc+" batch?", 
+        backdrop: true,
+        buttons: {
+            confirm: {
+                label: '<i class="ion-android-done-all"></i> Yes',
+                className: 'btn-success'
+            },
+            cancel: {
+                label: '<i class="fa fa-warning"></i> No',
+                className: 'btn-warning'
+            }
+        },
+        callback: function(result) {
+            if (result) {
+                window.location.href = url;
+            }else{
+                //return false;
+            };
+        }
+    });
 }
 </script>

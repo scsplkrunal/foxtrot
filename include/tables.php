@@ -82,5 +82,5 @@
     define('TRANSACTION_TRADE_SPLITS','ft_transaction_trade_splits');
     define('BROKER_PAYOUT_SCHEDULE','ft_broker_payout_schedule');
     define('BROKER_PAYOUT_SCHEDULE_GRID','ft_broker_payout_schedule_grid');
-    
+    define('BROKER_ALIAS','ft_broker_alias');
 ?>
