@@ -83,4 +83,8 @@
     define('BROKER_PAYOUT_SCHEDULE','ft_broker_payout_schedule');
     define('BROKER_PAYOUT_SCHEDULE_GRID','ft_broker_payout_schedule_grid');
     define('BROKER_ALIAS','ft_broker_alias');
+    define('IMPORT_HEADER1_DATA','ft_import_file_header1_data');
+    define('IMPORT_HEADER2_DATA','ft_import_file_header2_data');
+    define('IMPORT_DETAIL_DATA','ft_import_file_detail_data');
+    define('IMPORT_FOOTER_DATA','ft_import_file_footer_data');
 ?>

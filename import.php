@@ -26,8 +26,8 @@
         }
         else if(isset($process_file) && $process_file == 2)
         {
-            //$return = $instance->process_current_files($id);
-            $return = true;
+            $return = $instance->process_current_files($id);
+            //$return = true;
         }
            
         if($return===true){
