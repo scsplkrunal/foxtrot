@@ -333,6 +333,190 @@ PostResult( msg );
                     </div>
                     </div>
                     <div class="tab-content col-md-12">
+                    <div class="tab-pane" id="tab_review"><?php if(isset($_GET['tab']) && ($_GET['tab']=="review_files" || $_GET['tab']=="processed_files")){?>
+                        <ul class="nav nav-tabs ">
+                          <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="review_files"){ echo "active"; }?>" ><a href="#review_files" data-toggle="tab">For Review</a></li>
+                          <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="processed_files"){ echo "active"; } ?>" ><a href="#processed_files" data-toggle="tab">Processed</a></li>
+                         </ul> <?php } ?> <br />
+                          <!-- Tab 1 is started -->
+                            <div class="tab-content">
+                            <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="review_files"){ echo "active"; } ?>" id="review_files">
+                                
+                                <div class="panel-overlay-wrap">
+                                    <div class="panel-body" style="border: 1px solid #DFDFDF; margin-top: 17px;">
+                                        <div class="row">
+                                            <!--<div class="row">
+                                            <div class="col-md-5"></div>
+                                                <a class="btn btn-sm btn-warning col-md-1" href="<?php echo CURRENT_PAGE; ?>?action=open_ftp"> Fetch</a>
+                                                <!--<a href="<?php echo CURRENT_PAGE; ?>?action=open_ftp"><button type="button"  name="fetch" value="fetch" style="display: inline;"> Fetch</button></a>-->
+                                                <!--<button type="submit" class="btn btn-sm btn-default col-md-2"  name="progress_all" value="progress_all" style="display: inline;"> Process All</button>
+                                            </div>
+                                            <br />-->
+                                            <div class="table-responsive" style="margin: 0px 5px 0px 5px;">
+                                                <table id="data-table" class="table table-bordered table-stripped table-hover">
+                                                    <thead>
+                                                        <th>Imported</th>
+                                                        <th>Last Proccessed</th>
+                                                        <th>File Name</th>
+                                                        <th>File Type</th>
+                                                        <th>Source</th>
+                                                        <th></th>
+                                                        <th>Action</th>
+                                                        
+                                                    </thead>
+                                                    <tbody>
+                                                    <?php
+                                                    $count = 0;
+                                                    if(isset($return) && $return != array())
+                                                    {
+                                                    foreach($return as $key=>$val){
+                                                        if(isset($val['imported_date']) && $val['imported_date']!= ''){
+                                                       ?>
+                                                        <tr>
+                                                            <td style="width: 15%;"><?php echo date('m-d-Y',strtotime($val['imported_date']));?></td>
+                                                            <td style="width: 10%;">-</td>
+                                                            <td style="width: 10%;"><?php echo $val['file_name'];?></td>
+                                                            <td style="width: 15%;"><?php echo $val['file_type'];?></td>
+                                                            <td></td>
+                                                            <td style="width: 20%;">
+                                                            <div class="progress">
+                                                                <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:40%">
+                                                                  0% Complete
+                                                                </div>
+                                                            </div>
+                                                            </td>
+                                                            <td style="width: 30%;">
+                                                            <form method="post">
+                                                            <select name="process_file_<?php echo $val['id'];?>" id="process_file_<?php echo $val['id'];?>" class="form-control" style=" width: 75% !important;display: inline;">
+                                                                <option value="0">Select Options</option>
+                                                                <option value="1" >Delete File</option>
+                                                                <option value="2" >Reprocess</option>
+                                                                <option value="3" >Review Process</option>
+                                                                <option value="4" >Resolve Exceptions</option>
+                                                            </select>
+                                                            <input type="hidden" name="id" id="id" value="<?php echo $val['id'];?>" />
+                                                            <button type="submit" class="btn btn-sm btn-warning" name="go" value="go" style="display: inline;"> Go</button>
+                                                            </form>
+                                                            </td>
+                                                        </tr>
+                                                    <?php }} 
+                                                    }?>
+                                                  </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                     </div>
+                                        <div class="panel-overlay">
+                                            <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
+                                        </div>
+                                     </div>
+                                    
+                                </div>
+                                <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="processed_files"){ echo "active"; } ?>" id="processed_files">
+                                    <div class="panel-overlay-wrap">
+                                        <div class="panel-body" style="border: 1px solid #DFDFDF; margin-top: 17px;">
+                                            <div class="row">
+                                                <div class="table-responsive" style="margin: 0px 5px 0px 5px;">
+                                                    <table id="data-table1" class="table table-bordered table-stripped table-hover">
+                                                        <thead>
+                                                            <th>Imported</th>
+                                                            <th>Last Proccessed</th>
+                                                            <th>File Name</th>
+                                                            <th>File Type</th>
+                                                            <th>Source</th>
+                                                            <th></th>
+                                                            <th>Action</th>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td style="width: 15%;">04/01/2018</td>
+                                                                <td style="width: 10%;">04/02/2018</td>
+                                                                <td style="width: 10%;">file_name1.txt</td>
+                                                                <td style="width: 15%;">DST Commissions</td>
+                                                                <td></td>
+                                                                <td>
+                                                                <div class="progress" style="width: 20%;">
+                                                                    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:40%">
+                                                                      0% Complete
+                                                                    </div>
+                                                                </div>
+                                                                </td>
+                                                                <td style="width: 30%;">
+                                                                <form method="post">
+                                                                <select name="account_use" id="account_use" class="form-control" style=" width: 75% !important;display: inline;">
+                                                                    <option value="0">Select Options</option>
+                                                                    <option value="1" >View</option>
+                                                                    <option value="2" >Reprocess</option>
+                                                                </select>
+                                                                <input type="hidden" name="id" id="id" value="<?php echo $val['id'];?>" />
+                                                                <button type="submit" class="btn btn-sm btn-warning" name="go" value="go" style="display: inline;"> Go</button>
+                                                                </form>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width: 15%;">04/01/2018</td>
+                                                                <td style="width: 10%;">04/02/2018</td>
+                                                                <td style="width: 10%;">file_name2.txt</td>
+                                                                <td style="width: 15%;">DST Commissions</td>
+                                                                <td></td>
+                                                                <td>
+                                                                <div class="progress" style="width: 20%;">
+                                                                    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:40%">
+                                                                      0% Complete
+                                                                    </div>
+                                                                </div>
+                                                                </td>
+                                                                <td style="width: 30%;">
+                                                                <form method="post">
+                                                                <select name="account_use" id="account_use" class="form-control" style=" width: 75% !important;display: inline;">
+                                                                    <option value="0">Select Options</option>
+                                                                    <option value="1" >View</option>
+                                                                    <option value="2" >Reprocess</option>
+                                                                </select>
+                                                                <input type="hidden" name="id" id="id" value="<?php echo $val['id'];?>" />
+                                                                <button type="submit" class="btn btn-sm btn-warning" name="go" value="go" style="display: inline;"> Go</button>
+                                                                </form>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width: 15%;">04/01/2018</td>
+                                                                <td style="width: 10%;">04/02/2018</td>
+                                                                <td style="width: 10%;">file_name3.txt</td>
+                                                                <td style="width: 15%;">DST Commissions</td>
+                                                                <td></td>
+                                                                <td>
+                                                                <div class="progress" style="width: 20%;">
+                                                                    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:40%">
+                                                                      0% Complete
+                                                                    </div>
+                                                                </div>
+                                                                </td>
+                                                                <td style="width: 30%;">
+                                                                <form method="post">
+                                                                <select name="account_use" id="account_use" class="form-control" style=" width: 75% !important;display: inline;">
+                                                                    <option value="0">Select Options</option>
+                                                                    <option value="1" >View</option>
+                                                                    <option value="2" >Reprocess</option>
+                                                                </select>
+                                                                <input type="hidden" name="id" id="id" value="<?php echo $val['id'];?>" />
+                                                                <button type="submit" class="btn btn-sm btn-warning" name="go" value="go" style="display: inline;"> Go</button>
+                                                                </form>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                         </div>
+                                         <div class="panel-overlay">
+                                             <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
+                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-  col-md-12">
                     <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="open_ftp"){ echo "active"; } ?>" id="ftp">
                     <?php
                     if($action=='add_ftp'||($action=='edit_ftp' && $id>0)){
