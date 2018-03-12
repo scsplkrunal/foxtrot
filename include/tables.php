@@ -87,4 +87,7 @@
     define('IMPORT_HEADER2_DATA','ft_import_file_header2_data');
     define('IMPORT_DETAIL_DATA','ft_import_file_detail_data');
     define('IMPORT_FOOTER_DATA','ft_import_file_footer_data');
+    define('IMPORT_IDC_HEADER_DATA','ft_import_idcfile_header_data');
+    define('IMPORT_IDC_DETAIL_DATA','ft_import_idcfile_detail_data');
+    define('IMPORT_IDC_FOOTER_DATA','ft_import_idcfile_footer_data');
 ?>

@@ -13,6 +13,7 @@
     $status = 1;
     $process_file = '';
     $ftp_file_type = '';
+    $get_file_data = '';
     
     $instance = new import();
     
@@ -27,7 +28,17 @@
         else if(isset($process_file) && $process_file == 2)
         {
             $return = $instance->process_current_files($id);
-            //$return = true;
+        }
+        else if(isset($process_file) && $process_file == 3)
+        {
+            header("location:".CURRENT_PAGE."?tab=processed_files&id=".$id);exit;
+        }
+        else if(isset($process_file) && $process_file == 4)
+        {
+            header("location:".CURRENT_PAGE."?tab=review_files&id=".$id);exit;
+        }
+        else{
+            header("location:".CURRENT_PAGE);exit;
         }
            
         if($return===true){
