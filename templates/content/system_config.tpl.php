@@ -59,7 +59,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Minimum Check Amount </label>
-                        <input type="text" class="currency form-control" required="required" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' value="<?php echo $minimum_check_amount;?>" maxlength="8"  name="minimum_check_amount"  />
+                        <input type="text" class="currency form-control" required="required" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46' value="<?php echo $minimum_check_amount;?>" maxlength="8"  name="minimum_check_amount" id="minimum_check_amount"  />
                     </div>
                 </div>
             </div>
@@ -118,6 +118,11 @@
     </div>
 </div>
 <script type="text/javascript">
+$('input#minimum_check_amount').blur(function() {
+    var amt = parseFloat(this.value);
+    $(this).val(amt.toFixed(2));
+});
+
 function round(feerate)
 {
     if(feerate>100)

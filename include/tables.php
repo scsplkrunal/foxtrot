@@ -90,4 +90,9 @@
     define('IMPORT_IDC_HEADER_DATA','ft_import_idcfile_header_data');
     define('IMPORT_IDC_DETAIL_DATA','ft_import_idcfile_detail_data');
     define('IMPORT_IDC_FOOTER_DATA','ft_import_idcfile_footer_data');
+    define('IMPORT_EXCEPTION_MASTER','ft_import_file_exception_master');
+    define('IMPORT_EXCEPTION','ft_import_file_exception');
+    define('IMPORT_SFR_HEADER_DATA','ft_import_sfrfile_header_data');
+    define('IMPORT_SFR_DETAIL_DATA','ft_import_sfrfile_detail_data');
+    define('IMPORT_SFR_FOOTER_DATA','ft_import_sfrfile_footer_data');
 ?>

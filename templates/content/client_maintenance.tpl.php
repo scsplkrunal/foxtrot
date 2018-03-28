@@ -351,8 +351,7 @@ $(document).on('click','.remove-row',function(){
                                             <div class="panel-overlay">
                                                 <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
                                             </div>
-                                                    <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
-                                            
+                                            <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
                                         </div>
                                     </div>
                                 </div>
@@ -1936,7 +1935,7 @@ function delete_attach(attach_id){
 </style>
 <script>
   function changeHandler(val)
-  {alert(parseFloat(val.toFixed(2)));
+  {//alert(parseFloat(val.toFixed(2)));
     document.getElementById("split_rate").value = val.toFixed(2)
   }
 </script>

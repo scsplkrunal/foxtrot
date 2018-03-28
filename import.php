@@ -14,8 +14,11 @@
     $process_file = '';
     $ftp_file_type = '';
     $get_file_data = '';
+    $return_exception = array();
     
     $instance = new import();
+    $instance_broker = new broker_master();
+    $get_broker = $instance_broker->select();
     
     if(isset($_POST['go'])&& $_POST['go']=='go'){
         
@@ -50,6 +53,32 @@
             $error = !isset($_SESSION['warning'])?$return:'';
         }
     }
+    else if(isset($_POST['go_archive']) && $_POST['go_archive'] == 'go_archive')
+    {
+        $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
+        header("location:".CURRENT_PAGE."?tab=view_processed_files&id=".$id);exit;
+    }
+    else if(isset($_GET['action'])&& $_GET['action']=='process_all'){
+        
+        $get_all_current_files = $instance->select_current_file_id();
+        
+        foreach($get_all_current_files as $key_file_id=>$val_file_id)
+        {
+            $file_id = isset($val_file_id['id'])?$instance->re_db_input($val_file_id['id']):0;
+            echo $file_id;
+            $return = $instance->process_current_files($file_id);
+            echo "<pre>";
+            print_R($return);
+        }
+        exit;
+        if($return===true){
+            
+            header("location:".CURRENT_PAGE);exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+    }
     else if(isset($_POST['submit'])&& $_POST['submit']=='Save'){
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
         $host_name = isset($_POST['host_name'])?$instance->re_db_input($_POST['host_name']):'';
@@ -69,6 +98,29 @@
         else{
             $error = !isset($_SESSION['warning'])?$return:'';
         }
+    }
+    else if(isset($_POST['resolve_exception'])&& $_POST['resolve_exception']=='Resolve Exception'){
+        //echo '<pre>';print_r($_POST);exit;
+        $exception_file_id = isset($_POST['exception_file_id'])?$instance->re_db_input($_POST['exception_file_id']):0;
+        $exception_data_id = isset($_POST['exception_data_id'])?$instance->re_db_input($_POST['exception_data_id']):0;
+        $exception_field = isset($_POST['exception_field'])?$instance->re_db_input($_POST['exception_field']):'';
+        if($exception_field == 'u5')
+        {
+            $exception_value = isset($_POST['exception_value_date'])?$instance->re_db_input($_POST['exception_value_date']):'';
+        }
+        else
+        {
+            $exception_value = isset($_POST['exception_value'])?$instance->re_db_input($_POST['exception_value']):'';
+        }
+        $return = $instance->update_exceptions($_POST);   
+        if($return===true){
+            echo '1';exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+        echo $error;
+        exit;
     }
     else if(isset($_POST['fetch_files']) && $_POST['fetch_files']== 'Fetch Files')
     {//print_r($_FILES['files']);exit;
@@ -127,12 +179,21 @@
             header('location:'.CURRENT_PAGE."?tab=open_ftp");exit;
         }
     }  
+    else if(isset($_GET['broker_termination']) && $_GET['broker_termination']!='')
+    {
+        $broker_id = $instance->re_db_input($_GET['broker_termination']);
+        $return = $instance->check_u5_termination($broker_id);
+        $current_date = date('Y-m-d');
+        
+        if($current_date>$return)
+        {
+            echo "1";exit;
+        }
+    }  
     else if($action=='view'){
         
         $return = $instance->select_current_files();//echo '<pre>';print_r($return);exit;
-        //print_r($return);exit;
     }
-    
     
     $content = "import";
     include(DIR_WS_TEMPLATES."main_page.tpl.php");
