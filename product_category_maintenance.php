@@ -4,6 +4,7 @@
      
     $error = '';
     $type = '';
+    $type_code = '';
     $action = isset($_GET['action'])&&$_GET['action']!=''?$dbins->re_db_input($_GET['action']):'view';
     $id = isset($_GET['id'])&&$_GET['id']!=''?$dbins->re_db_input($_GET['id']):0;
     
@@ -12,6 +13,7 @@
     if(isset($_POST['submit'])&& $_POST['submit']=='Save'){
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
         $type = isset($_POST['type'])?$instance->re_db_input($_POST['type']):'';
+        $type_code = isset($_POST['type_code'])?$instance->re_db_input($_POST['type_code']):'';
         $return = $instance->insert_update($_POST);
         
         if($return===true){
@@ -24,6 +26,7 @@
     else if($action=='edit' && $id>0){
         $return = $instance->edit($id);
         $type = $instance->re_db_output($return['type']);
+        $type_code = $instance->re_db_output($return['type_code']);
         
     }
     else if(isset($_GET['action'])&&$_GET['action']=='status'&&isset($_GET['id'])&&$_GET['id']>0&&isset($_GET['status'])&&($_GET['status']==0 || $_GET['status']==1))

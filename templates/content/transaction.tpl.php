@@ -82,7 +82,7 @@ $(document).on('click','.remove-row',function(){
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Trade Number </label><br />
-                        <input type="text" name="trade_number" id="trade_number" value="<?php if(isset($trade_number)) {echo $trade_number;}else{echo '0';}?>" disabled="true" class="form-control" />
+                        <input type="text" name="trade_number" id="trade_number" value="<?php if(isset($trade_number)) {echo $trade_number;}else{echo 'Assigned after saving';}?>" disabled="true" class="form-control" />
                     </div>
                 </div>
             </div>
@@ -112,7 +112,7 @@ $(document).on('click','.remove-row',function(){
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Client Name <span class="text-red">*</span></label><br />
-                        <select class="form-control" name="client_name">
+                        <select class="livesearch form-control" name="client_name">
                             <option value="0">Select Client</option>
                             <?php foreach($get_client as $key=>$val){?>
                             <option value="<?php echo $val['id'];?>" <?php if(isset($client_name) && $client_name==$val['id']){ ?>selected="true"<?php } ?>><?php echo $val['first_name'].' '.$val['mi'].' '.$val['last_name'];?></option>
@@ -131,10 +131,10 @@ $(document).on('click','.remove-row',function(){
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Broker Name <span class="text-red">*</span></label><br />
-                        <select class="form-control" name="broker_name">
+                        <select class="livesearch form-control" name="broker_name">
                             <option value="0">Select Broker</option>
                             <?php foreach($get_broker as $key=>$val){?>
-                            <option value="<?php echo $val['id'];?>" <?php if(isset($broker_name) && $broker_name==$val['id']){ ?>selected="true"<?php } ?>><?php echo $val['first_name'].' '.$val['middle_name'].' '.$val['last_name'];?></option>
+                            <option value="<?php echo $val['id'];?>" <?php if(isset($broker_name) && $broker_name==$val['id']){ ?>selected="true"<?php } ?>><?php echo $val['last_name'].' '.$val['first_name'].' '.$val['middle_name'];?></option>
                             <?php } ?>
                         </select>
                     </div>
@@ -142,7 +142,7 @@ $(document).on('click','.remove-row',function(){
                  <div class="col-md-6">
                     <div class="form-group">
                         <label>Product Category <span class="text-red">*</span></label><br />
-                        <select class="form-control" name="product_cate"  onchange="get_product(this.value);">
+                        <select class="form-control" name="product_cate" id="product_cate" onchange="get_product(this.value);">
                             <option value="0">Select Product category</option>
                              <?php foreach($product_category as $key=>$val){?>
                             <option value="<?php echo $val['id'];?>" <?php if(isset($product_cate) && $product_cate==$val['id']){?> selected="true"<?php } ?>><?php echo $val['type'];?></option>
@@ -155,8 +155,8 @@ $(document).on('click','.remove-row',function(){
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Sponsor </label><br />
-                        <select class="form-control" name="sponsor">
-                            <option value="0">Select Sponsor</option>
+                        <select class="form-control" name="sponsor" id="sponsor" onchange="get_product();">
+                            <option value="">Select Sponsor</option>
                              <?php foreach($get_sponsor as $key=>$val){?>
                             <option value="<?php echo $val['id'];?>" <?php if(isset($sponsor) && $sponsor==$val['id']){?> selected="true"<?php } ?>><?php echo $val['name'];?></option>
                             <?php } ?>
@@ -412,24 +412,24 @@ $(document).on('click','.remove-row',function(){
                             <th>Batch Number</th>
                             <th>Investment Amount</th>
                             <th>Commission Received</th>
-                            <th class="text-center">ACTION</th>
+                            <th class="text-center" colspan="2">ACTION</th>
                         </tr>
     	            </thead>
     	            <tbody>
                     <?php 
                     $count = 0;
-                    foreach($return as $key=>$val){
+                    foreach($return as $key=>$val){//echo '<pre>';print_r($val);exit;
                         ?>
     	                   <tr>
                                 
                                 <td><?php echo $val['id'];?></td>
                                 <td><?php echo date('m/d/Y',strtotime($val['trade_date']));?></td>
-                                <td><?php foreach($get_client as $key1 => $val1){ if($val1['id']==$val['client_name']) {echo $val1['mi'];}}?></td>
+                                <td><?php if(isset($val['client_lastname']) && $val['client_lastname'] != ''){ echo $val['client_lastname'].','.$val['client_firstname'];}?></td>
                                 <td><?php echo $val['client_number'];?></td>
-                                <td><?php foreach($get_broker as $key1 => $val1){ if($val1['id']==$val['broker_name']) {echo $val1['first_name'];}}?></td>
-                                <td><?php foreach($get_batch as $key1 => $val1){ if($val1['id']==$val['batch']) {echo $val1['id'];}}?></td>
-                                <td><?php echo $val['invest_amount'];?></td>
-                                <td><?php echo $val['commission_received'];?></td>
+                                <td><?php echo $val['broker_firstname'];?></td>
+                                <td><?php echo $val['batch_number'];?></td>
+                                <td style="text-align: right;"><?php echo '$'.ltrim($val['invest_amount'],0);?></td>
+                                <td style="text-align: right;"><?php echo '$'.ltrim($val['commission_received'],0);?></td>
                                 <!--td class="text-center">
                                     <?php
                                         if($val['status']==1){
@@ -446,6 +446,8 @@ $(document).on('click','.remove-row',function(){
                                 </td-->
                                 <td class="text-center">
                                     <a href="<?php echo CURRENT_PAGE; ?>?action=edit_transaction&id=<?php echo $val['id']; ?>" class="btn btn-md btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                                </td>
+                                <td class="text-center">
                                     <a onclick="return conf('<?php echo CURRENT_PAGE; ?>?action=transaction_delete&id=<?php echo $val['id']; ?>');" class="btn btn-md btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
                                 </td>
                             </tr>
@@ -466,7 +468,7 @@ $(document).on('click','.remove-row',function(){
                         <select class="form-control" name="view_batch">
                             <option value="">Select Batch</option>
                              <?php foreach($get_batch as $key=>$val){?>
-                            <option value="<?php echo $val['id'];?>" <?php if(isset($batch) && $batch==$val['id']){?> selected="true"<?php } ?>><?php echo $val['batch_number'];?></option>
+                            <option value="<?php echo $val['id'];?>" <?php if(isset($batch) && $batch==$val['id']){?> selected="true"<?php } ?>><?php echo $val['id'];?></option>
                             <?php } ?>
                         </select>
                     </div>
@@ -508,15 +510,15 @@ $(document).on('click','.remove-row',function(){
         "bInfo": false,
         "bAutoWidth": false,
         "dom": '<"toolbar">frtip',
-        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 8 ] }, 
-                        { "bSearchable": false, "aTargets": [ 8 ] }]
+        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 8,9 ] }, 
+                        { "bSearchable": false, "aTargets": [ 8,9 ] }]
         });
         
         $("div.toolbar").html('<div class="panel-control">'+
                     '<div class="btn-group dropdown" style="float: right;">'+
                         '<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>'+
     					'<ul class="dropdown-menu dropdown-menu-right" style="">'+
-    						'<li><a href="<?php echo CURRENT_PAGE; ?>?action=add"><i class="fa fa-plus"></i> Add New</a></li>'+
+    						/*'<li><a href="<?php echo CURRENT_PAGE; ?>?action=add"><i class="fa fa-plus"></i> Add New</a></li>'+*/
                             '<li><a href="<?php echo CURRENT_PAGE; ?>?action=view_report"><i class="fa fa-minus"></i> Report</a></li>'+
                         '</ul>'+
     				'</div>'+
@@ -528,9 +530,20 @@ $(document).on('click','.remove-row',function(){
     float: right;
     padding-left: 5px;
 }
+.chosen-container-single .chosen-single {
+    height: 34px !important;
+}
 </style>
-<script>
-function get_product(id,selected=''){
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+      $(".livesearch").chosen();
+      });
+</script>
+<script type="text/javascript">
+function get_product(category_id,selected=''){
+        category_id = document.getElementById("product_cate").value;
+        sponsor = document.getElementById("sponsor").value;
     
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
@@ -539,7 +552,7 @@ function get_product(id,selected=''){
                 document.getElementById("product").innerHTML = this.responseText;
             }
         };
-        xmlhttp.open("GET", "ajax_get_product.php?product_category_id="+id+'&selected='+selected, true);
+        xmlhttp.open("GET", "ajax_get_product.php?product_category_id="+category_id+'&sponsor='+sponsor+'&selected='+selected, true);
         xmlhttp.send();
 }
 

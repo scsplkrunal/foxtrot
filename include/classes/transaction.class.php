@@ -149,7 +149,7 @@ class transaction extends db{
             }
 			return $return;
 		}
-        public function get_batch_date($batch_id=''){
+        public function get_batch_date($batch_id){
 			$return = array();
 			
 			$q = "SELECT batch_date
@@ -256,12 +256,18 @@ class transaction extends db{
             }
 			return $return;
 		}
-        public function get_product($id){
+        public function get_product($id,$sponsor=''){
 			$return = array();
+            $con ='';
+            
+            if($sponsor != '')
+            {
+                $con = "and sponsor='".$sponsor."'";
+            }
 			
 			$q = "SELECT `at`.*
 					FROM `product_category_".$id."` AS `at`
-                    WHERE `at`.`is_delete`='0'
+                    WHERE `at`.`is_delete`='0' ".$con."
                     ORDER BY `at`.`id` ASC";
 			$res = $this->re_db_query($q);
             if($this->re_db_num_rows($res)>0){
@@ -312,7 +318,7 @@ class transaction extends db{
 			$q = "SELECT `at`.*
 					FROM `".BROKER_MASTER."` AS `at`
                     WHERE `at`.`is_delete`='0'
-                    ORDER BY `at`.`id` ASC";
+                    ORDER BY `at`.`last_name` ASC";
 			$res = $this->re_db_query($q);
             if($this->re_db_num_rows($res)>0){
                 $a = 0;
@@ -343,8 +349,11 @@ class transaction extends db{
         public function select(){
 			$return = array();
 			
-			$q = "SELECT `at`.*
+			$q = "SELECT `at`.*,`bt`.id as batch_number,`cl`.first_name as client_firstname,`cl`.last_name as client_lastname,`bm`.first_name as broker_firstname
 					FROM `".$this->table."` AS `at`
+                    LEFT JOIN `".BATCH_MASTER."` as `bt` on `bt`.`id` = `at`.`batch`
+                    LEFT JOIN `".CLIENT_MASTER."` as `cl` on `cl`.`id` = `at`.`client_name`
+                    LEFT JOIN `".BROKER_MASTER."` as `bm` on `bm`.`id` = `at`.`broker_name`
                     WHERE `at`.`is_delete`='0'
                     ORDER BY `at`.`id` ASC";
 			$res = $this->re_db_query($q);

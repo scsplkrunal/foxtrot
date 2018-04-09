@@ -240,14 +240,20 @@
                             <th>SPONSOR</th>
                             <th>CHECK AMOUNT</th>
                             <th>POSTED AMOUNT</th>
-                            <th class="text-center">ACTION</th>
+                            <th class="text-center" colspan="2">ACTION</th>
                             <!--<th class="text-center">TRADE</th>-->
                         </tr>
     	            </thead>
     	            <tbody>
                     <?php 
                     $count = 0;
+                    $posted_commission_amount = 0;
                     foreach($return as $key=>$val){
+                        $get_commission_amount = $instance->get_commission_total($val['id']);
+                        if(isset($get_commission_amount['posted_commission_amount']) && $get_commission_amount['posted_commission_amount']!='')
+                        {
+                            $posted_commission_amount = $get_commission_amount['posted_commission_amount'];
+                        }
                         ?>
     	                   <tr>
                                 <td class="td_space"><?php echo $val['id'];;?></td>
@@ -255,7 +261,7 @@
                                 <td class="td_space"><?php echo $val['batch_desc'];?></td>
                                 <td class="td_space"><?php foreach($get_sponsor as $ke=>$va){ if(isset($val['sponsor']) && $val['sponsor']==$va['id']){ echo $va['name']; } }?></td>
                                 <td class="td_space" style="text-align: right;"><?php echo '$'.$val['check_amount'];?></td>
-                                <td class="td_space" style="text-align: right;"><?php echo '$'.$val['commission_amount'];?></td>
+                                <td class="td_space" style="text-align: right;"><?php echo '$'.$posted_commission_amount;?></td>
                                 
                                 <!--td class="text-center">
                                     <?php
@@ -271,8 +277,10 @@
                                         }
                                     ?>
                                 </td-->
-                                <td class="text-center td_space">
+                                <td class="text-center">
                                     <a href="<?php echo CURRENT_PAGE; ?>?action=edit_batches&id=<?php echo $val['id']; ?>" class="btn btn-md btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                                </td>
+                                <td class="text-center">
                                     <a onclick="return conf('<?php echo CURRENT_PAGE; ?>?action=batches_delete&id=<?php echo $val['id']; ?>');" class="btn btn-md btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
                                 </td>
                                 <!--<td class="text-center">
@@ -300,8 +308,8 @@
         "bInfo": false,
         "bAutoWidth": false,
         "dom": '<"toolbar">frtip',
-        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 6 ] }, 
-                        { "bSearchable": false, "aTargets": [ 6 ] }]
+        "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 6,7 ] }, 
+                        { "bSearchable": false, "aTargets": [ 6,7 ] }]
         });
         $("div.toolbar").html('<div class="panel-control">'+
                     '<div class="btn-group dropdown" style="float: right;">'+

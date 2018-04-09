@@ -127,12 +127,12 @@ $(document).on('click','.remove-row',function(){
                                             <?php
                                                 if($val['status']==1){
                                                     ?>
-                                                    <a href="<?php echo CURRENT_PAGE; ?>?action=product_status&category=<?php echo $val['category']; ?>&id=<?php echo $val['id']; ?>&status=0" class="btn btn-sm btn-success"><i class="fa fa-check-square-o"></i> Enabled</a>
+                                                    <a href="<?php echo CURRENT_PAGE; ?>?action=product_status&category=<?php echo $val['category']; ?>&id=<?php echo $val['id']; ?>&status=0" class="btn btn-sm btn-success"><i class="fa fa-check-square-o"></i> Active</a>
                                                     <?php
                                                 }
                                                 else{
                                                     ?>
-                                                    <a href="<?php echo CURRENT_PAGE; ?>?action=product_status&category=<?php echo $val['category']; ?>&id=<?php echo $val['id']; ?>&status=1" class="btn btn-sm btn-warning"><i class="fa fa-warning"></i> Disabled</a>
+                                                    <a href="<?php echo CURRENT_PAGE; ?>?action=product_status&category=<?php echo $val['category']; ?>&id=<?php echo $val['id']; ?>&status=1" class="btn btn-sm btn-warning"><i class="fa fa-warning"></i> Terminated</a>
                                                     <?php
                                                 }
                                             ?>

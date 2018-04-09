@@ -17,6 +17,12 @@ require_once(DIR_FS."islogin.php");?>
 <link href="css/style.css" rel="stylesheet" />
 <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
 <link href="<?php echo SITE_CSS; ?>bootstrap-datepicker.min.css" rel="stylesheet"/>
+
+<!-- search with selection box-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.min.css"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+
+
 <!--<link href="<?php echo SITE_CSS; ?>datatables.css" rel="stylesheet"/>
 <link href="<?php echo SITE_CSS; ?>datatables.min.css" rel="stylesheet"/>-->
 <script src="js/jquery.min.js"></script>

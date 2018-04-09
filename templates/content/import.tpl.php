@@ -243,16 +243,19 @@ PostResult( msg );
                                                         </div>
                                                         </td>
                                                         <?php $check_exception_data = $instance->check_exception_data($val['id']);
-                                                            $check_processed_data = $instance->check_processed_data($val['id']);                                                        
+                                                            $check_processed_data = $instance->check_processed_data($val['id']);    
+                                                            $check_file_exception_process = $instance->check_file_exception_process($val['id']);                                                    
                                                         ?>
                                                         <td style="width: 30%;">
                                                         <form method="post">
                                                         <select name="process_file_<?php echo $val['id'];?>" id="process_file_<?php echo $val['id'];?>" class="form-control" style=" width: 75% !important;display: inline;">
                                                             <option value="0">Select Options</option>
                                                             <option value="1" >Delete File</option>
-                                                            <option value="2" >Reprocess</option>
+                                                            <option value="2" >Process</option>
                                                             <option value="3" <?php if(isset($check_exception_data) && $check_exception_data =='0' && isset($check_processed_data) && $check_processed_data == '3'){echo "selected='selected'";} ?> <?php if($val['processed']==0){echo 'disabled="true"';}?> >Review Process</option>
                                                             <option value="4" <?php if(isset($check_exception_data) && $check_exception_data =='4'){echo "selected='selected'";} ?> <?php if($val['processed']==0){echo 'disabled="true"';}?>>Resolve Exceptions</option>
+                                                            <option value="5" <?php if(isset($val['processed']) && $val['processed']==0){ echo 'disabled="true"';}else if(isset($check_file_exception_process) && $check_file_exception_process !='0'){echo 'disabled="true"';} ?>>Reprocess</option>
+                                                            <option value="6" <?php if(isset($val['processed']) && $val['processed']==0){ echo 'disabled="true"';}else if(isset($val['process_completed']) && $val['process_completed']==0){ echo 'disabled="true"';}else if(isset($check_file_exception_process) && $check_file_exception_process !='0'){echo 'disabled="true"';}else if(isset($val['process_completed']) && $val['process_completed']==1 && $val['is_archived'] == 0){ echo "selected='selected'";} ?>>Move To Archived</option>
                                                         </select>
                                                         <input type="hidden" name="id" id="id" value="<?php echo $val['id'];?>" />
                                                         <button type="submit" class="btn btn-sm btn-warning" name="go" value="go" style="display: inline;"> Go</button>
@@ -390,7 +393,6 @@ PostResult( msg );
                                             <div class="table-responsive" style="margin: 0px 5px 0px 5px;">
                                                 <table id="data-table3" class="table table-bordered table-stripped table-hover">
                                                     <thead>
-                                                        <th><input type="checkbox" class="checkbox" name="batch_action" /></th>
                                                         <th>Date</th>
                                                         <th>Rep</th>
                                                         <th>Client</th>
@@ -402,12 +404,36 @@ PostResult( msg );
                                                     <tbody>
                                                         <?php
                                                         $file_id = isset($_GET['id'])?$instance->re_db_input($_GET['id']):0;
+                                                        $existing_field_value = '';
                                                         $return_exception = $instance->select_exception_data($file_id);
                                                         foreach($return_exception as $error_key=>$error_val)
                                                         {
+                                                            if(isset($error_val['file_type']) && $error_val['file_type'] == '3')
+                                                            {
+                                                                $return_sfr_existing_data = $instance->select_existing_sfr_data($error_val['temp_data_id']);
+                                                                if($error_val['field'] == 'cusip_number')
+                                                                {
+                                                                    $existing_field_value = $return_sfr_existing_data['cusip_number'];
+                                                                }
+                                                                if($error_val['field'] == 'ticker_symbol')
+                                                                {
+                                                                    $existing_field_value = $return_sfr_existing_data['ticker_symbol'];
+                                                                }
+                                                            }
+                                                            if(isset($error_val['file_type']) && $error_val['file_type'] == '1')
+                                                            {
+                                                                $return_fanmail_existing_data = $instance->select_existing_fanmail_data($error_val['temp_data_id']);
+                                                                if($error_val['field'] == 'social_security_number')
+                                                                {
+                                                                    $existing_field_value = $return_fanmail_existing_data['social_security_number'];
+                                                                }
+                                                                if($error_val['field'] == 'mutual_fund_customer_account_number')
+                                                                {
+                                                                    $existing_field_value = $return_fanmail_existing_data['mutual_fund_customer_account_number'];
+                                                                }
+                                                            }
                                                         ?>
                                                         <tr>
-                                                            <td><input type="checkbox" class="checkbox" name="batch_action"/></td>
                                                             <td><?php echo date('m/d/Y',strtotime($error_val['date']));?></td>
                                                             <td><?php echo $error_val['rep'];?></td>
                                                             <td><?php echo $error_val['client'];?></td>
@@ -420,7 +446,7 @@ PostResult( msg );
                                                                 <option value="0">ADD</option>
                                                             </select>
                                                             <input type="hidden" name="id" id="id" value="" />
-                                                            <a href="#solve_exception_model" data-toggle="modal"><button type="submit" onclick="add_exception_value('<?php echo $error_val['file_id'];?>','<?php echo $error_val['temp_data_id'];?>','<?php echo $error_val['field'];?>','<?php echo $error_val['rep'];?>');" class="btn btn-sm btn-warning" name="go" value="go" style="display: inline;"> Go</button></a>
+                                                            <a href="#solve_exception_model" data-toggle="modal"><button type="submit" onclick="add_exception_value('<?php echo $error_val['file_id'];?>','<?php echo $error_val['file_type'];?>','<?php echo $error_val['temp_data_id'];?>','<?php echo $error_val['field'];?>','<?php echo $error_val['rep'];?>','<?php echo $existing_field_value;?>');" class="btn btn-sm btn-warning" name="go" value="go" style="display: inline;"> Go</button></a>
                                                             </form>
                                                             </td>
                                                         </tr>
@@ -821,12 +847,36 @@ PostResult( msg );
                 </div>
                 <div class="col-md-4">
                     <div class="inputpopup">
-                        <input type="text" name="exception_value" id="exception_value" value=""/>
+                        <input type="text" name="exception_value" class="default_value" id="exception_value" value="" style="display: block;"/>
+                        <input type="checkbox" class="checkbox" name="active_state" id="active_state" value="1" style="display: none;"/>
+                        <select name="status" id="status" class="form-control" style="display: none;">
+                            <option value="">Select Option</option>
+                            <option value="1">Active</option>
+                            <option value="0" disabled="true">Terminated</option>
+                        </select>
+                        <select name="sponsor" id="sponsor" class="form-control" style="display: none;">
+                            <option value="">Select Sponsor</option>
+                            <?php foreach($get_sponsor as $key=>$val){?>
+                            <option value="<?php echo $val['id'];?>"><?php echo $val['name'];?></option>
+                            <?php } ?>
+                        </select>
+                        <select name="objectives" id="objectives" class="form-control" style="display: none;">
+                            <option value="">Select Objective</option>
+                            <?php foreach($get_objective as $key=>$val){?>
+                            <option value="<?php echo $val['id'];?>"><?php echo $val['option'];?></option>
+                            <?php } ?>
+                        </select>
                         <div id="demo-dp-range">
                             <div class="input-daterange input-group" id="datepicker">
                                 <input type="text" name="exception_value_date" id="exception_value_date" class="form-control" value="" style="display: none;"/>
                             </div>
                         </div>
+                        <input type="text" name="cusip_number" id="cusip_number" value="" style="display: none;"/>
+                        <input type="text" name="existing_cusip_number" id="existing_cusip_number" value="" style="display: none;"/>
+                        <input type="text" name="existing_ticker_symbol" id="existing_ticker_symbol" value="" style="display: none;"/>
+                        <input type="text" name="alpha_code" id="alpha_code" value="" style="display: none;"/>
+                        <input type="text" name="social_security_number" id="social_security_number" value="" style="display: none;"/>
+                        <input type="checkbox" class="checkbox" name="active" id="active" value="1" style="display: none;"/>
                     </div>
                 </div>
                 </div>
@@ -870,6 +920,7 @@ PostResult( msg );
                         <input type="hidden" name="exception_data_id" id="exception_data_id" value=""/>
                         <input type="hidden" name="exception_field" id="exception_field" value=""/>
                         <input type="hidden" name="exception_file_id" id="exception_file_id" value=""/>
+                        <input type="hidden" name="exception_file_type" id="exception_file_type" value=""/>
                         <input type="hidden" name="resolve_exception" id="resolve_exception" value="Resolve Exception" />&nbsp;&nbsp;&nbsp;&nbsp;
         	            <button type="submit" style="alignment-adjust: central !important;" class="btn btn-sm btn-warning" name="resolve_exception" value="Resolve Exception"><i class="fa fa-save"></i> Save</button>
                     </div>
@@ -1031,30 +1082,172 @@ $('#demo-dp-range .input-daterange').datepicker({
     autoclose: true,
     todayHighlight: true
 });
-function add_exception_value(exception_file_id,temp_data_id,exception_field,rep_number)
+function add_exception_value(exception_file_id,exception_file_type,temp_data_id,exception_field,rep_number,existing_field_value)
 {
     document.getElementById("exception_data_id").value = temp_data_id;
     document.getElementById("exception_field").value = exception_field;
     document.getElementById("exception_file_id").value = exception_file_id;
-    if(exception_field == 'u5')
+    document.getElementById("exception_file_type").value = exception_file_type;
+    
+    if(exception_file_type == '3')
     {
-        document.getElementById("field_label").innerHTML = 'Broker Termination Date';
-        $("#exception_value_date").css('display','block');
-        $("#exception_value").css('display','none');
-    }
-    else{
-        document.getElementById("field_label").innerHTML = exception_field;
-        $("#exception_value_date").css('display','none')
-        $("#exception_value").css('display','block')
-    }
-    if(exception_field == 'representative_number')
-    {
-        document.getElementById("exception_value").value = rep_number;
-        $("#assign_rep_to_broker").css('display','block');
-        //alert(document.getElementById("exception_value").value);
-    }
-    else{
+        $("#exception_value_date").css('display','none');
+        $("#active_state").css('display','none');
+        $("#status").css('display','none');
+        $("#social_security_number").css('display','none');
+        $("#active").css('display','none');
+        $("#sponsor").css('display','none');
+        $("#objectives").css('display','none');
+        $("#cusip_number").css('display','none');
+        $("#alpha_code").css('display','none');
         $("#assign_rep_to_broker").css('display','none');
+        
+        if(exception_field == 'cusip_number')
+        {
+            document.getElementById("field_label").innerHTML = 'Change cusip number';
+            $("#existing_cusip_number").css('display','block');
+            document.getElementById("existing_cusip_number").value = existing_field_value;
+            $("#exception_value").css('display','none');
+        }
+        else
+        {
+            $("#existing_cusip_number").css('display','none');
+        }
+        if(exception_field == 'ticker_symbol')
+        {
+            document.getElementById("field_label").innerHTML = 'Change ticker symbol';
+            $("#existing_ticker_symbol").css('display','block');
+            document.getElementById("existing_ticker_symbol").value = existing_field_value;
+            $("#exception_value").css('display','none');
+        }
+        else
+        {
+            $("#existing_ticker_symbol").css('display','none');
+        }
+    }
+    else
+    { 
+        $("#existing_cusip_number").css('display','none');
+        $("#existing_ticker_symbol").css('display','none');
+        if(exception_field == 'u5')
+        {
+            document.getElementById("field_label").innerHTML = 'Broker Termination Date';
+            $("#exception_value_date").css('display','block');
+            $("#exception_value").css('display','none');
+        }
+        else{
+            document.getElementById("field_label").innerHTML = exception_field;
+            $("#exception_value_date").css('display','none');
+            $("#exception_value").css('display','block');
+        }
+        if(exception_field == 'active_check')
+        {
+            document.getElementById("field_label").innerHTML = 'Check License State';
+            $("#active_state").css('display','block');
+            $("#exception_value").css('display','none');
+        }
+        else
+        {
+            $("#active_state").css('display','none');
+        }
+        if(exception_field == 'status')
+        {
+            document.getElementById("field_label").innerHTML = 'Product Terminated';
+            $("#status").css('display','block');
+            $("#exception_value").css('display','none');
+        }
+        else
+        {
+            $("#status").css('display','none');
+        }
+        if(exception_field == 'mutual_fund_customer_account_number')
+        {
+            document.getElementById("field_label").innerHTML = 'Enter client account no.';
+            document.getElementById("exception_value").value = '';
+        }
+        
+        if(exception_field == 'customer_account_number')
+        {
+            document.getElementById("field_label").innerHTML = 'Enter client account no.';
+            document.getElementById("exception_value").value = '';
+        }
+        
+        if(exception_field == 'registration_line1')
+        {
+            document.getElementById("field_label").innerHTML = 'Enter client name.';
+            document.getElementById("exception_value").value = '';
+        }
+        
+        if(exception_field == 'social_security_number')
+        {
+            document.getElementById("field_label").innerHTML = 'Change social security number ';
+            document.getElementById("social_security_number").value = existing_field_value;
+            $("#social_security_number").css('display','block');
+            $("#exception_value").css('display','none');
+        }
+        else
+        {
+            $("#social_security_number").css('display','none');
+        }
+        if(exception_field == 'active')
+        {
+            document.getElementById("field_label").innerHTML = 'Active client.';
+            $("#active").css('display','block');
+            $("#exception_value").css('display','none');
+        }
+        else
+        {
+            $("#active").css('display','none');
+        }
+        if(exception_field == 'objectives')
+        {
+            document.getElementById("field_label").innerHTML = 'Assign product objective';
+            $("#objectives").css('display','block');
+            $("#exception_value").css('display','none');
+        }
+        else
+        {
+            $("#objectives").css('display','none');
+        }
+        if(exception_field == 'sponsor')
+        {
+            document.getElementById("field_label").innerHTML = 'Assign sponsor to product';
+            $("#sponsor").css('display','block');
+            $("#exception_value").css('display','none');
+        }
+        else
+        {
+            $("#sponsor").css('display','none');
+        }
+        if(exception_field == 'CUSIP_number')
+        {
+            document.getElementById("field_label").innerHTML = 'Enter CUSIP number';
+            $("#cusip_number").css('display','block');
+            $("#exception_value").css('display','none');
+        }
+        else
+        {
+            $("#cusip_number").css('display','none');
+        }
+        if(exception_field == 'alpha_code')
+        {
+            document.getElementById("field_label").innerHTML = 'Enter Client shortname';
+            $("#alpha_code").css('display','block');
+            $("#exception_value").css('display','none');
+        }
+        else
+        {
+            $("#alpha_code").css('display','none');
+        }
+        if(exception_field == 'representative_number')
+        {
+            document.getElementById("exception_value").value = rep_number;
+            $("#assign_rep_to_broker").css('display','block');
+            //alert(document.getElementById("exception_value").value);
+        }
+        else{
+            $("#assign_rep_to_broker").css('display','none');
+        }
     }
     
 }

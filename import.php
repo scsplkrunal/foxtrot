@@ -17,8 +17,11 @@
     $return_exception = array();
     
     $instance = new import();
+    $get_objective = $instance->get_objectives_data();
     $instance_broker = new broker_master();
     $get_broker = $instance_broker->select();
+    $instance_sponsor = new manage_sponsor();
+    $get_sponsor = $instance_sponsor->select_sponsor();
     
     if(isset($_POST['go'])&& $_POST['go']=='go'){
         
@@ -39,6 +42,14 @@
         else if(isset($process_file) && $process_file == 4)
         {
             header("location:".CURRENT_PAGE."?tab=review_files&id=".$id);exit;
+        }
+        else if(isset($process_file) && $process_file == 5)
+        {
+            $return = $instance->reprocess_current_files($id);
+        }
+        else if(isset($process_file) && $process_file == 6)
+        {
+            $return = $instance->move_to_archived_files($id);
         }
         else{
             header("location:".CURRENT_PAGE);exit;

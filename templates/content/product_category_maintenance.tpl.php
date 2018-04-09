@@ -26,6 +26,12 @@
                                     <input type="text" name="type" id="type" value="<?php echo $type; ?>" class="form-control" maxlength="30" />
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Type Code </label>
+                                    <input type="text" name="type_code" id="type_code" value="<?php echo $type_code; ?>" class="form-control" maxlength="2" />
+                                </div>
+                            </div>
                        </div>
                     </div>
                     <div class="panel-overlay">

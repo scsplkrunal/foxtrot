@@ -11,6 +11,7 @@
 		public function insert_update($data){
 			$id = isset($data['id'])?$this->re_db_input($data['id']):0;
 			$type = isset($data['type'])?$this->re_db_input($data['type']):'';
+            $type_code = isset($data['type_code'])?$this->re_db_input($data['type_code']):'';
 			
 			if($type==''){
 				$this->errors = 'Please enter type.';
@@ -38,7 +39,7 @@
 				}
 				else if($id>=0){
 					if($id==0){
-						$q = "INSERT INTO `".$this->table."` SET `type`='".$type."'".$this->insert_common_sql();
+						$q = "INSERT INTO `".$this->table."` SET `type`='".$type."',`type_code`='".$type_code."'".$this->insert_common_sql();
 						$res = $this->re_db_query($q);
                         $id = $this->re_db_insert_id();
 						if($res){
@@ -242,7 +243,7 @@
 						}
 					}
 					else if($id>0){
-						$q = "UPDATE `".$this->table."` SET `type`='".$type."' ".$this->update_common_sql()." WHERE `id`='".$id."'";
+						$q = "UPDATE `".$this->table."` SET `type`='".$type."',`type_code`='".$type_code."' ".$this->update_common_sql()." WHERE `id`='".$id."'";
 						$res = $this->re_db_query($q);
 						if($res){
 						    $_SESSION['success'] = UPDATE_MESSAGE;
