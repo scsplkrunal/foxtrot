@@ -42,6 +42,10 @@
             $type = isset($data['type'])?$this->re_db_input($data['type']):'';
             $var = isset($data['variable_annuities'])?$this->re_db_input($data['variable_annuities']):'';
             $reg_type = isset($data['registration_type'])?$this->re_db_input($data['registration_type']):'';
+            //for import
+            $for_import = isset($data['for_import'])?$this->re_db_input($data['for_import']):'false';
+            $file_id = isset($data['file_id'])?$this->re_db_input($data['file_id']):'';
+            $temp_data_id = isset($data['temp_data_id'])?$this->re_db_input($data['temp_data_id']):'';
             
 			
 			if($name==''){
@@ -86,6 +90,14 @@
                 				$q = "INSERT INTO `product_rates_".$category."` SET `product_id`='".$last_inserted_id."',`min_threshold`='".$val_thres."',`max_threshold`='".$max_threshold[$key_thres]."',`min_rate`='".$min_rate[$key_thres]."',`max_rate`='".$max_rate[$key_thres]."'".$this->insert_common_sql();
                 				$res = $this->re_db_query($q);
                             }
+                        }
+                        if($for_import == 'true')
+                        {
+                            $q1 = "UPDATE `".IMPORT_EXCEPTION."` SET `solved`='1' WHERE `file_id`='".$file_id."' and `temp_data_id`='".$temp_data_id."'";
+                            $res1 = $this->re_db_query($q1);
+                            
+                            $q1 = "UPDATE `".IMPORT_IDC_DETAIL_DATA."` SET `CUSIP_number`='".$cusip."' WHERE `file_id`='".$file_id."' and `id`='".$temp_data_id."'";
+                            $res1 = $this->re_db_query($q1);
                         }
 						if($res){
 						    $_SESSION['success'] = INSERT_MESSAGE;

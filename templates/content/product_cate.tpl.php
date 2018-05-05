@@ -276,7 +276,17 @@ $(document).on('click','.remove-row',function(){
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>CUSIP </label><br />
-                                        <input type="text" maxlength="11" class="form-control" name="cusip" value="<?php echo $cusip; ?>" />
+                                        <?php 
+                                        if(isset($_GET['cusip_number']) && $_GET['cusip_number'] != '')
+                                        {
+                                        ?>
+                                            <input type="text" disabled="true" name="cusip_disp" onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="cusip_disp" class="form-control" value="<?php echo $_GET['cusip_number'];?>" />
+                                            <input type="hidden" maxlength="11" class="form-control" name="cusip" value="<?php echo $_GET['cusip_number'];?>" />
+                                        <?php 
+                                        }else{
+                                        ?>
+                                            <input type="text" maxlength="11" class="form-control" name="cusip" value="<?php echo $cusip; ?>" />
+                                        <?php } ?>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -666,6 +676,11 @@ $(document).on('click','.remove-row',function(){
                 </div>
                 <div class="panel-footer fixedbtmenu">
                         <div class="selectwrap">
+                            <?php if(isset($_GET['cusip_number']) && ($_GET['cusip_number'] != '' || $_GET['cusip_number'] == '')){?>
+                            <input type="hidden" name="for_import" id="for_import" class="form-control" value="true" />
+                            <input type="hidden" name="file_id" id="file_id" class="form-control" value="<?php echo $_GET['file_id']; ?>" />
+                            <input type="hidden" name="temp_data_id" id="temp_data_id" class="form-control" value="<?php echo $_GET['exception_data_id']; ?>" />
+                            <?php }?>
                             <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
                             <?php if($_GET['action']=='edit_product' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous&category=<?php echo $category;?>" class="previous next_previous_a" style="float: left;"><input type="button" name="Previous" value="&laquo; Previous" /></a><?php } ?>
         					<?php if($_GET['action']=='edit_product' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next&category=<?php echo $category;?>" class="next next_previous_a"><input type="button" name="Next" value="Next &raquo;" /></a><?php } ?>

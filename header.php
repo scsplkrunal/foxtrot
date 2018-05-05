@@ -68,23 +68,23 @@ $instance_header = new header_class();
     <div class="headertop">
       <div class="sitelogo"><a href="home.php" title="Foxtrot"><img src="images/sitelogo.png" alt="Foxtrot" /></a></div>
       <div class="headertopright">
-		<a href="#" class="userinfo"><img src="images/Help-desk.png" alt="Chat/Help" title="Chat/Help" height="30" width="50" /></a>
+		<a href="#" class="userinfo"><img src="images/Help-desk.png" alt="Chat/Help" title="Chat/Help" height="40" width="60" /></a>
                 
 		<div class="userlogin">
 			<ul class="nav navbar-nav">
                  <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php if(isset($_SESSION['user_name'])){echo $_SESSION['user_name']." ";}?>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php if(isset($_SESSION['user_name'])){echo 'Hello '.$_SESSION['user_name']." ";}?>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="sign-out.php">Logout</a></li>
-						<!--li><a href="#">Option 02</a></li-->
+                        <li><a href="<?php echo SITE_URL; ?>user_profile.php?action=edit&id=<?php echo $_SESSION['user_id'];?>">User Profile</a></li>
+						<li><a href="sign-out.php">Logout</a></li>
                     </ul>
                  </li>              
              </ul>
-             <a href="<?php echo SITE_URL; ?>user_profile.php?action=edit&id=<?php echo $_SESSION['user_id'];?>" class="dropdown-toggle" >User Profile
+             <!--<a href="<?php echo SITE_URL; ?>user_profile.php?action=edit&id=<?php echo $_SESSION['user_id'];?>" class="dropdown-toggle" >User Profile
                     
              <?php $user_header_image = $instance_header->get_user_image($_SESSION['user_id']); ?>
-             <div class="userimg"><img src="<?php echo SITE_URL."upload/".$user_header_image['image'];?>" height="30" width="50" /></div>
+             <div class="userimg"><img src="<?php echo SITE_URL."upload/".$user_header_image['image'];?>" height="30" width="50" /></div>-->
 		</div>
 	  </div>
     </div>
@@ -200,6 +200,6 @@ $instance_header = new header_class();
 <div class="contentmain" style="<?php if(isset($_GET['action']) && ($_GET['action'] == 'edit' || $_GET['action'] == 'add_new' || $_GET['action'] == 'add_sponsor' || $_GET['action'] == 'edit_sponsor' || $_GET['action'] == 'add_product' || $_GET['action'] == 'edit_product' || $_GET['action'] == 'add' || $_GET['action'] == 'edit_transaction' || $_GET['action'] == 'add_batches' || $_GET['action'] == 'edit_batches')){ echo 'padding : 0px !important';} ?>">
 <script type="text/javascript">
 $(document).ready(function() {
-    $('input:text:visible:first', this).focus();
+    $('input:text:visible:first:not(#from_date)', this).focus();
 });
 </script>

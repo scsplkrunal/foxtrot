@@ -163,6 +163,21 @@ select::-ms-expand {
 	margin: 0 7px 0 1px;
 	vertical-align: middle;
 }
+.selectwrap_button {
+    background: #EF7623;
+	border: none;
+	border-radius: 0;
+	color: #fff;
+	font-family: 'Poppins', sans-serif;
+	font-weight: 600;
+	font-size: 13px;
+	height: 34px;
+	padding: 0 15px;
+	text-transform: uppercase;
+	border: none;
+	margin: 0 7px 0 1px;
+	vertical-align: middle;
+}
 /* Lightbox strart */
 
 .inputpopup {
@@ -302,6 +317,11 @@ select::-ms-expand {
 }
 .selectwrap input[type="submit"]:hover, .selectwrap input[type="button"]:hover {
 	background:#333333;
+	-webkit-transition: all 0.3s;
+	transition: all 0.3s;
+}
+.selectwrap_button:hover{
+    background:#333333;
 	-webkit-transition: all 0.3s;
 	transition: all 0.3s;
 }
@@ -533,6 +553,119 @@ select::-ms-expand {
 }
 
 /* Fixed Tabs end */
+
+
+.graphboxcontent.dailyimporting {
+	min-height: 10px;
+}
+.graphdata01 {
+	width:100%;
+	float:left;
+	clear:both;
+	display:none;
+}
+.graphdata01_2 {
+	width:100%;
+	float:left;
+	clear:both;
+	display:none;
+}
+.graphdata01_3 {
+	width:100%;
+	float:left;
+	clear:both;
+	display:none;
+}
+.graphdata01_4 {
+	width:100%;
+	float:left;
+	clear:both;
+	display:none;
+}
+.graphdata01_5 {
+	width:100%;
+	float:left;
+	clear:both;
+	display:none;
+}
+.data01title {
+	float:left;
+}
+.data01count {
+	float:left;
+	padding-left:10px;
+}
+.graphdata01.showhidata {
+	display: block;
+}
+.graphdata02.showhidata {
+	display: none;
+}
+.graphdata01_2.showhidata {
+	display: block;
+}
+.graphdata02_2.showhidata {
+	display: none;
+}
+.graphdata01_3.showhidata {
+	display: block;
+}
+.graphdata02_3.showhidata {
+	display: none;
+}
+.graphdata01_4.showhidata {
+	display: block;
+}
+.graphdata02_4.showhidata {
+	display: none;
+}
+.graphdata01_5.showhidata {
+	display: block;
+}
+.graphdata02_5.showhidata {
+	display: none;
+}
+
+.sortdatawrap label.sortlbl {
+	float: left;
+	margin: 0;
+	padding: 0 10px 0 0;
+}
+.sortdatawrap input[type="text"] {
+	background-color: transparent;	
+	float:left;
+	border: none;
+	background-image:url(../images/iconcalsort.png);
+	background-repeat:no-repeat;
+	background-position:left top;
+	background-size:21px;
+	cursor: pointer;
+	font-size: 0;
+	width: 24px;
+	height: 25px;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	-ms-appearance: none \9;
+	-o-appearance: none;
+}
+.sortdatawrap input[type="button"], .sortdatawrap input[type="submit"], .sortdatawrap input[type="button"]:hover, .sortdatawrap input[type="submit"]:hover {
+	background-color: transparent;	
+	float:left;
+	border: none;
+	background-image:url(../images/iconcalfilter.png);
+	background-repeat:no-repeat;
+	background-position:left top;
+	background-size:24px;
+	cursor: pointer;
+	font-size: 0;
+	width: 30px;
+	height: 30px;
+}
+
+
+
+
+
 
 /* Medea Queries */
 
@@ -835,7 +968,10 @@ select::-ms-expand {
 /* Lightbox ennd */
 }
 
-
+@media only screen and (max-width: 479px) {
+	.sortdatawrap label.sortlbl {
+	padding: 0 3px 0 0;
+}
 
 
 

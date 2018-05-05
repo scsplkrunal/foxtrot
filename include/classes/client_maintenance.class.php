@@ -10,6 +10,7 @@
 		 * */ 
          
 		public function insert_update($data){//echo '<pre>';print_r($data);exit;
+            $_SESSION['client_id'] = 0;
 			$id = isset($data['id'])?$this->re_db_input($data['id']):0;
 			$fname = isset($data['fname'])?$this->re_db_input($data['fname']):'';
             $lname = isset($data['lname'])?$this->re_db_input($data['lname']):'';
@@ -165,9 +166,12 @@
 			$id = isset($data['account_id'])?$this->re_db_input($data['account_id']):0;
 			$account_no = isset($data['account_no'])?$data['account_no']:array();
             $sponsor = isset($data['sponsor'])?$data['sponsor']:array();
+            $for_import = isset($data['for_import'])?$this->re_db_input($data['for_import']):'false';
+            $file_id = isset($data['file_id'])?$this->re_db_input($data['file_id']):'';
+            $temp_data_id = isset($data['temp_data_id'])?$this->re_db_input($data['temp_data_id']):'';
             
             if($id==0){
-                if($account_no[0] != '')
+                if($account_no[0] && $sponsor[0] != '')
                 {
                     foreach($account_no as $key_acc=>$val_acc)
                     {
@@ -179,6 +183,16 @@
                     }
                     $id = $this->re_db_insert_id();
     				if($res){
+    				    
+                        if($for_import == 'true')
+                        {
+                            $q1 = "UPDATE `".IMPORT_EXCEPTION."` SET `solved`='1' WHERE `file_id`='".$file_id."' and `temp_data_id`='".$temp_data_id."'";
+                            $res1 = $this->re_db_query($q1);
+                            
+                            $q1 = "UPDATE `".IMPORT_IDC_DETAIL_DATA."` SET `customer_account_number`='".$account_no[0]."' WHERE `file_id`='".$file_id."' and `id`='".$temp_data_id."'";
+                            $res1 = $this->re_db_query($q1);
+                        }
+                        
     				    $_SESSION['success'] = INSERT_MESSAGE;
     					return true;
     				}

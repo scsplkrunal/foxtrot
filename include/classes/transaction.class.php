@@ -31,6 +31,8 @@ class transaction extends db{
             $buy_sell = isset($data['buy_sell'])?$this->re_db_input($data['buy_sell']):'';
             $hold_commission = isset($data['hold_commission'])?$this->re_db_input($data['hold_commission']):'';
             $hold_resoan = isset($data['hold_resoan'])?$this->re_db_input($data['hold_resoan']):'';
+            $units = isset($data['units'])?$this->re_db_input($data['units']):'';
+            $shares = isset($data['shares'])?$this->re_db_input($data['shares']):'';
             
             	
             if($client_name=='0'){
@@ -79,7 +81,7 @@ class transaction extends db{
                         `product_cate`='".$product_cate."',`sponsor`='".$sponsor."',`product`='".$product."',`batch`='".$batch."',
                         `invest_amount`='".$invest_amount."',`commission_received_date`='".$commission_received_date."',`posting_date`='".$posting_date."',`trade_date`='".$trade_date."',`settlement_date`='".$settlement_date."',`charge_amount`='".$charge_amount."',`commission_received`='".$commission_received."',`split`='".$split."',
                         `another_level`='".$another_level."',`cancel`='".$cancel."',`buy_sell`='".$buy_sell."',
-                        `hold_resoan`='".$hold_resoan."',`hold_commission`='".$hold_commission."'".$this->insert_common_sql();
+                        `hold_resoan`='".$hold_resoan."',`hold_commission`='".$hold_commission."',`units`='".$units."',`shares`='".$shares."'".$this->insert_common_sql();
 						
                         $res = $this->re_db_query($q);
                         $last_inserted_id = $this->re_db_insert_id();
@@ -107,7 +109,7 @@ class transaction extends db{
                         `product_cate`='".$product_cate."',`sponsor`='".$sponsor."',`product`='".$product."',`batch`='".$batch."',
                         `invest_amount`='".$invest_amount."',`commission_received_date`='".$commission_received_date."',`posting_date`='".$posting_date."',`trade_date`='".$trade_date."',`settlement_date`='".$settlement_date."',`charge_amount`='".$charge_amount."',`commission_received`='".$commission_received."',`split`='".$split."',
                         `another_level`='".$another_level."',`cancel`='".$cancel."',`buy_sell`='".$buy_sell."',
-                        `hold_resoan`='".$hold_resoan."',`hold_commission`='".$hold_commission."'".$this->update_common_sql()." WHERE `id`='".$id."'";
+                        `hold_resoan`='".$hold_resoan."',`hold_commission`='".$hold_commission."',`units`='".$units."',`shares`='".$shares."'".$this->update_common_sql()." WHERE `id`='".$id."'";
                         $res = $this->re_db_query($q);
                         
                         $q = "UPDATE `".TRANSACTION_TRADE_SPLITS."` SET `is_delete`='1' WHERE `transaction_id`='".$id."'";

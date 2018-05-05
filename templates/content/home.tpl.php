@@ -6,53 +6,50 @@
 $(document).ready(function (){
 
 
- var data_investment_amount = <?php if($invest_amount['count']==''){ echo '0'; } else {echo $invest_amount['count']; }?>;
- var data_charge_amount = <?php if($charge_amount['count'] == '') {echo '0'; }else{echo $charge_amount['count']; }?>;
- var data_commission_received_amount = <?php if($commission_received_amount['count']==''){echo '0';}else {echo $commission_received_amount['count'];} ?>;
+ var data_investment_amount = <?php if($invest_amount==''){ echo '0'; } else {echo $invest_amount; }?>;
+ var data_charge_amount = <?php if($charge_amount == '') {echo '0'; }else{echo $charge_amount; }?>;
+ var data_commission_received_amount = <?php if($commission_received_amount==''){echo '0';}else {echo $commission_received_amount;} ?>;
+ 
+ var di_completed_files = <?php echo $di_completed_files; ?>;
+ var di_partially_completed = <?php echo $di_partially_completed_files; ?>;
+ var di_new_files = <?php echo $di_new_files; ?>;
 
-Highcharts.chart('container1', {
-   chart: {
-        plotBackgroundColor: null,
-        plotBorderWidth: 0,
-        plotShadow: false
+Highcharts.chart('container_daily_importing', {
+    chart: {
+        type: 'pie',
+        options3d: {
+            enabled: true,
+            alpha: 45,
+            beta: 0,
+            width: 849,
+            height: 400
+        }
     },
     title: {
-        text: '',
-        align: 'center',
-        verticalAlign: 'middle',
-        y: 40
+        text: ''
     },
-    /*tooltip: {
-        pointFormat: '{plotOptions.pie.endAngle}: <b>{point.percentage:.1f}%</b>'
-    },*/
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
     plotOptions: {
         pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            depth: 20,
             dataLabels: {
-                enabled: true,
-                distance: -50,
-                style: {
-                    fontWeight: 'bold',
-                    color: 'orange'
-                }   
-            },
-            startAngle: 0,
-            endAngle: 270,
-            center: ['50%', '50%']
+                enabled: false,
+                format: '{point.name}'
+            }
         }
     },
     series: [{
         type: 'pie',
-        name: 'Browser share',
-        innerSize: '75%',
+        name: 'Imported Files',
         data: [
-            ['75%',   75],
-            {
-                name: 'Proprietary or Undetectable',
-                y: 0.2,
-                dataLabels: {
-                    enabled: false
-                }
-            }
+            
+            ['Partially Completed', di_partially_completed],
+            ['New Files', di_new_files],
+            ['Completed', di_completed_files]
         ]
     }]
 });
@@ -65,7 +62,9 @@ Highcharts.chart('container2', {
     },
     
     xAxis: {
-        categories: ['cat1', 'cat2', 'cat3', 'cat4', 'cat5'],
+        categories: 
+        <?php echo $ytd_product_category_chart;?>
+        ,
         title: {
             text: null
         }
@@ -91,9 +90,20 @@ Highcharts.chart('container2', {
         enabled: false
     },
     series: [{
-        
         color:'orange',
-        data: [107, 31, 635, 203, 2]
+        name: 'Investment Amount',
+        data: [<?php echo $ytd_total_investment_amount_chart;?>]
+
+    }, {
+        color:'green',
+        name: 'Commission Received',
+        data: [<?php echo $ytd_total_commission_received_chart;?>]
+
+    }, { 
+        color:'black',
+        name: 'Commission Paid',
+        data: [<?php echo $ytd_total_commission_pending_chart;?>]
+
     }]
 });
 Highcharts.chart('container3', {
@@ -104,20 +114,7 @@ Highcharts.chart('container3', {
         text: ''
     },
     xAxis: {
-        categories: [
-            'Jan',
-            'Feb',
-            'Mar',
-            'Apr',
-            'May',
-            'Jun',
-            'Jul',
-            'Aug',
-            'Sep',
-            'Oct',
-            'Nov',
-            'Dec'
-        ],
+        categories: <?php echo $dis_month_list; ?>,
         crosshair: true
     },
     yAxis: {
@@ -133,20 +130,12 @@ Highcharts.chart('container3', {
         }
     },
     series: [{
-        //name: 'Tokyo',
-        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+        name: 'Transaction Processed',
+        data: [<?php echo $transaction_processed_data ; ?>]
 
     }, {
-        //name: 'New York',
-        data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
-
-    }, {
-        //name: 'London',
-        data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
-
-    }, {
-        //name: 'Berlin',
-        data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1]
+        name: 'Transaction on Hold',
+        data: [<?php echo $transaction_hold_data; ?>]
 
     }]
 });
@@ -242,63 +231,137 @@ Highcharts.chart('container_payroll', {
 <div class="sectionwrapper">
   <div class="container">
   <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
-    <div class="row">
+    <form method="post" id="filter_chart" >
+        <input type="hidden" name="from_date" id="from_date" value="" class="form-control" />
+        <input type="hidden" name="to_date" id="to_date" value="<?php echo date('Y-m-d');?>" class="form-control" />
+        <input type="hidden" name="chart_id" id="chart_id" value=""/>
+        <input type="hidden" name="filter" id="filter" value="Filter"/>
+    </form>
+    <div class="row" id="chart_row">
         <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 pull-left">
-			<div class="graphbox">
-				<div class="graphboxtitle">Daily Importing <i class="fa fa-times-circle"></i><i class="fa fa-chevron-circle-down"></i></div>
-				<div class="graphboxcontent">
-                    <table width='100%'> 
+			<div class="graphbox" id="chart_1">
+				<div class="graphboxtitle">Daily Importing <i class="fa fa-calendar datepicker" aria-hidden="true" id="calendar_1"></i><i id="showhideclick" class="fa fa-chevron-circle-up"></i></div>
+				<div class="graphboxcontent dailyimporting">
+					<div class="graphdata01">
+						<div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 pull-left">
+								<span class="data01title"><b>New Files to Process:</b></span>
+								<span class="data01count"><?php echo $di_new_files; ?></span>
+							</div>
+							<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 pull-left">
+								<span class="data01title"><b>Completed Files:</b></span>
+								<span class="data01count"><?php echo $di_completed_files; ?></span>
+							</div>
+							<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 pull-left">
+								<span class="data01title"><b>Partially Completed Files:</b></span>
+								<span class="data01count"><?php echo $di_partially_completed_files; ?></span>
+							</div>
+							
+						</div>
+					</div>
+                    <table width='100%' class="graphdata02"> 
                         <tr>
-                            <td>Completed Files</td>
-                            <td>16</td>
-                            <td rowspan="5" width='60%'><div id="container1" style="min-width: 200px; height: 200px; max-width: 200px; margin:  auto"></div></td>
+                            <td>New Files to Process:</td>
+                            <td><?php echo $di_new_files; ?></td>
+                            <td rowspan="5" width='60%'><div id="container_daily_importing" style="min-width: 200px; height: 200px;  max-width: 3000px; margin:  auto"></div></td>
                         </tr>
                         <tr>
-                            <td>Partially Completed</td>
-                            <td>4</td>
+                            <td>Completed Files:</td>
+                            <td><?php echo $di_completed_files; ?></td>
                         </tr>
                         <tr>
-                            <td>New Files</td>
-                            <td>4</td>
+                            <td>Partially Completed Files:</td>
+                            <td><?php echo $di_partially_completed_files; ?></td>
                         </tr>
+                        
                     </table>
 					<div class="graphimg">
-                    <!--img src="images/graphimg.jpg" alt="Graph Image" / --></div>
+                    </div>
 				</div>
 			</div>
-			<div class="graphbox">
-				<div class="graphboxtitle">Commissions <i class="fa fa-times-circle"></i><i class="fa fa-chevron-circle-down"></i></div>
-				<div class="graphboxcontent">
-                    <table width='100%'> 
+            <div class="graphbox">
+				<div class="graphboxtitle">Commissions <i class="fa fa-calendar datepicker" aria-hidden="true" id="calendar_2"></i></i><i id="showhideclick_2" class="fa fa-chevron-circle-up"></i></div>
+				<div class="graphboxcontent dailyimporting">
+					<div class="graphdata01_2">
+						<div class="row">
+							<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 pull-left">
+								<span class="data01title"><b>Investment Amount:</b></span>
+								<span class="data01count">$<?php echo number_format($invest_amount);?></span>
+							</div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 pull-left">
+								<span class="data01title"><b>Commission Received:</b></span>
+								<span class="data01count">$<?php echo number_format($commission_received_amount);?></span>
+							</div>
+							<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 pull-left">
+								<span class="data01title"><b>Ticket Charges:</b></span>
+								<span class="data01count">$<?php echo number_format($charge_amount);?></span>
+							</div>
+							
+						</div>
+					</div>
+                    <table width='100%' class="graphdata02_2"> 
                         <tr>
-                            <td>Invest Amount</td>
-                            <td>$<?php if($invest_amount['count']!=''){ echo $invest_amount['count'];}else{echo 0;}?></td>
+                            <td>Investment Amount:</td>
+                            <td>$<?php echo number_format($invest_amount);?></td>
                             <td rowspan="5" style="width: 60%;"><div id="container_commission" style="min-width: 200px; height: 200px; max-width: 3000px; margin:  auto"></div></td>
                         </tr>
                         <tr>
-                            <td>Charge Amount</td>
-                            <td>$<?php if($charge_amount['count']!=''){ echo $charge_amount['count'];}else{echo 0;}?></td>
+                            <td>Commission Received:</td>
+                            <td>$<?php echo number_format($commission_received_amount);?></td>
                         </tr>
                         <tr>
-                            <td>Commission Received Amount</td>
-                            <td>$<?php if($commission_received_amount['count']!=''){ echo $commission_received_amount['count'];}else{echo 0;}?></td>
+                            <td>Ticket Charges:</td>
+                            <td>$<?php echo number_format($charge_amount);?></td>
                         </tr>
-                        </table>
-        				</div>
-                        <div class="graphboxtitle" style="border-top: 2px solid #dfdfdf; font-weight: 10 !important; font-size: 15px !important;">
-                        <table>
-                            <tr><?php $total= $invest_amount['count']+$charge_amount['count']+$commission_received_amount['count'];?>
-                                <td style="width: 28.5% !important;">Total Amount</td>
-                                <td>$<?php echo $total; ?></td>
-                                <td rowspan="5" style="width: 60%;"></td>
-                            </tr>
-                        </table>
-                        </div>
+                    </table>
+					<div class="graphimg">
+                    </div>
+				</div>
             </div>
-			<div class="graphbox">
-				<div class="graphboxtitle">Payroll <i class="fa fa-times-circle"></i><i class="fa fa-chevron-circle-down"></i></div>
-				<div class="graphboxcontent">
-                    <table width='100%'> 
+            <div class="graphbox">
+				<div class="graphboxtitle">Payroll <i class="fa fa-calendar datepicker" aria-hidden="true" id="calendar_3"></i><i id="showhideclick_3" class="fa fa-chevron-circle-up"></i></div>
+				<div class="graphboxcontent dailyimporting">
+					<div class="graphdata01_3">
+						<div class="row">
+							<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 pull-left">
+								<span class="data01title"><b>Last Cutoff :</b></span>
+								<span class="data01count">15-11-2017</span>
+							</div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 pull-left">
+								<span class="data01title"><b>Gross Commission :</b></span>
+								<span class="data01count">$325k</span>
+							</div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 pull-left">
+								<span class="data01title"><b>Average Payout Rate :</b></span>
+								<span class="data01count">$346.512.1</span>
+							</div>
+							<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 pull-left">
+								<span class="data01title"><b>Charges :</b></span>
+								<span class="data01count">$1.5k</span>
+							</div>
+							<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 pull-left">
+								<span class="data01title"><b>Net Commission :</b></span>
+								<span class="data01count">$228k</span>
+							</div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 pull-left">
+								<span class="data01title"><b>Adjustment :</b></span>
+								<span class="data01count">$4.5k</span>
+							</div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 pull-left">
+								<span class="data01title"><b>Total Check Amount :</b></span>
+								<span class="data01count">$265k</span>
+							</div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 pull-left">
+								<span class="data01title"><b>Balance Carried Forword :</b></span>
+								<span class="data01count">$45k</span>
+							</div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 pull-left">
+								<span class="data01title"><b>Retention :</b></span>
+								<span class="data01count">$415k</span>
+							</div>
+						</div>
+					</div>
+                    <table width='100%' class="graphdata02_3"> 
                         <tr>
                             <td>Last Cutoff</td>
                             <td>15-11-2017</td>
@@ -337,69 +400,187 @@ Highcharts.chart('container_payroll', {
                             <td>$415k</td>
                         </tr>
                     </table>
-					<!--p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes.</p-->
-					<div class="graphimg"><!--img src="images/graphimg.jpg" alt="Graph Image" /--></div>
-				</div>
-			</div>
-		</div>
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 pull-right">
-			<div class="graphbox graphbox02">
-				<div class="graphboxtitle">Compliance <i class="fa fa-times-circle"></i><i class="fa fa-chevron-circle-down"></i></div>
-				<div class="graphboxcontent">
 					<div class="graphimg">
-                     <table width='100%'> 
-                        <tr>
-                            <td align='center'>Completed Files</td>
-                        </tr>
-                        <tr>
-                            <td align='center'>4</td>
-                        </tr>
-                        <tr>
-                            <td align='center'>Pending Files</td>
-                        </tr>
-                        <tr>
-                            <td align='center'>4</td>
-                        </tr>
-                        <tr>
-                            <td> <div id="container3" style="min-width: 290px; height: 400px; margin: 0 auto"></div> </td>
-                        </tr>
-                    </table>
+                    </div>
 				</div>
+            </div>
+		</div>	
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 pull-right">
+            <div class="graphbox graphbox02">
+			<div class="graphboxtitle">Compliance <i class="fa fa-calendar datepicker" aria-hidden="true" id="calendar_4"></i><i id="showhideclick_4" class="fa fa-chevron-circle-up"></i></div>
+			<div class="graphboxcontent dailyimporting">
+				<div class="graphdata01_4">
+					<div class="row">
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+							<span class="data01title"><b>Processed:</b></span>
+							<span class="data01count"><?php echo $total_processed_transaction;?></span>
+						</div>
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+							<span class="data01title"><b>On Hold:</b></span>
+							<span class="data01count"><?php echo $total_hold_transaction; ?></span>
+						</div>
+					</div>
+				</div>
+                <table width='100%' class="graphdata02_4"> 
+                    <tr>
+                        <td style="text-align: right;min-width: 145px;">Processed:</td>
+                        <td style="text-align: left;min-width: 145px;"><?php echo $total_processed_transaction; ?></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;min-width: 145px;">On Hold:</td>
+                        <td style="text-align: left;min-width: 145px;"><?php echo $total_hold_transaction;?></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"> <div id="container3" style="min-width: 290px; height: 400px; margin: 0 auto"></div> </td>
+                    </tr>
+                </table>
+				<div class="graphimg">
+                </div>
 			</div>
         </div>
-   
-			<div class="graphbox graphbox02">
-				<div class="graphboxtitle">YTD Production <i class="fa fa-times-circle"></i><i class="fa fa-chevron-circle-down"></i></div>
-				<div class="graphboxcontent">
-                    <table width='100%'> 
-                        <tr>
-                            <td colspan="2" width='60%'><div id="container2" style="min-width: 190px; max-width: 800px; height: 400px; margin: 0 auto"></div></div></td>
-                        </tr>
-                        <tr>
-                            <td>cat1</td>
-                            <td>107</td>
-                        </tr>
-                        <tr>
-                            <td>cat2</td>
-                            <td>31</td>
-                        </tr>
-                        <tr>
-                            <td>cat3</td>
-                            <td>635</td>
-                        </tr>
-                        <tr>
-                            <td>cat4</td>
-                            <td>203</td>
-                        </tr>
-                        <tr>
-                            <td>cat5</td>
-                            <td>2</td>
-                        </tr>
-                    </table>
+        <div class="graphbox graphbox02">
+			<div class="graphboxtitle">YTD Production <i class="fa fa-calendar datepicker2" aria-hidden="true" id="calendar_5"></i><i id="showhideclick_5" class="fa fa-chevron-circle-up"></i></div>
+			<div class="graphboxcontent dailyimporting">
+				<div class="graphdata01_5">
+					<div class="row">
+                        <?php 
+                        foreach($ytd_product_category as $key=>$val){
+                        ?>
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+							<span class="data01title"><b><?php echo $val;?>:</b></span>
+							<span class="data01count"><?php echo $ytd_total_investment_amount[$key];?></span>
+                            <span class="data01count"><?php echo $ytd_total_commission_received[$key];?></span>
+                            <span class="data01count"><?php echo $ytd_total_commission_pending[$key];?></span>
+                        </div>
+                        <?php } ?>
+					</div>
 				</div>
+                <table width='100%' class="graphdata02_5"> 
+                    <tr>
+                        <td colspan="4" width='60%'><div id="container2" style="min-width: 190px; max-width: 800px; height: 400px; margin: 0 auto"></div></td>
+                    </tr>
+                    <?php 
+                        foreach($ytd_product_category as $key=>$val){
+                        ?>
+                    <tr>
+                        <td><?php echo $val;?>:</td>
+                        <td><?php echo $ytd_total_investment_amount[$key];?></td>
+                        <td><?php echo $ytd_total_commission_received[$key];?></td>
+                        <td><?php echo $ytd_total_commission_pending[$key];?></td>
+                    </tr>
+                    <?php } ?>
+                </table>
+				<div class="graphimg">
+                </div>
 			</div>
-		</div>
-    </div>
+        </div>
+	</div>
+</div>
+</div>
   </div>
 </div>
-										
+<script type="text/javascript">
+function dateChanged(ev)
+{
+    var id = ev.target.id
+    var date = ev['date'].toDateString()
+    var lastChar = id.substr(id.length - 1);
+    document.getElementById("chart_id").value = lastChar;
+    document.getElementById("from_date").value = date;
+    document.getElementById("filter_chart").submit();
+    
+}
+$(document).ready(function(){
+    $('.datepicker').datepicker({
+        format: "mm-yyyy",
+        startView: "months", 
+        minViewMode: "months",
+        todayBtn: "linked",
+        autoclose: true,
+        todayHighlight: true
+        
+        }).on('show',function(){
+            $(".datepicker-dropdown").css("z-index",'1000000');
+        }).on('changeDate', dateChanged);
+        
+        $('.datepicker2').datepicker({
+        format: "yyyy",
+        startView: "years", 
+        minViewMode: "years",
+        todayBtn: "linked",
+        autoclose: true,
+        todayHighlight: true
+        
+        }).on('show',function(){
+            $(".datepicker-dropdown").css("z-index",'1000000');
+        }).on('changeDate', dateChanged);
+		  
+});
+</script>
+
+<script type="text/javascript">
+$(function(){
+	$("#showhideclick").click(function () {
+	  $('.graphdata01').toggleClass('showhidata');	  
+		});
+	  
+	$("#showhideclick").click(function () {
+	  $('.graphdata02').toggleClass('showhidata');	  
+		});
+})
+$('#showhideclick').click(function(){
+    $(this).toggleClass('fa-chevron-circle-down fa-chevron-circle-up')
+})
+$(function(){
+	$("#showhideclick_2").click(function () {
+	  $('.graphdata01_2').toggleClass('showhidata');	  
+		});
+	  
+	$("#showhideclick_2").click(function () {
+	  $('.graphdata02_2').toggleClass('showhidata');	  
+		});
+})
+
+$('#showhideclick_2').click(function(){
+    $(this).toggleClass('fa-chevron-circle-down fa-chevron-circle-up')
+})
+$(function(){
+	$("#showhideclick_3").click(function () {
+	  $('.graphdata01_3').toggleClass('showhidata');	  
+		});
+	  
+	$("#showhideclick_3").click(function () {
+	  $('.graphdata02_3').toggleClass('showhidata');	  
+		});
+})
+
+$('#showhideclick_3').click(function(){
+    $(this).toggleClass('fa-chevron-circle-down fa-chevron-circle-up')
+});
+$(function(){
+	$("#showhideclick_4").click(function () {
+	  $('.graphdata01_4').toggleClass('showhidata');	  
+		});
+	  
+	$("#showhideclick_4").click(function () {
+	  $('.graphdata02_4').toggleClass('showhidata');	  
+		});
+})
+
+$('#showhideclick_4').click(function(){
+    $(this).toggleClass('fa-chevron-circle-down fa-chevron-circle-up')
+});
+$(function(){
+	$("#showhideclick_5").click(function () {
+	  $('.graphdata01_5').toggleClass('showhidata');	  
+		});
+	  
+	$("#showhideclick_5").click(function () {
+	  $('.graphdata02_5').toggleClass('showhidata');	  
+		});
+})
+
+$('#showhideclick_5').click(function(){
+    $(this).toggleClass('fa-chevron-circle-down fa-chevron-circle-up')
+});
+</script>

@@ -18,6 +18,8 @@
     $split_broker = array();
     $split_rate = array();
     $return_splits = array();
+    $units = 0;
+    $shares = 0; 
     
     if(isset($_POST['transaction'])&& $_POST['transaction']=='Save'){ 
         //echo '<pre>';print_r($_SESSION['batch_id']);exit();
@@ -45,7 +47,8 @@
         $hold_commission = isset($_POST['hold_commission'])?$instance->re_db_input($_POST['hold_commission']):'';
         $hold_resoan = isset($_POST['hold_resoan'])?$instance->re_db_input($_POST['hold_resoan']):'';
         $posting_date = isset($_POST['posting_date'])?$instance->re_db_input($_POST['posting_date']):'';
-        
+        $units = isset($_POST['units'])?$instance->re_db_input($_POST['units']):'';
+        $shares = isset($_POST['shares'])?$instance->re_db_input($_POST['shares']):'';
         
         $return = $instance->insert_update($_POST);
         
@@ -78,7 +81,7 @@
         $return = $instance->edit_transaction($id);
         $batch_id = isset($return['batch'])?$instance->re_db_output($return['batch']):0;
         $get_batch_date = $instance->get_batch_date($batch_id);
-        //echo '<pre>';print_r($batch_date);exit;
+        //echo '<pre>';print_r($get_batch_date);exit;
         $batch_date = isset($get_batch_date)?$get_batch_date:'0000-00-00';
         $id = isset($return['id'])?$instance->re_db_output($return['id']):0;
         $trade_number = isset($return['id'])?$instance->re_db_output($return['id']):0;
@@ -102,6 +105,8 @@
         $hold_commission = isset($return['hold_commission'])?$instance->re_db_output($return['hold_commission']):'';
         $hold_resoan = isset($return['hold_resoan'])?$instance->re_db_output($return['hold_resoan']):'';
         $posting_date = isset($return['posting_date'])?$instance->re_db_output($return['posting_date']):'';
+        $units = isset($return['units'])?$instance->re_db_output($return['units']):'';
+        $shares = isset($return['shares'])?$instance->re_db_output($return['shares']):'';
         $return_splits = $instance->edit_splits($id);
            
     }

@@ -15,13 +15,23 @@
     $ftp_file_type = '';
     $get_file_data = '';
     $return_exception = array();
+    $total_commission_amount = 0;
     
     $instance = new import();
+    $get_product_category = $instance->select_category();
     $get_objective = $instance->get_objectives_data();
     $instance_broker = new broker_master();
     $get_broker = $instance_broker->select();
+    $instance_client = new client_maintenance();
+    $get_client = $instance_client->select();
     $instance_sponsor = new manage_sponsor();
     $get_sponsor = $instance_sponsor->select_sponsor();
+    
+    if(isset($_GET['id']) && $_GET['id'] !='')
+    {
+        $get_total_commission = $instance->get_total_commission_amount($_GET['id']);
+        $total_commission_amount = $get_total_commission;
+    }
     
     if(isset($_POST['go'])&& $_POST['go']=='go'){
         
@@ -34,6 +44,10 @@
         else if(isset($process_file) && $process_file == 2)
         {
             $return = $instance->process_current_files($id);
+            if($return == '')
+            {
+                header("location:".SITE_URL."import.php");exit;
+            }
         }
         else if(isset($process_file) && $process_file == 3)
         {
@@ -76,18 +90,15 @@
         foreach($get_all_current_files as $key_file_id=>$val_file_id)
         {
             $file_id = isset($val_file_id['id'])?$instance->re_db_input($val_file_id['id']):0;
-            echo $file_id;
             $return = $instance->process_current_files($file_id);
-            echo "<pre>";
-            print_R($return);
         }
-        exit;
+        
         if($return===true){
             
-            header("location:".CURRENT_PAGE);exit;
+            header("location:".SITE_URL."import.php");exit;
         }
         else{
-            $error = !isset($_SESSION['warning'])?$return:'';
+            header("location:".SITE_URL."import.php");exit;
         }
     }
     else if(isset($_POST['submit'])&& $_POST['submit']=='Save'){
@@ -194,11 +205,22 @@
     {
         $broker_id = $instance->re_db_input($_GET['broker_termination']);
         $return = $instance->check_u5_termination($broker_id);
-        $current_date = date('Y-m-d');
-        
-        if($current_date>$return)
+        if($return != '')
         {
-            echo "1";exit;
+            $current_date = date('Y-m-d');
+        
+            if($current_date>$return)
+            {
+                echo date('m/d/Y',strtotime($return));exit;
+            }
+            else
+            {
+                echo '0';exit;
+            }
+        }
+        else
+        {
+            echo '0';exit;
         }
     }  
     else if($action=='view'){

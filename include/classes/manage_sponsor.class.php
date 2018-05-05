@@ -31,6 +31,11 @@
             $sdtcc_nscc = isset($data['sdtcc_nscc'])?$this->re_db_input($data['sdtcc_nscc']):'';
             $sclr_firm = isset($data['sclr_firm'])?$this->re_db_input($data['sclr_firm']):'';
             
+            //for import module
+            $for_import = isset($data['for_import'])?$this->re_db_input($data['for_import']):'false';
+            $file_id = isset($data['file_id'])?$this->re_db_input($data['file_id']):'';
+            $temp_data_id = isset($data['temp_data_id'])?$this->re_db_input($data['temp_data_id']):'';
+            
 			if($sponser_name==''){
 				$this->errors = 'Please enter sponsor name.';
 			}
@@ -58,6 +63,13 @@
 					$q = "INSERT INTO `".SPONSOR_MASTER."` SET `name`='".$sponser_name."',`address1`='".$saddress1."',`address2`='".$saddress2."',`city`='".$scity."',`state`='".$sstate."',`zip_code`='".$szip_code."',`email`='".$semail."',`website`='".$swebsite."',`general_contact`='".$sgeneral_contact."',`general_phone`='".$sgeneral_phone."',`operations_contact`='".$soperations_contact."',`operations_phone`='".$soperations_phone."',`dst_system_id`='".$sdst_system_id."',`dst_mgmt_code`='".$sdst_mgmt_code."',`dst_importing`='".$sdst_import."',`dazl_code`='".$sdazl_code."',`dazl_importing`='".$sdazl_import."',`dtcc_nscc_id`='".$sdtcc_nscc."',`clearing_firm_id`='".$sclr_firm."'".$this->insert_common_sql();
 					$res = $this->re_db_query($q);
                     $id = $this->re_db_insert_id();
+                    
+                    if($for_import == 'true')
+                    {
+                        $q1 = "UPDATE `".IMPORT_EXCEPTION."` SET `solved`='1' WHERE `file_id`='".$file_id."' and `error_code_id`='14'";
+                        $res1 = $this->re_db_query($q1);
+                    }
+                        
 					if($res){
 					    $_SESSION['success'] = INSERT_MESSAGE;
 						return true;
@@ -363,6 +375,33 @@
                 $a = 0;
     			while($row = $this->re_db_fetch_array($res)){
     			     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+		}
+        public function get_sponsor_on_system_management_code($system_id='',$management_code=''){
+			$return = array();
+            
+            $con = '';
+            if($system_id!='')
+            {
+                $con = " AND `sp`.`dst_system_id`='".$system_id."'";
+            }
+            if($management_code!='')
+            {
+                $con .= " AND `sp`.`dst_mgmt_code`='".$management_code."'";
+            }
+			
+			$q = "SELECT `sp`.*
+					FROM `".SPONSOR_MASTER."` AS `sp`
+                    WHERE `sp`.`is_delete`='0' ".$con."
+                    ORDER BY `sp`.`id` ASC";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     $return = $row;
                      
     			}
             }

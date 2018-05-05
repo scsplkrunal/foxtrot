@@ -149,7 +149,7 @@ $(document).on('click','.remove-row',function(){
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Sponsor Name <span class="text-red">*</span></label><br />
-                        <input type="text" maxlength="25" class="form-control" name="sponser_name" value="<?php echo $sponser_name;?>"  />
+                        <input type="text" maxlength="50" class="form-control" name="sponser_name" value="<?php echo $sponser_name;?>"  />
                     </div>
                 </div>
             </div>
@@ -234,6 +234,31 @@ $(document).on('click','.remove-row',function(){
                     </div>
                 </div>
             </div>
+            <?php if(isset($_GET['file_id']) && $_GET['file_id'] != ''){
+                  $file_id = isset($_GET['file_id'])?$_GET['file_id']:'';
+                  $temp_data_id = isset($_GET['exception_data_id'])?$_GET['exception_data_id']:'';
+                  $import_instance = new import();
+                  $idc_data_details = $import_instance->get_idc_record_details($file_id,$temp_data_id);
+                  if($idc_data_details != array()){
+                ?>
+             <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>DST System ID </label><br />
+                        <input type="text" maxlength="15" class="form-control" name="sdst_system_id_disp" value="<?php echo $idc_data_details['system_id'];?>" disabled="true" />
+                        <input type="hidden" maxlength="15" class="form-control" name="sdst_system_id" value="<?php echo $idc_data_details['system_id'];?>"  />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>DST Mgmt Code </label><br />
+                        <input type="text" maxlength="15" class="form-control" name="sdst_mgmt_code_disp" value="<?php echo $idc_data_details['management_code'];?>" disabled="true"  />
+                        <input type="hidden" maxlength="15" class="form-control" name="sdst_mgmt_code" value="<?php echo $idc_data_details['management_code'];?>"  />
+                    </div>
+                </div>
+            </div>
+            <?php } ?>
+            <?php }else{ ?>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -248,6 +273,7 @@ $(document).on('click','.remove-row',function(){
                     </div>
                 </div>
             </div>
+           <?php } ?>
            <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -287,6 +313,11 @@ $(document).on('click','.remove-row',function(){
            </div>
            <div class="panel-footer fixedbtmenu">
             <div class="selectwrap">
+                <?php if(isset($_GET['file_id']) && $_GET['file_id'] != ''){?>
+                <input type="hidden" name="for_import" id="for_import" class="form-control" value="true" />
+                <input type="hidden" name="file_id" id="file_id" class="form-control" value="<?php echo $_GET['file_id']; ?>" />
+                <input type="hidden" name="temp_data_id" id="temp_data_id" class="form-control" value="<?php echo $_GET['exception_data_id']; ?>" />
+                <?php }?>
                 <input type="hidden" name="sponsor_id" id="sponsor_id" value="<?php echo $sponsor_id; ?>" />
                 <?php if($_GET['action']=='edit_sponsor' && $_GET['sponsor_id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=previous" class="previous next_previous_a" style="float: left;"><input type="button" name="previous" value="&laquo; Previous" /></a><?php } ?>
                 <?php if($_GET['action']=='edit_sponsor' && $_GET['sponsor_id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $sponsor_id;?>&send=next" class="next next_previous_a"><input type="button" name="next" value="Next &raquo;" /></a><?php } ?>

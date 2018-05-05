@@ -26,7 +26,9 @@
             $active_status_cdd = isset($data['active_status_cdd'])?$this->re_db_input($data['active_status_cdd']):'';
 			$pay_method = isset($data['pay_method'])?$this->re_db_input($data['pay_method']):'';
 			$branch_manager = isset($data['branch_manager'])?$this->re_db_input($data['branch_manager']):'';
-			
+			$for_import = isset($data['for_import'])?$this->re_db_input($data['for_import']):'false';
+            $file_id = isset($data['file_id'])?$this->re_db_input($data['file_id']):'';
+            $temp_data_id = isset($data['temp_data_id'])?$this->re_db_input($data['temp_data_id']):'';
 			
 			/*if($fname==''){
 				$this->errors = 'Please enter first name.';
@@ -88,6 +90,25 @@
 						$res = $this->re_db_query($q);
                         $_SESSION['last_insert_id'] = $this->re_db_insert_id();
                         if($res){
+                            
+                            if($for_import == 'true')
+                            {
+                                $q1 = "UPDATE `".IMPORT_EXCEPTION."` SET `solved`='1' WHERE `file_id`='".$file_id."' and `temp_data_id`='".$temp_data_id."'";
+                                $res1 = $this->re_db_query($q1);
+                                
+                                $instance_import = new import();
+                                $get_file_type = $instance_import->check_file_type($file_id);
+                                if($get_file_type == 'DSTFANMail')
+                                {
+                                    $q1 = "UPDATE `".IMPORT_DETAIL_DATA."` SET `representative_number`='".$fund."' WHERE `file_id`='".$file_id."' and `id`='".$temp_data_id."'";
+                                    $res1 = $this->re_db_query($q1);
+                                }
+                                else
+                                {
+                                    $q1 = "UPDATE `".IMPORT_IDC_DETAIL_DATA."` SET `representative_number`='".$fund."' WHERE `file_id`='".$file_id."' and `id`='".$temp_data_id."'";
+                                    $res1 = $this->re_db_query($q1);
+                                }
+                            }
 						      
                             $_SESSION['success'] = INSERT_MESSAGE;
 							return true;
@@ -152,7 +173,14 @@
 			$prospect_date_general = isset($data['prospect_date_general'])?$this->re_db_input(date('Y-m-d',strtotime($data['prospect_date_general']))):'';
 			$reassign_broker_general = isset($data['reassign_broker_general'])?$this->re_db_input($data['reassign_broker_general']):'';
 			$u4_general = isset($data['u4_general'])?$this->re_db_input(date('Y-m-d',strtotime($data['u4_general']))):'';
-            $u5_general = isset($data['u5_general'])?$this->re_db_input(date('Y-m-d',strtotime($data['u5_general']))):'';
+            if($data['u5_general'] != '')
+            {
+                $u5_general = isset($data['u5_general'])?$this->re_db_input(date('Y-m-d',strtotime($data['u5_general']))):'';
+            }
+            else
+            {
+                $u5_general = '';
+            }
             $day_after_u5 = isset($data['day_after_u5'])?$this->re_db_input($data['day_after_u5']):'';
 			$dba_name_general = isset($data['dba_name_general'])?$this->re_db_input($data['dba_name_general']):'';
 			$eft_info_general = isset($data['eft_info_general'])?$this->re_db_input($data['eft_info_general']):'';

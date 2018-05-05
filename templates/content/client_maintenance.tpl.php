@@ -46,6 +46,10 @@ $(document).on('click','.remove-row',function(){
             <div class="tab-pane active" id="tab_a">
                     <?php
                     if($action=='add_new'||($action=='edit' && $id>0)){
+                        if($action=='add_new')
+                        {
+                            $_SESSION['client_full_name']='';
+                        }
                         ?>
                             <ul class="nav nav-tabs <?php if($action=='add_new'||($action=='edit' && $id>0)){ echo 'topfixedtabs';}?>">
                               <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="primary"){ echo "active"; }else if(!isset($_GET['tab'])){echo "active";}else{ echo '';} ?>"><a href="#tab_aa" data-toggle="tab">Primary</a></li>
@@ -125,7 +129,7 @@ $(document).on('click','.remove-row',function(){
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>First Name </label><br />
-                                                        <input type="text" name="fname" id="fname" value="<?php echo $fname; ?>" class="form-control" />
+                                                        <input type="text" name="fname" id="fname" value="<?php echo $fname; ?>" class="form-control" autofocus="true" />
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
@@ -630,12 +634,31 @@ $(document).on('click','.remove-row',function(){
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Account No's </label><br />
-                                                        <input type="text" name="account_no[]" onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="account_no" class="form-control" value="<?php //echo //$valedit['account_no'];?>" />
+                                                        <?php if(isset($_GET['account_no']) && $_GET['account_no'] != '')
+                                                        {
+                                                        ?>
+                                                            <input type="text" disabled="true" name="account_no_dis[]" onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="account_no_dis" class="form-control" value="<?php echo $_GET['account_no'];?>" />
+                                                            <input type="hidden" name="account_no[]" onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="account_no" class="form-control" value="<?php echo $_GET['account_no'];?>" />
+                                                        <?php 
+                                                        }else{
+                                                        ?>
+                                                            <input type="text" name="account_no[]" onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="account_no" class="form-control" value="<?php //echo //$valedit['account_no'];?>" />
+                                                        <?php } ?>
                                                     </div>
                                                 </div>
                                             	<div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Sponsor Company </label><br />
+                                                        <?php if(isset($_GET['account_no']) && $_GET['account_no'] != ''){
+                                                              $file_id = isset($_GET['file_id'])?$_GET['file_id']:0;
+                                                              $data_id = isset($_GET['exception_data_id'])?$_GET['exception_data_id']:0;
+                                                              $get_idc_sponsor = $instance_import->get_idc_record_details($file_id,$data_id);
+                                                              $management_code = $get_idc_sponsor['management_code'];
+                                                              $system_id = $get_idc_sponsor['system_id'];
+                                                              $sponsor_on_system = $instance_sponsor->get_sponsor_on_system_management_code($system_id,$management_code);
+                                                              $sponsor_company = isset($sponsor_on_system['id'])?$sponsor_on_system['id']:'';
+                                                        }
+                                                        ?>
                                                         <select class="form-control" name="sponsor[]">
                                                             <option value="">Select Sponsor</option>
                                                              <?php foreach($get_sponsor as $key=>$val){?>
@@ -929,6 +952,11 @@ $(document).on('click','.remove-row',function(){
                             </div>
                             <div class="panel-footer fixedbtmenu"><br />
                                     <div class="selectwrap">
+                                        <?php if(isset($_GET['account_no']) && ($_GET['account_no'] != '' || $_GET['account_no'] == '')){?>
+                                        <input type="hidden" name="for_import" id="for_import" class="form-control" value="true" />
+                                        <input type="hidden" name="file_id" id="file_id" class="form-control" value="<?php echo $_GET['file_id']; ?>" />
+                                        <input type="hidden" name="temp_data_id" id="temp_data_id" class="form-control" value="<?php echo $_GET['exception_data_id']; ?>" />
+                                        <?php }?>
                                         <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;"><input type="button" name="previos" value="&laquo; Previous" /></a><?php } ?>
                                         <?php if($_GET['action']=='edit' && $_GET['id']>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a"><input type="button" name="next" value="Next &raquo;" /></a><?php } ?>
                                         <?php if($action=='edit' && $id>0){?>
@@ -1983,9 +2011,9 @@ function add_allobjectives()
 
 </script>
 <script type="text/javascript">
-$(document).ready(function() {
-    document.getElementById("fname").focus();
-});
+/*$(document).ready(function() {
+    alert(document.getElementById("fname"));//.focus();
+});*/
 </script>
 <script>
 function round(feerate)

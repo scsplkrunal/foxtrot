@@ -62,10 +62,29 @@
         $sdtcc_nscc = isset($_POST['sdtcc_nscc'])?$instance->re_db_input($_POST['sdtcc_nscc']):'';
         $sclr_firm = isset($_POST['sclr_firm'])?$instance->re_db_input($_POST['sclr_firm']):'';
         
+        //for import module
+        $for_import = isset($_POST['for_import'])?$instance->re_db_input($_POST['for_import']):'false';
+        $file_id = isset($_POST['file_id'])?$instance->re_db_input($_POST['file_id']):0;
+        
         $return = $instance->insert_update_sponsor($_POST);
         
         if($return===true){
-            header("location:".CURRENT_PAGE.'?action=view_sponsor');exit;
+            
+            if($for_import == 'true')
+            {
+                if(isset($file_id) && $file_id >0 )
+                {
+                    header("location:".SITE_URL."import.php?tab=review_files&id=".$file_id);exit;
+                }
+                else
+                {
+                    header("location:".SITE_URL."import.php");exit;
+                }
+            }
+            else
+            {
+                header("location:".CURRENT_PAGE.'?action=view_sponsor');exit;
+            }
         }
         else{
             $error = !isset($_SESSION['warning'])?$return:'';

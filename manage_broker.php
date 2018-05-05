@@ -80,7 +80,10 @@
     	$crd = isset($_POST['crd'])?$instance->re_db_input($_POST['crd']):'';
         $active_status_cdd = isset($_POST['active_status_cdd'])?$instance->re_db_input($_POST['active_status_cdd']):'';
     	$pay_method = isset($_POST['pay_method'])?$instance->re_db_input($_POST['pay_method']):'';
-    	$branch_manager = isset($_POST['branch_manager'])?$instance->re_db_input($_POST['branch_manager']):'';//echo '<pre>';print_r($_POST);exit;
+    	$branch_manager = isset($_POST['branch_manager'])?$instance->re_db_input($_POST['branch_manager']):'';
+        $for_import = isset($_POST['for_import'])?$instance->re_db_input($_POST['for_import']):'false';
+        $file_id = isset($_POST['file_id'])?$instance->re_db_input($_POST['file_id']):0;
+        //echo '<pre>';print_r($_POST);exit;
         
         $home_general = isset($_POST['home_general'])?$instance->re_db_input($_POST['home_general']):'';
         $home_address1_general = isset($_POST['home_address1_general'])?$instance->re_db_input($_POST['home_address1_general']):'';
@@ -158,7 +161,19 @@
         
         
         if($return===true){
-            if($action == 'edit')
+            
+            if($for_import == 'true')
+            {
+                if(isset($file_id) && $file_id >0 )
+                {
+                    header("location:".SITE_URL."import.php?tab=review_files&id=".$file_id);exit;
+                }
+                else
+                {
+                    header("location:".SITE_URL."import.php");exit;
+                }
+            }
+            else if($action == 'edit')
             {
                 header("location:".CURRENT_PAGE);exit;
             }

@@ -91,10 +91,29 @@
         $type = isset($_POST['type'])?$instance->re_db_input($_POST['type']):'';
         $var = isset($_POST['variable_annuities'])?$instance->re_db_input($_POST['variable_annuities']):'';
         $reg_type = isset($_POST['registration_type'])?$instance->re_db_input($_POST['registration_type']):'';
+        
+        $for_import = isset($_POST['for_import'])?$instance->re_db_input($_POST['for_import']):'false';
+        $file_id = isset($_POST['file_id'])?$instance->re_db_input($_POST['file_id']):0;
+        
         $return = $instance->insert_update($_POST);
         
         if($return===true){
-            header("location:".CURRENT_PAGE.'?action=select_cat');exit;
+            
+            if($for_import == 'true')
+            {
+                if(isset($file_id) && $file_id >0 )
+                {
+                    header("location:".SITE_URL."import.php?tab=review_files&id=".$file_id);exit;
+                }
+                else
+                {
+                    header("location:".SITE_URL."import.php");exit;
+                }
+            }
+            else
+            {
+                header("location:".CURRENT_PAGE.'?action=select_cat');exit;
+            }
         }
         else{
             $error = !isset($_SESSION['warning'])?$return:'';

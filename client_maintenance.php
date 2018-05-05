@@ -65,6 +65,8 @@
     
     $account_no = '';
     $sponsor_company = '';
+    $management_code = 0;
+    $system_id = 0;
     
     //suitability variables
     
@@ -94,6 +96,8 @@
     $get_notes = $instance->select_notes();
     $notes_id = 0;
     
+    $instance_import = new import();
+    $instance_sponsor = new manage_sponsor();
     $instance_product = new product_maintenance();
     $get_sponsor = $instance_product->select_sponsor();
     $instance_client_suitability = new client_suitebility_master();
@@ -190,6 +194,11 @@
         $tax_bracket = isset($_POST['tax_bracket'])?$instance->re_db_input($_POST['tax_bracket']):'';
         $tax_id = isset($_POST['tax_id'])?$instance->re_db_input($_POST['tax_id']):'';
         
+        //for account no add for import module
+        
+        $for_import = isset($_POST['for_import'])?$instance->re_db_input($_POST['for_import']):'false';
+        $file_id = isset($_POST['file_id'])?$instance->re_db_input($_POST['file_id']):0;
+        
                
         $return = $instance->insert_update($_POST);
         $return1 = $instance->insert_update_employment($_POST);
@@ -197,7 +206,19 @@
         $return3 = $instance->insert_update_suitability($_POST);
         
         if($return===true){
-            if($action == 'edit')
+            
+            if($for_import == 'true')
+            {
+                if(isset($file_id) && $file_id >0 )
+                {
+                    header("location:".SITE_URL."import.php?tab=review_files&id=".$file_id);exit;
+                }
+                else
+                {
+                    header("location:".SITE_URL."import.php");exit;
+                }
+            }
+            else if($action == 'edit')
             {
                 header("location:".CURRENT_PAGE);exit;
             }

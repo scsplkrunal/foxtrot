@@ -205,7 +205,7 @@ $(document).on('click','.remove-row',function(){
                         <label>Commission Received Date </label><br />
                         <div id="demo-dp-range">
                             <div class="input-daterange input-group" id="datepicker">
-                                <input type="text" name="commission_received_date" id="commission_received_date" value="<?php if(isset($commission_received_date) && $commission_received_date!='0000-00-00 00:00:00') {echo date('m/d/Y',strtotime($commission_received_date));}else if(isset($batch_date)){ echo date('m/d/Y',strtotime($batch_date['batch_date']));}?>" class="form-control" />
+                                <input type="text" name="commission_received_date" id="commission_received_date" value="<?php if(isset($commission_received_date) && $commission_received_date!='0000-00-00 00:00:00') {echo date('m/d/Y',strtotime($commission_received_date));}else if(isset($batch_date) && $batch_date != array()){ echo date('m/d/Y',strtotime($batch_date['batch_date']));}else{ echo '0000-00-00'; }?>" class="form-control" />
                             </div>
                         </div>
                     </div>
@@ -226,7 +226,7 @@ $(document).on('click','.remove-row',function(){
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>*Split Commission<span class="text-red">*</span></label><br />
+                        <label>Split Commission<span class="text-red">*</span></label><br />
                         <label class="radio-inline">
                           <input type="radio" class="radio" onclick="open_other()" name="split" <?php if(isset($split) && $split==1){ echo'checked="true"'; }?>   value="1"/>YES
                         </label>
@@ -306,7 +306,7 @@ $(document).on('click','.remove-row',function(){
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Buy/Sell <span class="text-red">*</span></label><br />
+                        <label>Buy/Sell </label><br />
                         <label class="radio-inline">
                           <input type="radio" class="radio"  name="buy_sell" <?php if((isset($buy_sell) && $buy_sell==1) || (isset($_GET['action']) && $_GET['action']=='add')){ echo'checked="true"'; }?> value="1"/>Buy    
                         </label>
@@ -319,16 +319,16 @@ $(document).on('click','.remove-row',function(){
                     <div class="form-group">
                         <label>Hold Commission <span class="text-red">*</span></label><br />
                         <label class="radio-inline">
-                          <input type="radio" class="radio"  name="hold_commission" <?php if(isset($hold_commission) && $hold_commission==2){ echo'checked="true"'; }?> value="1"/>YES
+                          <input type="radio" class="radio"  name="hold_commission" <?php if(isset($hold_commission) && $hold_commission==1){ echo'checked="true"'; }?> value="1"/>YES
                         </label>
                         <label class="radio-inline">
-                          <input type="radio" class="radio" name="hold_commission" <?php if((isset($hold_commission) && $hold_commission==1) || (isset($_GET['action']) && $_GET['action']=='add')){ echo'checked="true"'; }?> value="2" />NO
+                          <input type="radio" class="radio" name="hold_commission" <?php if((isset($hold_commission) && $hold_commission==2) || (isset($_GET['action']) && $_GET['action']=='add')){ echo'checked="true"'; }?> value="2" />NO
                         </label>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Cancel <span class="text-red">*</span></label><br />
+                        <label>Cancel </label><br />
                         <label class="radio-inline">
                           <input type="radio" class="radio" name="cancel" <?php if(isset($cancel) && $cancel==1){ echo'checked="true"'; }?> value="1"/>YES
                         </label>
@@ -349,6 +349,20 @@ $(document).on('click','.remove-row',function(){
                     <div class="form-group">
                         <label>Hold Reason </label><br />
                         <input type="text"  class="form-control" value="<?php if(isset($hold_resoan)) {echo $hold_resoan;}?>" name="hold_resoan"  />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Units </label><br />
+                        <input type="text" class="form-control" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 ' name="units"  value="<?php if(isset($units)) {echo $units;}?>"/>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Shares </label><br />
+                        <input type="text"  class="form-control" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 ' value="<?php if(isset($shares)) {echo $shares;}?>" name="shares"  />
                     </div>
                 </div>
             </div>
@@ -399,7 +413,7 @@ $(document).on('click','.remove-row',function(){
                         </div>
                     </div>
                 </div><br /><br />-->
-                <div class="table-responsive" id="table-scroll">
+                <div class="table-responsive">
     			<table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
     	            <thead>
     	                <tr>
@@ -418,7 +432,7 @@ $(document).on('click','.remove-row',function(){
     	            <tbody>
                     <?php 
                     $count = 0;
-                    foreach($return as $key=>$val){//echo '<pre>';print_r($val);exit;
+                    foreach($return as $key=>$val){
                         ?>
     	                   <tr>
                                 

@@ -590,7 +590,16 @@ var waitingDialog = waitingDialog || (function ($) {
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Fund/Clearing Number </label>
+                                                    <?php if(isset($_GET['rep_no']) && $_GET['rep_no'] != '')
+                                                    {
+                                                    ?>
+                                                        <input type="text" name="fund_dis" id="fund_dis" disabled="true" value="<?php echo $_GET['rep_no']; ?>" class="form-control" />
+                                                        <input type="hidden" name="fund" id="fund" value="<?php echo $_GET['rep_no']; ?>" class="form-control" />
+                                                    <?php 
+                                                    }else{
+                                                    ?>
                                                     <input type="text" name="fund" id="fund" value="<?php echo $fund; ?>" class="form-control" />
+                                                    <?php } ?>
                                                 </div>
                                             </div>
                                        </div>
@@ -923,7 +932,7 @@ var waitingDialog = waitingDialog || (function ($) {
                                                 <label>U5/Termination Date </label><br />
                                                 <div id="demo-dp-range">
     				                                <div class="input-daterange input-group" id="datepicker">
-                                                        <input type="text" name="u5_general" id="u5_general" value="<?php if($action=='edit'){ echo date('m/d/Y',strtotime($u5));} ?>" class="form-control" />
+                                                        <input type="text" name="u5_general" id="u5_general" value="<?php if($action=='edit' && $u5 != ''){ echo date('m/d/Y',strtotime($u5));} ?>" class="form-control" />
     				                                    <label class="input-group-addon btn" for="u5_general">
                                                            <span class="fa fa-calendar"></span>
                                                         </label>
@@ -2627,6 +2636,11 @@ var waitingDialog = waitingDialog || (function ($) {
               </div>
               <div class="panel-footer fixedbtmenu">
                     <div class="selectwrap">
+                         <?php if(isset($_GET['rep_no']) && ($_GET['rep_no'] != '' || $_GET['rep_no'] == '')){?>
+                        <input type="hidden" name="for_import" id="for_import" class="form-control" value="true" />
+                        <input type="hidden" name="file_id" id="file_id" class="form-control" value="<?php echo $_GET['file_id']; ?>" />
+                        <input type="hidden" name="temp_data_id" id="temp_data_id" class="form-control" value="<?php echo $_GET['exception_data_id']; ?>" />
+                        <?php }?>
                          <?php if($action=='edit' && $id>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=previous" class="previous next_previous_a" style="float: left;"><input type="button" name="previous" value="&laquo; Previous" /></a><?php } ?>
                          <?php if($action=='edit' && $id>0){?><a href="<?php echo CURRENT_PAGE; ?>?id=<?php echo $id;?>&send=next" class="next next_previous_a" ><input type="button" name="next" value="Next &raquo;" /></a><?php } ?>
                          <?php if($action=='edit' && $id>0){?>
