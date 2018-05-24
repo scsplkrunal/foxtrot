@@ -1180,7 +1180,16 @@
                                 }
                                 else if($detail_record_type == 003)
                                 {
-                                    $data_array[$array_key]['DETAIL'][$array_detail_key][$detail_record_type] = array("record_type3" => substr($val_string, 0, 3),"sequence_number3" => substr($val_string, 3, 3),"account_registration_line5" => substr($val_string, 6, 35),"account_registration_line6" => substr($val_string, 41, 35),"account_registration_line7" => substr($val_string, 76, 35),"representative_number" => substr($val_string, 111, 9),"representative_name" => substr($val_string, 120, 30),"position_close_out_indicator" => substr($val_string, 150, 1),"account_type_indicator" => substr($val_string, 151, 4),"product_identifier_code(VA only)" => substr($val_string, 155, 3),"mutual_fund_alternative_investment_program_managers_variable_annuties_and_VUL" => substr($val_string, 158, 2));
+                                    if(isset($file_name_array[0]) && $file_name_array[0] == 'WSTVU07')
+                                    {
+                                        
+                                        $data_array[$array_key]['DETAIL'][$array_detail_key][$detail_record_type] = array("record_type3" => substr($val_string, 0, 3),"sequence_number3" => substr($val_string, 3, 3),"account_registration_line5" => substr($val_string, 6, 35),"account_registration_line6" => substr($val_string, 41, 35),"account_registration_line7" => substr($val_string, 76, 35),"representative_number" => substr($val_string, 111, 22),"representative_name" => substr($val_string, 133, 17),"position_close_out_indicator" => substr($val_string, 150, 1),"account_type_indicator" => substr($val_string, 151, 4),"product_identifier_code(VA only)" => substr($val_string, 155, 3),"mutual_fund_alternative_investment_program_managers_variable_annuties_and_VUL" => substr($val_string, 158, 2));
+                                    
+                                    }
+                                    else
+                                    {
+                                        $data_array[$array_key]['DETAIL'][$array_detail_key][$detail_record_type] = array("record_type3" => substr($val_string, 0, 3),"sequence_number3" => substr($val_string, 3, 3),"account_registration_line5" => substr($val_string, 6, 35),"account_registration_line6" => substr($val_string, 41, 35),"account_registration_line7" => substr($val_string, 76, 35),"representative_number" => substr($val_string, 111, 9),"representative_name" => substr($val_string, 120, 30),"position_close_out_indicator" => substr($val_string, 150, 1),"account_type_indicator" => substr($val_string, 151, 4),"product_identifier_code(VA only)" => substr($val_string, 155, 3),"mutual_fund_alternative_investment_program_managers_variable_annuties_and_VUL" => substr($val_string, 158, 2));
+                                    }
                                     
                                 }
                                 else if($detail_record_type == 004)
@@ -1737,6 +1746,26 @@
 				}
                 else
                 {
+                 //Remove already exist file trades   
+                 $q = "SELECT * FROM `".TRANSACTION_MASTER."` WHERE `is_delete`='0' AND `file_id`='".$id."'";
+				 $res = $this->re_db_query($q);
+				 $return = $this->re_db_num_rows($res);
+                 if($return>0){
+                    
+					 $q = "update `".TRANSACTION_MASTER."` set `is_delete`='1' WHERE `file_id`='".$id."'";
+				     $res = $this->re_db_query($q);
+				 } 
+                 
+                 //Remove already exist file clients   
+                 $q = "SELECT * FROM `".CLIENT_MASTER."` WHERE `is_delete`='0' AND `file_id`='".$id."'";
+				 $res = $this->re_db_query($q);
+				 $return = $this->re_db_num_rows($res);
+                 if($return>0){
+                    
+					 $q = "update `".CLIENT_MASTER."` set `is_delete`='1' WHERE `file_id`='".$id."'";
+				     $res = $this->re_db_query($q);
+				 } 
+                   
                  $q = "update `".IMPORT_EXCEPTION."` set `is_delete`='1' WHERE `file_id`='".$id."'";
 				 $res = $this->re_db_query($q);
                  //Generate exception on fanmail-file data
@@ -1806,7 +1835,7 @@
                         
                         $get_client_data = $this->get_client_data($check_data_val['file_id'],$check_data_val['id']);
                         
-                        $q = "INSERT INTO `".CLIENT_MASTER."` SET `first_name`='".$first_name."',`mi`='".$middle_name."',`last_name`='".$last_name."',`address1`='".$get_client_data[0]['client_address']."',`birth_date`='".$check_data_val['customer_date_of_birth']."',`zip_code`='".$check_data_val['zip_code']."',`broker_name`='".$broker_id."',`client_ssn`='".$check_data_val['social_security_number']."',`last_contacted`='".$check_data_val['last_maintenance_date']."'".$this->insert_common_sql();
+                        $q = "INSERT INTO `".CLIENT_MASTER."` SET `file_id`='".$check_data_val['file_id']."',`first_name`='".$first_name."',`mi`='".$middle_name."',`last_name`='".$last_name."',`address1`='".$get_client_data[0]['client_address']."',`birth_date`='".$check_data_val['customer_date_of_birth']."',`zip_code`='".$check_data_val['zip_code']."',`broker_name`='".$broker_id."',`client_ssn`='".$check_data_val['social_security_number']."',`last_contacted`='".$check_data_val['last_maintenance_date']."'".$this->insert_common_sql();
      			        $res = $this->re_db_query($q);
                         $last_inserted_id = $this->re_db_insert_id();
                         if($res)
@@ -2062,6 +2091,17 @@
                     }
                     if(isset($result) && $result == 0)
                     {
+                        $total_check_amount = 0;
+                        $q = "SELECT SUM(dealer_commission_amount) as total_check_amount FROM `".IMPORT_IDC_DETAIL_DATA."` WHERE `is_delete`='0' and `file_id`='".$check_data_val['file_id']."'";
+        				$res = $this->re_db_query($q);
+        				if($this->re_db_num_rows($res)>0)
+                        {
+        				    while($row = $this->re_db_fetch_array($res))
+                            {
+                                $total_check_amount = $row['total_check_amount'];
+                            }
+                        }
+                        
                         $q = "SELECT *
                               FROM `".BATCH_MASTER."` 
                               WHERE `is_delete`='0' AND `file_id`='".$check_data_val['file_id']."' ";
@@ -2081,7 +2121,7 @@
                 				if($sponsor_name != '')
                                 {
                                     $batch_description = $sponsor_name.' '.date('m/d/Y');
-                                    $q = "INSERT INTO `".BATCH_MASTER."` SET `file_id`='".$check_data_val['file_id']."',`pro_category`='".$product_category_id."',`batch_desc`='".$batch_description."',`sponsor`='".$sponsor_id."',`batch_date`='".date('Y-m-d')."'".$this->insert_common_sql();
+                                    $q = "INSERT INTO `".BATCH_MASTER."` SET `file_id`='".$check_data_val['file_id']."',`pro_category`='".$product_category_id."',`batch_desc`='".$batch_description."',`sponsor`='".$sponsor_id."',`check_amount`='".$total_check_amount."',`batch_date`='".date('Y-m-d')."'".$this->insert_common_sql();
          			                $res = $this->re_db_query($q);
                                     $_SESSION['batch_id'] = $this->re_db_insert_id();
                                 }    
@@ -2102,8 +2142,31 @@
                             {
                                 $con .=",`hold_commission`='2'";
                             }
-                            $q1 = "INSERT INTO `".TRANSACTION_MASTER."` SET `trade_date`='".$check_data_val['trade_date']."',`posting_date`='".date('Y-m-d')."',`invest_amount`='".ltrim($check_data_val['gross_transaction_amount'],0)."',`gross_amount_sign_code`='".$check_data_val['gross_amount_sign_code']."',`dealer_commission_sign_code`='".$check_data_val['dealer_commission_sign_code']."',`commission_received`='".ltrim($check_data_val['dealer_commission_amount'],0)."',`product_cate`='".$product_category_id."',`product`='".$product_id."',`batch`='".$_SESSION['batch_id']."',`sponsor`='".$sponsor_id."',`broker_name`='".$broker_id."',`client_name`='".$client_id."',`client_number`='".$check_data_val['customer_account_number']."'".$con."".$this->insert_common_sql();
+                            $trans_ins = new transaction();
+                            $get_branch_company_detail = $trans_ins->select_branch_company_ref($broker_id);
+                            $branch = isset($get_branch_company_detail['branch_id'])?$get_branch_company_detail['branch_id']:'';
+                            $company = isset($get_branch_company_detail['company_id'])?$get_branch_company_detail['company_id']:'';
+                            
+                            $q1 = "INSERT INTO `".TRANSACTION_MASTER."` SET `file_id`='".$check_data_val['file_id']."',`trade_date`='".$check_data_val['trade_date']."',`posting_date`='".date('Y-m-d')."',`invest_amount`='".ltrim($check_data_val['gross_transaction_amount'],0)."',`gross_amount_sign_code`='".$check_data_val['gross_amount_sign_code']."',`dealer_commission_sign_code`='".$check_data_val['dealer_commission_sign_code']."',`commission_received`='".ltrim($check_data_val['dealer_commission_amount'],0)."',`product_cate`='".$product_category_id."',`product`='".$product_id."',`batch`='".$_SESSION['batch_id']."',`sponsor`='".$sponsor_id."',`broker_name`='".$broker_id."',`client_name`='".$client_id."',`client_number`='".$check_data_val['customer_account_number']."',`branch`='".$branch."',`company`='".$company."',`split`='1',`buy_sell`='1',`cancel`='2'".$con."".$this->insert_common_sql();
          			        $res1 = $this->re_db_query($q1);
+                            $last_inserted_id = $this->re_db_insert_id();
+                            
+                            $get_client_split_rates = $trans_ins->get_client_split_rate($client_id);
+                            
+                            if(isset($get_client_split_rates[0]['split_broker']) && $get_client_split_rates[0]['split_broker'] != '')
+                            {
+                                $q = "INSERT INTO `".TRANSACTION_TRADE_SPLITS."` SET `transaction_id`='".$last_inserted_id."',`split_client_id`='".$client_id."',`split_broker_id`='0',`split_broker`='".$get_client_split_rates[0]['split_broker']."',`split_rate`='".$get_client_split_rates[0]['split_rate']."'".$this->insert_common_sql();
+                				$res = $this->re_db_query($q);
+                            }
+                            $get_broker_split_rate = $trans_ins->get_broker_split_rate($broker_id);
+                            if(isset($get_broker_split_rate[0]['rap']) && $get_broker_split_rate[0]['rap'] != '')
+                            {
+                                foreach($get_broker_split_rate as $keyedit_split=>$valedit_split){
+                                    $q = "INSERT INTO `".TRANSACTION_TRADE_SPLITS."` SET `transaction_id`='".$last_inserted_id."',`split_client_id`='0',`split_broker_id`='".$broker_id."',`split_broker`='".$valedit_split['rap']."',`split_rate`='".$valedit_split['rate']."'".$this->insert_common_sql();
+                    				$res = $this->re_db_query($q);
+                                }
+                            }
+                            
                             if($res1 == true)
                             {
                                 $reprocess_status = true;
@@ -2338,6 +2401,164 @@
             }
 			return $return;
 		}
+        public function get_file_array($file_id)
+        {
+            $return = array();
+            if($file_id>0)
+            {
+                $file_string_array = array();
+                $get_file = $this->select_user_files($file_id);
+                $file_name = $get_file['file_name'];
+                $file_path = DIR_FS."import_files/user_".$_SESSION['user_id']."/".$file_name;
+                $file = fopen($file_path, "r");
+                while (($getData = fgetcsv($file, 10000, ",")) !== FALSE)
+                 {
+                    array_push($file_string_array,$getData[0]);
+                 }
+                 $data_array = array();
+                 $array_key = 0;
+                 $array_detail_key = 0;
+                 $array_detail_check_key = 0;
+                 $array_detail_key_sfr = 0;
+                 $array_detail_check_key_sfr = 0;
+                 $file_name_array = explode('.',$file_name);
+                 $file_type_key = substr($file_name_array[0], -2);
+                 $file_type_check = $file_type_key;
+                 
+                 if(isset($file_type_check) && ($file_type_check == '07' || $file_type_check == '08' || $file_type_check == '09'))
+                 {
+                     foreach($file_string_array as $key_string=>$val_string)
+                     {
+                        $record_type = substr($val_string, 0, 3);
+                        if(isset($record_type) && $record_type == 'RHR')
+                        {
+                            $file_type = trim(substr($val_string, 6, 15));
+                            if($file_type == 'SECURITY FILE')
+                            {
+                                $data_array[$array_key][$record_type] = array("record_type" => substr($val_string, 0, 3),"sequence_number" => substr($val_string, 3, 3),"file_type" => substr($val_string, 6, 15),"super_sheet_date" => substr($val_string, 21, 8),"processed_date" => substr($val_string, 29, 8),"processed_time" => substr($val_string, 37, 8),"job_name" => substr($val_string, 45, 8),"file_format_code" => substr($val_string, 53, 3),"request_number" => substr($val_string, 56, 7),"*" => substr($val_string, 63, 1),"system_id" => substr($val_string, 64, 3),"management_code" => substr($val_string, 67, 2),"**" => substr($val_string, 69, 1),"unused_mutual_fund" => substr($val_string, 70, 1),"life_date_type" => substr($val_string, 71, 1),"unused_header_RHR" => substr($val_string, 72, 88));
+                            }
+                            else
+                            {
+                                $data_array[$array_key][$record_type] = array("record_type" => substr($val_string, 0, 3),"sequence_number" => substr($val_string, 3, 3),"file_type" => substr($val_string, 6, 15),"super_sheet_date" => substr($val_string, 21, 8),"processed_date" => substr($val_string, 29, 8),"processed_time" => substr($val_string, 37, 8),"job_name" => substr($val_string, 45, 8),"file_format_code" => substr($val_string, 53, 3),"request_number" => substr($val_string, 56, 7),"*" => substr($val_string, 63, 1),"system_id" => substr($val_string, 64, 3),"management_code" => substr($val_string, 67, 2),"**" => substr($val_string, 69, 1),"populated_by_dst" => substr($val_string, 70, 1),"variable_universal_life" => substr($val_string, 71, 1),"unused_header_RHR" => substr($val_string, 72, 88));
+                            }
+                        
+                        }
+                        else if(isset($record_type) && $record_type == 'PLH')
+                        {
+                            $header_record_sequence = substr($val_string, 3, 3);
+                            if(isset($header_record_sequence) && $header_record_sequence == 001)
+                            {
+                                $data_array[$array_key][$record_type][$header_record_sequence] = array("record_type1" => substr($val_string, 0, 3),"sequence_number1" => substr($val_string, 3, 3),"anniversary_date" => substr($val_string, 6, 8),"issue_date" => substr($val_string, 14, 8),"product_code" => substr($val_string, 22, 7),"policy_contract_number" => substr($val_string, 29, 20),"death_benefit_option" => substr($val_string, 49, 2),"current_policy_face_amount" => substr($val_string, 51, 12),"current_sum_of_riders" => substr($val_string, 63, 12),"current_face_amount_including_sum_of_riders" => substr($val_string, 75, 12),"name_of_primary_beneficiary" => substr($val_string, 87, 31),"multiple_primary_beneficiary(M)" => substr($val_string, 118, 1),"name_of_secondary_beneficiary" => substr($val_string, 119, 30),"multiple_secondary_beneficiary(M)" => substr($val_string, 149, 1),"policy_status" => substr($val_string, 150, 2),"unused_PLH_001" => substr($val_string, 152, 8));
+                            }
+                            else if(isset($header_record_sequence) && $header_record_sequence == 002)
+                            {
+                                $data_array[$array_key][$record_type][$header_record_sequence] = array("record_type2" => substr($val_string, 0, 3),"sequence_number2" => substr($val_string, 3, 3),"billing_type" => substr($val_string, 6, 1),"billing_frequency" => substr($val_string, 7, 1),"billing_amount" => substr($val_string, 8, 15),"guideline_annual_premium" => substr($val_string, 23, 15),"guideline_single_premium" => substr($val_string, 38, 15),"target_premium" => substr($val_string, 53, 15),"no_lapse_guarantee_premium" => substr($val_string, 68, 15),"seven_pay_premium" => substr($val_string, 83, 15),"MEC_indicator" => substr($val_string, 98, 1),"unused_PLH_002" => substr($val_string, 99, 61));
+                                /*array_push($header_array['PLH'][$array_plh_key],$header_array_002);
+                                $array_plh_key++;*/
+                            }
+                        }
+                        else if(isset($record_type) && ($record_type == 'NAA' || $record_type == 'NFA' || $record_type == 'AMP' ))
+                        {
+                            $detail_record_type = substr($val_string, 3, 3);
+                            if($detail_record_type == 001)
+                            {
+                                if($array_detail_check_key>0)
+                                {
+                                    $array_detail_key++;
+                                }
+                                $data_array[$array_key]['DETAIL'][$array_detail_key][$detail_record_type] = array("record_type1" => substr($val_string, 0, 3),"sequence_number1" => substr($val_string, 3, 3),"dealer_number" => substr($val_string, 6, 7),"dealer_branch_number" => substr($val_string, 13, 9),"cusip_number" => substr($val_string, 22, 9),"mutual_fund_fund_code" => substr($val_string, 31, 7),"mutual_fund_customer_account_number" => substr($val_string, 38, 20),"account_number_code" => substr($val_string, 58, 1),"mutual_fund_established_date" => substr($val_string, 59, 8),"last_maintenance_date" => substr($val_string, 67, 8),"line_code" => substr($val_string, 75, 1),"alpha_code" => substr($val_string, 76, 10),"mutual_fund_dealer_level_control_code" => substr($val_string, 86, 1),"social_code" => substr($val_string, 87, 3),"resident_state_country_code" => substr($val_string, 90, 3),"social_security_number" => substr($val_string, 93, 9),"ssn_status_code" => substr($val_string, 102, 1),"systematic_withdrawal_plan(SWP)_account" => substr($val_string, 103, 1),"pre_authorized_checking_amount" => substr($val_string, 104, 1),"automated_clearing_house_account(ACH)" => substr($val_string, 105, 1),"mutual_fund_reinvest_to_another_account" => substr($val_string, 106, 1),"mutual_fund_capital_gains_distribution_option" => substr($val_string, 107, 1),"mutual_fund_divident_distribution_option" => substr($val_string, 108, 1),"check_writing_account" => substr($val_string, 109, 1),"expedited_redemption_account" => substr($val_string, 110, 1),"mutual_fund_sub_account" => substr($val_string, 111, 1),"foreign_tax_rate" => substr($val_string, 112, 3),"zip_code" => substr($val_string, 115, 9),"zipcode_future_expansion" => substr($val_string, 124, 2),"cumulative_discount_number" => substr($val_string, 126, 9),"letter_of_intent(LOI)_number" => substr($val_string, 135, 9),"timer_flag" => substr($val_string, 144, 1),"list_bill_account" => substr($val_string, 145, 1),"mutual_fund_monitored_VIP_account" => substr($val_string, 146, 1),"mutual_fund_expedited_exchange_account" => substr($val_string, 147, 1),"mutual_fund_penalty_withholding_account" => substr($val_string, 148, 1),"certificate_issuance_code" => substr($val_string, 149, 1),"mutual_fund_stop_transfer_flag" => substr($val_string, 150, 1),"mutual_fund_blue_sky_exemption_flag" => substr($val_string, 151, 1),"bank_card_issued" => substr($val_string, 152, 1),"fiduciary_account" => substr($val_string, 153, 1),"plan_status_code" => substr($val_string, 154, 1),"mutual_fund_net_asset_value(NAV)_account" => substr($val_string, 155, 1),"mailing_flag" => substr($val_string, 156, 1),"interested_party_code" => substr($val_string, 157, 1),"mutual_fund_share_account_phone_check_redemption_code" => substr($val_string, 158, 1),"mutual_fund_share_account_house_account_code" => substr($val_string, 159, 1));
+                                $array_detail_check_key++;
+                            }
+                            else if($detail_record_type == 002)
+                            {
+                                $data_array[$array_key]['DETAIL'][$array_detail_key][$detail_record_type] = array("record_type2" => substr($val_string, 0, 3),"sequence_number2" => substr($val_string, 3, 3),"mutual_fund_dividend_mail_account" => substr($val_string, 6, 1),"mutual_fund_stop_purchase_account" => substr($val_string, 7, 1),"stop_mail_account" => substr($val_string, 8, 1),"mutual_fund_fractional_check" => substr($val_string, 9, 1),"registration_line1" => substr($val_string, 10, 35),"registration_line2" => substr($val_string, 45, 35),"registration_line3" => substr($val_string, 80, 35),"registration_line4" => substr($val_string, 115, 35),"customer_date_of_birth" => substr($val_string, 150, 8),"mutual_fund_account_price_schedule_code" => substr($val_string, 158, 1),"unused_detail" => substr($val_string, 159, 1));
+                            }
+                            else if($detail_record_type == 003)
+                            {
+                                $data_array[$array_key]['DETAIL'][$array_detail_key][$detail_record_type] = array("record_type3" => substr($val_string, 0, 3),"sequence_number3" => substr($val_string, 3, 3),"account_registration_line5" => substr($val_string, 6, 35),"account_registration_line6" => substr($val_string, 41, 35),"account_registration_line7" => substr($val_string, 76, 35),"representative_number" => substr($val_string, 111, 9),"representative_name" => substr($val_string, 120, 30),"position_close_out_indicator" => substr($val_string, 150, 1),"account_type_indicator" => substr($val_string, 151, 4),"product_identifier_code(VA only)" => substr($val_string, 155, 3),"mutual_fund_alternative_investment_program_managers_variable_annuties_and_VUL" => substr($val_string, 158, 2));
+                                
+                            }
+                            else if($detail_record_type == 004)
+                            {
+                                $data_array[$array_key]['DETAIL'][$array_detail_key][$detail_record_type] = array("record_type4" => substr($val_string, 0, 3),"sequence_number4" => substr($val_string, 3, 3),"brokerage_identification_number(BIN)" => substr($val_string, 6, 20),"account_number_code_004" => substr($val_string, 26, 1),"primary_investor_phone_number" => substr($val_string, 27, 15),"secondary_investor_phone_number" => substr($val_string, 42, 15),"NSCC_trust_company_number" => substr($val_string, 57, 4),"NSCC_third_party_administrator_number" => substr($val_string, 61, 4),"unused_004_1" => substr($val_string, 65, 23),"trust_custodian_id_number" => substr($val_string, 88, 7),"third_party_administrator_id_number" => substr($val_string, 95, 7),"unused_004_2" => substr($val_string, 102, 58));
+                            
+                            }
+                            
+                        }
+                        else if(isset($record_type) && $record_type == 'SFR')
+                        {
+                            $detail_record_type = substr($val_string, 3, 3);
+                            if($detail_record_type == 001)
+                            {
+                                if($array_detail_check_key_sfr>0)
+                                {
+                                    $array_detail_key_sfr++;
+                                }
+                                $data_array[$array_key]['DETAIL'][$array_detail_key_sfr][$detail_record_type] = array("record_type1" => substr($val_string, 0, 3),"sequence_number1" => substr($val_string, 3, 3),"cusip_number" => substr($val_string, 6, 9),"fund_code" => substr($val_string, 15, 7),"fund_name" => substr($val_string, 22, 40),"product_name" => substr($val_string, 62, 38),"ticker_symbol" => substr($val_string, 100, 8),"major_security_type" => substr($val_string, 108, 2),"unused" => substr($val_string, 110, 50));
+                                $array_detail_check_key_sfr++;
+                            }
+                        }
+                        else if(isset($record_type) && $record_type == 'RTR')
+                        {
+                            $data_array[$array_key][$record_type] = array("record_type" => substr($val_string, 0, 3),"sequence_number" => substr($val_string, 3, 3),"file_type" => substr($val_string, 6, 15),"trailer_record_count" => substr($val_string, 21, 9),"unused" => substr($val_string, 30, 130));
+                            $array_key++;
+                        }
+                     }
+                     foreach($data_array as $main_key=>$main_val)
+                     {
+                        foreach($main_val['DETAIL'] as $sub_main_key=>$sub_main_val)
+                        {
+                            $array_type_merge = array();
+                            foreach($sub_main_val as $sub_key=>$sub_val)
+                            {
+                                foreach($sub_val as $data_key=>$data_val)
+                                {
+                                    $array_type_merge[$data_key]=$data_val;
+                                }
+                            }
+                            array_push($return,$array_type_merge); 
+                            
+                        }
+                     }
+                }
+                if(isset($file_type_check) && $file_type_check == 'C1')
+                {
+                     foreach($file_string_array as $key_string=>$val_string)
+                     {
+                        $record_type = substr($val_string, 0, 3);
+                        if(isset($record_type) && $record_type == 'RHR')
+                        {
+                            $data_array[$array_key][$record_type] = array("record_type" => substr($val_string, 0, 3),"file_type" => substr($val_string, 3, 10),"system_id" => substr($val_string, 13, 3),"management_code" => substr($val_string, 16, 2),"fund_sponsor_id" => substr($val_string, 18, 5),"transmission_date" => substr($val_string, 23, 8),"unused_RHR" => substr($val_string, 31, 169));
+                        }
+                        else if(isset($record_type) && ($record_type != 'RHR' && $record_type != 'RTR'))
+                        {
+                            $commission_record_type_code = substr($val_string, 0, 1);
+                            if($commission_record_type_code == '1' || $commission_record_type_code == '3')
+                            {
+                                $data_array[$array_key]['DETAIL'][$commission_record_type_code][] = array("commission_record_type_code" => substr($val_string, 0, 1),"dealer_number" => substr($val_string, 1, 7),"dealer_branch_number" => substr($val_string, 8, 9),"representative_number" => substr($val_string, 17, 9),"representative_name" => substr($val_string, 26, 30),"CUSIP_number" => substr($val_string, 56, 9),"alpha_code" => substr($val_string, 65, 10),"trade_date" => substr($val_string, 75, 8),"gross_transaction_amount" => substr($val_string, 83, 15),"gross_amount_sign_code" => substr($val_string, 98, 1),"dealer_commission_amount" => substr($val_string, 99, 15),"commission_rate" => substr($val_string, 114, 5),"customer_account_number" => substr($val_string, 119, 20),"account_number_type_code" => substr($val_string, 139, 1),"purchase_type_code" => substr($val_string, 140, 1),"social_code" => substr($val_string, 141, 3),"cumulative_discount_number" => substr($val_string, 144, 9),"letter_of_intent(LOI)_number" => substr($val_string, 153, 9),"social_security_number" => substr($val_string, 162, 9),"social_security_number_status_code" => substr($val_string, 171, 1),"transaction_share_count" => substr($val_string, 172, 15),"share_price_amount" => substr($val_string, 187, 9),"resident_state_country_code" => substr($val_string, 196, 3),"dealer_commission_sign_code" => substr($val_string, 199, 1));
+                            }
+                        }
+                        else if(isset($record_type) && $record_type == 'RTR')
+                        {
+                            $data_array[$array_key][$record_type] = array("record_type" => substr($val_string, 0, 3),"file_type" => substr($val_string, 3, 10),"trailer_record_count" => substr($val_string, 13, 7),"unused_RTR" => substr($val_string, 20, 180));
+                            $array_key++;
+                        }
+                        
+                     }
+                     foreach($data_array as $main_key=>$main_val)
+                     {
+                        foreach($main_val['DETAIL'] as $sub_main_key=>$sub_main_val)
+                        {
+                            foreach($sub_main_val as $sub_key=>$sub_val)
+                            {
+                                array_push($return,$sub_val);
+                            } 
+                        }
+                     }
+                }
+            }
+            return $return;
+        }
         public function get_idc_record_details($file_id,$data_id){
 			$return = array();
 			

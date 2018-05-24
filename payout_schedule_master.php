@@ -12,7 +12,9 @@
     $calculation_detail = '';
     $clearing_charge_deducted_from = '';
     $reset = '';
-    $description_type = 0;
+    $description_type = '';
+    $minimum_trade_gross = '';
+    $minimum_12B1_gross = '';
     $is_default = 0;
     $team_member = array();
     $edit_grid = array();
@@ -36,7 +38,9 @@
         $calculation_detail = isset($_POST['calculation_detail'])?$instance->re_db_input($_POST['calculation_detail']):'';
         $clearing_charge_deducted_from = isset($_POST['clearing_charge_deducted_from'])?$instance->re_db_input($_POST['clearing_charge_deducted_from']):'';
         $reset = isset($_POST['reset'])?$instance->re_db_input(date('Y-m-d',strtotime($_POST['reset']))):'';
-        $description_type = isset($_POST['description_type'])?$instance->re_db_input($_POST['description_type']):0;
+        $description_type = isset($_POST['description_type'])?$instance->re_db_input($_POST['description_type']):'';
+        $minimum_trade_gross = isset($_POST['minimum_trade_gross'])?$instance->re_db_input($_POST['minimum_trade_gross']):'';
+        $minimum_12B1_gross = isset($_POST['minimum_12B1_gross'])?$instance->re_db_input($_POST['minimum_12B1_gross']):'';
         $team_member = isset($_POST['team_member'])?$_POST['team_member']:array();
         $edit_grid = isset($_POST['leval'])?$instance->reArrayFiles_grid($_POST['leval']):array();
         $is_default = isset($_POST['is_default'])?$instance->re_db_input($_POST['is_default']):0;
@@ -66,6 +70,8 @@
         $clearing_charge_deducted_from = isset($edit_payout['clearing_charge_deducted_from'])?$instance->re_db_output($edit_payout['clearing_charge_deducted_from']):'';
         $reset = isset($edit_payout['reset'])?$instance->re_db_output(date('Y-m-d',strtotime($edit_payout['reset']))):'';
         $description_type = isset($edit_payout['description_type'])?$instance->re_db_output($edit_payout['description_type']):'';
+        $minimum_trade_gross = isset($edit_payout['minimum_trade_gross'])?$instance->re_db_output($edit_payout['minimum_trade_gross']):'';
+        $minimum_12B1_gross = isset($edit_payout['minimum_12B1_gross'])?$instance->re_db_output($edit_payout['minimum_12B1_gross']):'';
         $team_member = isset($edit_payout['team_member'])?explode(',',$edit_payout['team_member']):array();
         $is_default = isset($edit_payout['is_default'])?$instance->re_db_output($edit_payout['is_default']):0;
     }

@@ -19,6 +19,7 @@
             $broker = isset($data['broker'])?$this->re_db_input($data['broker']):'';
             $b_status = isset($data['b_status'])?$this->re_db_input($data['b_status']):'';
             $contact = isset($data['contact'])?$this->re_db_input($data['contact']):'';
+            $company = isset($data['company'])?$this->re_db_input($data['company']):'';
             if(!isset($data['osj']))
             {
                 $data['osj']=0;
@@ -79,7 +80,7 @@
 			}
 			else if($id>=0){
 				if($id==0){
-					$q = "INSERT INTO `".$this->table."` SET `name`='".$name."',`broker`='".$broker."',`b_status`='".$b_status."',`contact`='".$contact."',`osj`='".$osj."',`non_registered`='".$non_registered."',`finra_fee`='".$finra_fee."',`business_address1`='".$business_address1."',`business_address2`='".$business_address2."',`business_city`='".$business_city."',`business_state`='".$business_state."',`business_zipcode`='".$business_zipcode."',`mailing_address1`='".$mailing_address1."',`mailing_address2`='".$mailing_address2."',`mailing_city`='".$mailing_city."',`mailing_state`='".$mailing_state."',`mailing_zipcode`='".$mailing_zipcode."',`email`='".$email."',`website`='".$website."',`phone`='".$phone."',`facsimile`='".$facsimile."',`date_established`='".$date_established."',`date_terminated`='".$date_terminated."',`finra_start_date`='".$finra_start_date."',`finra_end_date`='".$finra_end_date."',`last_audit_date`='".$last_audit_date."'".$this->insert_common_sql();
+					$q = "INSERT INTO `".$this->table."` SET `name`='".$name."',`broker`='".$broker."',`b_status`='".$b_status."',`contact`='".$contact."',`company`='".$company."',`osj`='".$osj."',`non_registered`='".$non_registered."',`finra_fee`='".$finra_fee."',`business_address1`='".$business_address1."',`business_address2`='".$business_address2."',`business_city`='".$business_city."',`business_state`='".$business_state."',`business_zipcode`='".$business_zipcode."',`mailing_address1`='".$mailing_address1."',`mailing_address2`='".$mailing_address2."',`mailing_city`='".$mailing_city."',`mailing_state`='".$mailing_state."',`mailing_zipcode`='".$mailing_zipcode."',`email`='".$email."',`website`='".$website."',`phone`='".$phone."',`facsimile`='".$facsimile."',`date_established`='".$date_established."',`date_terminated`='".$date_terminated."',`finra_start_date`='".$finra_start_date."',`finra_end_date`='".$finra_end_date."',`last_audit_date`='".$last_audit_date."'".$this->insert_common_sql();
 					$res = $this->re_db_query($q);
                     $id = $this->re_db_insert_id();
 					if($res){
@@ -105,7 +106,7 @@
                       }
                     }*/
 
-				    $q = "UPDATE `".$this->table."` SET `name`='".$name."',`broker`='".$broker."',`b_status`='".$b_status."',`contact`='".$contact."',`osj`='".$osj."',`non_registered`='".$non_registered."',`finra_fee`='".$finra_fee."',`business_address1`='".$business_address1."',`business_address2`='".$business_address2."',`business_city`='".$business_city."',`business_state`='".$business_state."',`business_zipcode`='".$business_zipcode."',`mailing_address1`='".$mailing_address1."',`mailing_address2`='".$mailing_address2."',`mailing_city`='".$mailing_city."',`mailing_state`='".$mailing_state."',`mailing_zipcode`='".$mailing_zipcode."',`email`='".$email."',`website`='".$website."',`phone`='".$phone."',`facsimile`='".$facsimile."',`date_established`='".$date_established."',`date_terminated`='".$date_terminated."',`finra_start_date`='".$finra_start_date."',`finra_end_date`='".$finra_end_date."',`last_audit_date`='".$last_audit_date."'".$this->update_common_sql()." WHERE `id`='".$id."'";
+				    $q = "UPDATE `".$this->table."` SET `name`='".$name."',`broker`='".$broker."',`b_status`='".$b_status."',`contact`='".$contact."',`company`='".$company."',`osj`='".$osj."',`non_registered`='".$non_registered."',`finra_fee`='".$finra_fee."',`business_address1`='".$business_address1."',`business_address2`='".$business_address2."',`business_city`='".$business_city."',`business_state`='".$business_state."',`business_zipcode`='".$business_zipcode."',`mailing_address1`='".$mailing_address1."',`mailing_address2`='".$mailing_address2."',`mailing_city`='".$mailing_city."',`mailing_state`='".$mailing_state."',`mailing_zipcode`='".$mailing_zipcode."',`email`='".$email."',`website`='".$website."',`phone`='".$phone."',`facsimile`='".$facsimile."',`date_established`='".$date_established."',`date_terminated`='".$date_terminated."',`finra_start_date`='".$finra_start_date."',`finra_end_date`='".$finra_end_date."',`last_audit_date`='".$last_audit_date."'".$this->update_common_sql()." WHERE `id`='".$id."'";
                     $res = $this->re_db_query($q);
 					if($res){
 					    $_SESSION['success'] = UPDATE_MESSAGE;

@@ -253,7 +253,7 @@
                         if(isset($get_commission_amount['posted_commission_amount']) && $get_commission_amount['posted_commission_amount']!='')
                         {
                             $posted_commission_amount = $get_commission_amount['posted_commission_amount'];
-                        }
+                        }else{ $posted_commission_amount = 0;}
                         ?>
     	                   <tr>
                                 <td class="td_space"><?php echo $val['id'];;?></td>

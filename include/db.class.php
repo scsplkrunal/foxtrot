@@ -1037,6 +1037,181 @@ class db
     }
 
 }
+class Excel extends db
+{
+    private $objPHPExcel;
+    public function __construct(){
+        require_once(SITE_EXCEL."Classes/PHPExcel.php");
+        // Check with is web browsers.
+        if (PHP_SAPI == 'cli'):
+           //return array("Run only web browsers.");
+           echo "Run only web browsers.";exit;           
+        else:
+            // Create new PHPExcel object
+            $this->objPHPExcel = new PHPExcel();
+        endif;
+    }
+    public function generate($properties){
+        if(is_a($this->objPHPExcel,'PHPExcel')===true){
+            
+            try{
+                // Set document properties
+                if(isset($properties['creator']) && trim($properties['creator'])==""){
+                    $properties['creator']="Foxtrot";
+                }
+                if(isset($properties['last_modified_by']) && trim($properties['last_modified_by'])==""){
+                    $properties['last_modified_by']="Foxtrot User";
+                }
+                if(isset($properties['title']) && trim($properties['title'])==""){
+                    $properties['title']="Foxtrot User XLSX Document";
+                }
+                if(isset($properties['subject']) && trim($properties['subject'])==""){
+                    $properties['subject']="Foxtrot User XLSX Document";
+                }
+                if(isset($properties['description']) && trim($properties['description'])==""){
+                    $properties['description']="Foxtrot User XLSX Document, generated from web admin side.";
+                }
+                if(isset($properties['keywords']) && trim($properties['keywords'])==""){
+                    $properties['keywords']="office 2007 openxml";
+                }
+                if(isset($properties['category']) && trim($properties['category'])==""){
+                    $properties['category']="Foxtrot Reporting.";
+                }
+                if(isset($properties['total_sub_sheets']) && trim($properties['total_sub_sheets'])==""){
+                    $properties['total_sub_sheets']=1;
+                }
+                if(isset($properties['sub_sheet_title']) && is_array($properties['sub_sheet_title'])===false && count($properties['sub_sheet_title'])<=0){
+                    for($i=0;$i<$properties['total_sub_sheets'];$i++){
+                        $properties['sub_sheet_title'][]="Report-".(intval($i)+1);
+                    }
+                }
+                if(isset($properties['default_open_sub_sheet']) && trim($properties['default_open_sub_sheet'])==""){
+                    $properties['default_open_sub_sheet']=0;
+                }
+                if(isset($properties['sheet_data']) && is_array($properties['sheet_data'])===false && count($properties['sheet_data'])<=0){
+                    for($i=0;$i<$properties['total_sub_sheets'];$i++){
+                        $properties['sheet_data'][$i]['A1']='No record found.';
+                    }
+                }
+                // Check with sub sheet title names.
+                /**for($i=0;$i<$properties['total_sub_sheets'];$i++){
+                    if(isset($properties['sub_sheet_title'][$i])){}
+                    else{
+                        $properties['sub_sheet_title'][]="Report-".(intval($i)+1);
+                    }
+                }**/
+                // Check sub sheet exist or not.
+                for($i=0;$i<$properties['total_sub_sheets'];$i++){
+                    if(isset($properties['sheet_data'][$i])){}
+                    else{
+                        $properties['sheet_data'][$i]['A1']='No record found.';
+                    }
+                }
+                if(isset($properties['excel_name']) && trim($properties['excel_name'])==""){
+                    $properties['excel_name']="Foxtrot Report";
+                }
+                
+                $this->objPHPExcel->getProperties()->setCreator($properties['creator'])
+                							 ->setLastModifiedBy($properties['last_modified_by'])
+                							 ->setTitle($properties['title'])
+                							 ->setSubject($properties['subject'])
+                							 ->setDescription($properties['description'])
+                							 ->setKeywords($properties['keywords'])
+                							 ->setCategory($properties['category']);
+                
+                for($d=0;$d<$properties['total_sub_sheets'];$d++){
+                    // Add some data
+                    $setSheets = $this->objPHPExcel->createSheet($d);
+                    $this->objPHPExcel->setActiveSheetIndex($d);
+                    foreach($properties['sheet_data'][$d] as $column=>$row_data){
+                        $row_style = is_array($row_data)===true&&isset($row_data[1])===true&&is_array($row_data[1])===true?$row_data[1]:array();
+                        $row_data = is_array($row_data)===true?$row_data[0]:$row_data;
+                        // Set Cell Values.
+                        $setSheets->setCellValue($column, $row_data);
+                        // For set auto width.
+                        $column_alphabates = preg_replace("/[^a-zA-Z]+/", "", $column);
+                        $this->objPHPExcel->getActiveSheet()->getColumnDimension($column_alphabates)->setAutoSize(true);
+                        // For set General format data type of cell.
+                        $this->objPHPExcel->getActiveSheet()->getStyle($column)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_GENERAL); // 'General'
+                        // Set formatting.
+                        $styleArray = array(
+                            'font' => array(
+                                'bold' => in_array('bold',$row_style)?true:false,
+                                'italic' => in_array('italic',$row_style)?true:false,
+                                'color' => array_key_exists('color',$row_style)&&isset($row_style['color'][0])?array('rgb' => $row_style['color'][0]):array('rgb' => '2F4F4F'), // 2F4F4F default font color.
+                                'size' => array_key_exists('size',$row_style)&&isset($row_style['size'])?intval($row_style['size'][0]):13,
+                                'name' => array_key_exists('font_name',$row_style)&&isset($row_style['font_name'])?intval($row_style['font_name'][0]):'Verdana'
+                            ),
+                            'alignment' => array(
+                                'horizontal' => in_array('center',$row_style)?PHPExcel_Style_Alignment::HORIZONTAL_CENTER:PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                            ),
+                            'borders' => array(
+                                  'allborders' => array(
+                                      'style' => PHPExcel_Style_Border::BORDER_NONE,
+                                      'color' => array('rgb' => '000000')
+                                  )
+                             )
+                        );
+                        
+                        if(array_key_exists('background',$row_style)){
+                            $styleArray['fill'] = array(
+                                'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                                'color' => array('rgb' => $row_style['background'][0])
+                            );
+                        }
+                        
+                        if(array_key_exists('merge',$row_style)){
+                            $this->objPHPExcel->getActiveSheet()->mergeCells($row_style['merge'][0].':'.$row_style['merge'][1]);    
+                        }
+                        
+                        $this->objPHPExcel->getActiveSheet()->getProtection()->setSheet(true);
+                        if(in_array('unprotect',$row_style)){
+                            $this->objPHPExcel->getActiveSheet()->getStyle($column)->getProtection()->setLocked(PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
+                        }
+                        
+                        $this->objPHPExcel->getActiveSheet()->getStyle($column)->applyFromArray($styleArray);
+                        $this->objPHPExcel->getActiveSheet()->setSelectedCell('A1');
+                    }
+                    // Rename worksheet
+                    $this->objPHPExcel->getActiveSheet()->setTitle($properties['sub_sheet_title'][$d]);
+                }
+                // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+                $this->objPHPExcel->setActiveSheetIndex($properties['default_open_sub_sheet']);
+                
+                // Remove default sheet.
+                $this->objPHPExcel->removeSheetByIndex(
+                    $this->objPHPExcel->getIndex(
+                        $this->objPHPExcel->getSheetByName('Worksheet')
+                    )
+                );
+                
+                // Redirect output to a client’s web browser (Excel5)
+                header('Content-Type: application/vnd.ms-excel');
+                header('Content-Disposition: attachment;filename="'.$properties['excel_name'].'.xls"');
+                header('Cache-Control: max-age=0');
+                // If you're serving to IE 9, then the following may be needed
+                header('Cache-Control: max-age=1');
+                
+                // If you're serving to IE over SSL, then the following may be needed
+                header ('Expires: Mon, 01 June 2017 01:00:00 GMT'); // Date in the past
+                header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+                header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+                header ('Pragma: public'); // HTTP/1.0
+                
+                $objWriter = PHPExcel_IOFactory::createWriter($this->objPHPExcel, 'Excel5');
+                $objWriter->save('php://output');
+            }
+            catch(Exception $e){
+                echo "<pre>";
+                print_r($e);
+                return array(0=>1,$e->getMessage()." in <b><u><a href=\"\">".basename($e->getFile())."</b></u> at line no : <b><u>".$e->getLine()."</u></b>");
+            }
+        }
+        else{
+            return array("Something went wrong. Please try again.");
+        }        
+    }
+}
 class RRPDF extends TCPDF {
     //Page header
     public function Header() {

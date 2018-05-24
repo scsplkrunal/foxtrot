@@ -1,27 +1,21 @@
 <?php 
 require_once("include/config.php");
 require_once(DIR_FS."islogin.php");
-$instance = new transaction();
-$get_trans_data = array();
-$batch_id = '';
+$instance = new import();
+
+//DEFAULT PDF DATA:
 $get_logo = $instance->get_system_logo();
 $system_logo = isset($get_logo['logo'])?$instance->re_db_input($get_logo['logo']):'';
 $get_company_name = $instance->get_company_name();
 $system_company_name = isset($get_company_name['company_name'])?$instance->re_db_input($get_company_name['company_name']):'';
-//print_r($system_logo);exit;
-if(isset($_GET['batch_id']) && $_GET['batch_id'] != '')
-{
-    $batch_id = $_GET['batch_id'];
-    $get_trans_data = $instance->select_data_report($batch_id);
-}
-else
-{
-    $get_trans_data = $instance->select_data_report();
-}
-$batch_desc = isset($get_trans_data[0]['batch_desc'])?$instance->re_db_input($get_trans_data[0]['batch_desc']):'';
-$total_amount_invested = 0;
-$total_commission_received = 0;
-$total_charges = 0;
+
+$return_solved_exception = array();
+$file_id = isset($_GET['id'])?$instance->re_db_input($_GET['id']):0;
+$get_file_data = $instance->select_user_files($file_id);
+$get_total_commission = $instance->get_total_commission_amount($file_id);
+$total_commission_amount = $get_total_commission;
+$get_file_type = $instance->get_file_type($file_id);
+$return_solved_exception = $instance->select_solved_exception_data($file_id);
 ?>
 <?php
 
@@ -63,15 +57,7 @@ $total_charges = 0;
     $pdf->SetFont('times','',10);
     $html='<table border="0">
                 <tr>';
-                    if($batch_id != ''){
-                        
-                        $html .='<td width="100%" style="font-size:16px;font-weight:bold;text-align:center;">TRANSACTION BY BATCH REPORT : '.strtoupper($batch_desc).'</td>';
-                     
-                     } else {
-                        
-                        $html .='<td width="100%" style="font-size:16px;font-weight:bold;text-align:center;">TRANSACTION BY BATCH REPORT : ALL BATCHES</td>';
-                     }  
-                   
+                    $html .='<td width="100%" style="font-size:16px;font-weight:bold;text-align:center;">REVIEW PROCESSED DATA</td>';
                 $html .='</tr>
             </table>';
     $pdf->writeHTML($html, false, 0, false, 0);
@@ -81,51 +67,68 @@ $total_charges = 0;
     $pdf->SetFont('times','',10);
     $html='<table border="0">
                 <tr>';
-                if($batch_id != ''){
-                    
-                    $html .='<td width="100%" style="font-size:12px;font-weight:bold;text-align:center;">Batch #'.$batch_id.'</td>';
-                 
-                 } else {
-                    
-                    $html .='<td width="100%" style="font-size:12px;font-weight:bold;text-align:center;"></td>';
-                 }   
-            $html .='</tr>
+                    $html .='<td width="23%" style="font-size:12px;font-weight:bold;margin-right: 5% !important;">File: '.$get_file_data['file_name'].'</td>
+                    <td width="23%" style="font-size:12px;font-weight:bold;margin-right: 5% !important;">Source: '.$get_file_data['source'].'</td>
+                    <td width="24%" style="font-size:12px;font-weight:bold;margin-right: 5% !important;">File Type: '.$get_file_data['file_type'].'</td>
+                    <td width="15%" style="font-size:12px;font-weight:bold;margin-right: 5% !important;">Date: '.date('m/d/Y',strtotime($get_file_data['last_processed_date'])).'</td>
+                    <td width="15%" style="font-size:12px;font-weight:bold;margin-right: 5% !important;">Amount: $'.number_format($total_commission_amount,2).'</td>';
+                $html .='</tr>
             </table>';
     $pdf->writeHTML($html, false, 0, false, 0);
     $pdf->Ln(5);
     
-        
     $pdf->SetFont('times','B',12);
     $pdf->SetFont('times','',10);
     $html='<table border="0" cellpadding="5" width="100%">
                 <tr style="background-color: #f1f1f1;">
-                    <td><h4>TRADE#</h4></td>
-                    <td><h4>BROKER</h4></td>
-                    <td><h4>CLIENT</h4></td>
-                    <td><h4>TRADE DATE</h4></td>
-                    <td><h4>DATE RECEIVED</h4></td>
-                    <td><h4>AMOUNT INVESTED</h4></td>
-                    <td style="width:18%"><h4>COMMISSION RECEIVED</h4></td>
-                    <td><h4>CHARGE</h4></td>
-                </tr>';
+                    <td><h4>DATE</h4></td>
+                    <td><h4>REP#</h4></td>
+                    <td><h4>REP NAME</h4></td>
+                    <td><h4>ACCOUNT#</h4></td>
+                    <td><h4>CLIENT NAME</h4></td>';
+                    if(isset($get_file_type) && $get_file_type == '1')
+                    {
+                        $html.='<td><h4>CLIENT ADDRESS</h4></td>';
+                    }
+                    else if(isset($get_file_type) && $get_file_type == '2')
+                    {
+                        $html.='<td><h4>CUSIP</h4></td>';
+                        $html.='<td><h4>PRINCIPAL</h4></td>';
+                        $html.='<td><h4>COMMISSION</h4></td>';
+                    }
+        
+        $html.='</tr>';
     //$pdf->Line(10, 81, 290, 81);
-    if($get_trans_data != array())
+    if($return_solved_exception != array())
     {
-        foreach($get_trans_data as $trans_key=>$trans_data)
+        foreach($return_solved_exception as $process_key=>$process_val)
         {
-            $total_amount_invested = ($total_amount_invested+$trans_data['invest_amount']);
-            $total_commission_received = ($total_commission_received+$trans_data['commission_received']);
-            $total_charges = ($total_charges+$trans_data['charge_amount']);
-        $html.='<tr>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$trans_data['id'].'</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$trans_data['broker_name'].'</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$trans_data['client_name'].'</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.date('m-d-Y',strtotime($trans_data['trade_date'])).'</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.date('m-d-Y',strtotime($trans_data['commission_received_date'])).'</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.number_format($trans_data['invest_amount'],2).'</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.number_format($trans_data['commission_received'],2).'</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.number_format($trans_data['charge_amount'],2).'</td>
-                    </tr>';
+            $html.='<tr>
+                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.date('m/d/Y',strtotime($process_val['date'])).'</td>
+                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$process_val['rep'].'</td>
+                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$process_val['rep_name'].'</td>
+                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$process_val['account_no'].'</td>
+                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$process_val['client'].'</td>';
+                        if(isset($get_file_type) && $get_file_type == '1')
+                        {
+                            $get_client_data = $instance->get_client_data($file_id,$process_val['temp_data_id']);
+                            $html.='<td style="font-size:13px;font-weight:normal;text-align:left;">'.$get_client_data[0]['client_address'].'</td>';
+                        }
+                        else if(isset($get_file_type) && $get_file_type == '2')
+                        {
+                            $html.='<td style="font-size:13px;font-weight:normal;text-align:left;">'.$process_val['cusip'].'</td>';
+                            if($process_val['principal'] > 0){ 
+                                $html.='<td style="font-size:13px;font-weight:normal;text-align:left;">'.'$'.number_format($process_val['principal'],2).'</td>';
+                            }else{
+                                $html.='<td style="font-size:13px;font-weight:normal;text-align:left;">$0</td>';
+                            }
+                            if($process_val['commission'] > 0){ 
+                                $html.='<td style="font-size:13px;font-weight:normal;text-align:left;">'.'$'.number_format($process_val['commission'],2).'</td>';
+                            }else{
+                                $html.='<td style="font-size:13px;font-weight:normal;text-align:left;">$0</td>';
+                            }
+                        }
+              $html.='</tr>';
         } 
     }
     else
@@ -140,7 +143,7 @@ $total_charges = 0;
     //$pdf->Line(205, 105, 182, 105);
     //$pdf->Line(238, 105, 215, 105);
     //$pdf->Line(280, 105, 265, 105);
-    $pdf->SetFont('times','B',12);
+    /*$pdf->SetFont('times','B',12);
     $pdf->SetFont('times','',10);
     $html='<table border="0" cellpadding="5" width="100%">
                 <tr>
@@ -154,10 +157,10 @@ $total_charges = 0;
                 </tr>
             </table>';
     $pdf->writeHTML($html, false, 0, false, 0);
-    $pdf->Ln(5);
+    $pdf->Ln(5);*/
    
     $pdf->lastPage();
-    $pdf->Output('report_transaction_by_batch.pdf', 'I');
+    $pdf->Output('report_processed_data.pdf', 'I');
     
     exit;
 ?>

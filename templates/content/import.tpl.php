@@ -160,6 +160,40 @@ PostResult( msg );
                 <h4 style="margin-right: 5% !important; display: inline;">Date: <?php if(isset($get_file_data['last_processed_date']) && $get_file_data['last_processed_date'] != '0000-00-00'){ echo date('m/d/Y',strtotime($get_file_data['last_processed_date']));}else echo '00-00-0000' ?></h4>
                 <h4 style="margin-right: 0% !important; display: inline;">Amount: <?php echo '$'.number_format($total_commission_amount,2);?></h4>
                 <?php } ?>
+                <?php if(isset($_GET['tab']) && $_GET['tab']=="preview_files" && $_GET['id']>0){
+                    $get_file_data = $instance->select_user_files($_GET['id']);
+                    ?>
+                <h3>Preview Data</h3><br />
+                <h4 style="margin-right: 5% !important; display: inline;">File: <?php if(isset($get_file_data['file_name'])){ echo $get_file_data['file_name']; } ?></h4>
+                <h4 style="margin-right: 5% !important; display: inline;">Source: <?php if(isset($get_file_data['source'])){ echo $get_file_data['source']; } ?></h4>
+                <h4 style="margin-right: 5% !important; display: inline;">File Type: <?php if(isset($get_file_data['file_type'])){ echo $get_file_data['file_type']; } ?></h4>
+                <h4 style="margin-right: 5% !important; display: inline;">Date: <?php if(isset($get_file_data['last_processed_date']) && $get_file_data['last_processed_date'] != '0000-00-00'){ echo date('m/d/Y',strtotime($get_file_data['last_processed_date']));}else echo '00-00-0000' ?></h4>
+                <h4 style="margin-right: 0% !important; display: inline;">Amount: 
+                <?php 
+                $file_id = isset($_GET['id'])?$instance->re_db_input($_GET['id']):0;
+                 
+                $get_file_type =  '';
+                $get_file_type_source = $instance->get_current_file_type($file_id);
+                if($get_file_type_source == 'DSTFANMail')
+                {
+                    $get_file_type = 1;
+                }
+                else if($get_file_type_source == 'DSTIDC')
+                {
+                    $get_file_type = 2;
+                }
+                if(isset($get_file_type) && $get_file_type == 2)
+                {
+                    $return_file_data_array = $instance->get_file_array($file_id);
+                    $total_amount = 0;
+                    foreach($return_file_data_array as $preview_key=>$preview_val)
+                    {
+                        $total_amount += $preview_val['dealer_commission_amount'];
+                    }
+                    $total_commission_amount = $total_amount; 
+                }               
+                echo '$'.number_format($total_commission_amount/100,2);?></h4>
+                <?php } ?>
                 <div class="tab-pane active" id="tab_a"><?php if(isset($_GET['tab']) && ($_GET['tab']=="current_files" || $_GET['tab']=="archived_files") || !isset($_GET['tab'])){?>
                     <ul class="nav nav-tabs ">
                       <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="current_files"){ echo "active"; }else if(!isset($_GET['tab'])){echo "active";}else{ echo '';} ?>" ><a href="#current_files" data-toggle="tab">Current Files</a></li>
@@ -235,6 +269,36 @@ PostResult( msg );
                                                         {
                                                             $total_complete_process=0;
                                                         }
+                                                        if($total_complete_process == 100)
+                                                        {
+                                                            $return = $instance->reprocess_current_files($val['id']);
+                                                            if(isset($val['source']) && $val['source'] == 'DSTFANMail')
+                                                            {
+                                                                $total_processed_data = $instance->get_fanmail_detail_data($val['id']);
+                                                                $count_processed_data = count($total_processed_data);
+                                                                $total_exception_data = $instance->get_exception_data($val['id']);
+                                                                $count_exception_data = count($total_exception_data);
+                                                            }
+                                                            else
+                                                            {
+                                                                $total_processed_data = $instance->get_idc_detail_data($val['id']);
+                                                                $count_processed_data = count($total_processed_data);
+                                                                $total_exception_data = $instance->get_exception_data($val['id']);
+                                                                $count_exception_data = count($total_exception_data);
+                                                            }
+                                                            if(isset($count_processed_data) && $count_processed_data>0)
+                                                            {
+                                                                $total_process = $count_processed_data+$count_exception_data;
+                                                                $total_processed_per = ($count_processed_data*100)/$total_process;
+                                                                //$up = ($u*100)/$t;
+                                                                //$total_uncomplete_process = ($count_exception_data*100)/$count_processed_data;
+                                                                $total_complete_process = round($total_processed_per);
+                                                            }
+                                                            else
+                                                            {
+                                                                $total_complete_process=0;
+                                                            }
+                                                        }
                                                         ?>
                                                         <td style="width: 20%;">
                                                         <div class="progress">
@@ -258,6 +322,7 @@ PostResult( msg );
                                                         <select name="process_file_<?php echo $val['id'];?>" id="process_file_<?php echo $val['id'];?>" class="form-control" style=" width: 78% !important;display: inline;">
                                                             <option value="0">Select Options</option>
                                                             <option value="1" >Delete File</option>
+                                                            <option value="7" >Preview</option>
                                                             <option value="2" >Process</option>
                                                             <option value="3" <?php if(isset($check_exception_data) && $check_exception_data =='0' && isset($check_processed_data) && $check_processed_data == '3'){echo "selected='selected'";} ?> <?php if($val['processed']==0){echo 'disabled="true"';}?> >View/Print</option>
                                                             <option value="4" <?php if(isset($check_exception_data) && $check_exception_data =='4'){echo "selected='selected'";} ?> <?php if($val['processed']==0){echo 'disabled="true"';}?>>Resolve Exceptions</option>
@@ -664,6 +729,126 @@ PostResult( msg );
                         </div>
                     </div>
                     <div class="tab-content col-md-12">
+                    <div class="tab-pane <?php if(isset($_GET['tab']) && $_GET['tab']=="preview_files"){ echo "active"; } ?>" id="tab_view"><?php if(isset($_GET['tab']) && $_GET['tab']=="preview_files" && $_GET['id']>0){
+                        
+                        ?>
+                        <ul class="nav nav-tabs ">
+                          <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="preview_files"){ echo "active"; } ?>" ><a href="#preview_files" data-toggle="tab">Preview Data</a></li>
+                         </ul> <?php } ?> <br />
+                          <!-- Tab 1 is started -->
+                            <div class="tab-content">
+                                <div class="tab-pane <?php if(isset($_GET['tab']) && $_GET['tab']=="preview_files" && $_GET['id']>0){ echo "active"; } ?>" id="preview_files">
+                                    <div class="panel-overlay-wrap">
+                                        <div class="panel-body" style="border: 1px solid #DFDFDF; margin-top: 17px;">
+                                            <div class="row">
+                                            <?php 
+                                            $get_file_type =  '';
+                                            $get_file_type_source = $instance->get_current_file_type($_GET['id']);
+                                            if($get_file_type_source == 'DSTFANMail')
+                                            {
+                                                $get_file_type = 1;
+                                            }
+                                            else if($get_file_type_source == 'DSTIDC')
+                                            {
+                                                $get_file_type = 2;
+                                            }
+                                            ?>
+                                                <div class="table-responsive" style="margin: 0px 5px 0px 5px;">
+                                                    <table id="data-table6" class="table table-bordered table-stripped table-hover">
+                                                        <thead>
+                                                            <th>Date</th>
+                                                            <th>Rep#</th>
+                                                            <th>Rep Name</th>
+                                                            <th>Account#</th>
+                                                            <th>Client Name</th>
+                                                            <?php if(isset($get_file_type) && $get_file_type == '1'){
+                                                            ?>
+                                                            <th>Client Address</th>
+                                                            <?php } 
+                                                            else if(isset($get_file_type) && $get_file_type == '2'){?>
+                                                            <th>CUSIP</th>
+                                                            <th>Principal</th>
+                                                            <th>Commission</th>
+                                                            <?php }?>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php 
+                                                            $file_id = isset($_GET['id'])?$instance->re_db_input($_GET['id']):0;
+                                                            $return_file_data_array = $instance->get_file_array($file_id);
+                                                            foreach($return_file_data_array as $preview_key=>$preview_val)
+                                                            {?>
+                                                             <tr>
+                                                                <td><?php echo date('m/d/Y');?></td>
+                                                                <td><?php echo $preview_val['representative_number'];?></td>
+                                                                <td><?php echo $preview_val['representative_name'];?></td>
+                                                                <?php 
+                                                                if(isset($get_file_type) && $get_file_type == '1'){
+                                                                ?>
+                                                                <td><?php echo $preview_val['mutual_fund_customer_account_number'];?></td>
+                                                                <?php } 
+                                                                else if(isset($get_file_type) && $get_file_type == '2'){
+                                                                ?>
+                                                                <td><?php echo $preview_val['customer_account_number'];?></td>
+                                                                <?php } ?>
+                                                                <?php 
+                                                                if(isset($get_file_type) && $get_file_type == '1'){
+                                                                ?>
+                                                                <td><?php echo $preview_val['registration_line1'];?></td>
+                                                                <?php } 
+                                                                else if(isset($get_file_type) && $get_file_type == '2'){
+                                                                ?>
+                                                                <td><?php echo $preview_val['alpha_code'];?></td>
+                                                                <?php } ?>
+                                                                <?php 
+                                                                if(isset($get_file_type) && $get_file_type == '1'){
+                                                                ?>
+                                                                <td>
+                                                                <?php 
+                                                                if($preview_val['line_code'] == 1)
+                                                                {
+                                                                    echo $preview_val['registration_line1'].' '.$preview_val['registration_line2'].' '.$preview_val['registration_line3'].' '.$preview_val['registration_line4'];
+                                                                }
+                                                                else if($preview_val['line_code'] == 2)
+                                                                {
+                                                                    echo $preview_val['registration_line2'].' '.$preview_val['registration_line3'].' '.$preview_val['registration_line4'];
+                                                                }
+                                                                else if($preview_val['line_code'] == 3)
+                                                                {
+                                                                    echo $preview_val['registration_line3'].' '.$preview_val['registration_line4'];
+                                                                }
+                                                                else if($preview_val['line_code'] == 4)
+                                                                {
+                                                                    echo $preview_val['registration_line4'];
+                                                                }
+                                                                else
+                                                                {
+                                                                    echo '';
+                                                                }
+                                                                ?>
+                                                                </td>
+                                                                <?php } 
+                                                                else if(isset($get_file_type) && $get_file_type == '2')
+                                                                { ?>
+                                                                <td><?php echo $preview_val['CUSIP_number'];?></td>
+                                                                <td style="text-align: right;"><?php if($preview_val['gross_transaction_amount'] > 0){ echo '$'.number_format($preview_val['gross_transaction_amount']/100,2);}else{ echo '$0';}?></td>
+                                                                <td style="text-align: right;"><?php if($preview_val['dealer_commission_amount'] > 0){ echo '$'.number_format($preview_val['dealer_commission_amount']/100,2);}else{ echo '$0';}?></td>
+                                                                <?php } ?>
+                                                             </tr>
+                                                            <?php } ?>                                                        
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                         </div>
+                                         <div class="panel-overlay">
+                                             <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
+                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-content col-md-12">
                     <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="open_ftp"){ echo "active"; } ?>" id="ftp">
                     <?php
                     if($action=='add_ftp'||($action=='edit_ftp' && $id>0)){
@@ -1044,7 +1229,7 @@ PostResult( msg );
                         <select name="rep_for_broker" id="rep_for_broker" class="form-control">
                             <option value="">Select Broker</option>
                             <?php foreach($get_broker as $key=>$val){?>
-                            <option value="<?php echo $val['id'];?>"><?php echo $val['first_name'];?></option>
+                            <option value="<?php echo $val['id'];?>"><?php echo $val['first_name'].' '.$val['last_name'];?></option>
                             <?php } ?>
                         </select>
                     </div>
@@ -1216,7 +1401,7 @@ $(document).ready(function() {
                         '<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>'+
     					'<ul class="dropdown-menu dropdown-menu-right" style="">'+
     						'<li><a href="<?php echo CURRENT_PAGE; ?>"><i class="fa fa-minus"></i> Back to List of Current Files Page</a></li>'+
-                            '<li><a href="<?php echo SITE_URL.'report_exception_data.php'; ?>" target="_blank"><i class="fa fa-plus"></i> Output to print</a></li>'+
+                            '<li><a href="<?php echo SITE_URL.'report_exception_data.php?id='.$file_id; ?>" target="_blank"><i class="fa fa-plus"></i> Output to print</a></li>'+
                         '</ul>'+
     				'</div>'+
     			'</div>');
@@ -1235,7 +1420,7 @@ $(document).ready(function() {
                         '<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>'+
     					'<ul class="dropdown-menu dropdown-menu-right" style="">'+
     						'<li><a href="<?php echo CURRENT_PAGE; ?>"><i class="fa fa-minus"></i> Back to List of Current Files Page</a></li>'+
-                            '<li><a href="<?php echo SITE_URL.'report_processed_data.php'; ?>" target="_blank"><i class="fa fa-plus"></i> Output to print</a></li>'+
+                            '<li><a href="<?php echo SITE_URL.'report_processed_data.php?id='.$file_id; ?>" target="_blank"><i class="fa fa-plus"></i> Output to print</a></li>'+
                         '</ul>'+
     				'</div>'+
     			'</div>');
@@ -1254,6 +1439,26 @@ $(document).ready(function() {
                         '<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>'+
     					'<ul class="dropdown-menu dropdown-menu-right" style="">'+
     						'<li><a href="<?php echo CURRENT_PAGE; ?>?tab=archived_files"><i class="fa fa-minus"></i> Back to List of Archived Files Page</a></li>'+
+                            '<li><a href="<?php echo SITE_URL.'report_view_import_data.php?id='.$file_id; ?>" target="_blank"><i class="fa fa-plus"></i> Output to print</a></li>'+
+                        '</ul>'+
+    				'</div>'+
+    			'</div>');
+                
+       $('#data-table6').DataTable({
+        "pageLength": 25,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bInfo": false,
+        //"bSort" : false,
+        "bAutoWidth": false,
+        "dom": '<"toolbar6">frtip'
+        });
+        $("div.toolbar6").html('<div class="panel-control">'+
+                    '<div class="btn-group dropdown" style="float: right;">'+
+                        '<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>'+
+    					'<ul class="dropdown-menu dropdown-menu-right" style="">'+
+    						'<li><a href="<?php echo CURRENT_PAGE.'?action=process_file&file_id='.$file_id; ?>"><i class="fa fa-refresh"></i> Process File</a></li>'+
+                            '<li><a href="<?php echo CURRENT_PAGE; ?>"><i class="fa fa-minus"></i> Cancel</a></li>'+
                         '</ul>'+
     				'</div>'+
     			'</div>');
@@ -1289,6 +1494,10 @@ function get_product(category_id){
     padding-left: 5px;
 }
 .toolbar5 {
+    float: right;
+    padding-left: 5px;
+}
+.toolbar6 {
     float: right;
     padding-left: 5px;
 }

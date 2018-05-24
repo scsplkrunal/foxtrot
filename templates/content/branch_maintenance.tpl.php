@@ -84,11 +84,22 @@ if($action=='add_new'||($action=='edit' && $id>0)){
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
+                    <label>Company </label><br />
+                    <select class="form-control" name="company">
+                        <option value="">Select Company</option>
+                        <?php foreach($get_multi_company as $key=>$val){?>
+                        <option value="<?php echo $val['id'];?>" <?php if($company != '' && $company==$val['id']){echo "selected='selected'";} ?>><?php echo $val['company_name'];?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
                     <label>OSJ </label><br />
                     <input type="checkbox" name="osj" id="osj" class="checkbox" value="1" <?php if($osj>0){echo "checked='checked'";}?>/>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label>Non-Registered </label><br />
                     <input type="checkbox" name="non_registered" id="non_registered" class="checkbox" value="1" <?php if($non_registered>0){echo "checked='checked'";}?>/>

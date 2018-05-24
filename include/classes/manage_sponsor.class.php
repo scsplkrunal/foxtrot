@@ -60,7 +60,7 @@
 			}
 			else if($id>=0){
 				if($id==0){
-					$q = "INSERT INTO `".SPONSOR_MASTER."` SET `name`='".$sponser_name."',`address1`='".$saddress1."',`address2`='".$saddress2."',`city`='".$scity."',`state`='".$sstate."',`zip_code`='".$szip_code."',`email`='".$semail."',`website`='".$swebsite."',`general_contact`='".$sgeneral_contact."',`general_phone`='".$sgeneral_phone."',`operations_contact`='".$soperations_contact."',`operations_phone`='".$soperations_phone."',`dst_system_id`='".$sdst_system_id."',`dst_mgmt_code`='".$sdst_mgmt_code."',`dst_importing`='".$sdst_import."',`dazl_code`='".$sdazl_code."',`dazl_importing`='".$sdazl_import."',`dtcc_nscc_id`='".$sdtcc_nscc."',`clearing_firm_id`='".$sclr_firm."'".$this->insert_common_sql();
+					$q = "INSERT INTO `".SPONSOR_MASTER."` SET `name`='".strtoupper($sponser_name)."',`address1`='".$saddress1."',`address2`='".$saddress2."',`city`='".$scity."',`state`='".$sstate."',`zip_code`='".$szip_code."',`email`='".$semail."',`website`='".$swebsite."',`general_contact`='".$sgeneral_contact."',`general_phone`='".$sgeneral_phone."',`operations_contact`='".$soperations_contact."',`operations_phone`='".$soperations_phone."',`dst_system_id`='".$sdst_system_id."',`dst_mgmt_code`='".$sdst_mgmt_code."',`dst_importing`='".$sdst_import."',`dazl_code`='".$sdazl_code."',`dazl_importing`='".$sdazl_import."',`dtcc_nscc_id`='".$sdtcc_nscc."',`clearing_firm_id`='".$sclr_firm."'".$this->insert_common_sql();
 					$res = $this->re_db_query($q);
                     $id = $this->re_db_insert_id();
                     
@@ -80,7 +80,7 @@
 					}
 				}
 				else if($id>0){
-					$q = "UPDATE `".SPONSOR_MASTER."` SET `name`='".$sponser_name."',`address1`='".$saddress1."',`address2`='".$saddress2."',`city`='".$scity."',`state`='".$sstate."',`zip_code`='".$szip_code."',`email`='".$semail."',`website`='".$swebsite."',`general_contact`='".$sgeneral_contact."',`general_phone`='".$sgeneral_phone."',`operations_contact`='".$soperations_contact."',`operations_phone`='".$soperations_phone."',`dst_system_id`='".$sdst_system_id."',`dst_mgmt_code`='".$sdst_mgmt_code."',`dst_importing`='".$sdst_import."',`dazl_code`='".$sdazl_code."',`dazl_importing`='".$sdazl_import."',`dtcc_nscc_id`='".$sdtcc_nscc."',`clearing_firm_id`='".$sclr_firm."'".$this->update_common_sql()." WHERE `id`='".$id."'";
+					$q = "UPDATE `".SPONSOR_MASTER."` SET `name`='".strtoupper($sponser_name)."',`address1`='".$saddress1."',`address2`='".$saddress2."',`city`='".$scity."',`state`='".$sstate."',`zip_code`='".$szip_code."',`email`='".$semail."',`website`='".$swebsite."',`general_contact`='".$sgeneral_contact."',`general_phone`='".$sgeneral_phone."',`operations_contact`='".$soperations_contact."',`operations_phone`='".$soperations_phone."',`dst_system_id`='".$sdst_system_id."',`dst_mgmt_code`='".$sdst_mgmt_code."',`dst_importing`='".$sdst_import."',`dazl_code`='".$sdazl_code."',`dazl_importing`='".$sdazl_import."',`dtcc_nscc_id`='".$sdtcc_nscc."',`clearing_firm_id`='".$sclr_firm."'".$this->update_common_sql()." WHERE `id`='".$id."'";
                     $res = $this->re_db_query($q);
 					if($res){
 					    $_SESSION['success'] = UPDATE_MESSAGE;

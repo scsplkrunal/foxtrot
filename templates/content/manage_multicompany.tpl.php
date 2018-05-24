@@ -229,12 +229,12 @@
                                 </select>
                             </div>
                         </div>
-                         <div class="col-md-6">
+                         <!--<div class="col-md-6">
                             <div class="form-group">
-                                <label>Rate </label><div class="range range-success">
+                                <label>Rate </label>
                                 <!--input type="text" name="p_rate" id="p_rate" value="<?php if($action=='edit'){echo $p_rate;} ?>" class="form-control" /-->
-                            </div>
-                        </div>
+                            <!--</div>
+                        </div>-->
                     </div><h3>Level 1:</h3>
                     <div class="row">
                         <div class="col-md-6">
@@ -321,7 +321,7 @@
                         </div>
                     </div>
                 </div>
-                </div>
+                
                 <div class="tab-pane" id="tab_cc">
                     <div class="row">
                         <div class="form-group">
@@ -334,9 +334,9 @@
                                     <input type="checkbox" class="checkbox" <?php if(isset($mystate) && in_array($stateval['id'],$mystate)){ ?>checked="true" <?php } ?> name="state[<?php echo $stateval['id']; ?>]" id="<?php echo $stateval['name']; ?>" value="<?php echo $stateval['id']; ?>" /><?php echo $stateval['name']; ?>
                                 </label>
                                 <?php } ?>
-                                <label class="check-inline col-md-12">
+                                <!--<label class="check-inline col-md-12">
                                     <br /><input type="checkbox" class="checkbox" name="foreign" <?php if($action=='edit'){if($foreign == 1){ ?> checked="true" <?php }} ?> id="foreign" value="Foreign" />Foreign
-                                </label>
+                                </label>-->
                         </div>
                     </div>
                 </div>

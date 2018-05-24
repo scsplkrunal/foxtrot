@@ -65,6 +65,10 @@
         {
             $return = $instance->move_to_archived_files($id);
         }
+        else if(isset($process_file) && $process_file == 7)
+        {
+            header("location:".CURRENT_PAGE."?tab=preview_files&id=".$id);exit;
+        }
         else{
             header("location:".CURRENT_PAGE);exit;
         }
@@ -76,6 +80,15 @@
         }
         else{
             $error = !isset($_SESSION['warning'])?$return:'';
+        }
+    }
+    else if(isset($_GET['action']) && $_GET['action'] == 'process_file' && $_GET['file_id'] !='')
+    {
+        $id = $_GET['file_id'];
+        $return = $instance->process_current_files($id);
+        if($return == '')
+        {
+            header("location:".SITE_URL."import.php");exit;
         }
     }
     else if(isset($_POST['go_archive']) && $_POST['go_archive'] == 'go_archive')

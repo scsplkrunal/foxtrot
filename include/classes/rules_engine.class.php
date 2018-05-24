@@ -25,9 +25,9 @@
         			if($parameter1=='0'&& $action=='5'){
         				$this->errors = 'Please select broker1.';
         			}
-                    else if($parameter2=='0'&& $action=='5'){
+                    /*else if($parameter2=='0'&& $action=='5'){
         				$this->errors = 'Please select broker2.';
-        			}
+        			}*/
         			else if(isset($in_force) && $in_force != 0 && $action=='0'){
         				$this->errors = 'Please select action.';
         			}
@@ -89,7 +89,7 @@
 		}
         public function get_broker_name(){
 			$return = array();
-			$q = "SELECT `at`.id,`at`.first_name
+			$q = "SELECT `at`.id,`at`.first_name,`at`.last_name
 					FROM `".BROKER_MASTER."` AS `at`
                     WHERE `at`.`is_delete`='0' ";
 			$res = $this->re_db_query($q);

@@ -11,7 +11,7 @@
 		public function insert_update($data){
 			$id = isset($data['id'])?$this->re_db_input($data['id']):0;
 			$schedule_name = isset($data['schedule_name'])?$this->re_db_input($data['schedule_name']):'';
-            $transaction_type_general = isset($data['transaction_type_general'])?$this->re_db_input($data['transaction_type_general']):'0';
+            $transaction_type_general = isset($data['transaction_type_general'])?$this->re_db_input($data['transaction_type_general']):'1';
             $product_category = isset($data['product_category'])?$this->re_db_input($data['product_category']):'';
             $basis = isset($data['basis'])?$this->re_db_input($data['basis']):'';
             $cumulative = isset($data['cumulative'])?$this->re_db_input($data['cumulative']):'0';
@@ -19,7 +19,9 @@
             $calculation_detail = isset($data['calculation_detail'])?$this->re_db_input($data['calculation_detail']):'';
             $clearing_charge_deducted_from = isset($data['clearing_charge_deducted_from'])?$this->re_db_input($data['clearing_charge_deducted_from']):'';
             $reset = isset($data['reset'])?$this->re_db_input(date('Y-m-d',strtotime($data['reset']))):'0000-00-00';
-            $description_type = isset($data['description_type'])?$this->re_db_input($data['description_type']):'0';
+            $description_type = isset($data['description_type'])?$this->re_db_input($data['description_type']):'';
+            $minimum_trade_gross = isset($data['minimum_trade_gross'])?$this->re_db_input($data['minimum_trade_gross']):'';
+            $minimum_12B1_gross = isset($data['minimum_12B1_gross'])?$this->re_db_input($data['minimum_12B1_gross']):'';
             $team_member = isset($data['team_member'])?$data['team_member']:array();
             $team_member_string = implode (",", $team_member);
             $is_default = isset($data['is_default'])?$this->re_db_input($data['is_default']):0;
@@ -58,7 +60,7 @@
                         }
                         
                         $q = "INSERT INTO `".BROKER_PAYOUT_SCHEDULE."` SET `payout_schedule_name`='".$schedule_name."' ,`transaction_type_general`='".$transaction_type_general."' ,`product_category`='".$product_category."',`basis`='".$basis."' ,
-                        `cumulative`='".$cumulative."' ,`clearing_charge_deducted_from`='".$clearing_charge_deducted_from."',`reset`='".$reset."',`description_type`='".$description_type."' ,
+                        `cumulative`='".$cumulative."' ,`clearing_charge_deducted_from`='".$clearing_charge_deducted_from."',`reset`='".$reset."',`description_type`='".$description_type."',`minimum_trade_gross`='".$minimum_trade_gross."' ,`minimum_12B1_gross`='".$minimum_12B1_gross."'  ,
                         `team_member`='".$team_member_string."' ,`year`='".$year."',`calculation_detail`='".$calculation_detail."',`is_default`='".$is_default."'".$this->insert_common_sql();
     					$res = $this->re_db_query($q);
                         $_SESSION['last_payout_schedule_id'] = $this->re_db_insert_id();
@@ -82,7 +84,7 @@
                         }
                         
                         $q = "UPDATE `".BROKER_PAYOUT_SCHEDULE."`  SET `payout_schedule_name`='".$schedule_name."' ,`transaction_type_general`='".$transaction_type_general."' ,`product_category`='".$product_category."',`basis`='".$basis."' ,
-                        `cumulative`='".$cumulative."' ,`clearing_charge_deducted_from`='".$clearing_charge_deducted_from."',`reset`='".$reset."',`description_type`='".$description_type."' ,
+                        `cumulative`='".$cumulative."' ,`clearing_charge_deducted_from`='".$clearing_charge_deducted_from."',`reset`='".$reset."',`description_type`='".$description_type."' ,`minimum_trade_gross`='".$minimum_trade_gross."' ,`minimum_12B1_gross`='".$minimum_12B1_gross."'  ,
                         `team_member`='".$team_member_string."' ,`year`='".$year."',`calculation_detail`='".$calculation_detail."',`is_default`='".$is_default."'".$this->update_common_sql()." WHERE  `id`='".$id."'";
       					$res = $this->re_db_query($q); 
                         
@@ -100,19 +102,20 @@
 			}
 		}
         public function insert_update_payout_schedule_grid($data ,$id){
-           //echo '<pre>';print_r($id);print_r($data);exit;
+           
            $id = isset($id)?$this->re_db_input($id):0;
            $flag=0;
                if($id==0)
                {
                     foreach($data as $key=>$val)
                     {   
+                        $sliding_rates =isset($val['sliding_rates'])?$this->re_db_input($val['sliding_rates']):'';
                         $from =isset($val['from'])?$this->re_db_input($val['from']):'';
                         $to =isset($val['to'])?$this->re_db_input($val['to']):'';
                         $per =isset($val['per'])?$this->re_db_input($val['per']):'';
                         if($from!='' && $to != ''){
                             
-                            $q = "INSERT INTO `".BROKER_PAYOUT_SCHEDULE_GRID."` SET `payout_schedule_id`='".$_SESSION['last_payout_schedule_id']."' ,`from`='".$from."' ,`to`='".$to."' ,`per`='".$per."' ".$this->insert_common_sql();
+                            $q = "INSERT INTO `".BROKER_PAYOUT_SCHEDULE_GRID."` SET `payout_schedule_id`='".$_SESSION['last_payout_schedule_id']."' ,`sliding_rates`='".$sliding_rates."' ,`from`='".$from."' ,`to`='".$to."' ,`per`='".$per."' ".$this->insert_common_sql();
             				$res = $this->re_db_query($q); 
                         }
                         else
@@ -124,7 +127,8 @@
                else
                {
                     foreach($data as $key=>$val)
-                    {   
+                    {
+                        $sliding_rates =isset($val['sliding_rates'])?$this->re_db_input($val['sliding_rates']):'';
                         $from =isset($val['from'])?$this->re_db_input($val['from']):'';
                         $to =isset($val['to'])?$this->re_db_input($val['to']):'';
                         $per =isset($val['per'])?$this->re_db_input($val['per']):'';
@@ -136,7 +140,7 @@
                                $flag=1;
                             }
                             
-                             $q = "INSERT INTO `".BROKER_PAYOUT_SCHEDULE_GRID."` SET `payout_schedule_id`='".$id."',`from`='".$from."' ,`to`='".$to."' , 
+                             $q = "INSERT INTO `".BROKER_PAYOUT_SCHEDULE_GRID."` SET `payout_schedule_id`='".$id."',`sliding_rates`='".$sliding_rates."' ,`from`='".$from."' ,`to`='".$to."' , 
                             `per`='".$per."' ".$this->insert_common_sql();
             				 $res = $this->re_db_query($q); 
                         }

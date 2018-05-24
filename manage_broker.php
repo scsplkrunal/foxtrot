@@ -10,12 +10,15 @@
     $suffix = '';
     $fund = '';
     $internal = '';
+    $display_on_statement = '';
     $ssn = '';
     $tax_id = '';
     $crd = '';
     $active_status_cdd = '';
     $pay_method = '';
     $branch_manager = '';
+    $branch_name = '';
+    $branch_office = '';
     $search_text = '';
     
     $active_status_cdd1 = '';
@@ -52,11 +55,13 @@
     $id = isset($_GET['id'])&&$_GET['id']!=''?$dbins->re_db_input($_GET['id']):0;
     
     $instance = new broker_master();
+    $instance_branch =  new branch_maintenance();
     $get_state  = $instance->select_state();
     $get_state_new = $instance->select_state_new();
     $get_register=$instance->select_register();
     $get_sponsor = $instance->select_sponsor();
     $select_broker= $instance->select();
+    $select_branch= $instance_branch->select();
     $select_percentage= $instance->select_percentage();
     $broker_charge=$instance->select_broker_charge($id);
     $charge_type_arr=$instance->select_charge_type();
@@ -65,7 +70,7 @@
     $select_broker_docs = $instance->get_broker_doc_name();
     $product_category = $instance->select_category();
     $get_payout_schedule = $instance->get_payout_schedule();
-    //echo '<pre>';print_r($get_payout_schedule);exit();
+    //echo '<pre>';print_r($product_category);exit();
     
     if(isset($_POST['submit'])&& $_POST['submit']=='Save'){//echo '<pre>';print_r($_POST);exit;
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
@@ -75,12 +80,15 @@
     	$suffix = isset($_POST['suffix'])?$instance->re_db_input($_POST['suffix']):'';
     	$fund = isset($_POST['fund'])?$instance->re_db_input($_POST['fund']):'';
     	$internal = isset($_POST['internal'])?$instance->re_db_input($_POST['internal']):'';
+        $display_on_statement = isset($_POST['display_on_statement'])?$instance->re_db_input($_POST['display_on_statement']):'';
     	$ssn = isset($_POST['ssn'])?$instance->re_db_input($_POST['ssn']):'';
     	$tax_id = isset($_POST['tax_id'])?$instance->re_db_input($_POST['tax_id']):'';
     	$crd = isset($_POST['crd'])?$instance->re_db_input($_POST['crd']):'';
         $active_status_cdd = isset($_POST['active_status_cdd'])?$instance->re_db_input($_POST['active_status_cdd']):'';
     	$pay_method = isset($_POST['pay_method'])?$instance->re_db_input($_POST['pay_method']):'';
     	$branch_manager = isset($_POST['branch_manager'])?$instance->re_db_input($_POST['branch_manager']):'';
+        $branch_name = isset($_POST['branch_name'])?$instance->re_db_input($_POST['branch_name']):'';
+        $branch_office = isset($_POST['branch_office'])?$instance->re_db_input($_POST['branch_office']):'';
         $for_import = isset($_POST['for_import'])?$instance->re_db_input($_POST['for_import']):'false';
         $file_id = isset($_POST['file_id'])?$instance->re_db_input($_POST['file_id']):0;
         //echo '<pre>';print_r($_POST);exit;
@@ -128,13 +136,14 @@
         $ria_general = isset($_POST['ria_general'])?$instance->re_db_input($_POST['ria_general']):0;
 		$insurance_general = isset($_POST['insurance_general'])?$instance->re_db_input($_POST['insurance_general']):0;//echo '<pre>';print_r($_POST);exit;
     
-        //echo '<pre>';print_r($_POST['alias']);exit;
+        
         $return = $instance->insert_update($_POST);
         
         $return1 = $instance->insert_update_general($_POST);
         
         //payout tab
-        $return2 = $instance->insert_update_payout($_POST); 
+        $return2 = $instance->insert_update_payout($_POST);
+        $return_fixed_rates = $instance->insert_update_payout_fixed_rates($_POST,$_POST['id']); 
         $return3 = $instance->insert_update_payout_grid($instance->reArrayFiles_grid($_POST['leval']),$_POST['id']);
         $return4 = $instance->insert_update_payout_override($instance->reArrayFiles_override($_POST['override']),$_POST['id'],$_POST['override']['receiving_rep1']);
         $return5 = $instance->insert_update_payout_split($instance->reArrayFiles_split($_POST['split']),$_POST['id']);
@@ -333,6 +342,7 @@
         $edit_registers = $instance->edit_registers($id);
         $edit_required_docs = $instance->edit_required_docs($id);
         $edit_payout = $instance->edit_payout($id);
+        $edit_payout_fixed_rates = $instance->edit_payout_fixed_rates($id);
         $edit_grid = $instance->edit_grid($id);
         $edit_override = $instance->edit_override($id);
         $edit_split = $instance->edit_split($id);
@@ -347,12 +357,15 @@
         $suffix = isset($return['suffix'])?$instance->re_db_output($return['suffix']):'';
         $fund = isset($return['fund'])?$instance->re_db_output($return['fund']):'';
     	$internal = isset($return['internal'])?$instance->re_db_output($return['internal']):'';
+        $display_on_statement = isset($return['display_on_statement'])?$instance->re_db_output($return['display_on_statement']):'';
         $ssn = isset($return['ssn'])?$instance->re_db_output($return['ssn']):'';
         $tax_id = isset($return['tax_id'])?$instance->re_db_output($return['tax_id']):'';
         $crd = isset($return['crd'])?$instance->re_db_output($return['crd']):'';
         $active_status_cdd = isset($return['active_status'])?$instance->re_db_output($return['active_status']):'';
         $pay_method = isset($return['pay_method'])?$instance->re_db_output($return['pay_method']):'';
     	$branch_manager = isset($return['branch_manager'])?$instance->re_db_output($return['branch_manager']):'';
+        $branch_name = isset($return['branch_name'])?$instance->re_db_output($return['branch_name']):'';
+        $branch_office = isset($return['branch_office'])?$instance->re_db_output($return['branch_office']):'';
     	
     	$home = isset($edit_general['home'])?$instance->re_db_output($edit_general['home']):'';
         $home_address1_general = isset($edit_general['home_address1_general'])?$instance->re_db_output($edit_general['home_address1_general']):'';

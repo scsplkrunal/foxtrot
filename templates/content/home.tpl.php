@@ -411,24 +411,26 @@ Highcharts.chart('container_payroll', {
 			<div class="graphboxcontent dailyimporting">
 				<div class="graphdata01_4">
 					<div class="row">
-						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
-							<span class="data01title"><b>Processed:</b></span>
-							<span class="data01count"><?php echo $total_processed_transaction;?></span>
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+							<span class="data01title"><b>Transactions Processed: </b></span>
+							<span class="data01count"><?php echo '&nbsp;&nbsp;'.$total_processed_transaction;?></span>
 						</div>
-						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
-							<span class="data01title"><b>On Hold:</b></span>
-							<span class="data01count"><?php echo $total_hold_transaction; ?></span>
+                    </div>
+     	            <div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+							<span class="data01title"><b>Transactions on Hold: </b></span>
+							<span class="data01count"><?php echo '&nbsp;&nbsp;'.$total_hold_transaction; ?></span>
 						</div>
 					</div>
 				</div>
                 <table width='100%' class="graphdata02_4"> 
                     <tr>
-                        <td style="text-align: right;min-width: 145px;">Processed:</td>
-                        <td style="text-align: left;min-width: 145px;"><?php echo $total_processed_transaction; ?></td>
+                        <td style="text-align: right;min-width: 145px;">Transactions Processed: </td>
+                        <td style="text-align: left;min-width: 145px;"><?php echo '&nbsp;&nbsp;'.$total_processed_transaction; ?></td>
                     </tr>
                     <tr>
-                        <td style="text-align: right;min-width: 145px;">On Hold:</td>
-                        <td style="text-align: left;min-width: 145px;"><?php echo $total_hold_transaction;?></td>
+                        <td style="text-align: right;min-width: 145px;">Transactions on Hold: </td>
+                        <td style="text-align: left;min-width: 145px;"><?php echo '&nbsp;&nbsp;'.$total_hold_transaction;?></td>
                     </tr>
                     <tr>
                         <td colspan="2"> <div id="container3" style="min-width: 290px; height: 400px; margin: 0 auto"></div> </td>

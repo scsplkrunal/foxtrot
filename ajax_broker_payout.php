@@ -19,6 +19,8 @@ $calculation_detail = isset($edit_payout['calculation_detail'])?$instance->re_db
 $clearing_charge_deducted_from = isset($edit_payout['clearing_charge_deducted_from'])?$instance->re_db_output($edit_payout['clearing_charge_deducted_from']):'';
 $reset = isset($edit_payout['reset'])?$instance->re_db_output(date('Y-m-d',strtotime($edit_payout['reset']))):'';
 $description_type = isset($edit_payout['description_type'])?$instance->re_db_output($edit_payout['description_type']):'';
+$minimum_trade_gross = isset($edit_payout['minimum_trade_gross'])?$instance->re_db_output($edit_payout['minimum_trade_gross']):'';
+$minimum_12B1_gross = isset($edit_payout['minimum_12B1_gross'])?$instance->re_db_output($edit_payout['minimum_12B1_gross']):'';
 $team_member = isset($edit_payout['team_member'])?explode(',',$edit_payout['team_member']):array();
 ?>
 <script type="text/javascript">
@@ -32,23 +34,21 @@ function addlevel(leval){
 
     var html = '<tr>'+
                     '<td>'+
+                        '<div class="input-group dollar">'+
+                          '<input type="number" name="leval[sliding_rates]['+flag+']" class="form-control" />'+
+                          '<span class="input-group-addon">$</span>'+
+                        '</div>'+
+                    '</td>'+
+                    '<td>'+
                     '<div class="input-group dollar">'+
                         '<input type="number" name="leval[from]['+flag+']" class="form-control" />'+
                         '<span class="input-group-addon">$</span>'+
-                    '</div>'+
-                    '<div class="input-group percentage" style="display: none;">'+
-                        '<input type="number" step="0.001" name="leval[from]['+flag+']" class="form-control" />'+
-                        '<span class="input-group-addon">%</span>'+
                     '</div>'+
                     '</td>'+
                     '<td>'+
                     '<div class="input-group dollar">'+
                         '<input type="number" name="leval[to]['+flag+']" class="form-control" />'+
                         '<span class="input-group-addon">$</span>'+
-                    '</div>'+
-                    '<div class="input-group percentage" style="display: none;">'+
-                        '<input type="number" step="0.001" name="leval[to]['+flag+']" class="form-control" />'+
-                        '<span class="input-group-addon">%</span>'+
                     '</div>'+
                     '</td>'+
                     '<td>'+
@@ -103,13 +103,13 @@ $(document).on('click','.remove-row',function(){
 </script>
 
 <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
-    <div class="row">
+    <!--<div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <label>Schedule Name </label><br />
-                <input type="text" name="schedule_name" id="schedule_name" class="form-control" value="<?php if(isset($schedule_name) && $schedule_name!=''){ echo $schedule_name; } ?>"/>
+                <label>Schedule Name </label><br />-->
+                <input type="hidden" name="schedule_name" id="schedule_name" class="form-control" value="<?php if(isset($schedule_name) && $schedule_name!=''){ echo $schedule_name; } ?>"/>
                 <input type="hidden" name="schedule_id" id="schedule_id" class="form-control" value="<?php if(isset($id) && $id!=''){ echo $id; } ?>"/>
-            </div>
+            <!--</div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
@@ -122,7 +122,7 @@ $(document).on('click','.remove-row',function(){
                 </label>
             </div>
         </div>
-   </div>
+   </div>-->
    <div class="row">
         <div class="col-md-12">
             <div class="form-group">
@@ -130,6 +130,7 @@ $(document).on('click','.remove-row',function(){
                 <div class="table-responsive">
                     <table class="table table-bordered table-stripped table-hover">
                         <thead>
+                            <th>Sliding Rates</th>
                             <th>From</th>
                             <th>To</th>
                             <th>Rate</th>
@@ -141,6 +142,12 @@ $(document).on('click','.remove-row',function(){
                             foreach($edit_grid as $regkey=>$regval){ $doc_id1++; 
                                     ?>
                                 <tr>
+                                    <td>
+                                        <div class="input-group">
+                                          <input type="number" name="leval[sliding_rates][<?php echo $doc_id1;?>]" value="<?php echo $regval['sliding_rates']; ?>" class="form-control" />
+                                          <span class="input-group-addon">$</span>
+                                        </div>
+                                    </td>
                                     <td>
                                         <?php if(isset($transaction_type_general) && $transaction_type_general == '1'){?>
                                         <div class="input-group">
@@ -178,23 +185,21 @@ $(document).on('click','.remove-row',function(){
                             <?php } }  $doc_id1++;?>
                                  <tr id="add_level">
                                     <td>
+                                        <div class="input-group">
+                                          <input type="number" name="leval[sliding_rates][<?php echo $doc_id1;?>]" class="form-control" />
+                                          <span class="input-group-addon">$</span>
+                                        </div>
+                                    </td>
+                                    <td>
                                         <div class="input-group dollar">
                                         <input type="number"  name="leval[from][<?php  echo $doc_id1;?>]" class="form-control" max="999999999"/>
                                         <span class="input-group-addon">$</span>
-                                        </div>
-                                        <div class="input-group percentage" style="display: none;">
-                                        <input type="number"  step="0.001" name="leval[from][<?php  echo $doc_id1;?>]" class="form-control" max="999999999"/>
-                                        <span class="input-group-addon">%</span>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="input-group dollar">
                                         <input type="number" name="leval[to][<?php  echo $doc_id1;?>]" class="form-control" max="999999999"/>
                                         <span class="input-group-addon">$</span>
-                                        </div>
-                                        <div class="input-group percentage" style="display: none;">
-                                        <input type="number" step="0.001" name="leval[to][<?php  echo $doc_id1;?>]" class="form-control" max="999999999"/>
-                                        <span class="input-group-addon">%</span>
                                         </div>
                                     </td>
                                     <td>
@@ -213,7 +218,7 @@ $(document).on('click','.remove-row',function(){
         </div>
    </div>
    </div>
-   <div class="row">
+   <!--<div class="row">
         <div class="col-md-6">
             <div class="form-group">
                 <label>Apply to Product Categories </label><br />
@@ -226,7 +231,7 @@ $(document).on('click','.remove-row',function(){
                 </select>
            </div>
         </div>
-   </div>
+   </div>-->
    <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
    <div class="row">
         <div class="col-md-6">
@@ -289,13 +294,17 @@ $(document).on('click','.remove-row',function(){
    <div class="row">
         <div class="col-md-6">
             <div class="form-group">
+                <label>Team Name </label>
+                <input type="text" name="description_type"  value="<?php if(isset($description_type) && $description_type!=''){ echo $description_type; } ?>"  class="form-control"  />
+            </div>
+            <!--<div class="form-group">
                 <label>Description</label>
                 <select name="description_type"  class="form-control">
                     <option value="0">Select Option</option>
                     <option <?php if(isset($description_type) && $description_type=='1'){?>selected="true"<?php }?> value="1">This is product type</option>
                     <option <?php if(isset($description_type) && $description_type=='2'){?>selected="true"<?php }?> value="2">This is product type</option>
                 </select>
-            </div>
+            </div>-->
         </div>
         <div class="col-md-6">
             <!--<div class="form-group">
@@ -316,7 +325,20 @@ $(document).on('click','.remove-row',function(){
         </select>
         </div>
     </div>
-
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Minimum Trade Gross Commission </label>
+                <input type="text" name="minimum_trade_gross"  value="<?php if(isset($minimum_trade_gross) && $minimum_trade_gross!=''){ echo $minimum_trade_gross; } ?>"  class="form-control"  />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Minimum 12B1 Gross Commission </label>
+                <input type="text" name="minimum_12B1_gross"  value="<?php if(isset($minimum_12B1_gross) && $minimum_12B1_gross!=''){ echo $minimum_12B1_gross; } ?>"  class="form-control"  />
+            </div>
+        </div>
+    </div>
                     
 <style>
 .btn-primary {

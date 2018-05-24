@@ -7,6 +7,7 @@
     $broker = '';
     $b_status = '';
     $contact = '';
+    $company = '';
     $osj = '';
     $non_registered = '';
     $finra_fee = '';
@@ -38,6 +39,8 @@
     $get_state = $instance->select_state();
     $instance_broker = new broker_master();
     $get_broker = $instance_broker->select();
+    $instance_multi_company = new manage_company();
+    $get_multi_company = $instance_multi_company->select_company();
     
     if(isset($_POST['submit'])&& $_POST['submit']=='Save'){
         
@@ -46,6 +49,7 @@
         $broker = isset($_POST['broker'])?$instance->re_db_input($_POST['broker']):'';
         $b_status = isset($_POST['b_status'])?$instance->re_db_input($_POST['b_status']):'';
         $contact = isset($_POST['contact'])?$instance->re_db_input($_POST['contact']):'';
+        $company = isset($_POST['company'])?$instance->re_db_input($_POST['company']):'';
         $osj = isset($_POST['osj'])?$instance->re_db_input($_POST['osj']):'';
         $non_registered = isset($_POST['non_registered'])?$instance->re_db_input($_POST['non_registered']):'';
         $finra_fee = isset($_POST['finra_fee'])?$instance->re_db_input($_POST['finra_fee']):'';
@@ -86,6 +90,7 @@
         $broker = isset($return['broker'])?$instance->re_db_output($return['broker']):'';
         $b_status = isset($return['b_status'])?$instance->re_db_output($return['b_status']):'';
         $contact = isset($return['contact'])?$instance->re_db_output($return['contact']):'';
+        $company = isset($return['company'])?$instance->re_db_output($return['company']):'';
         $osj = isset($return['osj'])?$instance->re_db_output($return['osj']):'';
         $non_registered = isset($return['non_registered'])?$instance->re_db_output($return['non_registered']):'';
         $finra_fee = isset($return['finra_fee'])?$instance->re_db_output($return['finra_fee']):'';

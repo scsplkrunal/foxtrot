@@ -55,6 +55,7 @@
 	define('STORE_SESSIONS', 'mysql');
     
     //include(DIR_FS_INCLUDES.'constants.php');
+    define('SITE_EXCEL',DIR_FS_INCLUDES.'PHPExcel/');
     include(DIR_FS_INCLUDES.'TCPDF-master/tcpdf.php');
     include(DIR_FS_INCLUDES.'tables.php');
     include(DIR_FS_INCLUDES.'db.class.php');

@@ -16,7 +16,7 @@ $notes_id = 0;
     <?php foreach($get_notes as $key=>$val){
         $notes_id = $val['id'];?>
         <tr>
-            <td><?php echo date('d/m/Y',strtotime($val['date']));?></td>
+            <td><?php echo date('m/d/Y',strtotime($val['date']));?></td>
             <input type="hidden" name="date" id="date" value="<?php echo date('Y-m-d',strtotime($val['date']));?>"/>
             <td><?php echo $val['user_id'];?></td>
             <input type="hidden" name="user_id" id="user_id" value="<?php echo $val['user_id'];?>"/>
@@ -33,7 +33,7 @@ $notes_id = 0;
         </tr>
     <?php } $notes_id++;?>
     <tr id="add_row_notes" style="display: none;">
-            <td><?php echo date('d/m/Y');?></td>
+            <td><?php echo date('m/d/Y');?></td>
             <input type="hidden" name="date" id="date" value="<?php echo date('Y-m-d');?>"/>
             <td><?php echo $_SESSION['user_name'];?></td>
             <input type="hidden" name="user_id" id="user_id" value="<?php echo $_SESSION['user_name'];?>"/>

@@ -14,7 +14,9 @@
     $get_client= $instance->select_client();
     $get_batch = $instance->select_batch();
     $product_cate ='';
+    $client_name='';
     $product = '';
+    $batch = '';
     $split_broker = array();
     $split_rate = array();
     $return_splits = array();
@@ -22,7 +24,7 @@
     $shares = 0; 
     
     if(isset($_POST['transaction'])&& $_POST['transaction']=='Save'){ 
-        //echo '<pre>';print_r($_SESSION['batch_id']);exit();
+        //echo '<pre>';print_r($_POST);exit();
         $id = isset($_POST['id'])?$instance->re_db_input($_POST['id']):0;
         //$trade_number = isset($_POST['trade_number'])?$instance->re_db_input($_POST['trade_number']):0;
         $client_name = isset($_POST['client_name'])?$instance->re_db_input($_POST['client_name']):'';

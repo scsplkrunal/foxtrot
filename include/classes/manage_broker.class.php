@@ -11,6 +11,7 @@
 		public function insert_update($data){
 		  
             //echo '<pre>';print_r($_POST);exit;
+            $_SESSION['last_insert_id'] = 0;
 			$id = isset($data['id'])?$this->re_db_input($data['id']):0;
 			$fname = isset($data['fname'])?$this->re_db_input($data['fname']):'';
 			$lname = isset($data['lname'])?$this->re_db_input($data['lname']):'';
@@ -18,6 +19,7 @@
 			$suffix = isset($data['suffix'])?$this->re_db_input($data['suffix']):'';
 			$fund = isset($data['fund'])?$this->re_db_input($data['fund']):'';
 			$internal = isset($data['internal'])?$this->re_db_input($data['internal']):'';
+            $display_on_statement = isset($data['display_on_statement'])?$this->re_db_input($data['display_on_statement']):'';
 			$ssn_mask = isset($data['ssn'])?$this->re_db_input($data['ssn']):'';
             $ssn = str_replace("-", '', $ssn_mask);
             $tax_id_mask = isset($data['tax_id'])?$this->re_db_input($data['tax_id']):'';
@@ -26,6 +28,8 @@
             $active_status_cdd = isset($data['active_status_cdd'])?$this->re_db_input($data['active_status_cdd']):'';
 			$pay_method = isset($data['pay_method'])?$this->re_db_input($data['pay_method']):'';
 			$branch_manager = isset($data['branch_manager'])?$this->re_db_input($data['branch_manager']):'';
+            $branch_name = isset($data['branch_name'])?$this->re_db_input($data['branch_name']):'';
+            $branch_office = isset($data['branch_office'])?$this->re_db_input($data['branch_office']):'';
 			$for_import = isset($data['for_import'])?$this->re_db_input($data['for_import']):'false';
             $file_id = isset($data['file_id'])?$this->re_db_input($data['file_id']):'';
             $temp_data_id = isset($data['temp_data_id'])?$this->re_db_input($data['temp_data_id']):'';
@@ -84,9 +88,10 @@
 				if($this->errors!=''){
 					return $this->errors;
 				}
-				else if($id>=0){
+				else 
+                {
 					if($id==0){
-						$q = "INSERT INTO `".$this->table."` SET `first_name`='".$fname."',`last_name`='".$lname."',`middle_name`='".$mname."',`suffix`='".$suffix."',`fund`='".$fund."',`internal`='".$internal."',`tax_id`='".$tax_id."',`crd`='".$crd."',`ssn`='".$ssn."',`active_status`='".$active_status_cdd."',`pay_method`='".$pay_method."',`branch_manager`='".$branch_manager."'".$this->insert_common_sql();
+						$q = "INSERT INTO `".$this->table."` SET `first_name`='".$fname."',`last_name`='".$lname."',`middle_name`='".$mname."',`suffix`='".$suffix."',`fund`='".$fund."',`internal`='".$internal."',`display_on_statement`='".$display_on_statement."',`tax_id`='".$tax_id."',`crd`='".$crd."',`ssn`='".$ssn."',`active_status`='".$active_status_cdd."',`pay_method`='".$pay_method."',`branch_manager`='".$branch_manager."',`branch_name`='".$branch_name."',`branch_office`='".$branch_office."'".$this->insert_common_sql();
 						$res = $this->re_db_query($q);
                         $_SESSION['last_insert_id'] = $this->re_db_insert_id();
                         if($res){
@@ -119,7 +124,7 @@
 						}
 					}
 					else if($id>0){
-					    $q = "UPDATE `".$this->table."` SET `first_name`='".$fname."',`last_name`='".$lname."',`middle_name`='".$mname."',`suffix`='".$suffix."',`fund`='".$fund."',`internal`='".$internal."',`tax_id`='".$tax_id."',`crd`='".$crd."',`ssn`='".$ssn."',`active_status`='".$active_status_cdd."',`pay_method`='".$pay_method."',`branch_manager`='".$branch_manager."'".$this->update_common_sql()." WHERE `id`='".$id."'";
+					    $q = "UPDATE `".$this->table."` SET `first_name`='".$fname."',`last_name`='".$lname."',`middle_name`='".$mname."',`suffix`='".$suffix."',`fund`='".$fund."',`internal`='".$internal."',`display_on_statement`='".$display_on_statement."',`tax_id`='".$tax_id."',`crd`='".$crd."',`ssn`='".$ssn."',`active_status`='".$active_status_cdd."',`pay_method`='".$pay_method."',`branch_manager`='".$branch_manager."',`branch_name`='".$branch_name."',`branch_office`='".$branch_office."'".$this->update_common_sql()." WHERE `id`='".$id."'";
 						$res = $this->re_db_query($q);
 						if($res){
 						      
@@ -132,10 +137,7 @@
 						}
 					}
 				}
-				else{
-					$_SESSION['warning'] = UNKWON_ERROR;
-					return false;
-				}
+				
 			}
 		}
         /** Insert update general data for broker. **/
@@ -369,19 +371,20 @@
                return $file_ary;
         }
         public function insert_update_payout_grid($data ,$id){
-           //echo '<pre>';print_r($id);print_r($data);exit;
+           
            $id = isset($id)?$this->re_db_input($id):0;
            $flag=0;
                if($id==0)
                {
                     foreach($data as $key=>$val)
-                    {   
+                    { 
+                        $sliding_rates = isset($val['sliding_rates'])?$this->re_db_input($val['sliding_rates']):'';
                         $from =isset($val['from'])?$this->re_db_input($val['from']):'';
                         $to =isset($val['to'])?$this->re_db_input($val['to']):'';
                         $per =isset($val['per'])?$this->re_db_input($val['per']):'';
                         if($from!='' && $to != ''){
                             
-                            $q = "INSERT INTO `".BROKER_PAYOUT_GRID."` SET `broker_id`='".$_SESSION['last_insert_id']."',`from`='".$from."' ,`to`='".$to."' ,`per`='".$per."' ".$this->insert_common_sql();
+                            $q = "INSERT INTO `".BROKER_PAYOUT_GRID."` SET `broker_id`='".$_SESSION['last_insert_id']."',`sliding_rates`='".$sliding_rates."' ,`from`='".$from."' ,`to`='".$to."' ,`per`='".$per."' ".$this->insert_common_sql();
             				
                             $res = $this->re_db_query($q); 
                         }
@@ -395,6 +398,7 @@
                {
                     foreach($data as $key=>$val)
                     {   
+                        $sliding_rates =isset($val['sliding_rates'])?$this->re_db_input($val['sliding_rates']):'';
                         $from =isset($val['from'])?$this->re_db_input($val['from']):'';
                         $to =isset($val['to'])?$this->re_db_input($val['to']):'';
                         $per =isset($val['per'])?$this->re_db_input($val['per']):'';
@@ -406,7 +410,7 @@
                                $flag=1;
                             }
                             
-                             $q = "INSERT INTO `".BROKER_PAYOUT_GRID."` SET `broker_id`='".$id."' ,`from`='".$from."' ,`to`='".$to."' , 
+                             $q = "INSERT INTO `".BROKER_PAYOUT_GRID."` SET `broker_id`='".$id."' ,`sliding_rates`='".$sliding_rates."' ,`from`='".$from."' ,`to`='".$to."' , 
                             `per`='".$per."' ".$this->insert_common_sql();
             				
                             $res = $this->re_db_query($q); 
@@ -460,10 +464,11 @@
                     $rap=isset($val['receiving_rep1'])?$this->re_db_input($val['receiving_rep1']):'';
                     $from1=isset($val['from1'])?$this->re_db_input(date('Y-m-d',strtotime($val['from1']))):'0000-00-00';
                     $to1=isset($val['to1'])?$this->re_db_input(date('Y-m-d',strtotime($val['to1']))):'0000-00-00';
+                    $product_category=isset($val['product_category1'])?$this->re_db_input($val['product_category1']):'';
                     $per1=isset($val['per1'])?$this->re_db_input($val['per1']):'';
                     if($from1!='' && $to1!='' && $rap != ''){
                         
-                        $q = "INSERT INTO `".BROKER_PAYOUT_OVERRIDE."` SET `broker_id`='".$_SESSION['last_insert_id']."',`rap` = '".$rap."',`from`='".$from1."' ,`to`='".$to1."' , 
+                        $q = "INSERT INTO `".BROKER_PAYOUT_OVERRIDE."` SET `broker_id`='".$_SESSION['last_insert_id']."',`rap` = '".$rap."',`from`='".$from1."' ,`to`='".$to1."' ,`product_category`='".$product_category."' ,
                         `per`='".$per1."' ".$this->insert_common_sql();
         				$res = $this->re_db_query($q);
                     }
@@ -480,6 +485,7 @@
                     $rap=isset($val['receiving_rep1'])?$this->re_db_input($val['receiving_rep1']):'';
                     $from1=isset($val['from1'])?$this->re_db_input(date('Y-m-d',strtotime($val['from1']))):'0000-00-00';
                     $to1=isset($val['to1'])?$this->re_db_input(date('Y-m-d',strtotime($val['to1']))):'0000-00-00';
+                    $product_category=isset($val['product_category1'])?$this->re_db_input($val['product_category1']):'';
                     $per1=isset($val['per1'])?$this->re_db_input($val['per1']):'';
                     if($from1!='' && $to1!='' && $rap != ''){
                         if($flag1==0){
@@ -487,7 +493,7 @@
                             $res = $this->re_db_query($qq);
                             $flag1=1;
                         }
-                        $q = "INSERT INTO `".BROKER_PAYOUT_OVERRIDE."` SET `broker_id`='".$id."',`rap` = '".$rap."',`from`='".$from1."' ,`to`='".$to1."' , 
+                        $q = "INSERT INTO `".BROKER_PAYOUT_OVERRIDE."` SET `broker_id`='".$id."',`rap` = '".$rap."',`from`='".$from1."' ,`to`='".$to1."' ,`product_category`='".$product_category."' , 
                         `per`='".$per1."' ".$this->insert_common_sql();
         				$res = $this->re_db_query($q);
                     }
@@ -583,13 +589,43 @@
 			}
 			
         } 
+        public function insert_update_payout_fixed_rates($data ,$id){//echo '<pre>';print_r($data);exit;
+           $id = isset($id)?$this->re_db_input($id):0;
+           
+           if($id==0)
+           {
+                foreach($data['fixed_category_id'] as $key=>$val)
+                {   
+                    $category_rates = isset($data['category_rates_'.$val])?$data['category_rates_'.$val]:'';
+                    $q = "INSERT INTO `".PAYOUT_FIXED_RATES."` SET `broker_id`='".$_SESSION['last_insert_id']."' ,`category_id`='".$val."' ,`category_rates`='".$category_rates."'".$this->insert_common_sql();
+       				$res = $this->re_db_query($q);
+                }    
+           }
+           else
+           {
+                $qq="update `".PAYOUT_FIXED_RATES."` SET is_delete=1 where `broker_id`=".$id."";
+                $res = $this->re_db_query($qq);
+                foreach($data['fixed_category_id'] as $key=>$val)
+                {   
+                    $category_rates = isset($data['category_rates_'.$val])?$data['category_rates_'.$val]:'';
+                    $q = "INSERT INTO `".PAYOUT_FIXED_RATES."` SET `broker_id`='".$id."' ,`category_id`='".$val."' ,`category_rates`='".$category_rates."'".$this->insert_common_sql();
+       				$res = $this->re_db_query($q);
+                } 
+           }
+           if($res){
+			      
+                $_SESSION['success'] = INSERT_MESSAGE;
+				return true;
+			}
+			
+        } 
         public function insert_update_payout($data)
-        {//echo '<pre>';print_r($data);exit;
+        {
             
             $id = isset($data['id'])?$this->re_db_input($data['id']):'0';
             $payout_schedule_id = isset($data['schedule_id'])?$this->re_db_input($data['schedule_id']):'';
             $payout_schedule_name = isset($data['schedule_name'])?$this->re_db_input($data['schedule_name']):'';            
-            $transaction_type_general = isset($data['transaction_type_general'])?$this->re_db_input($data['transaction_type_general']):'0';
+            $transaction_type_general = isset($data['transaction_type_general'])?$this->re_db_input($data['transaction_type_general']):'1';
             $product_category1 = isset($data['product_category1'])?$this->re_db_input($data['product_category1']):'';
             $product_category2 = isset($data['product_category2'])?$this->re_db_input($data['product_category2']):'0';
             $product_category3 = isset($data['product_category3'])?$this->re_db_input($data['product_category3']):'0';
@@ -600,9 +636,11 @@
             $calculation_detail = isset($data['calculation_detail'])?$this->re_db_input($data['calculation_detail']):'';
             $clearing_charge_deducted_from = isset($data['clearing_charge_deducted_from'])?$this->re_db_input($data['clearing_charge_deducted_from']):'';
             $reset = isset($data['reset'])?$this->re_db_input(date('Y-m-d',strtotime($data['reset']))):'0000-00-00';
-            $description_type = isset($data['description_type'])?$this->re_db_input($data['description_type']):'0';
+            $description_type = isset($data['description_type'])?$this->re_db_input($data['description_type']):'';
             $team_member = isset($data['team_member'])?$data['team_member']:array();
             $team_member_string = implode (",", $team_member);
+            $minimum_trade_gross = isset($data['minimum_trade_gross'])?$this->re_db_input($data['minimum_trade_gross']):'';
+            $minimum_12B1_gross = isset($data['minimum_12B1_gross'])?$this->re_db_input($data['minimum_12B1_gross']):'';
             $start = isset($data['start'])?$this->re_db_input(date('Y-m-d',strtotime($data['start']))):'0000-00-00';
             $until = isset($data['until'])?$this->re_db_input(date('Y-m-d',strtotime($data['until']))):'0000-00-00';
             $apply_to = isset($data['apply_to'])?$this->re_db_input($data['apply_to']):'';
@@ -623,34 +661,43 @@
                         
                         $q = "INSERT INTO `".BROKER_PAYOUT_MASTER."` SET `broker_id`='".$_SESSION['last_insert_id']."' ,`payout_schedule_id`='".$payout_schedule_id."' ,`payout_schedule_name`='".$payout_schedule_name."' ,`transaction_type_general`='".$transaction_type_general."' ,`product_category1`='".$product_category1."' , 
                         `product_category2`='".$product_category2."' , `product_category3`='".$product_category3."' ,`product_category4`='".$product_category4."' ,`basis`='".$basis."' ,
-                        `cumulative`='".$cumulative."' ,`year`='".$year."' ,`calculation_detail`='".$calculation_detail."' ,`clearing_charge_deducted_from`='".$clearing_charge_deducted_from."',`reset`='".$reset."',`description_type`='".$description_type."' ,
+                        `cumulative`='".$cumulative."' ,`year`='".$year."' ,`calculation_detail`='".$calculation_detail."' ,`clearing_charge_deducted_from`='".$clearing_charge_deducted_from."',`reset`='".$reset."',`description_type`='".$description_type."',`minimum_trade_gross`='".$minimum_trade_gross."',`minimum_12B1_gross`='".$minimum_12B1_gross."' ,
                         `team_member`='".$team_member_string."' ,`start`='".$start."',`until`='".$until."',`apply_to`='".$apply_to."',`product_2`='".$product_2."' ,`product_3`='".$product_3."',`product_4`='".$product_4."',
                         `product_5`='".$product_5."' ,`calculate_on`='".$calculate_on."',`deduct`='".$deduct."'".$this->insert_common_sql();
     					$res = $this->re_db_query($q);
-                       
                           
-                    if($res){
-					      
-                        $_SESSION['success'] = INSERT_MESSAGE;
-						return true;
-					}
-					else{
-						$_SESSION['warning'] = UNKWON_ERROR;
-						return false;
-					}
+                        if($res){
+    					      
+                            $_SESSION['success'] = INSERT_MESSAGE;
+    						return true;
+    					}
+    					else{
+    						$_SESSION['warning'] = UNKWON_ERROR;
+    						return false;
+    					}
                     
     			}
                 else if($record>0){
                     
-                        $q = "UPDATE `".BROKER_PAYOUT_MASTER."`  SET `broker_id`='".$_SESSION['last_insert_id']."' ,`payout_schedule_id`='".$payout_schedule_id."' ,`payout_schedule_name`='".$payout_schedule_name."' ,`transaction_type_general`='".$transaction_type_general."' ,`product_category1`='".$product_category1."' , 
+                        $q = "UPDATE `".BROKER_PAYOUT_MASTER."`  SET `broker_id`='".$id."',`payout_schedule_id`='".$payout_schedule_id."' ,`payout_schedule_name`='".$payout_schedule_name."' ,`transaction_type_general`='".$transaction_type_general."' ,`product_category1`='".$product_category1."' , 
                         `product_category2`='".$product_category2."' , `product_category3`='".$product_category3."' ,`product_category4`='".$product_category4."' ,`basis`='".$basis."' ,
-                        `cumulative`='".$cumulative."' ,`year`='".$year."',`calculation_detail`='".$calculation_detail."',`clearing_charge_deducted_from`='".$clearing_charge_deducted_from."',`reset`='".$reset."',`description_type`='".$description_type."' ,
+                        `cumulative`='".$cumulative."' ,`year`='".$year."',`calculation_detail`='".$calculation_detail."',`clearing_charge_deducted_from`='".$clearing_charge_deducted_from."',`reset`='".$reset."',`description_type`='".$description_type."',`minimum_trade_gross`='".$minimum_trade_gross."',`minimum_12B1_gross`='".$minimum_12B1_gross."' ,
                         `team_member`='".$team_member_string."' ,`start`='".$start."',`until`='".$until."',`apply_to`='".$apply_to."',`product_2`='".$product_2."' ,`product_3`='".$product_3."',`product_4`='".$product_4."',
                         `product_5`='".$product_5."' ,`calculate_on`='".$calculate_on."',`deduct`='".$deduct."'".$this->update_common_sql()." WHERE  `broker_id`='".$id."'";
       					
-                         $res = $this->re_db_query($q);                        	
+                         $res = $this->re_db_query($q);    
+                         
+                         if($res){
+    					      
+                             $_SESSION['success'] = UPDATE_MESSAGE;
+    					   	 return true;
+    					 }
+    					 else{
+    					 	$_SESSION['warning'] = UNKWON_ERROR;
+    					 	return false;
+    					 }                    	
                 }
-                if($res){			      
+                /*if($res){			      
                     $_SESSION['success'] = UPDATE_MESSAGE;
 					return true;
 				}
@@ -917,7 +964,7 @@
            //echo '<pre>';print_r($data);exit;
            $id = isset($id1)?$this->re_db_input($id1):0;
            $flag4=0;
-           foreach($data as $key=>$val)
+           /*foreach($data as $key=>$val)
             {   
                 $docs_receive=isset($val['docs_receive'])?$this->re_db_input($val['docs_receive']):'';
                 $docs_description=isset($val['docs_description'])?$this->re_db_input($val['docs_description']):'';
@@ -943,61 +990,68 @@
 			      
                 $_SESSION['success'] = INSERT_MESSAGE;
 				return true;
-			}
+			}*/
 			/*else{
 							$_SESSION['warning'] = UNKWON_ERROR;
 							return false;
 						}*/
-           /*if($id>=0){
+           if($id>=0){
 				if($id==0){
     			    foreach($data as $key=>$val)
                     {     
                         $docs_receive=isset($val['docs_receive'])?$this->re_db_input($val['docs_receive']):'';
                         $docs_description=isset($val['docs_description'])?$this->re_db_input($val['docs_description']):'';
-                        $docs_date=isset($val['docs_date'])?$this->re_db_input($val['docs_date']):'';
+                        $docs_date=isset($val['docs_date'])?$this->re_db_input(date('Y-m-d',strtotime($val['docs_date']))):'';
                         $docs_required = isset($val['docs_required'])?$this->re_db_input($val['docs_required']):'';
-                        $q = "INSERT INTO `".BROKER_REQ_DOC."` SET `broker_id`='".$_SESSION['last_insert_id']."' ,`received`='".$docs_receive."' ,`description`='".$docs_description."' , 
-                        `date`='".$docs_date."' , `required`='".$docs_required."' ".$this->insert_common_sql();
-    					$res = $this->re_db_query($q);
+                        
+                        if( $docs_description!=''){
+                            
+                            $q = "INSERT INTO `".BROKER_REQ_DOC."` SET `broker_id`='".$_SESSION['last_insert_id']."' ,`received`='".$docs_receive."' ,`description`='".$docs_description."' , 
+                            `date`='".$docs_date."' , `required`='".$docs_required."' ".$this->insert_common_sql();
+        					$res = $this->re_db_query($q);
+                        }
                     }    
                     if($res){
     				      
                         $_SESSION['success'] = INSERT_MESSAGE;
     					return true;
     				}
-    				else{
-    					$_SESSION['warning'] = UNKWON_ERROR;
-    					return false;
-    				}
-                }
+    		    }
                 else if($id>0){
-                    $qq="select broker_id from ".BROKER_REQ_DOC." where `broker_id`=".$id."";
-                    $re=$this->re_db_query($qq);
-                    $variable=$this->re_db_num_rows($re);
+                    
                     foreach($data as $key=>$val)
                     {
                         $docs_receive=isset($val['docs_receive'])?$this->re_db_input($val['docs_receive']):'';
                         $docs_description=isset($val['docs_description'])?$this->re_db_input($val['docs_description']):'';
-                        $docs_date=isset($val['docs_date'])?$this->re_db_input($val['docs_date']):'';
+                        $docs_date=isset($val['docs_date'])?$this->re_db_input(date('Y-m-d',strtotime($val['docs_date']))):'';
                         $docs_required = isset($val['docs_required'])?$this->re_db_input($val['docs_required']):'';
                                             
-    				    $q = "UPDATE `".BROKER_REQ_DOC."` SET `broker_id`='".$_SESSION['last_insert_id']."' ,`received`='".$docs_receive."' ,`description`='".$docs_description."' , 
+    				    if( $docs_description!=''){
+                            
+                            if($flag4==0){
+                                $qq="update `".BROKER_REQ_DOC."` SET is_delete=1 where `broker_id`=".$id."";
+                                $res = $this->re_db_query($qq);
+                                $flag4=1;
+                            }
+                        
+                            $q = "INSERT INTO `".BROKER_REQ_DOC."` SET `broker_id`='".$id."' ,`received`='".$docs_receive."' ,`description`='".$docs_description."' , 
+                            `date`='".$docs_date."' , `required`='".$docs_required."' ".$this->insert_common_sql();
+        					$res = $this->re_db_query($q);
+                        }
+                        
+                        /*$q = "UPDATE `".BROKER_REQ_DOC."` SET `broker_id`='".$id."' ,`received`='".$docs_receive."' ,`description`='".$docs_description."' , 
                         `date`='".$docs_date."' , `required`='".$docs_required."'  ".$this->update_common_sql()." WHERE `broker_id`='".$id."'";
   					
-                        $res = $this->re_db_query($q);
-		              }
-                    	if($res){
-    					      
-                            $_SESSION['success'] = UPDATE_MESSAGE;
-    						return true;
-    					}
-    					else{
-    						$_SESSION['warning'] = UNKWON_ERROR;
-    						return false;
-    					}
-    				}
+                        $res = $this->re_db_query($q);*/
+                    }
+                	if($res){
+					      
+                        $_SESSION['success'] = UPDATE_MESSAGE;
+						return true;
+					}
+ 				}
            
-            }*/
+            }
         }
         public function reArrayFiles_alias($file_post){
                $file_ary = array();
@@ -1057,7 +1111,7 @@
                             $res = $this->re_db_query($qq);
                             $flag8=1;
                         }
-                        $q = "INSERT INTO `".BROKER_ALIAS."` SET `broker_id`='".$_SESSION['last_insert_id']."' ,`alias_name`='".$alias_name."' ,`sponsor_company`='".$sponsor_company."' , 
+                        $q = "INSERT INTO `".BROKER_ALIAS."` SET `broker_id`='".$id."' ,`alias_name`='".$alias_name."' ,`sponsor_company`='".$sponsor_company."' , 
                         `date`='".$date."' ".$this->insert_common_sql();
         				$res = $this->re_db_query($q);
                     }
@@ -1531,8 +1585,9 @@
 		public function select(){
 			$return = array();
 			
-			$q = "SELECT `at`.*
+			$q = "SELECT `at`.*,`bg`.`u4`
 					FROM `".$this->table."` AS `at`
+                    LEFT JOIN `".BROKER_GENERAL."` AS `bg` on `bg`.`broker_id`=`at`.`id`
                     WHERE `at`.`is_delete`='0'
                     ORDER BY `at`.`id` ASC";
 			$res = $this->re_db_query($q);
@@ -1570,6 +1625,22 @@
             $res = $this->re_db_query($q);
             if($this->re_db_num_rows($res)>0){
     			$return = $this->re_db_fetch_array($res);
+            }
+			return $return;
+		}
+        public function edit_payout_fixed_rates($id){
+			$return = array();
+			
+			$q = "SELECT `at`.*,`pt`.`type`
+					FROM `".PAYOUT_FIXED_RATES."` AS `at`
+                    LEFT JOIN `".PRODUCT_TYPE."` AS `pt` on `pt`.`id`=`at`.`category_id`
+                    WHERE `at`.`is_delete`='0' AND `at`.`broker_id`='".$id."'";
+            $res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                     
+    			}
             }
 			return $return;
 		}

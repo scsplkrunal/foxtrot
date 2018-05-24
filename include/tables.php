@@ -95,4 +95,6 @@
     define('IMPORT_SFR_HEADER_DATA','ft_import_sfrfile_header_data');
     define('IMPORT_SFR_DETAIL_DATA','ft_import_sfrfile_detail_data');
     define('IMPORT_SFR_FOOTER_DATA','ft_import_sfrfile_footer_data');
+    define('PAYOUT_FIXED_RATES','ft_broker_payout_fixed_rates');
+    //define('PAYOUT_SCHEDULE_FIXED_RATES','ft_broker_payout_schedule_fixed_rates');
 ?>
