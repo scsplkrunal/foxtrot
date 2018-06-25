@@ -26,7 +26,7 @@ if(isset($_GET['filter']) && $_GET['filter'] != '')
     $ending_date = isset($filter_array['ending_date'])?$filter_array['ending_date']:'';
     $sort_by = isset($filter_array['sort_by'])?$filter_array['sort_by']:'';
     
-    $get_trans_data = $instance->select_data_report($product_category,$company,$batch,$beginning_date,$ending_date,$sort_by);
+    $get_trans_data = $instance->select_data_report($product_category,$company,$batch,$beginning_date,$ending_date,$sort_by,1);
     
 }
 if(isset($_GET['batch_id']))

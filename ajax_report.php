@@ -63,7 +63,7 @@ if(isset($_GET['filter']) && $_GET['filter'] != '')
                 foreach($return_batches as $main_key=>$main_val)
                 {?>
                     <tr>
-                           <td colspan="5" style="font-size:13px;font-weight:bold;text-align:left;">Investment Category: <?php echo $main_key; ?></td>
+                        <td colspan="5" style="font-size:13px;font-weight:bold;text-align:left;">Investment Category: <?php echo $main_key; ?></td>
                     </tr>
               <?php $posted_commission_amount = 0;
                     $amount_received = 0;
@@ -129,7 +129,7 @@ if(isset($_GET['filter']) && $_GET['filter'] != '')
 <?php }
       else if($report_for==2)
       {
-            $get_trans_data = $instance_trans->select_data_report($product_category,$company,$batch,$beginning_date,$ending_date,$sort_by);
+            $get_trans_data = $instance_trans->select_data_report($product_category,$company,$batch,$beginning_date,$ending_date,$sort_by,1);
             $batch_desc = isset($get_trans_data[0]['batch_desc'])?$instance->re_db_input($get_trans_data[0]['batch_desc']):'';
             $total_amount_invested = 0;
             $total_commission_received = 0;

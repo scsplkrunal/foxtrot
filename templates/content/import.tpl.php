@@ -75,7 +75,7 @@ function GetFileList()
             dlist += "</div>";
             dlist += "</form>";
     }
-	
+	console.log(dlist);
 	//document.getElementByID("FileList").innerHTML=dlist;
 	document.getElementById("FileList").innerHTML=dlist;
     Download();
@@ -850,8 +850,8 @@ PostResult( msg );
                     </div>
                     <div class="tab-content col-md-12">
                     <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="open_ftp"){ echo "active"; } ?>" id="ftp">
-                    <?php
-                    if($action=='add_ftp'||($action=='edit_ftp' && $id>0)){
+                    <?php 
+                    if($action=='add_ftp'||($action=='edit_ftp' && $ftp_id>0)){
                         ?>
                         <form method="POST">
                         <div class="panel">            
@@ -927,7 +927,7 @@ PostResult( msg );
                            </div>
                            <div class="panel-footer">
                                 <div class="selectwrap">
-                                    <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
+                                    <input type="hidden" name="id" id="id" value="<?php echo $ftp_id; ?>" />
                                     <input type="submit" name="submit" onclick="waitingDialog.show();" value="Save"/>	
                                     <a href="<?php echo CURRENT_PAGE.'?tab=open_ftp&action=view_ftp';?>"><input type="button" name="cancel" value="Cancel" /></a>
                                 </div><br />
@@ -974,20 +974,20 @@ PostResult( msg );
                                                     <?php
                                                         if($val['status']==1){
                                                             ?>
-                                                            <a href="<?php echo CURRENT_PAGE; ?>?action=ftp_status&id=<?php echo $val['id']; ?>&status=0" class="btn btn-sm btn-success"><i class="fa fa-check-square-o"></i> Active</a>
+                                                            <a href="<?php echo CURRENT_PAGE; ?>?action=ftp_status&ftp_id=<?php echo $val['id']; ?>&status=0" class="btn btn-sm btn-success"><i class="fa fa-check-square-o"></i> Active</a>
                                                             <?php
                                                         }
                                                         else{
                                                             ?>
-                                                            <a href="<?php echo CURRENT_PAGE; ?>?action=ftp_status&id=<?php echo $val['id']; ?>&status=1" class="btn btn-sm btn-warning"><i class="fa fa-warning"></i> Inactive</a>
+                                                            <a href="<?php echo CURRENT_PAGE; ?>?action=ftp_status&ftp_id=<?php echo $val['id']; ?>&status=1" class="btn btn-sm btn-warning"><i class="fa fa-warning"></i> Inactive</a>
                                                             <?php
                                                         }
                                                     ?>
                                                 </td>
                                                 <td class="text-center">
-                                                    <a href="<?php echo CURRENT_PAGE; ?>?tab=open_ftp&action=edit_ftp&id=<?php echo $val['id']; ?>" class="btn btn-md btn-primary"><i class="fa fa-edit"></i> Edit</a>
-                                                    <a onclick="return conf('<?php echo CURRENT_PAGE; ?>?action=delete_ftp&id=<?php echo $val['id']; ?>');" class="btn btn-md btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
-                                                    <a href="<?php echo CURRENT_PAGE; ?>?tab=get_ftp&id=<?php echo $val['id']; ?>" class="btn btn-md btn-warning"><i class="fa fa-download"></i> Fetch</a>
+                                                    <a href="<?php echo CURRENT_PAGE; ?>?tab=open_ftp&action=edit_ftp&ftp_id=<?php echo $val['id']; ?>" class="btn btn-md btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                                                    <a onclick="return conf('<?php echo CURRENT_PAGE; ?>?action=delete_ftp&ftp_id=<?php echo $val['id']; ?>');" class="btn btn-md btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
+                                                    <a href="<?php echo CURRENT_PAGE; ?>?tab=get_ftp&ftp_id=<?php echo $val['id']; ?>" class="btn btn-md btn-warning"><i class="fa fa-download"></i> Fetch</a>
                                                     <!--<button type="submit" class="btn btn-md btn-warning" name="submit_files" value="Fetch"><i class="fa fa-download"></i> Fetch</button>-->
                                                     
                                                 </td>
@@ -1012,7 +1012,7 @@ PostResult( msg );
                     </div>
                 </div>
                 <div class="tab-content col-md-12">
-                    <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="get_ftp" && $id>0){ echo "active"; } ?> id="ftp">
+                    <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="get_ftp" && $ftp_id>0){ echo "active"; } ?> " id="get_ftp_file">
                         <div class="panel">            
                             <div class="panel-heading">
                                 <div class="panel-control" style="float: right;">
@@ -1816,10 +1816,10 @@ function check_u5_date(broker)
 </script>
 <script type="text/javascript">
     var isIE = /*@cc_on!@*/false || !!document.documentMode;
-    if(isIE == true)
-    {
+    /*if(isIE == true)
+    {*/
         $('#fetch_file_div').css('display','block');
-    }
+    //}
 </script>
 <script type="text/javascript">
 var waitingDialog = waitingDialog || (function ($) {

@@ -96,5 +96,21 @@
     define('IMPORT_SFR_DETAIL_DATA','ft_import_sfrfile_detail_data');
     define('IMPORT_SFR_FOOTER_DATA','ft_import_sfrfile_footer_data');
     define('PAYOUT_FIXED_RATES','ft_broker_payout_fixed_rates');
+    //define('PAYROLL_ADJUSTMENTS','ft_payroll_adjustments');
+    //define('PAYROLL_TRANSACTIONS','ft_payroll_transactions');
+    //define('PAYROLL_BALANCES','ft_payroll_balances');
+    //define('PAYROLL_YTD_EARNINGS','ft_payroll_ytd_earnings');
+    define('PAYROLL_UPLOAD','ft_payroll_upload');
     //define('PAYOUT_SCHEDULE_FIXED_RATES','ft_broker_payout_schedule_fixed_rates');
+    define('BRANCH_OFFICE_MASTER','ft_branch_office_master');
+    define('BROKER_BRANCHES','ft_broker_branches');
+    define('PAYROLL_ADJUSTMENTS_MASTER','ft_payroll_adjustments_master');
+    define('RECURRING_TYPE_MASTER','ft_recurring_type_master');
+    define('PAY_TYPE_MASTER','ft_pay_type_master');
+    define('PRIOR_PAYROLL_MASTER','ft_payroll_prior_payroll_master');
+    define('BROKER_BALANCES_MASTER','ft_payroll_broker_balances_master');
+    define('PAYROLL_REVIEW_MASTER','ft_payroll_review_master');
+    define('TRANSACTION_OVERRIDES','ft_transaction_overrides');
+    define('PAYROLL_TRADE_SPLITS','ft_payroll_trade_splits');
+    define('PAYROLL_TRADE_OVERRIDES','ft_payroll_trade_overrides');
 ?>

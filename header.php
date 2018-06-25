@@ -21,18 +21,8 @@ require_once(DIR_FS."islogin.php");?>
 <!-- search with selection box-->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.min.css"/>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-
-
-<!--<link href="<?php echo SITE_CSS; ?>datatables.css" rel="stylesheet"/>
-<link href="<?php echo SITE_CSS; ?>datatables.min.css" rel="stylesheet"/>-->
 <script src="js/jquery.min.js"></script>
 <script src="<?php echo SITE_JS; ?>bootstrap-datepicker.min.js"></script>
-<!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>-->
-<!--<script src="<?php echo SITE_JS; ?>datatables.js"></script>
-<script src="<?php echo SITE_JS; ?>datatables.min.js"></script>-->
-
 <!-- Datatables-->
 <link rel="stylesheet" href="<?php echo SITE_PLUGINS; ?>datatables/dataTables.bootstrap.min.css" />
 <link rel="stylesheet" href="<?php echo SITE_PLUGINS; ?>datatables/buttons.dataTables.min.css" />
@@ -51,12 +41,55 @@ require_once(DIR_FS."islogin.php");?>
 <script src="<?php echo SITE_JS; ?>custom.js"></script>
 <script src="<?php echo SITE_PLUGINS; ?>bootbox/bootbox.min.js"></script>
 <script src="<?php echo SITE_PLUGINS; ?>masked-input/jquery.maskedinput.min.js"></script>
-<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-      <script src="js/html5shiv.min.js"></script>
-      <script src="js/respond.min.js"></script>
-    <![endif]-->
+<style>
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover>a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+</style>
 </head>
 <body>
 <?php 
@@ -81,11 +114,7 @@ $instance_header = new header_class();
                     </ul>
                  </li>              
              </ul>
-             <!--<a href="<?php echo SITE_URL; ?>user_profile.php?action=edit&id=<?php echo $_SESSION['user_id'];?>" class="dropdown-toggle" >User Profile
-                    
-             <?php $user_header_image = $instance_header->get_user_image($_SESSION['user_id']); ?>
-             <div class="userimg"><img src="<?php echo SITE_URL."upload/".$user_header_image['image'];?>" height="30" width="50" /></div>-->
-		</div>
+        </div>
 	  </div>
     </div>
 	<div class="headermenu">
@@ -98,95 +127,42 @@ $instance_header = new header_class();
 			<ul class="nav navbar-nav">
 			  <li class="active menuhome"><a href="home.php"><i class="fa fa-home"></i></a></li>
 			  <?php  
-					
-					$menu = $instance_header->menu_select();
-					//echo '<pre>';print_r($menu);exit;
-			  ?>
-			  <?php 
-                        foreach($menu as $menukey=>$menudata)
-                        { 
-                    ?>   	<li class="dropdown"> 
-								<a <?php if(!empty($menudata['submenu'])){  ?> class="dropdown-toggle"  data-toggle="dropdown"  <?php } ?>href="<?php echo $menudata['link_page']; ?>"><?php echo $menudata['link_text']; ?> <i class="<?php echo $menudata['class']; ?>"></i></a>
-								<?php if(!empty($menudata['submenu'])){  ?>
-									<ul class="dropdown-menu">
+				$menu = $instance_header->menu_select();
+		        foreach($menu as $menukey=>$menudata)
+                {
+                ?>   
+                <li> 
+					<a <?php if(!empty($menudata['submenu'])){  ?> class="dropdown-toggle"  data-toggle="dropdown"  <?php } ?>href="<?php echo $menudata['link_page']; ?>"><?php echo $menudata['link_text']; ?> <i class="<?php echo $menudata['class']; ?>"></i></a>
+					<?php if(!empty($menudata['submenu'])){  ?>
+						<ul class="dropdown-menu multi-level" >
+						<?php 
+							foreach($menudata['submenu'] as $subkey=>$subdata)
+							{ 
+							?>
+                                <?php if(empty($subdata['submenu'])){  ?>    
+								<li><a href="<?php echo $subdata['link_page'] ?>"><?php echo $subdata['link_text']; ?></a></li>
+                                <?php }else{  ?>
+                                <li class="dropdown-submenu"><a class="dropdown-toggle" data-toggle="dropdown" href="<?php echo $subdata['link_page'] ?>"><?php echo $subdata['link_text']; ?></a>
+                                <ul class="dropdown-menu">
+                                   <?php 
+									foreach($subdata['submenu'] as $sub_k=>$sub_v)
+									{ 
+									?>    
+										<li><a href="<?php echo $sub_v['link_page'] ?>"><?php echo $sub_v['link_text']; ?></a></li>
 									<?php 
-										foreach($menudata['submenu'] as $subkey=>$subdata)
-										{ 
-										?>    
-											<li><a href="<?php echo $subdata['link_page'] ?>"><?php echo $subdata['link_text']; ?></a></li>
-										<?php 
-                                        } 
-										?>
-									</ul>
-								<?php } 
+                                    }
 									?>
-							</li>
-                    <?php }?>
-			  <!--li>
-                <a class="dropdown-toggle" href="<?php echo SITE_URL; ?>import.php">Import <i class="fa fa-download"></i></a>
-              </li>
-			  <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Commissions <i class="fa fa-inr"></i></a>
-                <ul class="dropdown-menu">
-				  <li><a href="<?php echo SITE_URL; ?>transaction.php">Enter Commissions</a></li>
-				  <li><a href="<?php echo SITE_URL; ?>batches.php">Batches</a></li>
-				  <li><a href="#">Post Commission</a></li>
-                  <li><a href="#">Report</a></li>
-				</ul>
-              </li>
-			  <li>
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Payroll <i class="fa fa-list-alt"></i></a>
-                <ul class="dropdown-menu">
-				  <li><a href="#">Upload</a></li>
-				  <li><a href="#">Calculate</a></li>
-				  <li><a href="#">Review</a></li>
-                  <li><a href="#">Publish</a></li>
-                  <li><a href="#">Closed Out</a></li>
-				</ul>
-              </li>
-			  
-			  <li>
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Reporting <i class="fa fa-comments-o"></i></a>
-                <ul class="dropdown-menu">
-				  <li><a href="#">Sales Reporting</a></li>
-				  <li><a href="#">Transaction History</a></li>
-				  <li><a href="#">Reporting Designer</a></li>
-				</ul>
-              </li>	
-              <li>
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Administration <i class="fa fa-user-plus"></i></a>
-                <ul class="dropdown-menu">
-				  <li><a href="<?php echo SITE_URL; ?>manage_multicompany.php">Mulit-Company Maintenance</a></li>
-				  <li><a href="<?php echo SITE_URL; ?>branch_maintenance.php">Branch Maintenance</a></li>
-				  <li><a href="<?php echo SITE_URL; ?>manage_broker.php">Broker Maintenance</a></li>
-                  <li><a href="<?php echo SITE_URL; ?>manage_sponsor.php">Sponsor Maintenance</a></li>
-                  <li><a href="<?php echo SITE_URL; ?>product_cate.php">Product Maintenance</a></li>
-                  <li><a href="<?php echo SITE_URL; ?>client_maintenance.php">Client Maintenance</a></li>
-				</ul>
-              </li>		  
-			  <li>
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Compilance <i class="fa fa-file-code-o"></i></a>
-                <ul class="dropdown-menu">
-				  <li><a href="#">Rules Engine</a></li>
-				  <li><a href="#">Licensing</a></li>
-				  <li><a href="#">Report</a></li>
-				</ul>
-              </li>
-			  <li class="dropdown">
-				<a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">Supervisor
-				<i class="fa fa-angle-down"></i></a>
-				<ul class="dropdown-menu">
-				  <li><a href="<?php echo SITE_URL; ?>user_profile.php">User Profiles</a></li>
-				  <li><a href="<?php echo SITE_URL; ?>data_interface.php">Data Interfaces</a></li>
-				  <li><a href="<?php echo SITE_URL; ?>of_fi.php">OFAC / FINCEN</a></li>
-                  <li><a href="<?php echo SITE_URL; ?>client_ress.php">Client Reassignment</a></li>
-                  <li><a href="<?php echo SITE_URL; ?>client_suitability.php">Client Suitability</a></li>
-				  <li><a href="<?php echo SITE_URL; ?>account_type.php">Account Type Maintenance</a></li>
-				  <li><a href="<?php echo SITE_URL; ?>product_category_maintenance.php">Product Category Maintenance</a></li>
-                  <li><a href="<?php echo SITE_URL; ?>payroll_adjustment.php">Payroll Adjustment Category Maintenance</a></li>
-                  <li><a href="<?php echo SITE_URL; ?>system_config.php">System Configuration</a></li>
-				</ul>
-			  </li>-->
+								</ul>
+                                </li>
+                                <?php } ?>
+							<?php 
+                            } 
+							?>
+						</ul>
+					<?php } 
+						?>
+	              </li>
+                <?php }?>
 			</ul>
 		  </div>
 		  </div>

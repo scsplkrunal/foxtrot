@@ -27,9 +27,9 @@
 			$crd = isset($data['crd'])?$this->re_db_input($data['crd']):'';
             $active_status_cdd = isset($data['active_status_cdd'])?$this->re_db_input($data['active_status_cdd']):'';
 			$pay_method = isset($data['pay_method'])?$this->re_db_input($data['pay_method']):'';
-			$branch_manager = isset($data['branch_manager'])?$this->re_db_input($data['branch_manager']):'';
+			/*$branch_manager = isset($data['branch_manager'])?$this->re_db_input($data['branch_manager']):'';
             $branch_name = isset($data['branch_name'])?$this->re_db_input($data['branch_name']):'';
-            $branch_office = isset($data['branch_office'])?$this->re_db_input($data['branch_office']):'';
+            $branch_office = isset($data['branch_office'])?$this->re_db_input($data['branch_office']):'';*/
 			$for_import = isset($data['for_import'])?$this->re_db_input($data['for_import']):'false';
             $file_id = isset($data['file_id'])?$this->re_db_input($data['file_id']):'';
             $temp_data_id = isset($data['temp_data_id'])?$this->re_db_input($data['temp_data_id']):'';
@@ -91,7 +91,7 @@
 				else 
                 {
 					if($id==0){
-						$q = "INSERT INTO `".$this->table."` SET `first_name`='".$fname."',`last_name`='".$lname."',`middle_name`='".$mname."',`suffix`='".$suffix."',`fund`='".$fund."',`internal`='".$internal."',`display_on_statement`='".$display_on_statement."',`tax_id`='".$tax_id."',`crd`='".$crd."',`ssn`='".$ssn."',`active_status`='".$active_status_cdd."',`pay_method`='".$pay_method."',`branch_manager`='".$branch_manager."',`branch_name`='".$branch_name."',`branch_office`='".$branch_office."'".$this->insert_common_sql();
+						$q = "INSERT INTO `".$this->table."` SET `first_name`='".$fname."',`last_name`='".$lname."',`middle_name`='".$mname."',`suffix`='".$suffix."',`fund`='".$fund."',`internal`='".$internal."',`display_on_statement`='".$display_on_statement."',`tax_id`='".$tax_id."',`crd`='".$crd."',`ssn`='".$ssn."',`active_status`='".$active_status_cdd."',`pay_method`='".$pay_method."'".$this->insert_common_sql();
 						$res = $this->re_db_query($q);
                         $_SESSION['last_insert_id'] = $this->re_db_insert_id();
                         if($res){
@@ -124,7 +124,7 @@
 						}
 					}
 					else if($id>0){
-					    $q = "UPDATE `".$this->table."` SET `first_name`='".$fname."',`last_name`='".$lname."',`middle_name`='".$mname."',`suffix`='".$suffix."',`fund`='".$fund."',`internal`='".$internal."',`display_on_statement`='".$display_on_statement."',`tax_id`='".$tax_id."',`crd`='".$crd."',`ssn`='".$ssn."',`active_status`='".$active_status_cdd."',`pay_method`='".$pay_method."',`branch_manager`='".$branch_manager."',`branch_name`='".$branch_name."',`branch_office`='".$branch_office."'".$this->update_common_sql()." WHERE `id`='".$id."'";
+					    $q = "UPDATE `".$this->table."` SET `first_name`='".$fname."',`last_name`='".$lname."',`middle_name`='".$mname."',`suffix`='".$suffix."',`fund`='".$fund."',`internal`='".$internal."',`display_on_statement`='".$display_on_statement."',`tax_id`='".$tax_id."',`crd`='".$crd."',`ssn`='".$ssn."',`active_status`='".$active_status_cdd."',`pay_method`='".$pay_method."'".$this->update_common_sql()." WHERE `id`='".$id."'";
 						$res = $this->re_db_query($q);
 						if($res){
 						      
@@ -641,6 +641,8 @@
             $team_member_string = implode (",", $team_member);
             $minimum_trade_gross = isset($data['minimum_trade_gross'])?$this->re_db_input($data['minimum_trade_gross']):'';
             $minimum_12B1_gross = isset($data['minimum_12B1_gross'])?$this->re_db_input($data['minimum_12B1_gross']):'';
+            $summarize_payroll_adjustments = isset($data['summarize_payroll_adjustments'])?$this->re_db_input($data['summarize_payroll_adjustments']):'';
+            $summarize_12B1_from_autoposting = isset($data['summarize_12B1_from_autoposting'])?$this->re_db_input($data['summarize_12B1_from_autoposting']):'';
             $start = isset($data['start'])?$this->re_db_input(date('Y-m-d',strtotime($data['start']))):'0000-00-00';
             $until = isset($data['until'])?$this->re_db_input(date('Y-m-d',strtotime($data['until']))):'0000-00-00';
             $apply_to = isset($data['apply_to'])?$this->re_db_input($data['apply_to']):'';
@@ -650,6 +652,23 @@
             $product_5 = isset($data['product_5'])?$this->re_db_input($data['product_5']):'';
             $calculate_on = isset($data['calculate_on'])?$this->re_db_input($data['calculate_on']):'';
             $deduct = isset($data['deduct'])?$this->re_db_input($data['deduct']):'';
+            $hold_commissions = isset($data['hold_commissions'])?$this->re_db_input($data['hold_commissions']):'';
+            if(isset($data['hold_commission_until']) && $data['hold_commission_until']!='')
+            {
+                $hold_commission_until = date('Y-m-d',strtotime($data['hold_commission_until']));
+            }
+            else
+            {
+                $hold_commission_until = '';
+            }
+            if(isset($data['hold_commission_after']) && $data['hold_commission_after']!='')
+            {
+                $hold_commission_after = date('Y-m-d',strtotime($data['hold_commission_after']));
+            }
+            else
+            {
+                $hold_commission_after = '';
+            }
             
             if($id>=0){
                 
@@ -663,7 +682,7 @@
                         `product_category2`='".$product_category2."' , `product_category3`='".$product_category3."' ,`product_category4`='".$product_category4."' ,`basis`='".$basis."' ,
                         `cumulative`='".$cumulative."' ,`year`='".$year."' ,`calculation_detail`='".$calculation_detail."' ,`clearing_charge_deducted_from`='".$clearing_charge_deducted_from."',`reset`='".$reset."',`description_type`='".$description_type."',`minimum_trade_gross`='".$minimum_trade_gross."',`minimum_12B1_gross`='".$minimum_12B1_gross."' ,
                         `team_member`='".$team_member_string."' ,`start`='".$start."',`until`='".$until."',`apply_to`='".$apply_to."',`product_2`='".$product_2."' ,`product_3`='".$product_3."',`product_4`='".$product_4."',
-                        `product_5`='".$product_5."' ,`calculate_on`='".$calculate_on."',`deduct`='".$deduct."'".$this->insert_common_sql();
+                        `product_5`='".$product_5."' ,`calculate_on`='".$calculate_on."',`deduct`='".$deduct."',`hold_commissions`='".$hold_commissions."' ,`hold_commission_until`='".$hold_commission_until."',`hold_commission_after`='".$hold_commission_after."',`summarize_payroll_adjustments`='".$summarize_payroll_adjustments."',`summarize_12B1_from_autoposting`='".$summarize_12B1_from_autoposting."'".$this->insert_common_sql();
     					$res = $this->re_db_query($q);
                           
                         if($res){
@@ -683,7 +702,7 @@
                         `product_category2`='".$product_category2."' , `product_category3`='".$product_category3."' ,`product_category4`='".$product_category4."' ,`basis`='".$basis."' ,
                         `cumulative`='".$cumulative."' ,`year`='".$year."',`calculation_detail`='".$calculation_detail."',`clearing_charge_deducted_from`='".$clearing_charge_deducted_from."',`reset`='".$reset."',`description_type`='".$description_type."',`minimum_trade_gross`='".$minimum_trade_gross."',`minimum_12B1_gross`='".$minimum_12B1_gross."' ,
                         `team_member`='".$team_member_string."' ,`start`='".$start."',`until`='".$until."',`apply_to`='".$apply_to."',`product_2`='".$product_2."' ,`product_3`='".$product_3."',`product_4`='".$product_4."',
-                        `product_5`='".$product_5."' ,`calculate_on`='".$calculate_on."',`deduct`='".$deduct."'".$this->update_common_sql()." WHERE  `broker_id`='".$id."'";
+                        `product_5`='".$product_5."' ,`calculate_on`='".$calculate_on."',`deduct`='".$deduct."',`hold_commissions`='".$hold_commissions."' ,`hold_commission_until`='".$hold_commission_until."',`hold_commission_after`='".$hold_commission_after."',`summarize_payroll_adjustments`='".$summarize_payroll_adjustments."',`summarize_12B1_from_autoposting`='".$summarize_12B1_from_autoposting."'".$this->update_common_sql()." WHERE  `broker_id`='".$id."'";
       					
                          $res = $this->re_db_query($q);    
                          
@@ -1369,6 +1388,50 @@
                
             }	
 		}
+        /** Insert update branches data for broker. **/
+        public function insert_update_branches($data){
+			$id = isset($data['id'])?$this->re_db_input($data['id']):0;
+			$branch_broker = isset($data['branch_broker'])?$this->re_db_input($data['branch_broker']):'';
+			$branch_1 = isset($data['branch_1'])?$this->re_db_input($data['branch_1']):'';
+			$branch_office_1 = isset($data['branch_office_1'])?$this->re_db_input($data['branch_office_1']):'';
+            $branch_2 = isset($data['branch_2'])?$this->re_db_input($data['branch_2']):'';
+			$branch_office_2 = isset($data['branch_office_2'])?$this->re_db_input($data['branch_office_2']):'';
+            $branch_3 = isset($data['branch_3'])?$this->re_db_input($data['branch_3']):'';
+			$branch_office_3 = isset($data['branch_office_3'])?$this->re_db_input($data['branch_office_3']):'';
+            $assess_branch_office_fee = isset($data['assess_branch_office_fee'])?$this->re_db_input($data['assess_branch_office_fee']):0;
+			$assess_audit_fee = isset($data['assess_audit_fee'])?$this->re_db_input($data['assess_audit_fee']):0;
+			$stamp = isset($data['stamp'])?$this->re_db_input($data['stamp']):0;
+			$stamp_certification = isset($data['stamp_certification'])?$this->re_db_input($data['stamp_certification']):0;
+			$stamp_indemnification = isset($data['stamp_indemnification'])?$this->re_db_input($data['stamp_indemnification']):0;
+            
+			if($id==0){
+				$q = "INSERT INTO `".BROKER_BRANCHES."` SET `broker_id`='".$_SESSION['last_insert_id']."',`broker_name`='".$branch_broker."',`branch1`='".$branch_1."',`branch_office1`='".$branch_office_1."',`branch2`='".$branch_2."',`branch_office2`='".$branch_office_2."',`branch3`='".$branch_3."',`branch_office3`='".$branch_office_3."',`assess_branch_office_fee`='".$assess_branch_office_fee."',`assess_audit_fee`='".$assess_audit_fee."',`stamp`='".$stamp."',`stamp_certification`='".$stamp_certification."',`stamp_indemnification`='".$stamp_indemnification."'".$this->insert_common_sql();
+				$res = $this->re_db_query($q);
+                if($res){
+				      
+                    $_SESSION['success'] = INSERT_MESSAGE;
+					return true;
+				}
+				/*else{
+					$_SESSION['warning'] = UNKWON_ERROR;
+					return false;
+				}*/
+			}
+            else 
+            {
+			    $q = "UPDATE `".BROKER_BRANCHES."`  SET `broker_name`='".$branch_broker."',`branch1`='".$branch_1."',`branch_office1`='".$branch_office_1."',`branch2`='".$branch_2."',`branch_office2`='".$branch_office_2."',`branch3`='".$branch_3."',`branch_office3`='".$branch_office_3."',`assess_branch_office_fee`='".$assess_branch_office_fee."',`assess_audit_fee`='".$assess_audit_fee."',`stamp`='".$stamp."',`stamp_certification`='".$stamp_certification."',`stamp_indemnification`='".$stamp_indemnification."'".$this->update_common_sql()." WHERE `broker_id`='".$id."'";
+				$res = $this->re_db_query($q);
+				if($res){
+				      
+                    $_SESSION['success'] = UPDATE_MESSAGE;
+					return true;
+				}
+				/*else{
+					$_SESSION['warning'] = UNKWON_ERROR;
+					return false;
+				}*/
+			}
+		}
         public function select_broker(){
 			$return = array();
 			
@@ -1793,6 +1856,23 @@
             }
 			return $return;
 		}
+        public function select_branch_office(){
+			$return = array();
+			
+			$q = "SELECT `bo`.*
+					FROM `".BRANCH_OFFICE_MASTER."` AS `bo`
+                    WHERE `bo`.`status`='1' and `bo`.`is_delete`='0'
+                    ORDER BY `bo`.`id` ASC";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+		}
         public function select_state_new(){
 			$return = array();
 			
@@ -1920,6 +2000,28 @@
     			     array_push($return,$row);
                      
     			}
+            }
+			return $return;
+		}
+        public function edit_branches($id){
+			$return = array();
+			$q = "SELECT `at`.*
+					FROM `".BROKER_BRANCHES."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`broker_id`='".$id."' "; 
+            $res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			$return = $this->re_db_fetch_array($res);
+            }
+			return $return;
+		}
+        public function check_broker_commission_status($id){
+			$return = array();
+			$q = "SELECT `at`.*
+					FROM `".BROKER_PAYOUT_MASTER."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`broker_id`='".$id."' "; 
+            $res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			$return = $this->re_db_fetch_array($res);
             }
 			return $return;
 		}

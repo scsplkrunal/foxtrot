@@ -2127,16 +2127,30 @@
                                 }    
                             }
                         }
+                        else
+                        {
+                            while($row = $this->re_db_fetch_array($res)){
+                                $_SESSION['batch_id'] = $row['id'];
+                            }
+                        }
                         if(isset($_SESSION['batch_id']) && $_SESSION['batch_id'] != '')
                         {
         				    $q = "INSERT INTO `".IMPORT_EXCEPTION."` SET `file_id`='".$check_data_val['file_id']."',`temp_data_id`='".$check_data_val['id']."',`date`='".date('Y-m-d')."',`rep`='".$check_data_val['representative_number']."',`rep_name`='".$check_data_val['representative_name']."',`account_no`='".$check_data_val['customer_account_number']."',`client`='".$check_data_val['alpha_code']."',`cusip`='".$check_data_val['CUSIP_number']."',`principal`='".ltrim($check_data_val['gross_transaction_amount'],0)."',`commission`='".ltrim($check_data_val['dealer_commission_amount'],0)."',`error_code_id`='0',`field`='',`file_type`='2',`solved`='1',`process_completed`='1'".$this->insert_common_sql();
          			        $res = $this->re_db_query($q);
                             $result = 0;
                             
+                            $broker_class = new broker_master();
+                            $check_broker_commission = $broker_class->check_broker_commission_status($broker_id);
+                            $broker_hold_commission = $check_broker_commission['hold_commissions'];
+                            
                             $con = '';
                             if($check_hold_commission==1)
                             {
                                 $con .=",`hold_commission`='".$check_hold_commission."',`hold_resoan`='BROKER TERMINATED'";
+                            }
+                            else if($broker_hold_commission == 1)
+                            {
+                                $con .=",`hold_commission`='".$broker_hold_commission."',`hold_resoan`='HOLD COMMISSION BY BROKER'";
                             }
                             else
                             {
@@ -2170,6 +2184,7 @@
                             if($res1 == true)
                             {
                                 $reprocess_status = true;
+                                unset($_SESSION['batch_id']);
                             }
                         }
                     }

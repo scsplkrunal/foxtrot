@@ -26,6 +26,8 @@ class transaction extends db{
             $split = isset($data['split'])?$this->re_db_input($data['split']):'';
             $split_broker = isset($data['split_broker'])?$data['split_broker']:array();
             $split_rate = isset($data['split_rate'])?$data['split_rate']:array();
+            $receiving_rep = isset($data['receiving_rep'])?$data['receiving_rep']:array();
+            $per = isset($data['per'])?$data['per']:array();
             $split_client_id = isset($data['split_client_id'])?$data['split_client_id']:array();
             $split_broker_id = isset($data['split_broker_id'])?$data['split_broker_id']:array();
             $another_level = isset($data['another_level'])?$this->re_db_input($data['another_level']):'';
@@ -101,6 +103,14 @@ class transaction extends db{
                 				$res = $this->re_db_query($q);
                             }
                         }
+                        foreach($receiving_rep as $key_override=>$val_override)
+                        {
+                            if($val_override != '' && $per[$key_override]>0)
+                            {
+                				$q = "INSERT INTO `".TRANSACTION_OVERRIDES."` SET `transaction_id`='".$last_inserted_id."',`receiving_rep`='".$val_override."',`per`='".$per[$key_override]."'".$this->insert_common_sql();
+                				$res = $this->re_db_query($q);
+                            }
+                        }
                             
                         if($res){
 						    $_SESSION['success'] = INSERT_MESSAGE;
@@ -127,6 +137,16 @@ class transaction extends db{
                             if($val_rate != '' && $split_broker[$key_rate]>0)
                             {
                 				$q = "INSERT INTO `".TRANSACTION_TRADE_SPLITS."` SET `transaction_id`='".$id."',`split_client_id`='".$split_client_id[$key_rate]."',`split_broker_id`='".$split_broker_id[$key_rate]."',`split_broker`='".$split_broker[$key_rate]."',`split_rate`='".$val_rate."'".$this->insert_common_sql();
+                				$res = $this->re_db_query($q);
+                            }
+                        }
+                        $q = "UPDATE `".TRANSACTION_OVERRIDES."` SET `is_delete`='1' WHERE `transaction_id`='".$id."'";
+				        $res = $this->re_db_query($q);
+                        foreach($receiving_rep as $key_override=>$val_override)
+                        {
+                            if($val_override != '' && $per[$key_override]>0)
+                            {
+                				$q = "INSERT INTO `".TRANSACTION_OVERRIDES."` SET `transaction_id`='".$id."',`receiving_rep`='".$val_override."',`per`='".$per[$key_override]."'".$this->insert_common_sql();
                 				$res = $this->re_db_query($q);
                             }
                         }
@@ -194,6 +214,21 @@ class transaction extends db{
 			$return = array();
 			$q = "SELECT `at`.*
 					FROM `".TRANSACTION_TRADE_SPLITS."` AS `at`
+                    WHERE `at`.`is_delete`='0' AND `at`.`transaction_id`='".$id."'";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			while($row = $this->re_db_fetch_array($res)){
+    			     //print_r($row);exit;
+                     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+		}
+        public function edit_overrides($id){
+			$return = array();
+			$q = "SELECT `at`.*
+					FROM `".TRANSACTION_OVERRIDES."` AS `at`
                     WHERE `at`.`is_delete`='0' AND `at`.`transaction_id`='".$id."'";
 			$res = $this->re_db_query($q);
             if($this->re_db_num_rows($res)>0){
@@ -394,6 +429,28 @@ class transaction extends db{
             }
 			return $return;
 		}
+        public function get_broker_override_rate($broker_id){
+			$return = array();
+            $con='';
+            
+            if($broker_id>0)
+            {
+                $con.=" AND `at`.`broker_id` = ".$broker_id."";
+            }
+			$q = "SELECT `at`.*
+					FROM `".BROKER_PAYOUT_OVERRIDE."` AS `at`
+                    WHERE `at`.`is_delete`='0' ".$con."
+                    ORDER BY `at`.`id` ASC";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+		}
         public function get_client_split_rate($client_id){
 			$return = array();
             $con='';
@@ -441,7 +498,7 @@ class transaction extends db{
                     LEFT JOIN `".BATCH_MASTER."` as `bt` on `bt`.`id` = `at`.`batch`
                     LEFT JOIN `".CLIENT_MASTER."` as `cl` on `cl`.`id` = `at`.`client_name`
                     LEFT JOIN `".BROKER_MASTER."` as `bm` on `bm`.`id` = `at`.`broker_name`
-                    WHERE `at`.`is_delete`='0'
+                    WHERE `at`.`is_delete`='0' and `at`.`is_payroll`='0'
                     ORDER BY `at`.`id` ASC";
 			$res = $this->re_db_query($q);
             if($this->re_db_num_rows($res)>0){
@@ -456,8 +513,8 @@ class transaction extends db{
 			$return = array();
 			
 			$q = "SELECT `at`.*,`bc`.`id` as branch_id,`bc`.*,`cn`.`id` as company_id
-					FROM `".BROKER_MASTER."` AS `at`
-                    LEFT JOIN `".BRANCH_MASTER."` as `bc` on `bc`.`id` = `at`.`branch_name`
+					FROM `".BROKER_BRANCHES."` AS `at`
+                    LEFT JOIN `".BRANCH_MASTER."` as `bc` on `bc`.`id` = `at`.`branch1`
                     LEFT JOIN `".COMPANY_MASTER."` as `cn` on `cn`.`id` = `bc`.`company`
                     WHERE `at`.`is_delete`='0' AND `at`.`id`=".$broker_id."
                     ORDER BY `at`.`id` ASC";
@@ -470,9 +527,13 @@ class transaction extends db{
             }
 			return $return;
 		}
-        public function select_data_report($product_category='',$company='',$batch='',$beginning_date='',$ending_date='',$sort_by=''){
+        public function select_data_report($product_category='',$company='',$batch='',$beginning_date='',$ending_date='',$sort_by='',$is_historical=0){
 			$return = array();
             $con='';
+            if($is_historical==0)
+            {
+                $con.=" AND `at`.`is_payroll`='0'";
+            }
             if($product_category>0)
             {
                 $con.=" AND `at`.`product_cate` = ".$product_category."";

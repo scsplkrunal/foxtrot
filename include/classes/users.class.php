@@ -97,8 +97,22 @@
                 WHERE `m`.`is_delete`='0' AND `m`.`parent_id`='".$link_id."' ";
     		$res = $this->re_db_query($q);
     		while($row = $this->re_db_fetch_array($res)){ 
+    		    $row['submenu'] = $this->sub_submenu_select($row['link_id']);
     			array_push($return,$row);
     		}
+    		return $return;
+   		}
+        public function sub_submenu_select($link_id){
+            $return = array();
+    		
+    		$q = "SELECT `m`.*
+                FROM `".MENU_MASTER."` AS `m`
+                WHERE `m`.`is_delete`='0' AND `m`.`parent_id`='".$link_id."' ";
+    		$res = $this->re_db_query($q);
+    		while($row = $this->re_db_fetch_array($res)){ 
+    		    array_push($return,$row);
+    		}
+    		
     		return $return;
    		}
         public function insert_update($data){

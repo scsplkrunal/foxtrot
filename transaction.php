@@ -15,6 +15,7 @@
     $get_batch = $instance->select_batch();
     $product_cate ='';
     $client_name='';
+    $broker_name='';
     $product = '';
     $batch = '';
     $split_broker = array();
@@ -43,6 +44,8 @@
         $split = isset($_POST['split'])?$instance->re_db_input($_POST['split']):'';
         $split_broker = isset($_POST['split_broker'])?$_POST['split_broker']:array();
         $split_rate = isset($_POST['split_rate'])?$_POST['split_rate']:array();
+        $receiving_rep = isset($_POST['receiving_rep'])?$_POST['receiving_rep']:array();
+        $per = isset($_POST['per'])?$_POST['per']:array();
         $another_level = isset($_POST['another_level'])?$instance->re_db_input($_POST['another_level']):'';
         $cancel = isset($_POST['cancel'])?$instance->re_db_input($_POST['cancel']):'';
         $buy_sell = isset($_POST['buy_sell'])?$instance->re_db_input($_POST['buy_sell']):'';
@@ -58,7 +61,7 @@
             if(isset($_SESSION['batch_id']) && $_SESSION['batch_id'] >0)
             {
                 header("location:".SITE_URL."batches.php?action=edit_batches&id=".$_SESSION['batch_id']);
-                $_SESSION['batch_id'] ='';
+                unset($_SESSION['batch_id']);
                 exit;
             }
             else{
@@ -110,6 +113,7 @@
         $units = isset($return['units'])?$instance->re_db_output($return['units']):'';
         $shares = isset($return['shares'])?$instance->re_db_output($return['shares']):'';
         $return_splits = $instance->edit_splits($id);
+        $return_overrides = $instance->edit_overrides($id);
            
     }
     else if(isset($_GET['action'])&&$_GET['action']=='transaction_delete'&&isset($_GET['id'])&&$_GET['id']>0)

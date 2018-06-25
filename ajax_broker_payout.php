@@ -237,17 +237,17 @@ $(document).on('click','.remove-row',function(){
         <div class="col-md-6">
             <div class="form-group">
                 <label>Basis </label><br />
-                <input type="radio" name="basis" <?php if(isset($basis) && $basis=='1'){?>checked="true"<?php } ?>  class="radio" style="display: inline;" value="1"/>&nbsp;<label>Net Earnings</label>&nbsp;&nbsp;
-                <input type="radio" name="basis" <?php if(isset($basis) && $basis=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Gross Concessions</label>&nbsp;&nbsp;
-                <input type="radio" name="basis" <?php if(isset($basis) && $basis=='3'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="3"/>&nbsp;<label>Principal</label>&nbsp;&nbsp;
+                <!--<input type="radio" name="basis" <?php if(isset($basis) && $basis=='1'){?>checked="true"<?php } ?>  class="radio" style="display: inline;" value="1"/>&nbsp;<label>Net Earnings</label>&nbsp;&nbsp;-->
+                <input type="radio" name="basis" <?php if(isset($basis) && $basis=='1'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="1"/>&nbsp;<label>Gross Concessions</label>&nbsp;&nbsp;
+                <input type="radio" name="basis" <?php if(isset($basis) && $basis=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Principal</label>&nbsp;&nbsp;
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
                 <label>Cumulative </label><br />
                 <input type="radio" name="cumulative" <?php if(isset($cumulative) && $cumulative=='1'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="1"/>&nbsp;<label>Payroll-To-Date</label>&nbsp;&nbsp;
-                <input type="radio" name="cumulative" <?php if(isset($cumulative) && $cumulative=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Month-To-Date</label>&nbsp;&nbsp;
-                <input type="radio" name="cumulative" <?php if(isset($cumulative) && $cumulative=='3'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="3"/>&nbsp;<label>Year-To-Date</label>&nbsp;&nbsp;
+                <!--<input type="radio" name="cumulative" <?php if(isset($cumulative) && $cumulative=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Month-To-Date</label>&nbsp;&nbsp;-->
+                <input type="radio" name="cumulative" <?php if(isset($cumulative) && $cumulative=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Year-To-Date</label>&nbsp;&nbsp;
             </div>
         </div>
    </div>
@@ -278,8 +278,8 @@ $(document).on('click','.remove-row',function(){
             <div class="form-group">
                 <label>Calculation Detail </label><br />
                 <input type="radio" name="calculation_detail" <?php if(isset($calculation_detail) && $calculation_detail=='1'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="1"/>&nbsp;<label>Intra-Trade</label>&nbsp;&nbsp;
-                <input type="radio" name="calculation_detail" <?php if(isset($calculation_detail) && $calculation_detail=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Inter-Trade</label>&nbsp;&nbsp;
-                <input type="radio" name="calculation_detail" <?php if(isset($calculation_detail) && $calculation_detail=='3'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="3"/>&nbsp;<label>Payroll-Period</label>&nbsp;&nbsp;
+                <input type="radio" name="calculation_detail" <?php if(isset($calculation_detail) && $calculation_detail=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Use Higher Level Rate</label>&nbsp;&nbsp;
+                <input type="radio" name="calculation_detail" <?php if(isset($calculation_detail) && $calculation_detail=='3'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="3"/>&nbsp;<label>Use Lower Level Rate</label>&nbsp;&nbsp;
             </div>
         </div>
         <div class="col-md-6">

@@ -51,6 +51,19 @@
     $sponsor_company = '';
     $day_after_u5 = 0;
     
+    $branch_broker = '';
+	$branch_1 = '';
+	$branch_office_1 = '';
+    $branch_2 = '';
+	$branch_office_2 = '';
+    $branch_3 = '';
+	$branch_office_3 = '';
+    $assess_branch_office_fee = 0;
+	$assess_audit_fee = 0;
+	$stamp = 0;
+	$stamp_certification = 0;
+	$stamp_indemnification = 0;
+    
     $action = isset($_GET['action'])&&$_GET['action']!=''?$dbins->re_db_input($_GET['action']):'view';
     $id = isset($_GET['id'])&&$_GET['id']!=''?$dbins->re_db_input($_GET['id']):0;
     
@@ -70,6 +83,7 @@
     $select_broker_docs = $instance->get_broker_doc_name();
     $product_category = $instance->select_category();
     $get_payout_schedule = $instance->get_payout_schedule();
+    $get_branch_office = $instance->select_branch_office();
     //echo '<pre>';print_r($product_category);exit();
     
     if(isset($_POST['submit'])&& $_POST['submit']=='Save'){//echo '<pre>';print_r($_POST);exit;
@@ -136,7 +150,19 @@
         $ria_general = isset($_POST['ria_general'])?$instance->re_db_input($_POST['ria_general']):0;
 		$insurance_general = isset($_POST['insurance_general'])?$instance->re_db_input($_POST['insurance_general']):0;//echo '<pre>';print_r($_POST);exit;
     
-        
+        $branch_broker = isset($_POST['branch_broker'])?$instance->re_db_input($_POST['branch_broker']):'';
+		$branch_1 = isset($_POST['branch_1'])?$instance->re_db_input($_POST['branch_1']):'';
+		$branch_office_1 = isset($_POST['branch_office_1'])?$instance->re_db_input($_POST['branch_office_1']):'';
+        $branch_2 = isset($_POST['branch_2'])?$instance->re_db_input($_POST['branch_2']):'';
+		$branch_office_2 = isset($_POST['branch_office_2'])?$instance->re_db_input($_POST['branch_office_2']):'';
+        $branch_3 = isset($_POST['branch_3'])?$instance->re_db_input($_POST['branch_3']):'';
+		$branch_office_3 = isset($_POST['branch_office_3'])?$instance->re_db_input($_POST['branch_office_3']):'';
+        $assess_branch_office_fee = isset($_POST['assess_branch_office_fee'])?$instance->re_db_input($_POST['assess_branch_office_fee']):0;
+		$assess_audit_fee = isset($_POST['assess_audit_fee'])?$instance->re_db_input($_POST['assess_audit_fee']):0;
+		$stamp = isset($_POST['stamp'])?$instance->re_db_input($_POST['stamp']):0;
+		$stamp_certification = isset($_POST['stamp_certification'])?$instance->re_db_input($_POST['stamp_certification']):0;
+		$stamp_indemnification = isset($_POST['stamp_indemnification'])?$instance->re_db_input($_POST['stamp_indemnification']):0;
+            
         $return = $instance->insert_update($_POST);
         
         $return1 = $instance->insert_update_general($_POST);
@@ -167,6 +193,9 @@
         $return12 = $instance->insert_update_alias($instance->reArrayFiles_alias($_POST['alias']),$id);
         //charges tab
         $return11 = $instance->insert_update_charges($_POST);
+        
+        //for broker branches
+        $return_broker_branches = $instance->insert_update_branches($_POST);
         
         
         if($return===true){
@@ -348,6 +377,7 @@
         $edit_split = $instance->edit_split($id);
         $edit_charge_check =$instance->edit_charge_check($id);
         $edit_alias = $instance->edit_alias($id);
+        $edit_branches = $instance->edit_branches($id);
         //echo '<pre>';print_r($edit_charge_check);exit;//echo '<pre>';print_r($edit_override);exit;
         
         $_SESSION['last_insert_id']=$id;
@@ -363,9 +393,9 @@
         $crd = isset($return['crd'])?$instance->re_db_output($return['crd']):'';
         $active_status_cdd = isset($return['active_status'])?$instance->re_db_output($return['active_status']):'';
         $pay_method = isset($return['pay_method'])?$instance->re_db_output($return['pay_method']):'';
-    	$branch_manager = isset($return['branch_manager'])?$instance->re_db_output($return['branch_manager']):'';
+    	/*$branch_manager = isset($return['branch_manager'])?$instance->re_db_output($return['branch_manager']):'';
         $branch_name = isset($return['branch_name'])?$instance->re_db_output($return['branch_name']):'';
-        $branch_office = isset($return['branch_office'])?$instance->re_db_output($return['branch_office']):'';
+        $branch_office = isset($return['branch_office'])?$instance->re_db_output($return['branch_office']):'';*/
     	
     	$home = isset($edit_general['home'])?$instance->re_db_output($edit_general['home']):'';
         $home_address1_general = isset($edit_general['home_address1_general'])?$instance->re_db_output($edit_general['home_address1_general']):'';
@@ -406,6 +436,18 @@
         $ria = isset($edit_general['ria'])?$instance->re_db_output($edit_general['ria']):'';
         $insurance = isset($edit_general['insurance'])?$instance->re_db_output($edit_general['insurance']):'';
         //echo '<pre>';print_r($edit_licences_securities);exit;
+        $branch_broker = isset($edit_branches['broker_name'])?$instance->re_db_output($edit_branches['broker_name']):'';
+		$branch_1 = isset($edit_branches['branch1'])?$instance->re_db_output($edit_branches['branch1']):'';
+		$branch_office_1 = isset($edit_branches['branch_office1'])?$instance->re_db_output($edit_branches['branch_office1']):'';
+        $branch_2 = isset($edit_branches['branch2'])?$instance->re_db_output($edit_branches['branch2']):'';
+		$branch_office_2 = isset($edit_branches['branch_office2'])?$instance->re_db_output($edit_branches['branch_office2']):'';
+        $branch_3 = isset($edit_branches['branch3'])?$instance->re_db_output($edit_branches['branch3']):'';
+		$branch_office_3 = isset($edit_branches['branch_office3'])?$instance->re_db_output($edit_branches['branch_office3']):'';
+        $assess_branch_office_fee = isset($edit_branches['assess_branch_office_fee'])?$instance->re_db_output($edit_branches['assess_branch_office_fee']):0;
+		$assess_audit_fee = isset($edit_branches['assess_audit_fee'])?$instance->re_db_output($edit_branches['assess_audit_fee']):0;
+		$stamp = isset($edit_branches['stamp'])?$instance->re_db_output($edit_branches['stamp']):0;
+		$stamp_certification = isset($edit_branches['stamp_certification'])?$instance->re_db_output($edit_branches['stamp_certification']):0;
+		$stamp_indemnification = isset($edit_branches['stamp_indemnification'])?$instance->re_db_output($edit_branches['stamp_indemnification']):0;
            
     }
     else if(isset($_GET['send'])&&$_GET['send']=='previous' && isset($_GET['id'])&&$_GET['id']>0 && $_GET['id']!='')

@@ -41,6 +41,36 @@ function addMoreRow(){
 $(document).on('click','.remove-row',function(){
     $(this).closest('.row').remove();
 });
+
+var flag1=0;
+function add_override(){
+    
+    var html = '<tr class="tr">'+
+                    '<td>'+
+                        '<select name="receiving_rep[]"  class="form-control" >'+
+                        '<option value="">Select Broker</option>'+
+                        <?php foreach($get_broker as $key => $val) {?>
+                        '<option value="<?php echo $val['id']?>"><?php echo $val['first_name'].' '.$val['last_name']?></option>'+
+                        <?php } ?>
+                        '</select>'+
+                    '</td>'+
+                    '<td>'+
+                        '<div class="input-group">'+
+                        '<input type="number" step="0.001" name="per[]" value="" class="form-control" />'+
+                        '<span class="input-group-addon">%</span>'+
+                        '</div>'+
+                    '</td>'+
+                    '<td>'+
+                        '<button type="button" tabindex="-1" class="btn remove-row_override btn-icon btn-circle"><i class="fa fa-minus"></i></button>'+
+                    '</td>'+
+                '</tr>';
+                
+            
+    $(html).insertAfter('#add_override');
+}
+$(document).on('click','.remove-row_override',function(){
+    $(this).closest('.tr').remove();
+});
 </script>
 <div class="container">
 <h1 class="<?php if($action=='add'||($action=='edit_transaction' && $id>0)){ echo 'topfixedtitle';}?>">Transactions</h1> 
@@ -134,7 +164,7 @@ $(document).on('click','.remove-row',function(){
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Broker Name <span class="text-red">*</span></label><br />
-                        <select class="livesearch form-control" name="broker_name" onchange="get_broker_split_rates(this.value);">
+                        <select class="livesearch form-control" name="broker_name" onchange="get_broker_split_rates(this.value);get_broker_hold_commission(this.value);get_broker_override_rates(this.value);">
                             <option value="0">Select Broker</option>
                             <?php foreach($get_broker as $key=>$val){?>
                             <option value="<?php echo $val['id'];?>" <?php if(isset($broker_name) && $broker_name==$val['id']){ ?>selected="true"<?php } ?>><?php echo $val['last_name'].' '.$val['first_name'].' '.$val['middle_name'];?></option>
@@ -179,13 +209,13 @@ $(document).on('click','.remove-row',function(){
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Units </label><br />
-                        <input type="text" class="form-control" id="units" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 ' name="units"  value="<?php if(isset($units)) {echo $units;}?>"/>
+                        <input type="text" class="form-control" onblur="get_investment_amount();" id="units" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 ' name="units"  value="<?php if(isset($units)) {echo $units;}?>"/>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Price </label><br />
-                        <input type="text"  class="form-control" id="shares" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 ' value="<?php if(isset($shares)) {echo $shares;}?>" name="shares"  />
+                        <input type="text"  class="form-control" onblur="get_investment_amount();" id="shares" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 ' value="<?php if(isset($shares)) {echo $shares;}?>" name="shares"  />
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -288,7 +318,7 @@ $(document).on('click','.remove-row',function(){
                         </div>
                     </div>
                 </div>
-                <?php if(isset($action) && $action=='add'){?>
+                <?php if(isset($action) && ($action=='add'||$return_splits==array())){?>
                 <div id="client_split_row"></div>
                 <div id="broker_split_row"></div>
                 <?php } ?> 
@@ -401,6 +431,69 @@ $(document).on('click','.remove-row',function(){
                 <?php } } }?>
                 </div>
             </div>
+            <h4>Overrides </h4>
+            <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-stripped table-hover">
+                                    <thead>
+                                        <th>Receiving Rep</th>
+                                        <th>Rate</th>
+                                        <th>Add More</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr id="add_override">
+                                            <td>
+                                                <select name="receiving_rep[]"  class="form-control">
+                                                    <option value="">Select Broker</option>
+                                                    <?php foreach($get_broker as $key => $val) {?>
+                                                    <option value="<?php echo $val['id']?>"><?php echo $val['first_name'].' '.$val['last_name']?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <input type="number" step="0.001" name="per[]" value="" class="form-control" />
+                                                    <span class="input-group-addon">%</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button type="button" onclick="add_override();" class="btn btn-purple btn-icon btn-circle"><i class="fa fa-plus"></i></button>
+                                            </td>
+                                        </tr>
+                                        <?php 
+                                        if(isset($action) && $action=='edit_transaction' && !empty($return_overrides)){
+                                        foreach($return_overrides as $regkey=>$regval){
+                                                ?>
+                                        <tr class="tr">
+                                            <td>
+                                                <select name="receiving_rep[]"  class="form-control">
+                                                    <option value="">Select Broker</option>
+                                                    <?php foreach($get_broker as $key => $val) {?>
+                                                    <option <?php if(isset($regval['receiving_rep']) && $regval['receiving_rep']==$val['id']) {?>selected="true"<?php } ?> value="<?php echo $val['id']?>"><?php echo $val['first_name'].' '.$val['last_name']?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <input type="number" step="0.001" name="per[]" value="<?php echo $regval['per'];?>" class="form-control" />
+                                                    <span class="input-group-addon">%</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button type="button" tabindex="-1" class="btn remove-row_override btn-icon btn-circle"><i class="fa fa-minus"></i></button>
+                                            </td>
+                                        </tr>
+                                        <?php } }  ?>
+                                  </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+           </div>
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
@@ -417,17 +510,17 @@ $(document).on('click','.remove-row',function(){
                     <div class="form-group">
                         <label>Hold Commission <span class="text-red">*</span></label><br />
                         <label class="radio-inline">
-                          <input type="radio" class="radio"  name="hold_commission" <?php if(isset($hold_commission) && $hold_commission==1){ echo'checked="true"'; }?> value="1"/>YES
+                          <input type="radio" class="radio" id="hold_commission_1"  name="hold_commission" <?php if(isset($hold_commission) && $hold_commission==1){ echo'checked="true"'; }?> value="1"/>YES
                         </label>
                         <label class="radio-inline">
-                          <input type="radio" class="radio" name="hold_commission" <?php if((isset($hold_commission) && $hold_commission==2) || (isset($_GET['action']) && $_GET['action']=='add')){ echo'checked="true"'; }?> value="2" />NO
+                          <input type="radio" class="radio" id="hold_commission_2" name="hold_commission" <?php if((isset($hold_commission) && $hold_commission==2) || (isset($_GET['action']) && $_GET['action']=='add')){ echo'checked="true"'; }?> value="2" />NO
                         </label>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Hold Reason </label><br />
-                        <input type="text"  class="form-control" value="<?php if(isset($hold_resoan)) {echo $hold_resoan;}?>" name="hold_resoan"  />
+                        <input type="text"  class="form-control" value="<?php if(isset($hold_resoan)) {echo $hold_resoan;}?>" name="hold_resoan" id="hold_resoan"  />
                     </div>
                 </div>
                 
@@ -730,6 +823,43 @@ function get_broker_split_rates(broker_id){
         xmlhttp.open("GET", "ajax_get_split_rates.php?broker_id="+broker_id, true);
         xmlhttp.send();
 }
+//get broker override rate on broker select
+function get_broker_override_rates(broker_id){
+        
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) 
+            {
+                $('.broker_override_class').remove();
+                $(this.responseText).insertAfter('#add_override');
+            }
+        };
+        xmlhttp.open("GET", "ajax_get_override_rates.php?broker_id="+broker_id, true);
+        xmlhttp.send();
+}
+//get broker hold commission on broker select
+function get_broker_hold_commission(broker_id){
+        
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) 
+            {
+                hold_commissions = this.responseText;
+                if(hold_commissions==1)
+                {
+                    $("#hold_commission_1").prop( "checked", true );
+                    $("#hold_resoan").val( "HOLD COMMISSION BY BROKER");
+                }
+                else
+                {
+                    $("#hold_commission_1").prop( "checked", false );
+                    $("#hold_resoan").val( "");
+                }
+            }
+        };
+        xmlhttp.open("GET", "ajax_hold_commissions.php?broker_id="+broker_id, true);
+        xmlhttp.send();
+}
 function open_other()
 {
     $('#split_div').css('display','block');
@@ -807,12 +937,16 @@ $('#demo-dp-range .input-daterange').datepicker({
         autoclose: true,
         todayHighlight: true
     });
-$("#shares").blur(function(){
+function get_investment_amount()
+{
     var units = $("#units").val();
     var shares = $("#shares").val();
-    var invest_amount = units*shares;
-    $("#invest_amount").val(invest_amount);
-});
+    if((units > 0) && (shares > 0))
+    {
+        var invest_amount = units*shares;
+        $("#invest_amount").val(invest_amount);
+    }
+}
 </script>
 <?php
 
@@ -821,6 +955,15 @@ $("#shares").blur(function(){
         <script type="text/javascript">
             $(document).ready(function(){
                 get_product(<?php echo $product_cate; ?>,'<?php echo $product; ?>');
+            });
+        </script>
+        <?php
+    }
+    if($broker_name>0){
+        ?>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                get_broker_hold_commission(<?php echo $broker_name; ?>);
             });
         </script>
         <?php
@@ -834,7 +977,7 @@ $("#shares").blur(function(){
         </script>
         <?php
     }
-    if($batch>0){
+    if(isset($_GET['batch_id']) && ($_GET['batch_id'] != '' || $batch>0)){
         ?>
         <script type="text/javascript">
             $(document).ready(function(){

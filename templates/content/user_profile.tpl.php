@@ -86,12 +86,26 @@
                                 {?>    
                                    <div class="row"> 
                                         <div class="col-sm-6 form-group">
-                                            <?php echo $subdata['link_text'];?>
+                                            <?php echo $subdata['link_text'];if($subdata['submenu']!= array()){echo ' <i class="fa fa-chevron-down"></i>';}?>
                                         </div>
                                         <div class="col-sm-6 form-group">
                                             <input type="checkbox" class="checkbox"  name="check_sub[<?php echo $menudata['link_id']; ?>][]<?php echo $subdata['link_id']; ?>" value="<?php echo $subdata['link_id']; ?>" <?php if(in_array($subdata['link_id'],$menu_rights)){echo "checked='true'";} ?>/>
                                         </div>
                                    </div>
+                                    <?php
+                                    foreach($subdata['submenu'] as $sub_k=>$sub_v)
+                                    {?>    
+                                       <div class="row"> 
+                                            <div class="col-sm-6 form-group">
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <?php echo $sub_v['link_text'];?>
+                                            </div>
+                                            <div class="col-sm-6 form-group">
+                                                <input type="checkbox" class="checkbox"  name="check_sub[<?php echo $subdata['link_id']; ?>][]<?php echo $sub_v['link_id']; ?>" value="<?php echo $sub_v['link_id']; ?>" <?php if(in_array($sub_v['link_id'],$menu_rights)){echo "checked='true'";} ?>/>
+                                            </div>
+                                       </div>
+                                    <?php }
+                                    ?>
                                 <?php }
                                 ?>
                     <?php }?>

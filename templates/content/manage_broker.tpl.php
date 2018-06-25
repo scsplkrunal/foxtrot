@@ -528,6 +528,7 @@ var waitingDialog = waitingDialog || (function ($) {
           <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="registers"){ echo "active"; } ?>"><a href="#tab_e" data-toggle="pill">Series Registrations</a></li>
           <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="required_docs"){ echo "active"; } ?>"><a href="#tab_f" data-toggle="pill">Required Docs</a></li>
           <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="alias_appoinments"){ echo "active"; } ?>"><a href="#tab_h" data-toggle="pill">Aliases & Appointments</a></li>
+          <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="branches"){ echo "active"; } ?>"><a href="#tab_i" data-toggle="pill">Branches</a></li>
           <?php /*if(isset($_SESSION['last_insert_id']) && $_SESSION['last_insert_id']!=''){?>
           <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="payouts"){ echo "active"; } ?>"><a href="#tab_b" data-toggle="pill">Payouts</a></li>
           <li class="<?php if(isset($_GET['tab'])&&$_GET['tab']=="charges"){ echo "active"; } ?>"><a href="#tab_c" data-toggle="pill">Charges</a></li>
@@ -669,37 +670,6 @@ var waitingDialog = waitingDialog || (function ($) {
                                                         <option <?php if(isset($active_status_cdd) && $active_status_cdd == 2){echo "selected='selected'";}?> value="2">Terminated</option>
                                                         <option <?php if(isset($active_status_cdd) && $active_status_cdd == 3){echo "selected='selected'";}?> value="3">Retired</option>
                                                         <option <?php if(isset($active_status_cdd) && $active_status_cdd == 4){echo "selected='selected'";}?> value="4">Deceased</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                       </div>
-                                       <div class="row">
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label>Branch Manager </label><br />
-                                                    <input type="checkbox" class="checkbox" name="branch_manager" value="1" id="branch_manager" class="regular-checkbox big-checkbox" <?php if($branch_manager == 1){echo "checked='true'";} ?> /><label for="checkbox-2-1"></label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label>Branch Name </label><br />
-                                                    <select name="branch_name" id="branch_name" class="form-control">
-                                                       <option value="">Select Branch</option>
-                                                        <?php foreach($select_branch as $key=>$val){?>
-                                                        <option value="<?php echo $val['id'];?>" <?php if(isset($branch_name) && $branch_name==$val['id']){echo "selected='selected'";} ?>><?php echo $val['name'];?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Branch Office</label><br />
-                                                    <select name="branch_office" id="branch_office" class="form-control">
-                                                        <option value="">Select Branch Office</option>
-                                                        <option <?php if(isset($branch_office) && $branch_office == 1){echo "selected='selected'";}?> value="1">Branch Office</option>
-                                                        <option <?php if(isset($branch_office) && $branch_office == 2){echo "selected='selected'";}?> value="2">Non OSJ Branch Office</option>
-                                                        <option <?php if(isset($branch_office) && $branch_office == 3){echo "selected='selected'";}?> value="3">Residential Office Exemption</option>
-                                                        <option <?php if(isset($branch_office) && $branch_office == 4){echo "selected='selected'";}?> value="4">OFOP Exemption</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -1421,17 +1391,17 @@ var waitingDialog = waitingDialog || (function ($) {
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Basis </label><br />
-                                                <input type="radio" name="basis" <?php if(isset($edit_payout['basis']) && $edit_payout['basis']=='1'){?>checked="true"<?php } ?>  class="radio" style="display: inline;" value="1"/>&nbsp;<label>Net Earnings</label>&nbsp;&nbsp;
-                                                <input type="radio" name="basis" <?php if(isset($edit_payout['basis']) && $edit_payout['basis']=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Gross Concessions</label>&nbsp;&nbsp;
-                                                <input type="radio" name="basis" <?php if(isset($edit_payout['basis']) && $edit_payout['basis']=='3'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="3"/>&nbsp;<label>Principal</label>&nbsp;&nbsp;
+                                                <!--<input type="radio" name="basis" <?php if(isset($edit_payout['basis']) && $edit_payout['basis']=='1'){?>checked="true"<?php } ?>  class="radio" style="display: inline;" value="1"/>&nbsp;<label>Net Earnings</label>&nbsp;&nbsp;-->
+                                                <input type="radio" name="basis" <?php if(isset($edit_payout['basis']) && $edit_payout['basis']=='1'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="1"/>&nbsp;<label>Gross Concessions</label>&nbsp;&nbsp;
+                                                <input type="radio" name="basis" <?php if(isset($edit_payout['basis']) && $edit_payout['basis']=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Principal</label>&nbsp;&nbsp;
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Cumulative </label><br />
                                                 <input type="radio" name="cumulative" <?php if(isset($edit_payout['cumulative']) && $edit_payout['cumulative']=='1'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="1"/>&nbsp;<label>Payroll-To-Date</label>&nbsp;&nbsp;
-                                                <input type="radio" name="cumulative" <?php if(isset($edit_payout['cumulative']) && $edit_payout['cumulative']=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Month-To-Date</label>&nbsp;&nbsp;
-                                                <input type="radio" name="cumulative" <?php if(isset($edit_payout['cumulative']) && $edit_payout['cumulative']=='3'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="3"/>&nbsp;<label>Year-To-Date</label>&nbsp;&nbsp;
+                                                <!--<input type="radio" name="cumulative" <?php if(isset($edit_payout['cumulative']) && $edit_payout['cumulative']=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Month-To-Date</label>&nbsp;&nbsp;-->
+                                                <input type="radio" name="cumulative" <?php if(isset($edit_payout['cumulative']) && $edit_payout['cumulative']=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Year-To-Date</label>&nbsp;&nbsp;
                                             </div>
                                         </div>
                                    </div>
@@ -1462,8 +1432,8 @@ var waitingDialog = waitingDialog || (function ($) {
                                             <div class="form-group">
                                                 <label>Calculation Detail </label><br />
                                                 <input type="radio" name="calculation_detail" <?php if(isset($edit_payout['calculation_detail']) && $edit_payout['calculation_detail']=='1'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="1"/>&nbsp;<label>Intra-Trade</label>&nbsp;&nbsp;
-                                                <input type="radio" name="calculation_detail" <?php if(isset($edit_payout['calculation_detail']) && $edit_payout['calculation_detail']=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Inter-Trade</label>&nbsp;&nbsp;
-                                                <input type="radio" name="calculation_detail" <?php if(isset($edit_payout['calculation_detail']) && $edit_payout['calculation_detail']=='3'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="3"/>&nbsp;<label>Payroll-Period</label>&nbsp;&nbsp;
+                                                <input type="radio" name="calculation_detail" <?php if(isset($edit_payout['calculation_detail']) && $edit_payout['calculation_detail']=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Use Higher Level Rate</label>&nbsp;&nbsp;
+                                                <input type="radio" name="calculation_detail" <?php if(isset($edit_payout['calculation_detail']) && $edit_payout['calculation_detail']=='3'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="3"/>&nbsp;<label>Use Lower Level Rate</label>&nbsp;&nbsp;
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -1471,6 +1441,44 @@ var waitingDialog = waitingDialog || (function ($) {
                                                 <label>Clearing Charge Deducted From</label><br />
                                                 <input type="radio" name="clearing_charge_deducted_from" <?php if(isset($edit_payout['clearing_charge_deducted_from']) && $edit_payout['clearing_charge_deducted_from']=='1'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="1"/>&nbsp;<label>Net</label>&nbsp;&nbsp;
                                                 <input type="radio" name="clearing_charge_deducted_from" <?php if(isset($edit_payout['clearing_charge_deducted_from']) && $edit_payout['clearing_charge_deducted_from']=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Gross</label>&nbsp;&nbsp;
+                                            </div>
+                                        </div>
+                                   </div>
+                                   <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Hold Commissions </label><br />
+                                                <input type="checkbox" class="checkbox" name="hold_commissions" value="1" <?php if(isset($edit_payout['hold_commissions']) && $edit_payout['hold_commissions']!=''){ echo "checked='true'"; } ?>/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                    <label>Until </label>
+                                                    <div id="demo-dp-range">
+	                                                    <div class="input-daterange input-group" id="datepicker">
+                                                        <input type="text" name="hold_commission_until" id="hold_commission_until" value="<?php if(isset($edit_payout['hold_commission_until']) && ($edit_payout['hold_commission_until']!='' && $edit_payout['hold_commission_until']!=0000-00-00)){ echo date('m/d/Y',strtotime($edit_payout['hold_commission_until'])); } ?>" class="form-control" />
+                                                            <label class="input-group-addon btn" for="hold_commission_until">
+                                                               <span class="fa fa-calendar"></span>
+                                                            </label>
+                                                        </div>
+    					                            </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                    <label>After </label>
+                                                    <div id="demo-dp-range">
+	                                                    <div class="input-daterange input-group" id="datepicker">
+                                                        <input type="text" name="hold_commission_after" id="hold_commission_after" value="<?php if(isset($edit_payout['hold_commission_after']) && ($edit_payout['hold_commission_after']!='' && $edit_payout['hold_commission_after']!=0000-00-00)){ echo date('m/d/Y',strtotime($edit_payout['hold_commission_after'])); } ?>" class="form-control" />
+                                                            <label class="input-group-addon btn" for="hold_commission_after">
+                                                               <span class="fa fa-calendar"></span>
+                                                            </label>
+                                                        </div>
+    					                            </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                    </div>
@@ -1508,6 +1516,20 @@ var waitingDialog = waitingDialog || (function ($) {
                                             <div class="form-group">
                                                 <label>Minimum 12B1 Gross Commission </label>
                                                 <input type="text" name="minimum_12B1_gross"  value="<?php if(isset($edit_payout['minimum_12B1_gross']) && $edit_payout['minimum_12B1_gross']!=''){ echo $edit_payout['minimum_12B1_gross']; } ?>"  class="form-control"  />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Summarize Payroll Adjustments </label>
+                                                <input type="checkbox" class="checkbox" name="summarize_payroll_adjustments" value="1" <?php if(isset($edit_payout['summarize_payroll_adjustments']) && $edit_payout['summarize_payroll_adjustments']!=''){ echo "checked='true'"; } ?>/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Summarize 12B1's From Autoposting </label>
+                                                <input type="checkbox" class="checkbox" name="summarize_12B1_from_autoposting" value="1" <?php if(isset($edit_payout['summarize_12B1_from_autoposting']) && $edit_payout['summarize_12B1_from_autoposting']!=''){ echo "checked='true'"; } ?>/>
                                             </div>
                                         </div>
                                     </div>
@@ -2702,6 +2724,195 @@ var waitingDialog = waitingDialog || (function ($) {
                             </div>
                         </div>
                  </div>
+                 <div class="tab-pane <?php if(isset($_GET['tab'])&&$_GET['tab']=="branches"){ echo "active"; } ?>" id="tab_i">
+                 <?php require_once(DIR_FS_INCLUDES."alerts.php"); ?>
+                        <div class="panel-overlay-wrap">
+                            <div class="panel">
+                                <div class="panel-body">
+                                    <!--<div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Branch Manager </label><br />
+                                                <input type="checkbox" class="checkbox" name="branch_manager" value="1" id="branch_manager" class="regular-checkbox big-checkbox" <?php if($branch_manager == 1){echo "checked='true'";} ?> /><label for="checkbox-2-1"></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Branch Name </label><br />
+                                                <select name="branch_name" id="branch_name" class="form-control">
+                                                   <option value="">Select Branch</option>
+                                                    <?php foreach($select_branch as $key=>$val){?>
+                                                    <option value="<?php echo $val['id'];?>" <?php if(isset($branch_name) && $branch_name==$val['id']){echo "selected='selected'";} ?>><?php echo $val['name'];?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Branch Office</label><br />
+                                                <select name="branch_office" id="branch_office" class="form-control">
+                                                    <option value="">Select Branch Office</option>
+                                                    <option <?php if(isset($branch_office) && $branch_office == 1){echo "selected='selected'";}?> value="1">Branch Office</option>
+                                                    <option <?php if(isset($branch_office) && $branch_office == 2){echo "selected='selected'";}?> value="2">Non OSJ Branch Office</option>
+                                                    <option <?php if(isset($branch_office) && $branch_office == 3){echo "selected='selected'";}?> value="3">Residential Office Exemption</option>
+                                                    <option <?php if(isset($branch_office) && $branch_office == 4){echo "selected='selected'";}?> value="4">OFOP Exemption</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                   </div>-->
+                                   <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-3"></div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Broker </label><br />
+                                                        <input type="text" class="form-control" name="branch_broker_dis" id="branch_broker_dis" value="<?php echo $branch_broker;?>" disabled="true"/>
+                                                        <input type="hidden" class="form-control" name="branch_broker" id="branch_broker" value="<?php echo $branch_broker;?>"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3"></div>
+                                            </div>
+                                        </div>
+                                   </div>
+                                   <div class="panel">
+                                   <div class="panel-heading" style="border: 1px solid #cccccc !important;">
+                                        <h4 class="panel-title" style="font-size: 15px;text-align: center;"><b>Branch Assignments</b></h4>
+                                   </div>
+                                   <div class="panel-body" style="border: 1px solid #cccccc !important;">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label style="display: block; text-align: right;">Branch No. 1 </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <select name="branch_1" id="branch_1" class="form-control">
+                                                   <option value="">Select Branch</option>
+                                                    <?php foreach($select_branch as $key=>$val){?>
+                                                    <option value="<?php echo $val['id'];?>" <?php if(isset($branch_1) && $branch_1==$val['id']){echo "selected='selected'";} ?>><?php echo $val['name'];?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <select name="branch_office_1" id="branch_office_1" class="form-control">
+                                                   <option value="">Select Branch Office</option>
+                                                    <?php foreach($get_branch_office as $key=>$val){?>
+                                                    <option value="<?php echo $val['id'];?>" <?php if(isset($branch_office_1) && $branch_office_1==$val['id']){echo "selected='selected'";} ?>><?php echo $val['name'];?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label style="display: block; text-align: right;">Branch No. 2 </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <select name="branch_2" id="branch_2" class="form-control">
+                                                   <option value="">Select Branch</option>
+                                                    <?php foreach($select_branch as $key=>$val){?>
+                                                    <option value="<?php echo $val['id'];?>" <?php if(isset($branch_2) && $branch_2==$val['id']){echo "selected='selected'";} ?>><?php echo $val['name'];?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <select name="branch_office_2" id="branch_office_2" class="form-control">
+                                                   <option value="">Select Branch Office</option>
+                                                    <?php foreach($get_branch_office as $key=>$val){?>
+                                                    <option value="<?php echo $val['id'];?>" <?php if(isset($branch_office_2) && $branch_office_2==$val['id']){echo "selected='selected'";} ?>><?php echo $val['name'];?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label style="display: block; text-align: right;">Branch No. 3 </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <select name="branch_3" id="branch_3" class="form-control">
+                                                   <option value="">Select Branch</option>
+                                                    <?php foreach($select_branch as $key=>$val){?>
+                                                    <option value="<?php echo $val['id'];?>" <?php if(isset($branch_3) && $branch_3==$val['id']){echo "selected='selected'";} ?>><?php echo $val['name'];?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <select name="branch_office_3" id="branch_office_3" class="form-control">
+                                                   <option value="">Select Branch Office</option>
+                                                    <?php foreach($get_branch_office as $key=>$val){?>
+                                                    <option value="<?php echo $val['id'];?>" <?php if(isset($branch_office_3) && $branch_office_3==$val['id']){echo "selected='selected'";} ?>><?php echo $val['name'];?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   </div>
+                                   </div>
+                                   <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-3"></div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input type="checkbox" class="checkbox" name="assess_branch_office_fee" id="assess_branch_office_fee" value="1" style="display: inline;" <?php if(isset($assess_branch_office_fee) && $assess_branch_office_fee==1){ echo'checked="true"'; }?>/><label> Assess Branch Office Fee on Annual Renewal Statements</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="checkbox" class="checkbox" name="assess_audit_fee" id="assess_audit_fee" value="1" style="display: inline;" <?php if(isset($assess_audit_fee) && $assess_audit_fee==1){ echo'checked="true"'; }?>/><label> Assess Audit Fee on Annual Renewal Statements</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3"></div>
+                                            </div>
+                                        </div>
+                                   </div>
+                                   <div class="col-sm-6 col-sm-offset-3">
+                                      <div class="panel">
+                                       <div class="panel-heading" style="border: 1px solid #cccccc !important;">
+                                            <h4 class="panel-title" style="font-size: 15px;text-align: center;"><b>Medalion Signature Guarantee Stamp</b></h4>
+                                       </div>
+                                       <div class="panel-body" style="border: 1px solid #cccccc !important;">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <input type="checkbox" class="checkbox" name="stamp" id="stamp" value="1" style="display: inline;" <?php if(isset($stamp) && $stamp==1){ echo'checked="true"'; }?> /><label> STAMP</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <input type="checkbox" class="checkbox" name="stamp_certification" id="stamp_certification" value="1" style="display: inline;" <?php if(isset($stamp_certification) && $stamp_certification==1){ echo'checked="true"'; }?>/><label> STAMP Certification</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <input type="checkbox" class="checkbox" name="stamp_indemnification" id="stamp_indemnification" value="1" style="display: inline;" <?php if(isset($stamp_indemnification) && $stamp_indemnification==1){ echo'checked="true"'; }?>/><label> STAMP Indemnification</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                       </div>
+                                       </div>
+                                   </div>
+                                </div>
+                            </div>
+                        </div>
+                 </div>
               </div>
               <div class="panel-footer fixedbtmenu">
                     <div class="selectwrap">
@@ -3742,6 +3953,11 @@ $(document).ready(function(){
 });
 </script>
 <script>
+$("#fname").on("blur",function () {
+    var broker_fname = $("#fname").val();
+    $("#branch_broker").val(broker_fname);
+    $("#branch_broker_dis").val(broker_fname);
+});
 $("#home_general").on("change", function () {
     document.getElementById("address1_general").value='';
     document.getElementById("address2_general").value='';
