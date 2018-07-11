@@ -233,7 +233,7 @@
                                             </div>
                                             <div class="col-md-4">
                                             <input type="checkbox" class="checkbox" name="hold" id="hold" style="display: inline;" value="1"  <?php if($hold==1){echo "checked='checked'";}?>/> Hold&nbsp;&nbsp;
-                                            <input type="text" name="hold_reason" id="hold_reason" class="form-control amount" value="<?php echo $hold_reason;?>" />
+                                            <input type="text" name="hold_reason" id="hold_reason" style="<?php if($hold!=1){echo "display:none";}?>" class="form-control amount" value="<?php echo $hold_reason;?>" />
                                             </div>
                                             <div class="col-md-4">
                                             <input type="checkbox" class="checkbox" name="cancel" id="cancel" style="display: inline;" value="1"  <?php if($cancel==1){echo "checked='checked'";}?>/> Cancel
@@ -307,7 +307,7 @@
                                             <td><?php echo $val['broker_firstname'].' '.$val['broker_lastname']; ?></td>
                                             <td><?php echo $val['investment_amount']; ?></td>
                                             <td><?php echo $val['commission_received']; ?></td>
-                                            <td></td>
+                                            <td><?php echo $val['commission_paid']; ?></td>
                                             <td class="text-center">
                                                 <a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=<?php echo $val['id'];?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
                                                 <a onclick="return conf('<?php echo CURRENT_PAGE; ?>?action=delete&id=<?php echo $val['id']; ?>');" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>
@@ -428,7 +428,13 @@ $.fn.amountFormat = function() {
 }
 })( jQuery );
 
-
+ $("#hold").click(function () {
+    if ($(this).is(":checked")) {
+        $("#hold_reason").css('display','block');
+    } else {
+        $("#hold_reason").css('display','none');
+    }
+});
 $( function() {
 $('.amount').amountFormat();
 });

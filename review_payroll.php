@@ -83,10 +83,10 @@
  
     }
     else if($action=='edit' && $id>0){
-        $return = $instance->edit_review_payroll($id);
+        $return = $instance->edit_review_payroll($id);//echo '<pre>';print_r($return);exit;
         $transaction_id=isset($return['trade_number'])?$return['trade_number']:'';
-        $return_trade_splits = $instance->edit_review_trade_splits($id,$transaction_id);
-        $return_trade_overrides = $instance->edit_review_trade_overrides($id,$transaction_id);
+        //$return_trade_splits = $instance->edit_review_trade_splits($id,$transaction_id);
+        //$return_trade_overrides = $instance->edit_review_trade_overrides($id,$transaction_id);
         
         $id = isset($return['id'])?$instance->re_db_output($return['id']):0;
         $payroll_id = isset($return['payroll_id'])?$instance->re_db_output($return['payroll_id']):0;
@@ -127,8 +127,8 @@
         }
     }
     else if($action=='view'){
-        
-        $return = $instance->select();
+        $is_listing=1;
+        $return = $instance->select($is_listing);
         
     }
     

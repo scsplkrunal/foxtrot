@@ -328,6 +328,7 @@ $('#broker_2').click(function() {
    }
 });
 $('#broker_1').click(function() {
+   $('#broker_name').val("");
    $('#choose_broker_div').css('display','none'); 
 });
 $('#broker_name').change(function() {

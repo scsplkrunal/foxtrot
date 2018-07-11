@@ -68,12 +68,18 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
+                                <label>Check Amount </label>
+                                <input type="text" name="check_amount" id="check_amount" class="form-control" value="<?php echo $check_amount;?>" />
+                            </div>
+                        </div>
+                   </div> 
+                   <!--div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
                                 <label>Net Commission </label>
                                 <input type="text" name="net_production" id="net_production" class="form-control" value="<?php echo $net_production;?>" />
                             </div>
                         </div>
-                   </div> 
-                   <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Adjustments </label>
@@ -86,7 +92,7 @@
                                 <input type="text" name="net_earnings" id="net_earnings" class="form-control" value="<?php echo $net_earnings;?>" />
                             </div>
                         </div>
-                   </div> 
+                   </div> -->
                </div>                                                              
                <div class="panel-overlay">
                    <div class="panel-overlay-content pad-all unselectable"><span class="panel-overlay-icon text-dark"><i class="demo-psi-repeat-2 spin-anim icon-2x"></i></span><h4 class="panel-overlay-title"></h4><p></p></div>
@@ -116,9 +122,10 @@
                         <th>ID</th>
                         <th>Clear#</th>
                         <th>Gross Commission</th>
-                        <th>Net Commission</th>
+                        <th>Check Amount</th>
+                        <!--<th>Net Commission</th>
                         <th>Adjustments</th>
-                        <th>Net Earnings</th>
+                        <th>Net Earnings</th>-->
                         <th class="text-center">ACTION</th>
                     </tr>
 	            </thead>
@@ -133,9 +140,10 @@
                             <td><?php echo $val['rep_number']; ?></td>
                             <td><?php echo $val['clearing_number']; ?></td>
                             <td><?php echo $val['gross_production']; ?></td>
-                            <td><?php echo $val['net_production']; ?></td>
+                            <td><?php echo $val['check_amount']; ?></td>
+                            <!--<td><?php echo $val['net_production']; ?></td>
                             <td><?php echo $val['adjustments']; ?></td>
-                            <td><?php echo $val['net_earnings']; ?></td>
+                            <td><?php echo $val['net_earnings']; ?></td>-->
                             <td class="text-center">
                                 <a href="<?php echo CURRENT_PAGE; ?>?action=edit&id=<?php echo $val['id'];?>" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
                                 <a onclick="return conf('<?php echo CURRENT_PAGE; ?>?action=delete&id=<?php echo $val['id']; ?>');" class="btn btn-sm btn-danger confirm" ><i class="fa fa-trash"></i> Delete</a>

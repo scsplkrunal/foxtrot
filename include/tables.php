@@ -111,6 +111,7 @@
     define('BROKER_BALANCES_MASTER','ft_payroll_broker_balances_master');
     define('PAYROLL_REVIEW_MASTER','ft_payroll_review_master');
     define('TRANSACTION_OVERRIDES','ft_transaction_overrides');
-    define('PAYROLL_TRADE_SPLITS','ft_payroll_trade_splits');
-    define('PAYROLL_TRADE_OVERRIDES','ft_payroll_trade_overrides');
+    define('PAYROLL_SPLIT_RATES','ft_payroll_split_rates');
+    define('PAYROLL_OVERRIDE_RATES','ft_payroll_override_rates');
+    define('PAYROLL_ADJUSTMENTS_DETAIL','ft_payroll_adjustments_detail');
 ?>

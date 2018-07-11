@@ -14,6 +14,7 @@
     $clearing_number = '';
     $rep_name = '';
     $gross_production = '';
+    $check_amount = '';
     $net_production = '';
     $adjustments = '';
     $net_earnings = '';
@@ -26,6 +27,7 @@
         $clearing_number = isset($_POST['clearing'])?$instance->re_db_input($_POST['clearing']):'';
         $rep_name = isset($_POST['rep_name'])?$instance->re_db_input($_POST['rep_name']):'';
         $gross_production = isset($_POST['gross_production'])?$instance->re_db_input($_POST['gross_production']):'';
+        $check_amount = isset($_POST['check_amount'])?$instance->re_db_input($_POST['check_amount']):'';
         $net_production = isset($_POST['net_production'])?$instance->re_db_input($_POST['net_production']):'';
         $adjustments = isset($_POST['adjustments'])?$instance->re_db_input($_POST['adjustments']):'';
         $net_earnings = isset($_POST['net_earnings'])?$instance->re_db_input($_POST['net_earnings']):'';
@@ -50,6 +52,7 @@
         $clearing_number = isset($return['clearing_number'])?$instance->re_db_output($return['clearing_number']):'';
         $rep_name = isset($return['rep_name'])?$instance->re_db_output($return['rep_name']):'';
         $gross_production = isset($return['gross_production'])?$instance->re_db_output($return['gross_production']):'';
+        $check_amount = isset($return['check_amount'])?$instance->re_db_output($return['check_amount']):'';
         $net_production = isset($return['net_production'])?$instance->re_db_output($return['net_production']):'';
         $adjustments = isset($return['adjustments'])?$instance->re_db_output($return['adjustments']):'';
         $net_earnings = isset($return['net_earnings'])?$instance->re_db_output($return['net_earnings']):'';    
@@ -66,8 +69,7 @@
     }
     else if($action=='view'){
         
-        $return = $instance->select_prior_payrolls_master();
-        
+        $return = $instance->select_prior_payrolls_master('');
     }
     
     

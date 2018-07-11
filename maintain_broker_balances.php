@@ -54,8 +54,7 @@
     }
     else if($action=='view'){
         
-        $return = $instance->select_balances_master();
-        
+        $return = $instance->select_balances_master('');
     }
     
     $content = "maintain_broker_balances";

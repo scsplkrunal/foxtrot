@@ -382,7 +382,7 @@
                         $from =isset($val['from'])?$this->re_db_input($val['from']):'';
                         $to =isset($val['to'])?$this->re_db_input($val['to']):'';
                         $per =isset($val['per'])?$this->re_db_input($val['per']):'';
-                        if($from!='' && $to != ''){
+                        if($from!='' && $to != '' && $per != ''){
                             
                             $q = "INSERT INTO `".BROKER_PAYOUT_GRID."` SET `broker_id`='".$_SESSION['last_insert_id']."',`sliding_rates`='".$sliding_rates."' ,`from`='".$from."' ,`to`='".$to."' ,`per`='".$per."' ".$this->insert_common_sql();
             				
@@ -402,18 +402,16 @@
                         $from =isset($val['from'])?$this->re_db_input($val['from']):'';
                         $to =isset($val['to'])?$this->re_db_input($val['to']):'';
                         $per =isset($val['per'])?$this->re_db_input($val['per']):'';
-                        if($from!='' && $to != ''){
-                            
-                            if ($flag==0){
-                               $qq="update `".BROKER_PAYOUT_GRID."` SET is_delete=1 where `broker_id`=".$id."";
-                               $res = $this->re_db_query($qq);
-                               $flag=1;
-                            }
-                            
+                        if ($flag==0){
+                           $qq="update `".BROKER_PAYOUT_GRID."` SET is_delete=1 where `broker_id`=".$id."";
+                           $res = $this->re_db_query($qq);
+                           $flag=1;
+                        }
+                        if($from!='' && $to != '' && $per != ''){
+                             
                              $q = "INSERT INTO `".BROKER_PAYOUT_GRID."` SET `broker_id`='".$id."' ,`sliding_rates`='".$sliding_rates."' ,`from`='".$from."' ,`to`='".$to."' , 
                             `per`='".$per."' ".$this->insert_common_sql();
-            				
-                            $res = $this->re_db_query($q); 
+            				 $res = $this->re_db_query($q); 
                         }
                         else
                         {

@@ -239,7 +239,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Threshold </label>
+                                <label>Threshold(in $ Price) </label>
                                 <input type="text" name="threshold1" onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="threshold1" value="<?php if($action=='edit'){ echo $threshold1;} ?>" class="form-control" />
                             </div>
                         </div>

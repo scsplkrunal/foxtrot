@@ -8,12 +8,12 @@ function addlevel(leval){
     else{ flag++ ; }
 
     var html = '<tr>'+
-                    '<td>'+
+                    /*'<td>'+
                         '<div class="input-group dollar">'+
                           '<input type="number" name="leval[sliding_rates]['+flag+']" class="form-control" />'+
                           '<span class="input-group-addon">$</span>'+
                         '</div>'+
-                    '</td>'+
+                    '</td>'+*/
                     '<td>'+
                     '<div class="input-group dollar">'+
                         '<input type="number" name="leval[from]['+flag+']" class="form-control" />'+
@@ -125,9 +125,9 @@ $(document).on('click','.remove-row',function(){
                                     <div class="table-responsive">
                                         <table class="table table-bordered table-stripped table-hover">
                                             <thead>
-                                                <th>Sliding Rates</th>
-                                                <th>From</th>
-                                                <th>To</th>
+                                                <!--<th>Sliding Rates</th>-->
+                                                <th>Lower Threshold</th>
+                                                <th>Upper Threshold</th>
                                                 <th>Rate</th>
                                                 <th>Add Level</th>
                                             </thead>
@@ -137,12 +137,12 @@ $(document).on('click','.remove-row',function(){
                                                 foreach($edit_grid as $regkey=>$regval){ $doc_id1++; 
                                                         ?>
                                                     <tr>
-                                                        <td>
+                                                        <!--<td>
                                                             <div class="input-group">
                                                               <input type="number" name="leval[sliding_rates][<?php echo $doc_id1;?>]" value="<?php echo $regval['sliding_rates']; ?>" class="form-control" />
                                                               <span class="input-group-addon">$</span>
                                                             </div>
-                                                        </td>
+                                                        </td>-->
                                                         <td>
                                                             <?php if(isset($transaction_type_general) && $transaction_type_general == '1'){?>
                                                             <div class="input-group">
@@ -179,12 +179,12 @@ $(document).on('click','.remove-row',function(){
                                                     </tr>
                                                 <?php } }  $doc_id1++;?>
                                                      <tr id="add_level">
-                                                        <td>
+                                                       <!-- <td>
                                                             <div class="input-group">
                                                               <input type="number" name="leval[sliding_rates][<?php echo $doc_id1;?>]" class="form-control" />
                                                               <span class="input-group-addon">$</span>
                                                             </div>
-                                                        </td>
+                                                        </td>-->
                                                         <td>
                                                             <div class="input-group dollar">
                                                             <input type="number"  name="leval[from][<?php  echo $doc_id1;?>]" class="form-control" max="999999999"/>
@@ -272,18 +272,18 @@ $(document).on('click','.remove-row',function(){
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Calculation Detail </label><br />
-                                    <input type="radio" name="calculation_detail" <?php if(isset($calculation_detail) && $calculation_detail=='1'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="1"/>&nbsp;<label>Intra-Trade</label>&nbsp;&nbsp;
-                                    <input type="radio" name="calculation_detail" <?php if(isset($calculation_detail) && $calculation_detail=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Use Higher Level Rate</label>&nbsp;&nbsp;
-                                    <input type="radio" name="calculation_detail" <?php if(isset($calculation_detail) && $calculation_detail=='3'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="3"/>&nbsp;<label>Use Lower Level Rate</label>&nbsp;&nbsp;
+                                    <input type="radio" name="calculation_detail" <?php if(isset($calculation_detail) && $calculation_detail=='1'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="1"/>&nbsp;<label>Apply Incremental Payout Rate</label>&nbsp;&nbsp;
+                                    <input type="radio" name="calculation_detail" <?php if(isset($calculation_detail) && $calculation_detail=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Apply Higher Payout Rate</label>&nbsp;&nbsp;
+                                    <!--<input type="radio" name="calculation_detail" <?php if(isset($calculation_detail) && $calculation_detail=='3'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="3"/>&nbsp;<label>Use Lower Level Rate</label>&nbsp;&nbsp;-->
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <!--<div class="col-md-6">
                                 <div class="form-group">
                                     <label>Clearing Charge Deducted From</label><br />
                                     <input type="radio" name="clearing_charge_deducted_from" <?php if(isset($clearing_charge_deducted_from) && $clearing_charge_deducted_from=='1'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="1"/>&nbsp;<label>Net</label>&nbsp;&nbsp;
                                     <input type="radio" name="clearing_charge_deducted_from" <?php if(isset($clearing_charge_deducted_from) && $clearing_charge_deducted_from=='2'){?>checked="true"<?php } ?> class="radio" style="display: inline;" value="2"/>&nbsp;<label>Gross</label>&nbsp;&nbsp;
                                 </div>
-                            </div>
+                            </div>-->
                        </div>
                        </div>
                        <div class="row">

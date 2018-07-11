@@ -24,12 +24,12 @@ class transaction extends db{
             $trade_date = isset($data['trade_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['trade_date']))):'0000-00-00';
             $settlement_date = isset($data['settlement_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['settlement_date']))):'0000-00-00';
             $split = isset($data['split'])?$this->re_db_input($data['split']):'';
-            $split_broker = isset($data['split_broker'])?$data['split_broker']:array();
+            /*$split_broker = isset($data['split_broker'])?$data['split_broker']:array();
             $split_rate = isset($data['split_rate'])?$data['split_rate']:array();
             $receiving_rep = isset($data['receiving_rep'])?$data['receiving_rep']:array();
             $per = isset($data['per'])?$data['per']:array();
             $split_client_id = isset($data['split_client_id'])?$data['split_client_id']:array();
-            $split_broker_id = isset($data['split_broker_id'])?$data['split_broker_id']:array();
+            $split_broker_id = isset($data['split_broker_id'])?$data['split_broker_id']:array();*/
             $another_level = isset($data['another_level'])?$this->re_db_input($data['another_level']):'';
             $cancel = isset($data['cancel'])?$this->re_db_input($data['cancel']):'';
             $buy_sell = isset($data['buy_sell'])?$this->re_db_input($data['buy_sell']):'';
@@ -67,11 +67,11 @@ class transaction extends db{
 				$this->errors = 'Please enter settlement date.';
 			}
             else if($split==''){
-				$this->errors = 'Please enter split commission .';
+				$this->errors = 'Please select split commission .';
 			}
-            else if($split_rate==array()){
+            /*else if($split_rate==array()){
 				$this->errors = 'Please enter split rate commission received.';
-			}
+			}*/
             else if($hold_commission=='1' && $hold_resoan==''){
                 $this->errors = 'Please enter commission hold resons.';
             }
@@ -95,9 +95,9 @@ class transaction extends db{
                         $res = $this->re_db_query($q);
                         $last_inserted_id = $this->re_db_insert_id();
                         
-                        foreach($split_rate as $key_rate=>$val_rate)
+                        /*foreach($split_rate as $key_rate=>$val_rate)
                         {
-                            if($val_rate != '' && $split_broker[$key_rate]>0)
+                            if($split==1 && $val_rate != '' && $split_broker[$key_rate]>0)
                             {
                 				$q = "INSERT INTO `".TRANSACTION_TRADE_SPLITS."` SET `transaction_id`='".$last_inserted_id."',`split_client_id`='".$split_client_id[$key_rate]."',`split_broker_id`='".$split_broker_id[$key_rate]."',`split_broker`='".$split_broker[$key_rate]."',`split_rate`='".$val_rate."'".$this->insert_common_sql();
                 				$res = $this->re_db_query($q);
@@ -110,7 +110,7 @@ class transaction extends db{
                 				$q = "INSERT INTO `".TRANSACTION_OVERRIDES."` SET `transaction_id`='".$last_inserted_id."',`receiving_rep`='".$val_override."',`per`='".$per[$key_override]."'".$this->insert_common_sql();
                 				$res = $this->re_db_query($q);
                             }
-                        }
+                        }*/
                             
                         if($res){
 						    $_SESSION['success'] = INSERT_MESSAGE;
@@ -129,12 +129,12 @@ class transaction extends db{
                         `hold_resoan`='".$hold_resoan."',`hold_commission`='".$hold_commission."',`units`='".$units."',`shares`='".$shares."',`branch`='".$branch."',`company`='".$company."'".$this->update_common_sql()." WHERE `id`='".$id."'";
                         $res = $this->re_db_query($q);
                         
-                        $q = "UPDATE `".TRANSACTION_TRADE_SPLITS."` SET `is_delete`='1' WHERE `transaction_id`='".$id."'";
+                        /*$q = "UPDATE `".TRANSACTION_TRADE_SPLITS."` SET `is_delete`='1' WHERE `transaction_id`='".$id."'";
 				        $res = $this->re_db_query($q);
                         
                         foreach($split_rate as $key_rate=>$val_rate)
                         {
-                            if($val_rate != '' && $split_broker[$key_rate]>0)
+                            if($split==1 && $val_rate != '' && $split_broker[$key_rate]>0)
                             {
                 				$q = "INSERT INTO `".TRANSACTION_TRADE_SPLITS."` SET `transaction_id`='".$id."',`split_client_id`='".$split_client_id[$key_rate]."',`split_broker_id`='".$split_broker_id[$key_rate]."',`split_broker`='".$split_broker[$key_rate]."',`split_rate`='".$val_rate."'".$this->insert_common_sql();
                 				$res = $this->re_db_query($q);
@@ -149,7 +149,7 @@ class transaction extends db{
                 				$q = "INSERT INTO `".TRANSACTION_OVERRIDES."` SET `transaction_id`='".$id."',`receiving_rep`='".$val_override."',`per`='".$per[$key_override]."'".$this->insert_common_sql();
                 				$res = $this->re_db_query($q);
                             }
-                        }
+                        }*/
                             
                         if($res){
 						    $_SESSION['success'] = UPDATE_MESSAGE;

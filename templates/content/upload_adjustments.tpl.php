@@ -22,6 +22,12 @@
                     <input type="file" name="upload_adjustments" accept=".csv" class="form-control" />
                 </div>
             </div>
+            <div class="col-md-6">
+                <div class="form-group"><br />
+                    <a style="float: right;"href="<?php echo SITE_URL."upload/AdjustmentsCSV.csv"; ?>">Download Payroll Adjustment Template</a><br />
+                    <a style="float: right;"href="<?php echo SITE_URL."upload/FinraCSV.csv"; ?>">Download FINRA eBill Fees Template</a>
+                </div>
+            </div>
         </div>
         <div class="panel-footer">
             <div class="selectwrap">

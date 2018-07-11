@@ -174,6 +174,6 @@ $instance_header = new header_class();
 <div class="contentmain" style="<?php if(isset($_GET['action']) && ($_GET['action'] == 'edit' || $_GET['action'] == 'add_new' || $_GET['action'] == 'add_sponsor' || $_GET['action'] == 'edit_sponsor' || $_GET['action'] == 'add_product' || $_GET['action'] == 'edit_product' || $_GET['action'] == 'add' || $_GET['action'] == 'edit_transaction' || $_GET['action'] == 'add_batches' || $_GET['action'] == 'edit_batches')){ echo 'padding : 0px !important';} ?>">
 <script type="text/javascript">
 $(document).ready(function() {
-    $('input:text:visible:first:not(#from_date,#beginning_date)', this).focus();
+    $('input:text:visible:first:not(#from_date,#beginning_date,#clearing_business_cutoff_date,#payroll_date)', this).focus();
 });
 </script>

@@ -16,7 +16,7 @@
         
         if($return===true){
             
-            header("location:".CURRENT_PAGE."?action=view");exit;
+            header("location:".SITE_URL."review_payroll.php?action=view");exit;
         }
         else{
             $error = !isset($_SESSION['warning'])?$return:'';

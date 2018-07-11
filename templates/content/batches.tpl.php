@@ -85,7 +85,7 @@
                         <label>Batch Date </label><br />
                         <div id="demo-dp-range">
                             <div class="input-daterange input-group" id="datepicker">
-                                <input type="text" name="batch_date" id="batch_date" value="<?php if(isset($batch_date)) {echo date('m/d/Y',strtotime($batch_date));}?>" class="form-control" />
+                                <input type="text" name="batch_date" id="batch_date" value="<?php if(isset($batch_date) && ($batch_date != '' && $batch_date != '0000-00-00')) {echo date('m/d/Y',strtotime($batch_date));}?>" class="form-control" />
                             </div>
                         </div>
                     </div>
@@ -95,7 +95,7 @@
                         <label>Deposit Date </label><br />
                         <div id="demo-dp-range">
                             <div class="input-daterange input-group" id="datepicker">
-                                <input type="text" name="deposit_date" id="deposit_date" value="<?php if(isset($deposit_date)) {echo date('m/d/Y',strtotime($deposit_date));}?>" class="form-control" />
+                                <input type="text" name="deposit_date" id="deposit_date" value="<?php if(isset($deposit_date) && ($deposit_date != '' && $deposit_date != '0000-00-00')) {echo date('m/d/Y',strtotime($deposit_date));}?>" class="form-control" />
                             </div>
                         </div>
                     </div>
@@ -131,7 +131,7 @@
                         <label>Beginning Trade Date</label><br />
                         <div id="demo-dp-range">
                             <div class="input-daterange input-group" id="datepicker">
-                                <input type="text" name="trade_start_date" id="trade_start_date" value="<?php if(isset($trade_start_date) && $trade_start_date != '') {echo date('m/d/Y',strtotime($trade_start_date));}?>" class="form-control" <?php if(isset($_GET['action']) && $action=='add_batches'){ echo "disabled='true'";}?>/>
+                                <input type="text" name="trade_start_date" id="trade_start_date" value="<?php if(isset($trade_start_date) && ($trade_start_date != '' && $trade_start_date != '0000-00-00')) {echo date('m/d/Y',strtotime($trade_start_date));}?>" class="form-control" <?php if(isset($_GET['action']) && $action=='add_batches'){ echo "disabled='true'";}?>/>
                             </div>
                         </div>
                     </div>
@@ -141,7 +141,7 @@
                         <label>Ending Trade Date</label><br />
                         <div id="demo-dp-range">
                             <div class="input-daterange input-group" id="datepicker">
-                                <input type="text" name="trade_end_date" id="trade_end_date" value="<?php if(isset($trade_end_date) && $trade_end_date != '') {echo date('m/d/Y',strtotime($trade_end_date));}?>" class="form-control" <?php if(isset($_GET['action']) && $action=='add_batches'){ echo "disabled='true'";}?>/>
+                                <input type="text" name="trade_end_date" id="trade_end_date" value="<?php if(isset($trade_end_date) && ($trade_end_date != '' && $trade_end_date != '0000-00-00')) {echo date('m/d/Y',strtotime($trade_end_date));}?>" class="form-control" <?php if(isset($_GET['action']) && $action=='add_batches'){ echo "disabled='true'";}?>/>
                             </div>
                         </div>
                     </div>

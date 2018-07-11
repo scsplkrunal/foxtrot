@@ -15,6 +15,7 @@
     $brocker_pick_lists = '';
     $branch_pick_lists = '';
     $brocker_statement = '';
+    $firm_does_not_participate = '';
     $logo = array();
     $action = isset($_GET['action'])&&$_GET['action']!=''?$dbins->re_db_input($_GET['action']):'view';
     $id = isset($_GET['id'])&&$_GET['id']!=''?$dbins->re_db_input($_GET['id']):0;
@@ -37,7 +38,8 @@
         $sipc= isset($_POST['sipc'])?$instance->re_db_input($_POST['sipc']):'';
         $brocker_pick_lists= isset($_POST['brocker_pick_lists'])?$instance->re_db_input($_POST['brocker_pick_lists']):'';
         $branch_pick_lists= isset($_POST['branch_pick_lists'])?$instance->re_db_input($_POST['branch_pick_lists']):'';
-        $brocker_statement= isset($_POST['brocker_statement'])?$instance->re_db_input($_POST['brocker_statement']):'';
+        $brocker_statement = isset($_POST['brocker_statement'])?$instance->re_db_input($_POST['brocker_statement']):'';
+        $firm_does_not_participate = isset($_POST['firm_does_not_participate'])?$instance->re_db_input($_POST['firm_does_not_participate']):'';
         $logo= isset($_FILES['logo']['name'])?$_FILES['logo']['name']:'';
         $return = $instance->insert_update($_POST);
         
@@ -63,6 +65,7 @@
         $brocker_pick_lists = isset($return['brocker_pick_lists'])?$instance->re_db_output($return['brocker_pick_lists']):'';
         $branch_pick_lists = isset($return['branch_pick_lists'])?$instance->re_db_output($return['branch_pick_lists']):'';
         $brocker_statement = isset($return['brocker_statement'])?$instance->re_db_output($return['brocker_statement']):'';
+        $firm_does_not_participate = isset($return['firm_does_not_participate'])?$instance->re_db_output($return['firm_does_not_participate']):'';
         $logo = isset($return['logo'])?$instance->re_db_output($return['logo']):'';
     }
     

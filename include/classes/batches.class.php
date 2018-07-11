@@ -12,10 +12,26 @@
             //$batch_number= isset($data['batch_number'])?$this->re_db_input($data['batch_number']):'';
             $batch_desc= isset($data['batch_desc'])?$this->re_db_input($data['batch_desc']):'';
             $sponsor= isset($data['sponsor'])?$this->re_db_input($data['sponsor']):'';
-            $batch_date= isset($data['batch_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['batch_date']))):'';
-            $deposit_date= isset($data['deposit_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['deposit_date']))):'';
-            $trade_start_date= isset($data['trade_start_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['trade_start_date']))):'';
-            $trade_end_date= isset($data['trade_end_date'])?$this->re_db_input(date('Y-m-d',strtotime($data['trade_end_date']))):'';
+            $batch_date= isset($data['batch_date'])?$this->re_db_input($data['batch_date']):'';
+            if($batch_date != '')
+            {
+                $batch_date = date('Y-m-d',strtotime($batch_date));
+            }
+            $deposit_date= isset($data['deposit_date'])?$this->re_db_input($data['deposit_date']):'';
+            if($deposit_date != '')
+            {
+                $deposit_date = date('Y-m-d',strtotime($deposit_date));
+            }
+            $trade_start_date= isset($data['trade_start_date'])?$this->re_db_input($data['trade_start_date']):'';
+            if($trade_start_date != '')
+            {
+                $trade_start_date = date('Y-m-d',strtotime($trade_start_date));
+            }
+            $trade_end_date= isset($data['trade_end_date'])?$this->re_db_input($data['trade_end_date']):'';
+            if($trade_end_date != '')
+            {
+                $trade_end_date = date('Y-m-d',strtotime($trade_end_date));
+            }
             $check_amount= isset($data['check_amount'])?$this->re_db_input($data['check_amount']):0;
             //$check_amount = str_replace(",", '', $check_amount_mask);
             $commission_amount= isset($data['commission_amount'])?$this->re_db_input($data['commission_amount']):0;

@@ -23,6 +23,7 @@
             $brocker_pick_lists = isset($data['brocker_pick_lists'])?$this->re_db_input($data['brocker_pick_lists']):'';
             $branch_pick_lists = isset($data['branch_pick_lists'])?$this->re_db_input($data['branch_pick_lists']):'';
             $brocker_statement = isset($data['brocker_statement'])?$this->re_db_input($data['brocker_statement']):'';
+            $firm_does_not_participate = isset($data['firm_does_not_participate'])?$this->re_db_input($data['firm_does_not_participate']):'';
             $logo= isset($_FILES['logo'])?$_FILES['logo']:array();
             $valid_file = array('jpg','jpeg','png','bmp');
             
@@ -67,7 +68,7 @@
     			        
                         $q = "UPDATE `".$this->table."` SET `company_name`='".$company_name."',`address1`='".$address1."',`address2`='".$address2."',`city`='".$city."',
                                 `state`='".$state."',`zip`='".$zip."',`minimum_check_amount`='".$minimum_check_amount."',`finra`='".$finra."',`sipc`='".$sipc."',`brocker_pick_lists`='".$brocker_pick_lists."',
-                                `branch_pick_lists`='".$branch_pick_lists."',`brocker_statement`='".$brocker_statement."' ".$con." ".$this->update_common_sql()." where `id`='1'";
+                                `branch_pick_lists`='".$branch_pick_lists."',`brocker_statement`='".$brocker_statement."',`firm_does_not_participate`='".$firm_does_not_participate."' ".$con." ".$this->update_common_sql()." where `id`='1'";
                                 
     					$res = $this->re_db_query($q);
                         $id = $this->re_db_insert_id();
@@ -83,7 +84,7 @@
     			else{
     			        $q = "INSERT INTO `".$this->table."` SET `user_id`='".$user_id."',`company_name`='".$company_name."',`address1`='".$address1."',`address2`='".$address2."',`city`='".$city."',
                                 `state`='".$state."',`zip`='".$zip."',`minimum_check_amount`='".$minimum_check_amount."',`finra`='".$finra."',`sipc`='".$sipc."',`brocker_pick_lists`='".$brocker_pick_lists."',
-                                `branch_pick_lists`='".$branch_pick_lists."',`brocker_statement`='".$brocker_statement."',`logo`='".$file_image."' ".$this->insert_common_sql();
+                                `branch_pick_lists`='".$branch_pick_lists."',`brocker_statement`='".$brocker_statement."',`firm_does_not_participate`='".$firm_does_not_participate."',`logo`='".$file_image."' ".$this->insert_common_sql();
     					$res = $this->re_db_query($q);
                         $id = $this->re_db_insert_id();
     					if($res){

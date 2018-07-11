@@ -145,7 +145,7 @@ $(document).on('click','.remove-row_override',function(){
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Client Name <span class="text-red">*</span></label><br />
-                        <select class="livesearch form-control" name="client_name" onchange="get_client_account_no(this.value);get_client_split_rates(this.value);">
+                        <select class="livesearch form-control" name="client_name" onchange="get_client_account_no(this.value);">
                             <option value="0">Select Client</option>
                             <?php foreach($get_client as $key=>$val){?>
                             <option value="<?php echo $val['id'];?>" <?php if(isset($client_name) && $client_name==$val['id']){ ?>selected="true"<?php } ?>><?php echo $val['first_name'].' '.$val['mi'].' '.$val['last_name'];?></option>
@@ -164,7 +164,7 @@ $(document).on('click','.remove-row_override',function(){
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Broker Name <span class="text-red">*</span></label><br />
-                        <select class="livesearch form-control" name="broker_name" onchange="get_broker_split_rates(this.value);get_broker_hold_commission(this.value);get_broker_override_rates(this.value);">
+                        <select class="livesearch form-control" name="broker_name" onchange="get_broker_hold_commission(this.value);">
                             <option value="0">Select Broker</option>
                             <?php foreach($get_broker as $key=>$val){?>
                             <option value="<?php echo $val['id'];?>" <?php if(isset($broker_name) && $broker_name==$val['id']){ ?>selected="true"<?php } ?>><?php echo $val['last_name'].' '.$val['first_name'].' '.$val['middle_name'];?></option>
@@ -287,7 +287,24 @@ $(document).on('click','.remove-row_override',function(){
                         </label>
                     </div>
                 </div>
-                <div class="col-md-8" id="split_div" <?php  if((isset($split) && $split!=1) || (isset($_GET['action']) && $_GET['action']=='add')){?>style="display: none;"<?php } ?>>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Hold Commission <span class="text-red">*</span></label><br />
+                        <label class="radio-inline">
+                          <input type="radio" class="radio" id="hold_commission_1"  name="hold_commission" onclick="open_hold_reason();"<?php if(isset($hold_commission) && $hold_commission==1){ echo'checked="true"'; }?> value="1"/>YES
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" class="radio" id="hold_commission_2" name="hold_commission" onclick="hide_hold_reason();" <?php if((isset($hold_commission) && $hold_commission==2) || (isset($_GET['action']) && $_GET['action']=='add')){ echo'checked="true"'; }?> value="2" />NO
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-4" id="div_hold_reason" style="<?php if(isset($hold_commission) && $hold_commission==1){ echo'display:true'; }else{ echo'display:none'; }?>">
+                    <div class="form-group">
+                        <label>Hold Reason </label><br />
+                        <input type="text"  class="form-control" value="<?php if(isset($hold_resoan)) {echo $hold_resoan;}?>" name="hold_resoan" id="hold_resoan"  />
+                    </div>
+                </div>
+                <!--<div class="col-md-8" id="split_div" <?php  if((isset($split) && $split!=1) || (isset($_GET['action']) && $_GET['action']=='add')){?>style="display: none;"<?php } ?>>
                     <div class="row" id="add_other_split">
                     <div class="col-md-5">
                         <div class="form-group">
@@ -429,9 +446,9 @@ $(document).on('click','.remove-row_override',function(){
                     </div>
                 </div>
                 <?php } } }?>
-                </div>
+                </div>-->
             </div>
-            <h4>Overrides </h4>
+            <!--<h4>Overrides </h4>
             <div class="panel" style="border: 1px solid #cccccc !important; padding: 10px !important;">
                 <div class="row">
                     <div class="col-md-12">
@@ -493,7 +510,7 @@ $(document).on('click','.remove-row_override',function(){
                         </div>
                     </div>
                 </div>
-           </div>
+           </div>-->
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
@@ -508,26 +525,6 @@ $(document).on('click','.remove-row_override',function(){
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Hold Commission <span class="text-red">*</span></label><br />
-                        <label class="radio-inline">
-                          <input type="radio" class="radio" id="hold_commission_1"  name="hold_commission" <?php if(isset($hold_commission) && $hold_commission==1){ echo'checked="true"'; }?> value="1"/>YES
-                        </label>
-                        <label class="radio-inline">
-                          <input type="radio" class="radio" id="hold_commission_2" name="hold_commission" <?php if((isset($hold_commission) && $hold_commission==2) || (isset($_GET['action']) && $_GET['action']=='add')){ echo'checked="true"'; }?> value="2" />NO
-                        </label>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Hold Reason </label><br />
-                        <input type="text"  class="form-control" value="<?php if(isset($hold_resoan)) {echo $hold_resoan;}?>" name="hold_resoan" id="hold_resoan"  />
-                    </div>
-                </div>
-                
-            </div> 
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
                         <label>Cancel </label><br />
                         <label class="radio-inline">
                           <input type="radio" class="radio" name="cancel" <?php if(isset($cancel) && $cancel==1){ echo'checked="true"'; }?> value="1"/>YES
@@ -537,18 +534,15 @@ $(document).on('click','.remove-row_override',function(){
                         </label>
                     </div>
                 </div>
+            </div> 
+          </div>
+          <div class="panel-footer fixedbtmenu">
+            <div class="selectwrap">
+                <a href="<?php echo CURRENT_PAGE.'?action=view';?>"><input type="button" name="cancel" value="Cancel" style="float: right;"/></a>
+                <input type="submit" name="transaction" onclick="waitingDialog.show();" value="Save" style="float: right;"/>	
             </div>
           </div>
-           <div class="panel-footer fixedbtmenu">
-               <!-- <div class="col-md-12">
-                    <div class="form-group "><br />-->
-                    <div class="selectwrap">
-                        <a href="<?php echo CURRENT_PAGE.'?action=view';?>"><input type="button" name="cancel" value="Cancel" style="float: right;"/></a>
-                        <input type="submit" name="transaction" onclick="waitingDialog.show();" value="Save" style="float: right;"/>	
-                    </div>
-                 <!--</div>
-                 </div>-->
-             </div></div>
+          </div>
         </form>
         <?php
             }if((isset($_GET['action']) && $_GET['action']=='view') || $action=='view'){?>
@@ -687,6 +681,15 @@ $(document).on('click','.remove-row_override',function(){
 }
 </style>
 <script type="text/javascript">
+function hide_hold_reason()
+{
+    $("#hold_resoan").val("");
+    $("#div_hold_reason").css('display','none');
+}
+function open_hold_reason()
+{
+    $("#div_hold_reason").css('display','block');
+}
 function handleChange(input) {
     if (input.value < 0) input.value = 0.00;
     if (input.value > 100) input.value = 100.00;
@@ -847,13 +850,16 @@ function get_broker_hold_commission(broker_id){
                 hold_commissions = this.responseText;
                 if(hold_commissions==1)
                 {
-                    $("#hold_commission_1").prop( "checked", true );
+                    $("#hold_commission_1").prop("checked", true );
+                    $("#div_hold_reason").css('display','block');
                     $("#hold_resoan").val( "HOLD COMMISSION BY BROKER");
                 }
                 else
                 {
                     $("#hold_commission_1").prop( "checked", false );
-                    $("#hold_resoan").val( "");
+                    $("#hold_commission_2").prop( "checked", true );
+                    $("#div_hold_reason").css('display','none');
+                    $("#hold_resoan").val("");
                 }
             }
         };
@@ -959,7 +965,7 @@ function get_investment_amount()
         </script>
         <?php
     }
-    if($broker_name>0){
+    /*if($broker_name>0){
         ?>
         <script type="text/javascript">
             $(document).ready(function(){
@@ -967,7 +973,7 @@ function get_investment_amount()
             });
         </script>
         <?php
-    }
+    }*/
     if($client_name>0){
         ?>
         <script type="text/javascript">

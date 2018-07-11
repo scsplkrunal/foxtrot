@@ -19,7 +19,7 @@
         
         if($return===true){
             
-            header("location:".CURRENT_PAGE."?action=view");exit;
+            header("location:".SITE_URL."calculate_payrolls.php?action=view");exit;
         }
         else{
             $error = !isset($_SESSION['warning'])?$return:'';
@@ -28,6 +28,18 @@
     else if(isset($_POST['reverse_payroll'])&& $_POST['reverse_payroll']=='Reverse Payroll'){
         
         $return = $instance->reverse_payroll();
+        
+        if($return===true){
+            
+            header("location:".CURRENT_PAGE."?action=view");exit;
+        }
+        else{
+            $error = !isset($_SESSION['warning'])?$return:'';
+        }
+    }
+    else if(isset($action)&& $action=='payroll_close'){
+        
+        $return = $instance->payroll_close();
         
         if($return===true){
             
