@@ -236,10 +236,7 @@
         {
             echo '0';exit;
         }
-    }
-    /*else if(isset($_GET['action']) && $_GET['action'] == 'add' && $_GET['file_id'] !=''){
-        $instance->select_exception_data($file_id);
-    } */ 
+    }  
     else if($action=='view'){
         
         $return = $instance->select_current_files();//echo '<pre>';print_r($return);exit;

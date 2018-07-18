@@ -38,7 +38,7 @@ $total_charges = 0;
     // add a page
     $pdf->AddPage('L');
     // Title
-    $img = '<img src="'.SITE_URL."upload/logo/".$system_logo.'" height="30px" />';
+    $img = '<img src="'.SITE_URL."upload/logo/".$system_logo.'" height="25px" />';
     
     $pdf->SetFont('times','B',12);
     $pdf->SetFont('times','',10);
@@ -48,7 +48,7 @@ $total_charges = 0;
                 {
                     $html .='<td width="20%" align="left">'.$img.'</td>';
                 }
-                    $html .='<td width="60%" style="font-size:16px;font-weight:bold;text-align:center;">COMPANY COMMISSION STATEMENT</td>';
+                    $html .='<td width="60%" style="font-size:14px;font-weight:bold;text-align:center;">COMPANY COMMISSION STATEMENT</td>';
                 if(isset($system_company_name) && $system_company_name != '')
                 {
                     $html.='<td width="20%" style="font-size:10px;font-weight:bold;text-align:right;">'.$system_company_name.'</td>';
@@ -66,23 +66,23 @@ $total_charges = 0;
             $html .='</tr>
         </table>';
     $pdf->writeHTML($html, false, 0, false, 0);
-    $pdf->Ln(5);
+    $pdf->Ln(2);
     
     $pdf->SetFont('times','B',12);
     $pdf->SetFont('times','',10);
-    $html='<table border="0" cellpadding="3" width="100%">
+    $html='<table border="0" cellpadding="1" width="100%">
                 <tr style="background-color: #f1f1f1;">
-                    <td width="5%" style="text-align:center;"><h4>REP#</h4></td>
-                    <td width="10%" style="text-align:center;"><h4>NAME</h4></td>
-                    <td width="10%" style="text-align:center;"><h4>GROSS COMMISSIONS</h4></td>
-                    <td width="10%" style="text-align:center;"><h4>NET COMMISSIONS</h4></td>
-                    <td width="10%" style="text-align:center;"><h4>CHARGE</h4></td>
-                    <td width="10%" style="text-align:center;"><h4>OVERRIDE COMMISSIONS</h4></td>
-                    <td width="10%" style="text-align:center;"><h4>PRIOR BALANCE</h4></td>
-                    <td width="10%" style="text-align:center;"><h4>ADVANCES/ ADJUSTMENTS</h4></td>
-                    <td width="8%" style="text-align:center;"><h4>FINRA/SIPC</h4></td>
-                    <td width="7%" style="text-align:center;"><h4>CHECK AMOUNT</h4></td>
-                    <td width="10%" style="text-align:center;"><h4>B/D RETENTION</h4></td>
+                    <td width="5%" style="text-align:center;"><h5>REP#</h5></td>
+                    <td width="10%" style="text-align:center;"><h5>NAME</h5></td>
+                    <td width="10%" style="text-align:center;"><h5>GROSS COMMISSIONS</h5></td>
+                    <td width="10%" style="text-align:center;"><h5>NET COMMISSIONS</h5></td>
+                    <td width="10%" style="text-align:center;"><h5>CHARGE</h5></td>
+                    <td width="10%" style="text-align:center;"><h5>OVERRIDE COMMISSIONS</h5></td>
+                    <td width="10%" style="text-align:center;"><h5>PRIOR BALANCE</h5></td>
+                    <td width="10%" style="text-align:center;"><h5>ADVANCES/ ADJUSTMENTS</h5></td>
+                    <td width="8%" style="text-align:center;"><h5>FINRA/SIPC</h5></td>
+                    <td width="7%" style="text-align:center;"><h5>CHECK AMOUNT</h5></td>
+                    <td width="10%" style="text-align:center;"><h5>B/D RETENTION</h5></td>
                 </tr>
                 <br/>';
     //$pdf->Line(10, 81, 290, 81);
@@ -98,62 +98,61 @@ $total_charges = 0;
             if($trans_data['trade_date'] != '0000-00-00'){ $trade_date = date('m/d/Y',strtotime($trans_data['trade_date'])); }
             if($trans_data['commission_received_date'] != '0000-00-00'){ $commission_received_date = date('m/d/Y',strtotime($trans_data['commission_received_date'])); }*/
         $html.='<tr>
-                       <td colspan="11" style="font-size:13px;font-weight:bold;text-align:left;">#01 XYZ Successfull Investing</td>
+                       <td colspan="11" style="font-size:8px;font-weight:bold;text-align:left;">#01 XYZ Successfull Investing</td>
                 </tr>
                 <br/>';   
         $html.='<tr>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">B116</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">Jones, Jim</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">743.50</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">356.75</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">30.00</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">0.00</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">0.00</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">-150.00</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">-14.87</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">191.88</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">551.62</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">B116</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">Jones, Jim</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">743.50</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">356.75</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">30.00</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">0.00</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">0.00</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">-150.00</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">-14.87</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">191.88</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">551.62</td>
                     </tr>';
                     
         $html.='<tr>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">MK908</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">Roberts, AL</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">743.52</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">356.75</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">30.00</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">0.00</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">0.00</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">-150.00</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">-14.87</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">691.88</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">52.03</td>
-                    </tr>
-                    <br/>';
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">MK908</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">Roberts, AL</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">743.52</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">356.75</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">30.00</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">0.00</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">0.00</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">-150.00</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">-14.87</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">691.88</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">52.03</td>
+                    </tr>';
         /*}*/
-        $html.='<tr>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;" colspan="2">* Company Total *</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">1487.02</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">1063.11</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">60.00</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">0.00</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">0.00</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">-310.00</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">-29.74</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">723.37</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">763.65</td>
+        $html.='<tr style="background-color: #f1f1f1;">
+                   <td style="font-size:8px;font-weight:bold;text-align:right;" colspan="2">* Company Total *</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">1487.02</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">1063.11</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">60.00</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">0.00</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">0.00</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">-310.00</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">-29.74</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">723.37</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">763.65</td>
                 </tr>
                 <br/>';
-        $html.='<tr>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;" colspan="2">*** Report Total ***</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">1487.02</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">1063.11</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">60.00</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">0.00</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">0.00</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">-310.00</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">-29.74</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">723.37</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">763.65</td>
+        $html.='<tr style="background-color: #f1f1f1;">
+                   <td style="font-size:8px;font-weight:bold;text-align:right;" colspan="2">*** Report Total ***</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">1487.02</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">1063.11</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">60.00</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">0.00</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">0.00</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">-310.00</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">-29.74</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">723.37</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">763.65</td>
                 </tr>';
          
     /*}

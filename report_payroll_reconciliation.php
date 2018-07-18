@@ -39,7 +39,7 @@ $total_charges = 0;
     // add a page
     $pdf->AddPage('L');
     // Title
-    $img = '<img src="'.SITE_URL."upload/logo/".$system_logo.'" height="30px" />';
+    $img = '<img src="'.SITE_URL."upload/logo/".$system_logo.'" height="25px" />';
     
     $pdf->SetFont('times','B',12);
     $pdf->SetFont('times','',10);
@@ -49,7 +49,7 @@ $total_charges = 0;
                 {
                     $html .='<td width="20%" align="left">'.$img.'</td>';
                 }
-                    $html .='<td width="60%" style="font-size:16px;font-weight:bold;text-align:center;">PAYROLL BATCH REPORT</td>';
+                    $html .='<td width="60%" style="font-size:14px;font-weight:bold;text-align:center;">PAYROLL BATCH REPORT</td>';
                 if(isset($system_company_name) && $system_company_name != '')
                 {
                     $html.='<td width="20%" style="font-size:10px;font-weight:bold;text-align:right;">'.$system_company_name.'</td>';
@@ -64,17 +64,17 @@ $total_charges = 0;
     
     $pdf->SetFont('times','B',12);
     $pdf->SetFont('times','',10);
-    $html='<table border="0" cellpadding="3" width="100%">
+    $html='<table border="0" cellpadding="1" width="100%">
                 <tr style="background-color: #f1f1f1;">
-                    <td width="10%" style="text-align:center;"><h4>BATCH#</h4></td>
-                    <td width="10%" style="text-align:center;"><h4>BATCH DATE</h4></td>
-                    <td width="20%" style="text-align:center;"><h4>STATEMENT \ DESCRIPTION</h4></td>
-                    <td width="10%" style="text-align:center;"><h4>TRADE COUNT</h4></td>
-                    <td width="10%" style="text-align:center;"><h4>GROSS COMMISION</h4></td>
-                    <td width="10%" style="text-align:center;"><h4>HOLD COMMISION</h4></td>
-                    <td width="10%" style="text-align:center;"><h4>TOTAL COMMISSION</h4></td>
-                    <td width="10%" style="text-align:center;"><h4>CHECK AMOUNT</h4></td>
-                    <td width="10%" style="text-align:center;"><h4>DIFFERENCE</h4></td>
+                    <td width="10%" style="text-align:center;"><h5>BATCH#</h5></td>
+                    <td width="10%" style="text-align:center;"><h5>BATCH DATE</h5></td>
+                    <td width="25%" style="text-align:center;"><h5>STATEMENT \ DESCRIPTION</h5></td>
+                    <td width="10%" style="text-align:center;"><h5>TRADE COUNT</h5></td>
+                    <td width="9%" style="text-align:center;"><h5>GROSS COMMISION</h5></td>
+                    <td width="9%" style="text-align:center;"><h5>HOLD COMMISION</h5></td>
+                    <td width="9%" style="text-align:center;"><h5>TOTAL COMMISSION</h5></td>
+                    <td width="9%" style="text-align:center;"><h5>CHECK AMOUNT</h5></td>
+                    <td width="9%" style="text-align:center;"><h5>DIFFERENCE</h5></td>
                 </tr>
                 <br/>';
     //$pdf->Line(10, 81, 290, 81);
@@ -90,52 +90,51 @@ $total_charges = 0;
             if($trans_data['trade_date'] != '0000-00-00'){ $trade_date = date('m/d/Y',strtotime($trans_data['trade_date'])); }
             if($trans_data['commission_received_date'] != '0000-00-00'){ $commission_received_date = date('m/d/Y',strtotime($trans_data['commission_received_date'])); }*/
         $html.='<tr>
-                       <td colspan="11" style="font-size:13px;font-weight:bold;text-align:left;">MUTUAL FUNDS</td>
+                       <td colspan="11" style="font-size:8px;font-weight:bold;text-align:left;">MUTUAL FUNDS</td>
                 </tr>
                 <br/>';   
         $html.='<tr>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">4</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">02/26/2016</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">AIM FUNDS 02/26/2016</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">2</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">1,000.00</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">0.00</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">1,000.00</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">1,000.00</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">0.00</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">4</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">02/26/2016</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">AIM FUNDS 02/26/2016</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">2</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">1,000.00</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">0.00</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">1,000.00</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">1,000.00</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">0.00</td>
                     </tr>';
         $html.='<tr>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">7</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">03/10/2016</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">AMERICAN FUNDS MARCH 2016</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">8</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">487.02</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">0.00</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">487.02</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">10,000.00</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">9,512.98</td>
-                    </tr>
-                    <br/>';
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">7</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">03/10/2016</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">AMERICAN FUNDS MARCH 2016</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">8</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">487.02</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">0.00</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">487.02</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">10,000.00</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">9,512.98</td>
+                    </tr>';
         /*}*/
-        $html.='<tr>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;" colspan="3">* MUTUAL FUNDS SUBTOTAL * </td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">10</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">1,487.02</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">0.00</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">1,487.02</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">11,000.00</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">9,512.98</td>
+        $html.='<tr style="background-color: #f1f1f1;">
+                   <td style="font-size:8px;font-weight:bold;text-align:right;" colspan="3">* MUTUAL FUNDS SUBTOTAL * </td>
+                   <td style="font-size:8px;font-weight:bold;text-align:center;">10</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">1,487.02</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">0.00</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">1,487.02</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">11,000.00</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">9,512.98</td>
                 </tr>
                 <br/>';
         
-        $html.='<tr>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;" colspan="3">REPORT TOTAL: </td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">10</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">1,487.02</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">0.00</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">1,487.02</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">11,000.00</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">9,512.98</td>
+        $html.='<tr style="background-color: #f1f1f1;">
+                   <td style="font-size:8px;font-weight:bold;text-align:right;" colspan="3">REPORT TOTAL: </td>
+                   <td style="font-size:8px;font-weight:bold;text-align:center;">10</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">1,487.02</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">0.00</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">1,487.02</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">11,000.00</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">9,512.98</td>
                 </tr>
                 <br/>';
          
@@ -143,7 +142,7 @@ $total_charges = 0;
     else
     {
         $html.='<tr>
-                    <td style="font-size:13px;font-weight:cold;text-align:center;" colspan="8">No Records Found.</td>
+                    <td style="font-size:8px;font-weight:cold;text-align:center;" colspan="8">No Records Found.</td>
                 </tr>';
     }  */         
     $html.='</table>';

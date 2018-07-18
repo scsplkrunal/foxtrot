@@ -40,6 +40,8 @@ if(isset($_GET['filter']) && $_GET['filter'] != '')
 
 $total_received_amount = 0;
 $total_posted_amount = 0;
+$total_records=0;
+$total_records_sub=0;
 
 ?>
 <?php
@@ -49,44 +51,25 @@ $total_posted_amount = 0;
     // add a page
     $pdf->AddPage('L');
     // Title
-    $img = '<img src="'.SITE_URL."upload/logo/".$system_logo.'" height="60px" />';
+    $img = '<img src="'.SITE_URL."upload/logo/".$system_logo.'" height="25px" />';
     
     $pdf->SetFont('times','B',12);
     $pdf->SetFont('times','',10);
-    $html='<table border="0">
-                <tr>
-                   <td width="50%" style="font-size:10px;font-weight:bold;text-align:left;">'.date('d/m/Y h:i:s A').'</td>';
-                   if(isset($system_company_name) && $system_company_name != '')
-                   {
-                        $html.='<td width="50%" style="font-size:10px;font-weight:bold;text-align:right;">'.$system_company_name.'</td>';
-                   }
-        $html.='</tr>
-            </table>';
-    $pdf->writeHTML($html, false, 0, false, 0);
-    $pdf->Ln(5);
-    
-    if(isset($system_logo) && $system_logo != '')
-    {
-        $pdf->SetFont('times','B',12);
-        $pdf->SetFont('times','',10);
-        $html='<table border="0" width="100%">
-                    <tr>
-                        <td align="center">'.$img.'</td>
-                    </tr>
-                </table>';
-        $pdf->writeHTML($html, false, 0, false, 0);
-        $pdf->Ln(5);
-    }
-    
-    $pdf->SetFont('times','B',12);
-    $pdf->SetFont('times','',10);
-    $html='<table border="0">
+    $html='<table border="0" width="100%">
                 <tr>';
-                    $html .='<td width="100%" style="font-size:16px;font-weight:bold;text-align:center;">'.$product_category_name.' Batch Report</td>';
-                $html .='</tr>
-            </table>';
+                if(isset($system_logo) && $system_logo != '')
+                {
+                    $html .='<td width="20%" align="left">'.$img.'</td>';
+                }
+                $html .='<td width="60%" style="font-size:14px;font-weight:bold;text-align:center;">'.$product_category_name.' Batch Report</td>'; 
+                if(isset($system_company_name) && $system_company_name != '')
+                {
+                    $html.='<td width="20%" style="font-size:10px;font-weight:bold;text-align:right;">'.$system_company_name.'</td>';
+                }
+                $html.='</tr>
+        </table>';
     $pdf->writeHTML($html, false, 0, false, 0);
-    $pdf->Ln(5);
+    $pdf->Ln(2);
     
     $pdf->SetFont('times','B',12);
     $pdf->SetFont('times','',10);
@@ -96,17 +79,17 @@ $total_posted_amount = 0;
             $html .='</tr>
             </table>';
     $pdf->writeHTML($html, false, 0, false, 0);
-    $pdf->Ln(5);
+    $pdf->Ln(2);
     
     $pdf->SetFont('times','B',12);
     $pdf->SetFont('times','',10);
-    $html='<table border="0" cellpadding="5" width="100%">
+    $html='<table border="0" cellpadding="1" width="100%">
                 <tr style="background-color: #f1f1f1;">
-                    <td style="width:20%"><h4>BATCH#</h4></td>
-                    <td style="width:20%"><h4>DATE RECEIVED</h4></td>
-                    <td style="width:15%"><h4>AMOUNT RECEIVED</h4></td>
-                    <td style="width:15%"><h4>POSTED TO DATE</h4></td>
-                    <td style="width:30%"><h4>STATEMENT DESCRIPTION</h4></td>';
+                    <td style="width:20%;text-align:center;"><h5>BATCH#</h5></td>
+                    <td style="width:20%;text-align:center;"><h5>DATE RECEIVED</h5></td>
+                    <td style="width:15%;text-align:center;"><h5>AMOUNT RECEIVED</h5></td>
+                    <td style="width:15%;text-align:center;"><h5>POSTED TO DATE</h5></td>
+                    <td style="width:30%;text-align:center;"><h5>STATEMENT DESCRIPTION</h5></td>';
     $html.='</tr>';
     
     
@@ -115,7 +98,7 @@ $total_posted_amount = 0;
         foreach($return_batches as $main_key=>$main_val)
         {
             $html.='<tr>
-                <td colspan="5" style="font-size:13px;font-weight:bold;text-align:left;">Investment Category: '.$main_key.'</td>';
+                <td colspan="5" style="font-size:8px;font-weight:bold;text-align:left;">Investment Category: '.$main_key.'</td>';
             $html.='</tr>';
             
             $posted_commission_amount = 0;
@@ -126,6 +109,7 @@ $total_posted_amount = 0;
             
             foreach($main_val as $sub_key=>$sub_val)
             {
+                $total_records_sub = $total_records_sub+1;
                 $get_commission_amount = $instance->get_commission_total($sub_val['id']);
                 $amount_received = $sub_val['check_amount'];
                 
@@ -139,35 +123,37 @@ $total_posted_amount = 0;
                 $cat_total_received_amount = $cat_total_received_amount+$amount_received;
                 
                 $html.='<tr>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">'.$sub_val['id'].'</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.date('m/d/Y',strtotime($sub_val['batch_date'])).'</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">$'.number_format($amount_received,2).'</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">$'.number_format($posted_commission_amount,2).'</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$sub_val['batch_desc'].'</td>';
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">'.$sub_val['id'].'</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">'.date('m/d/Y',strtotime($sub_val['batch_date'])).'</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">$'.number_format($amount_received,2).'</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">$'.number_format($posted_commission_amount,2).'</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">'.$sub_val['batch_desc'].'</td>';
                 $html.='</tr>';
             }
+            $total_records=$total_records+$total_records_sub;
             $total_posted_amount = $total_posted_amount+$cat_total_posted_amount;
             $total_received_amount = $total_received_amount+$cat_total_received_amount;
-            $html.='<tr>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;"></td>
-                           <td style="font-size:13px;font-weight:bold;text-align:right;">** Category Total **</td>
-                           <td style="font-size:13px;font-weight:bold;text-align:right;">$'.number_format($cat_total_received_amount,2).'</td>
-                           <td style="font-size:13px;font-weight:bold;text-align:right;">$'.number_format($cat_total_posted_amount,2).'</td>
-                           <td style="font-size:13px;font-weight:bold;text-align:left;"></td>';
-            $html.='</tr>';
+            $html.='<tr style="background-color: #f1f1f1;">
+                       <td style="font-size:8px;font-weight:bold;text-align:center;">Total Category Records: '.$total_records_sub.'</td>
+                       <td style="font-size:8px;font-weight:bold;text-align:right;">** Category Total **</td>
+                       <td style="font-size:8px;font-weight:bold;text-align:right;">$'.number_format($cat_total_received_amount,2).'</td>
+                       <td style="font-size:8px;font-weight:bold;text-align:right;">$'.number_format($cat_total_posted_amount,2).'</td>
+                       <td style="font-size:8px;font-weight:bold;text-align:left;"></td>';
+            $html.='</tr>
+            <br/>';
         }
-        $html.='<tr>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;width:20%"></td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;width:20%">*** Total *** </td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;width:15%">$'.number_format($total_received_amount,2).'</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;width:15%">$'.number_format($total_posted_amount,2).'</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:left;width:30%"></td>
+        $html.='<tr style="background-color: #f1f1f1;">
+                   <td style="font-size:8px;font-weight:bold;text-align:center;width:20%">Total Records: '.$total_records.'</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;width:20%">*** Total *** </td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;width:15%">$'.number_format($total_received_amount,2).'</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;width:15%">$'.number_format($total_posted_amount,2).'</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:left;width:30%"></td>
                 </tr>'; 
     }
     else
     {
         $html.='<tr>
-                    <td style="font-size:13px;font-weight:cold;text-align:center;" colspan="8">No record found.</td>
+                    <td style="font-size:8px;font-weight:cold;text-align:center;" colspan="8">No record found.</td>
                 </tr>';
     }           
     $html.='</table>';

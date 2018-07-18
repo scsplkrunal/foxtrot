@@ -158,8 +158,11 @@ PostResult( msg );
                 <h4 style="margin-right: 5% !important; display: inline;">Source: <?php if(isset($get_file_data['source'])){ echo $get_file_data['source']; } ?></h4>
                 <h4 style="margin-right: 5% !important; display: inline;">File Type: <?php if(isset($get_file_data['file_type'])){ echo $get_file_data['file_type']; } ?></h4>
                 <h4 style="margin-right: 5% !important; display: inline;">Date: <?php if(isset($get_file_data['last_processed_date']) && $get_file_data['last_processed_date'] != '0000-00-00'){ echo date('m/d/Y',strtotime($get_file_data['last_processed_date']));}else echo '00-00-0000' ?></h4>
+                <?php 
+                $get_file_type = $instance->get_file_type($_GET['id']);
+                if($get_file_type == 2){?>
                 <h4 style="margin-right: 0% !important; display: inline;">Amount: <?php echo '$'.number_format($total_commission_amount,2);?></h4>
-                <?php } ?>
+                <?php } } ?>
                 <?php if(isset($_GET['tab']) && $_GET['tab']=="preview_files" && $_GET['id']>0){
                     $get_file_data = $instance->select_user_files($_GET['id']);
                     ?>
@@ -168,7 +171,6 @@ PostResult( msg );
                 <h4 style="margin-right: 5% !important; display: inline;">Source: <?php if(isset($get_file_data['source'])){ echo $get_file_data['source']; } ?></h4>
                 <h4 style="margin-right: 5% !important; display: inline;">File Type: <?php if(isset($get_file_data['file_type'])){ echo $get_file_data['file_type']; } ?></h4>
                 <h4 style="margin-right: 5% !important; display: inline;">Date: <?php if(isset($get_file_data['last_processed_date']) && $get_file_data['last_processed_date'] != '0000-00-00'){ echo date('m/d/Y',strtotime($get_file_data['last_processed_date']));}else echo '00-00-0000' ?></h4>
-                <h4 style="margin-right: 0% !important; display: inline;">Amount: 
                 <?php 
                 $file_id = isset($_GET['id'])?$instance->re_db_input($_GET['id']):0;
                  
@@ -190,9 +192,10 @@ PostResult( msg );
                     {
                         $total_amount += $preview_val['dealer_commission_amount'];
                     }
-                    $total_commission_amount = $total_amount; 
-                }               
-                echo '$'.number_format($total_commission_amount/100,2);?></h4>
+                    $total_commission_amount = $total_amount; ?>
+                             
+                <h4 style="margin-right: 0% !important; display: inline;">Amount: <?php echo '$'.number_format($total_commission_amount/100,2);?></h4>
+                <?php } ?>
                 <?php } ?>
                 <div class="tab-pane active" id="tab_a"><?php if(isset($_GET['tab']) && ($_GET['tab']=="current_files" || $_GET['tab']=="archived_files") || !isset($_GET['tab'])){?>
                     <ul class="nav nav-tabs ">
@@ -217,7 +220,8 @@ PostResult( msg );
                                             <table id="data-table" class="table table-bordered table-stripped table-hover">
                                                 <thead>
                                                     <th>Batch#</th>
-                                                    <th>Imported</th>
+                                                    <th>Sponsor</th>
+                                                    <!--<th>Imported</th>-->
                                                     <th>Last Proccessed</th>
                                                     <th>File Name</th>
                                                     <th>File Type</th>
@@ -230,14 +234,21 @@ PostResult( msg );
                                                 $count = 0;
                                                 if(isset($return) && $return != array())
                                                 {
-                                                $return = $instance->select_current_files();//echo '<pre>';print_r($return);exit;
+                                                $return = $instance->select_current_files();
                                                 foreach($return as $key=>$val){
+                                                    $return_file_data_array = $instance->get_file_array($val['id']);
+                                                    $system_id = isset($return_file_data_array[0]['dst_system_id'])?$return_file_data_array[0]['dst_system_id']:'';
+                                                    $management_code = isset($return_file_data_array[0]['dst_management_code'])?$return_file_data_array[0]['dst_management_code']:'';
+                                                    $sponsor_detail = $instance->get_sponsor_on_system_management_code($system_id,$management_code);
+                                                    $sponsor = isset($sponsor_detail['name'])?$sponsor_detail['name']:'';
+                                                    //echo '<pre>';print_r($system_id.','.$management_code);
                                                     $file_batch_id = $instance->get_file_batch($val['id']);
                                                     if(isset($val['imported_date']) && $val['imported_date']!= ''){
                                                    ?>
                                                     <tr>
                                                         <td><?php echo $file_batch_id;?></td>
-                                                        <td style="width: 15%;"><?php echo date('m/d/Y',strtotime($val['imported_date']));?></td>
+                                                        <td style="width: 15%;"><?php echo $sponsor;?></td>
+                                                        <!--<td style="width: 15%;"><?php echo date('m/d/Y',strtotime($val['imported_date']));?></td>-->
                                                         <td style="width: 10%;"><?php if(isset($val['last_processed_date']) && $val['last_processed_date'] != '0000-00-00'){echo date('m/d/Y',strtotime($val['last_processed_date']));}?></td>
                                                         <td style="width: 10%;"><?php echo $val['file_name'];?></td>
                                                         <td style="width: 15%;"><?php echo $val['file_type'];?></td>
@@ -320,10 +331,10 @@ PostResult( msg );
                                                         <td style="width: 30%;">
                                                         <form method="post">
                                                         <select name="process_file_<?php echo $val['id'];?>" id="process_file_<?php echo $val['id'];?>" class="form-control" style=" width: 78% !important;display: inline;">
-                                                            <option value="0">Select Options</option>
+                                                            <option value="0">Select Option</option>
                                                             <option value="1" >Delete File</option>
                                                             <option value="7" >Preview</option>
-                                                            <option value="2" >Process</option>
+                                                            <option value="2" <?php if(isset($val['processed']) && $val['processed']==0){ echo "selected='selected'";} ?>>Process</option>
                                                             <option value="3" <?php if(isset($check_exception_data) && $check_exception_data =='0' && isset($check_processed_data) && $check_processed_data == '3'){echo "selected='selected'";} ?> <?php if($val['processed']==0){echo 'disabled="true"';}?> >View/Print</option>
                                                             <option value="4" <?php if(isset($check_exception_data) && $check_exception_data =='4'){echo "selected='selected'";} ?> <?php if($val['processed']==0){echo 'disabled="true"';}?>>Resolve Exceptions</option>
                                                             <option value="5" <?php if(isset($val['processed']) && $val['processed']==0){ echo 'disabled="true"';}else if(isset($check_file_exception_process) && $check_file_exception_process !='0'){echo 'disabled="true"';} ?>>Reprocess</option>
@@ -423,8 +434,8 @@ PostResult( msg );
                                                             <td style="width: 30%;">
                                                             <form method="post">
                                                             <select name="archive_option" id="archive_option" class="form-control" style=" width: 78% !important;display: inline;">
-                                                                <option value="0">Select Options</option>
-                                                                <option value="1" >View/Print</option>
+                                                                <option value="0">Select Option</option>
+                                                                <option value="1" selected="true" >View/Print</option>
                                                             </select>
                                                             <input type="hidden" name="id" id="id" value="<?php echo $val['id'];?>" />
                                                             <button type="submit" class="btn btn-sm btn-warning" name="go_archive" value="go_archive" style="display: inline;"> Go</button>
@@ -1196,7 +1207,7 @@ PostResult( msg );
                 <div class="row" style="display: none;" id="broker_termination_options_trades">
                 <div class="col-md-5">
                     <div class="inputpopup">
-                        <label id="broker_termination_label">Select Options</label>
+                        <label id="broker_termination_label">Select Option</label>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -1209,7 +1220,7 @@ PostResult( msg );
                 <div class="row" style="display: none;" id="broker_termination_options_clients">
                 <div class="col-md-5">
                     <div class="inputpopup">
-                        <label id="broker_termination_label">Select Options</label>
+                        <label id="broker_termination_label">Select Option</label>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -1294,7 +1305,7 @@ PostResult( msg );
                         <select name="acc_for_client" id="acc_for_client" class="form-control">
                             <option value="">Select Client</option>
                             <?php foreach($get_client as $key=>$val){ ?>
-                            <option value="<?php echo $val['id'];?>"><?php echo $val['id'].' '.$val['last_name'].' '.$val['first_name'];?></option>
+                            <option value="<?php echo $val['id'];?>"><?php echo $val['first_name'].' '.$val['last_name'];?></option>
                             <?php } ?>
                         </select>
                     </div>

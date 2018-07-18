@@ -86,7 +86,7 @@ class transaction extends db{
               
 				if($id>=0){
 					if($id==0){
-						$q = "INSERT INTO ".$this->table." SET `client_name`='".$client_name."',`client_number`='".$client_number."',`broker_name`='".$broker_name."',
+						$q = "INSERT INTO ".$this->table." SET `client_name`='".$client_name."',`source`='MN',`client_number`='".$client_number."',`broker_name`='".$broker_name."',
                         `product_cate`='".$product_cate."',`sponsor`='".$sponsor."',`product`='".$product."',`batch`='".$batch."',
                         `invest_amount`='".$invest_amount."',`commission_received_date`='".$commission_received_date."',`posting_date`='".$posting_date."',`trade_date`='".$trade_date."',`settlement_date`='".$settlement_date."',`charge_amount`='".$charge_amount."',`commission_received`='".$commission_received."',`split`='".$split."',
                         `another_level`='".$another_level."',`cancel`='".$cancel."',`buy_sell`='".$buy_sell."',

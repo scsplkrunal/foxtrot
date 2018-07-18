@@ -19,7 +19,7 @@
     $account = '';
     $expire_date = '';
     $payroll_category = '';
-    $taxable_adjustment = 0;
+    $taxable_adjustment = '';
     $broker = 0;
     $broker_number = '';
     $broker_name = '';

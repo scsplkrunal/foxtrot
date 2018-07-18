@@ -2698,13 +2698,13 @@ var waitingDialog = waitingDialog || (function ($) {
                                                       
                                                        <tr id="add_row_alias">
                                                             <td>
-                                                                <input type="text" name="alias[alias_name][<?php echo $doc_id;?>]" value="" max="20" class="form-control"/>
+                                                                <input type="text" name="alias[alias_name][<?php echo $doc_id;?>]" value="<?php if(isset($alias_number) && $alias_number != ''){ echo $alias_number;}?>" max="20" class="form-control"/>
                                                             </td>
                                                             <td>
                                                                 <select name="alias[sponsor_company][<?php echo $doc_id;?>]" class="form-control">
                                                                     <option value="0">All Companies</option>
                                                                     <?php foreach($get_sponsor as $key_sponsor=>$val_sponsor){?>
-                                                                    <option value="<?php echo $val_sponsor['id'];?>"><?php echo $val_sponsor['name'];?></option>
+                                                                    <option value="<?php echo $val_sponsor['id'];?>" <?php if(isset($alias_sponsor) && $alias_sponsor == $val_sponsor['id']){ echo "selected='selected'";} ?>><?php echo $val_sponsor['name'];?></option>
                                                                     <?php } ?>
                                                                 </select>
                                                             </td>

@@ -39,7 +39,7 @@ $total_charges = 0;
     // add a page
     $pdf->AddPage('L');
     // Title
-    $img = '<img src="'.SITE_URL."upload/logo/".$system_logo.'" height="30px" />';
+    $img = '<img src="'.SITE_URL."upload/logo/".$system_logo.'" height="25px" />';
     
     $pdf->SetFont('times','B',12);
     $pdf->SetFont('times','',10);
@@ -49,7 +49,7 @@ $total_charges = 0;
                 {
                     $html .='<td width="20%" align="left">'.$img.'</td>';
                 }
-                    $html .='<td width="60%" style="font-size:16px;font-weight:bold;text-align:center;">COMMISSION ADJUSTMENT LOG</td>';
+                    $html .='<td width="60%" style="font-size:14px;font-weight:bold;text-align:center;">COMMISSION ADJUSTMENT LOG</td>';
                 if(isset($system_company_name) && $system_company_name != '')
                 {
                     $html.='<td width="20%" style="font-size:10px;font-weight:bold;text-align:right;">'.$system_company_name.'</td>';
@@ -60,20 +60,20 @@ $total_charges = 0;
             $html .='</tr>
         </table>';
     $pdf->writeHTML($html, false, 0, false, 0);
-    $pdf->Ln(5);
+    $pdf->Ln(2);
     
     $pdf->SetFont('times','B',12);
     $pdf->SetFont('times','',10);
-    $html='<table border="0" cellpadding="3" width="100%">
+    $html='<table border="0" cellpadding="1" width="100%">
                 <tr style="background-color: #f1f1f1;">
-                    <td width="10%" style="text-align:center;"><h4>ADJUST#</h4></td>
-                    <td width="10%" style="text-align:center;"><h4>REP#</h4></td>
-                    <td width="10%" style="text-align:center;"><h4>CLEAR NUMBER</h4></td>
-                    <td width="20%" style="text-align:center;"><h4>DESCRIPTION</h4></td>
-                    <td width="20%" style="text-align:center;"><h4>CATEGORY</h4></td>
-                    <td width="10%" style="text-align:center;"><h4>TAXABLE AMOUNT</h4></td>
-                    <td width="10%" style="text-align:center;"><h4>NON TAX AMOUNT</h4></td>
-                    <td width="10%" style="text-align:center;"><h4>ADVANCE</h4></td>
+                    <td width="10%" style="text-align:center;"><h5>ADJUST#</h5></td>
+                    <td width="10%" style="text-align:center;"><h5>REP#</h5></td>
+                    <td width="10%" style="text-align:center;"><h5>CLEAR NUMBER</h5></td>
+                    <td width="20%" style="text-align:center;"><h5>DESCRIPTION</h5></td>
+                    <td width="20%" style="text-align:center;"><h5>CATEGORY</h5></td>
+                    <td width="9%" style="text-align:center;"><h5>TAXABLE AMOUNT</h5></td>
+                    <td width="9%" style="text-align:center;"><h5>NON TAXABLE AMOUNT</h5></td>
+                    <td width="9%" style="text-align:center;"><h5>ADVANCE</h5></td>
                 </tr>
                 <br/>';
     //$pdf->Line(10, 81, 290, 81);
@@ -89,61 +89,59 @@ $total_charges = 0;
             if($trans_data['trade_date'] != '0000-00-00'){ $trade_date = date('m/d/Y',strtotime($trans_data['trade_date'])); }
             if($trans_data['commission_received_date'] != '0000-00-00'){ $commission_received_date = date('m/d/Y',strtotime($trans_data['commission_received_date'])); }*/
         $html.='<tr>
-                       <td colspan="11" style="font-size:13px;font-weight:bold;text-align:left;">BROKER #01 - SPLIT BROKER,JONES/ROBERTS</td>
+                       <td colspan="11" style="font-size:8px;font-weight:bold;text-align:left;">BROKER #01 - SPLIT BROKER,JONES/ROBERTS</td>
                 </tr>
                 <br/>';   
         $html.='<tr>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">16</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">1</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">HS23</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">DBA email domain set</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">TECHNOLOGY</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">0.00</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">-150.00</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">0.00</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">16</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">1</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">HS23</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">DBA email domain set</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">TECHNOLOGY</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">0.00</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">-150.00</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">0.00</td>
                     </tr>';
         $html.='<tr>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">25</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">1</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">HS23</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">FORGOT TO WEAR A TIE</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">ADVANCE</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">0.00</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">0.00</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">-10.00</td>
-                    </tr>
-                    <br/>';
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">25</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">1</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">HS23</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">FORGOT TO WEAR A TIE</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">ADVANCE</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">0.00</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">0.00</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">-10.00</td>
+                    </tr>';
         /*}*/
-        $html.='<tr>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;" colspan="5">* #1 SPLIT BROKER, JONES/ROBERTS TOTAL *</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">0.00</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">-150.00</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">-10.00</td>
+        $html.='<tr style="background-color: #f1f1f1;">
+                   <td style="font-size:8px;font-weight:bold;text-align:right;" colspan="5">* #1 SPLIT BROKER, JONES/ROBERTS TOTAL *</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">0.00</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">-150.00</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">-10.00</td>
                 </tr>
                 <br/>';
         $html.='<tr>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">2</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">2</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">B116</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">E & O INSURANCE</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">E & O INSURANCE</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">0.00</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">-150.00</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">0.00</td>
-                    </tr>
-                    <br/>';
-        $html.='<tr>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;" colspan="5">* #2 JONES, JIM TOTAL *</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">0.00</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">-150.00</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">0.00</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">2</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">2</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">B116</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">E & O INSURANCE</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">E & O INSURANCE</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">0.00</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">-150.00</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">0.00</td>
+                    </tr>';
+        $html.='<tr style="background-color: #f1f1f1;">
+                   <td style="font-size:8px;font-weight:bold;text-align:right;" colspan="5">* #2 JONES, JIM TOTAL *</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">0.00</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">-150.00</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">0.00</td>
                 </tr>
                 <br/>';
-        $html.='<tr>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;" colspan="5">*** REPORT TOTALS **** </td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">0.00</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">-300.00</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">-10.00</td>
+        $html.='<tr style="background-color: #f1f1f1;">
+                   <td style="font-size:8px;font-weight:bold;text-align:right;" colspan="5">*** REPORT TOTALS **** </td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">0.00</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">-300.00</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">-10.00</td>
                 </tr>
                 <br/>';
          
@@ -156,7 +154,7 @@ $total_charges = 0;
     }  */         
     $html.='</table>';
     $pdf->writeHTML($html, false, 0, false, 0);
-    $pdf->Ln(5);
+    $pdf->Ln(2);
     
     if(isset($_GET['open']) && $_GET['open'] == 'output_print')
     {

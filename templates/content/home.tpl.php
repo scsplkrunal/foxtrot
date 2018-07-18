@@ -1,7 +1,7 @@
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/highcharts-3d.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
-
 <script type="text/javascript" lang="javaScript">
 $(document).ready(function (){
 
@@ -15,6 +15,66 @@ $(document).ready(function (){
  var di_new_files = <?php echo $di_new_files; ?>;
 
 Highcharts.chart('container_daily_importing', {
+  colors: ['#ed7d31','#ffa500','#70ad48','#7cb5ec', '#f7a35c', '#90ee7e', '#7798BF', '#aaeeee', '#ff0066',
+        '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
+  chart: {
+    plotBackgroundColor: null,
+    plotBorderWidth: 0,
+    plotShadow: false
+  },
+  title: {
+    text: '',
+    align: 'center',
+    verticalAlign: 'middle',
+    y: 40
+  },
+  tooltip: {
+    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+  },
+  plotOptions: {
+    pie: {
+      dataLabels: {
+        enabled: false,
+        distance: -50,
+        style: {
+          fontWeight: 'bold',
+          color: 'white'
+        }
+      },
+      startAngle: -0,
+      endAngle: 360,
+      center: ['50%', '50%']
+    }
+  },
+  series: [{
+    type: 'pie',
+    name: 'Imported Files',
+    innerSize: '50%',
+    data: [
+        ['New Files', di_new_files],    
+        ['Partially Completed', di_partially_completed],
+        
+        ['Completed', di_completed_files]
+    ]
+    /*data: [
+      ['Chrome', 58.9],
+      ['Firefox', 13.29],
+      ['Internet Explorer', 13],
+      ['Edge', 3.78],
+      ['Safari', 3.42],
+      {
+        name: 'Other',
+        y: 7.61,
+        dataLabels: {
+          enabled: false
+        }
+      }
+    ]*/
+  }]
+});
+
+
+/*Highcharts.chart('container_daily_importing', {
     chart: {
         type: 'pie',
         options3d: {
@@ -52,7 +112,81 @@ Highcharts.chart('container_daily_importing', {
             ['Completed', di_completed_files]
         ]
     }]
-});
+});*/
+
+/*Highcharts.chart('container2', {
+    chart: {
+        zoomType: 'xy'
+    },
+    title: {
+        text: ''
+    },
+    subtitle: {
+        text: 'Source: WorldClimate.com'
+    },
+    xAxis: [{
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        crosshair: true
+    }],
+    yAxis: [{ // Primary yAxis
+        labels: {
+            format: '{value}°C',
+            style: {
+                color: Highcharts.getOptions().colors[1]
+            }
+        },
+        title: {
+            text: 'Temperature',
+            style: {
+                color: Highcharts.getOptions().colors[1]
+            }
+        }
+    }, { // Secondary yAxis
+        title: {
+            text: 'Rainfall',
+            style: {
+                color: Highcharts.getOptions().colors[0]
+            }
+        },
+        labels: {
+            format: '{value} mm',
+            style: {
+                color: Highcharts.getOptions().colors[0]
+            }
+        },
+        opposite: true
+    }],
+    tooltip: {
+        shared: true
+    },
+    legend: {
+        layout: 'vertical',
+        align: 'left',
+        x: 120,
+        verticalAlign: 'top',
+        y: 100,
+        floating: true,
+        backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+    },
+    series: [{
+        name: 'Rainfall',
+        type: 'column',
+        yAxis: 1,
+        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
+        tooltip: {
+            valueSuffix: ' mm'
+        }
+
+    }, {
+        name: 'Temperature',
+        type: 'spline',
+        data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
+        tooltip: {
+            valueSuffix: '°C'
+        }
+    }]
+});*/
 Highcharts.chart('container2', {
     chart: {
         type: 'bar'
@@ -107,6 +241,7 @@ Highcharts.chart('container2', {
     }]
 });
 Highcharts.chart('container3', {
+    colors: ['#5b9bd5','#ffa500','#70ad48'],
     chart: {
         type: 'column'
     },
@@ -130,16 +265,18 @@ Highcharts.chart('container3', {
         }
     },
     series: [{
-        name: 'Transaction Processed',
+        name: 'Transactions Processed',
         data: [<?php echo $transaction_processed_data ; ?>]
 
     }, {
-        name: 'Transaction on Hold',
+        name: 'Transactions on Hold',
         data: [<?php echo $transaction_hold_data; ?>]
 
     }]
 });
 Highcharts.chart('container_commission', {
+    colors: ['#5b9bd5','#ffc000','#70ad48','#7cb5ec', '#f7a35c', '#90ee7e', '#7798BF', '#aaeeee', '#ff0066',
+        '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
     chart: {
         type: 'pie',
         options3d: {
@@ -169,11 +306,11 @@ Highcharts.chart('container_commission', {
     },
     series: [{
         type: 'pie',
-        name: 'Commision Ammount',
+        name: 'Commision Amount',
         data: [
             ['Investment Amount', data_investment_amount],
             ['Charge Amount', data_charge_amount],
-            ['Commission Received Amount', data_commission_received_amount]
+            ['Commission Amount', data_commission_received_amount]
         ]
     }]
 });

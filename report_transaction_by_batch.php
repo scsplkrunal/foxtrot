@@ -15,6 +15,7 @@ $product_category_name = '';
 $beginning_date = '';
 $ending_date = '';
 $batch = 0;
+$total_records=0;
 //filter batch report
 if(isset($_GET['filter']) && $_GET['filter'] != '')
 {
@@ -46,52 +47,32 @@ $total_charges = 0;
     // add a page
     $pdf->AddPage('L');
     // Title
-    $img = '<img src="'.SITE_URL."upload/logo/".$system_logo.'" height="60px" />';
+    $img = '<img src="'.SITE_URL."upload/logo/".$system_logo.'" height="25px" />';
     
     $pdf->SetFont('times','B',12);
     $pdf->SetFont('times','',10);
-    $html='<table border="0">
-                <tr>
-                   <td width="50%" style="font-size:10px;font-weight:bold;text-align:left;">'.date('d/m/Y h:i:s A').'</td>';
-                   if(isset($system_company_name) && $system_company_name != '')
-                   {
-                        $html.='<td width="50%" style="font-size:10px;font-weight:bold;text-align:right;">'.$system_company_name.'</td>';
-                   }
-        $html.='</tr>
-            </table>';
-    $pdf->writeHTML($html, false, 0, false, 0);
-    $pdf->Ln(5);
-    
-    if(isset($system_logo) && $system_logo != '')
-    {
-        $pdf->SetFont('times','B',12);
-        $pdf->SetFont('times','',10);
-        $html='<table border="0" width="100%">
-                    <tr>
-                        <td align="center">'.$img.'</td>
-                    </tr>
-                </table>';
-        $pdf->writeHTML($html, false, 0, false, 0);
-        $pdf->Ln(5);
-    }
-    
-    $pdf->SetFont('times','B',12);
-    $pdf->SetFont('times','',10);
-    $html='<table border="0">
+    $html='<table border="0" width="100%">
                 <tr>';
-                    if($batch > 0){
+                if(isset($system_logo) && $system_logo != '')
+                {
+                    $html .='<td width="20%" align="left">'.$img.'</td>';
+                }
+                if($batch > 0){
                         
-                        $html .='<td width="100%" style="font-size:16px;font-weight:bold;text-align:center;">TRANSACTION BY BATCH REPORT : '.strtoupper($batch_desc).'</td>';
-                     
-                     } else {
-                        
-                        $html .='<td width="100%" style="font-size:16px;font-weight:bold;text-align:center;">TRANSACTION BY BATCH REPORT : ALL BATCHES</td>';
-                     }  
-                   
-                $html .='</tr>
-            </table>';
+                    $html .='<td width="60%" style="font-size:14px;font-weight:bold;text-align:center;">TRANSACTION BY BATCH REPORT : '.strtoupper($batch_desc).'</td>';
+                 
+                } else {
+                    
+                    $html .='<td width="60%" style="font-size:14px;font-weight:bold;text-align:center;">TRANSACTION BY BATCH REPORT : ALL BATCHES</td>';
+                }  
+                if(isset($system_company_name) && $system_company_name != '')
+                {
+                    $html.='<td width="20%" style="font-size:10px;font-weight:bold;text-align:right;">'.$system_company_name.'</td>';
+                }
+                $html.='</tr>
+        </table>';
     $pdf->writeHTML($html, false, 0, false, 0);
-    $pdf->Ln(5);
+    $pdf->Ln(2);
     
     $pdf->SetFont('times','B',12);
     $pdf->SetFont('times','',10);
@@ -108,27 +89,28 @@ $total_charges = 0;
             $html .='</tr>
             </table>';
     $pdf->writeHTML($html, false, 0, false, 0);
-    $pdf->Ln(5);
+    $pdf->Ln(3);
     
         
     $pdf->SetFont('times','B',12);
     $pdf->SetFont('times','',10);
-    $html='<table border="0" cellpadding="5" width="100%">
+    $html='<table border="0" cellpadding="1" width="100%">
                 <tr style="background-color: #f1f1f1;">
-                    <td><h4>TRADE#</h4></td>
-                    <td><h4>BROKER</h4></td>
-                    <td><h4>CLIENT</h4></td>
-                    <td><h4>TRADE DATE</h4></td>
-                    <td><h4>DATE RECEIVED</h4></td>
-                    <td><h4>AMOUNT INVESTED</h4></td>
-                    <td><h4>COMMISSION RECEIVED</h4></td>
-                    <td><h4>CHARGE</h4></td>
+                    <td style="text-align:center;"><h5>TRADE#</h5></td>
+                    <td style="text-align:center;"><h5>BROKER</h5></td>
+                    <td style="text-align:center;"><h5>CLIENT</h5></td>
+                    <td style="text-align:center;"><h5>TRADE DATE</h5></td>
+                    <td style="text-align:center;"><h5>DATE RECEIVED</h5></td>
+                    <td style="text-align:center;"><h5>AMOUNT INVESTED</h5></td>
+                    <td style="text-align:center;"><h5>COMMISSION RECEIVED</h5></td>
+                    <td style="text-align:center;"><h5>CHARGE</h5></td>
                 </tr>';
     //$pdf->Line(10, 81, 290, 81);
     if($get_trans_data != array())
     {
         foreach($get_trans_data as $trans_key=>$trans_data)
         {
+            $total_records = $total_records+1;
             $trade_date='';
             $commission_received_date='';
             $total_amount_invested = ($total_amount_invested+$trans_data['invest_amount']);
@@ -137,31 +119,31 @@ $total_charges = 0;
             if($trans_data['trade_date'] != '0000-00-00'){ $trade_date = date('m/d/Y',strtotime($trans_data['trade_date'])); }
             if($trans_data['commission_received_date'] != '0000-00-00'){ $commission_received_date = date('m/d/Y',strtotime($trans_data['commission_received_date'])); }
         $html.='<tr>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$trans_data['id'].'</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$trans_data['broker_name'].'</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$trans_data['client_name'].'</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$trade_date.'</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$commission_received_date.'</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">$'.number_format($trans_data['invest_amount'],2).'</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">$'.number_format($trans_data['commission_received'],2).'</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:right;">$'.number_format($trans_data['charge_amount'],2).'</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">'.$trans_data['id'].'</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">'.$trans_data['broker_name'].'</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">'.$trans_data['client_name'].'</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">'.$trade_date.'</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">'.$commission_received_date.'</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">$'.number_format($trans_data['invest_amount'],2).'</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">$'.number_format($trans_data['commission_received'],2).'</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:right;">$'.number_format($trans_data['charge_amount'],2).'</td>
                     </tr>';
         }
-        $html.='<tr>
+        $html.='<tr style="background-color: #f1f1f1;">
+                   <td style="font-size:8px;font-weight:bold;text-align:center;">Total Records: '.$total_records.'</td>
                    <td></td>
                    <td></td>
-                   <td></td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;" colspan="2">Report Total : </td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">$'.number_format($total_amount_invested,2).'</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">$'.number_format($total_commission_received,2).'</td>
-                   <td style="font-size:13px;font-weight:bold;text-align:right;">$'.number_format($total_charges,2).'</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;" colspan="2">Report Total : </td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">$'.number_format($total_amount_invested,2).'</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">$'.number_format($total_commission_received,2).'</td>
+                   <td style="font-size:8px;font-weight:bold;text-align:right;">$'.number_format($total_charges,2).'</td>
                 </tr>';
          
     }
     else
     {
         $html.='<tr>
-                    <td style="font-size:13px;font-weight:cold;text-align:center;" colspan="8">No Records Found.</td>
+                    <td style="font-size:8px;font-weight:cold;text-align:center;" colspan="8">No Records Found.</td>
                 </tr>';
     }           
     $html.='</table>';

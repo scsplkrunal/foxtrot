@@ -19,7 +19,7 @@ else
 {
     $get_client_ress_data = $instance->select_data_report();
 }
-
+$total_records=0;
 ?>
 <?php
 
@@ -28,77 +28,38 @@ else
     // add a page
     $pdf->AddPage('L');
     // Title
-    $img = '<img src="'.SITE_URL."upload/logo/".$system_logo.'" height="60px" />';
+    $img = '<img src="'.SITE_URL."upload/logo/".$system_logo.'" height="25px" />';
     
     $pdf->SetFont('times','B',12);
     $pdf->SetFont('times','',10);
-    $html='<table border="0">
-                <tr>
-                   <td width="50%" style="font-size:10px;font-weight:bold;text-align:left;">'.date('d/m/Y h:i:s A').'</td>';
-                   if(isset($system_company_name) && $system_company_name != '')
-                   {
-                        $html.='<td width="50%" style="font-size:10px;font-weight:bold;text-align:right;">'.$system_company_name.'</td>';
-                   }
-        $html.='</tr>
-            </table>';
-    $pdf->writeHTML($html, false, 0, false, 0);
-    $pdf->Ln(5);
-    
-    if(isset($system_logo) && $system_logo != '')
-    {
-        $pdf->SetFont('times','B',12);
-        $pdf->SetFont('times','',10);
-        $html='<table border="0" width="100%">
-                    <tr>
-                        <td align="center">'.$img.'</td>
-                    </tr>
-                </table>';
-        $pdf->writeHTML($html, false, 0, false, 0);
-        $pdf->Ln(5);
-    }
-    
-    $pdf->SetFont('times','B',12);
-    $pdf->SetFont('times','',10);
-    $html='<table border="0">
+    $html='<table border="0" width="100%">
                 <tr>';
-                    if($from_broker != ''){
-                        
-                        $html .='<td width="100%" style="font-size:16px;font-weight:bold;text-align:center;">Client Reassigment Report</td>';
-                     
-                     } 
-                   
-                $html .='</tr>
-            </table>';
-    $pdf->writeHTML($html, false, 0, false, 0);
-    $pdf->Ln(5);
-    
-    $pdf->SetFont('times','B',12);
-    $pdf->SetFont('times','',10);
-    $html='<table border="0">
-                <tr>';
+                if(isset($system_logo) && $system_logo != '')
+                {
+                    $html .='<td width="20%" align="left">'.$img.'</td>';
+                }
                 if($from_broker != ''){
                     
-                    $html .='<td width="100%" style="font-size:12px;font-weight:bold;text-align:center;"></td>';
-                 
-                 } else {
-                    
-                    $html .='<td width="100%" style="font-size:12px;font-weight:bold;text-align:center;"></td>';
-                 }   
-            $html .='</tr>
-            </table>';
+                    $html .='<td width="60%" style="font-size:14px;font-weight:bold;text-align:center;">Client Reassignment Report</td>';
+                } 
+                if(isset($system_company_name) && $system_company_name != '')
+                {
+                    $html.='<td width="20%" style="font-size:10px;font-weight:bold;text-align:right;">'.$system_company_name.'</td>';
+                }
+                $html.='</tr>
+        </table>';
     $pdf->writeHTML($html, false, 0, false, 0);
-    $pdf->Ln(5);    
+    $pdf->Ln(2);
     
-        
     $pdf->SetFont('times','B',12);
     $pdf->SetFont('times','',10);
-    $html='<table border="0" cellpadding="5" width="100%">
+    $html='<table border="0" cellpadding="1" width="100%">
                 <tr style="background-color: #f1f1f1;">
-                    <td><h4>NO#</h4></td>
-                    <td><h4>CLIENT NAME</h4></td>
-                    <td><h4>FROM BROKER</h4></td>
-                    <td><h4>TO BROKER</h4></td>
-                    <td><h4>REASSIGMENT DATE </h4></td>
+                    <td style="text-align:center;"><h5>NO#</h5></td>
+                    <td style="text-align:center;"><h5>CLIENT NAME</h5></td>
+                    <td style="text-align:center;"><h5>FROM BROKER</h5></td>
+                    <td style="text-align:center;"><h5>TO BROKER</h5></td>
+                    <td style="text-align:center;"><h5>REASSIGNMENT DATE </h5></td>
                 </tr>';
     //$pdf->Line(10, 77, 287, 77);
     $count=0;
@@ -106,7 +67,7 @@ else
     {
         foreach($get_client_ress_data as $trans_key=>$trans_data)
         { $count++; 
-        
+            $total_records=$total_records+1;
             foreach($get_broker as $key=>$val){
                 if($val['id'] == $trans_data['broker_name'])
                 {
@@ -119,24 +80,28 @@ else
             }
             
         $html.='<tr>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$count.'</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$trans_data['first_name'].'</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$old_broker.'</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.$new_broker.'</td>
-                       <td style="font-size:13px;font-weight:normal;text-align:left;">'.date('m-d-Y',strtotime($trans_data['ressign_date'])).'</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">'.$count.'</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">'.$trans_data['first_name'].'</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">'.$old_broker.'</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">'.$new_broker.'</td>
+                       <td style="font-size:8px;font-weight:normal;text-align:center;">'.date('m-d-Y',strtotime($trans_data['ressign_date'])).'</td>
                 </tr>';
         }
+        $html.='<tr style="background-color: #f1f1f1;">
+            <td colspan="4" style="font-size:8px;font-weight:bold;text-align:right;"></td>
+            <td style="font-size:8px;font-weight:bold;text-align:center;">Total Records: '.$total_records.'</td>';
+        $html.='</tr>';
          
     }
     else
     {
         $html.='<tr>
-                    <td style="font-size:13px;font-weight:cold;text-align:center;" colspan="8">No Records Found.</td>
+                    <td style="font-size:8px;font-weight:cold;text-align:center;" colspan="8">No Records Found.</td>
                 </tr>';
     }           
     $html.='</table>';
     $pdf->writeHTML($html, false, 0, false, 0);
-    $pdf->Ln(5);
+    $pdf->Ln(2);
     
    
     $pdf->lastPage();

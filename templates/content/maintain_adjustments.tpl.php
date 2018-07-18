@@ -89,7 +89,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>&nbsp; </label><br />
-                                <input type="checkbox" class="checkbox" name="taxable_adjustment" id="taxable_adjustment" style="display: inline;" value="1" <?php if($taxable_adjustment==1){echo "checked='checked'";}?>/> Taxable Adjustment
+                                <input type="checkbox" class="checkbox" name="taxable_adjustment" id="taxable_adjustment" style="display: inline;" value="1" <?php if($taxable_adjustment==1){echo "checked='checked'";}else if(!isset($taxable_adjustment) || $taxable_adjustment == ''){echo "checked='checked'";}?>/> Taxable Adjustment
                             </div>
                         </div>
                    </div> 

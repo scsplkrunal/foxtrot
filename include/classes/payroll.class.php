@@ -446,50 +446,53 @@ class payroll extends db{
                         {
                             foreach($check_broker_adjustments as $key_amount=>$val_amount)
                             {
-                                $total_usage=$val_amount['total_usage'];
-                                if($val_amount['payable_trans_id']==$val_data['id'])
+                                if($payroll_date>=$val_amount['pay_on'])
                                 {
-                                    $total_usage=$total_usage+$val_amount['recalc_old_usage'];
-                                }
-                                $recalc_total_usage=$total_usage;
-                                if(isset($val_amount['pay_type']) && $val_amount['pay_type']== 3 && $val_amount['pay_amount'] != '')                                {
-                                    $total_adjustments_user_manual = ($val_amount['adjustment_amount']*$val_amount['pay_amount'])/100;
-                                    $total_adjustments = $total_adjustments+$total_adjustments_user_manual;
-                                }
-                                else
-                                {
-                                    $total_adjustments = $total_adjustments+$val_amount['adjustment_amount'];
-                                }
-                                if($total_usage>0)
-                                {
-                                    $total_adjustments = $total_adjustments*$total_usage;
-                                }
-                                
-                                $is_expired = 1;
-                                $adjustment_id = $val_amount['id'];
-                                if(isset($val_amount['recurring_type_id']) && $val_amount['recurring_type_id'] == 2)
-                                {
-                                    $expired_adjustments = $this->renew_mid_month_adjustments($is_expired,$adjustment_id,$val_data['id'],0,$recalc_total_usage);
-                                }
-                                if(isset($val_amount['recurring_type_id']) && $val_amount['recurring_type_id'] == 3)
-                                {
-                                    $expired_adjustments = $this->renew_end_month_adjustments($is_expired,$adjustment_id,$val_data['id'],0,$recalc_total_usage);
-                                }
-                                if(isset($val_amount['recurring_type_id']) && $val_amount['recurring_type_id'] == 4)
-                                {
-                                    $expired_adjustments = $this->renew_semi_mid_month_adjustments($is_expired,$adjustment_id,$val_data['id'],0,$recalc_total_usage);
-                                }
-                                if(isset($val_amount['recurring_type_id']) && $val_amount['recurring_type_id'] == 5)
-                                {
-                                    $expired_adjustments = $this->renew_semi_end_month_adjustments($is_expired,$adjustment_id,$val_data['id'],0,$recalc_total_usage);
-                                }
-                                if(isset($val_amount['recurring_type_id']) && $val_amount['recurring_type_id'] == 6)
-                                {
-                                    $expired_adjustments = $this->renew_qua_mid_month_adjustments($is_expired,$adjustment_id,$val_data['id'],0,$recalc_total_usage);
-                                }
-                                if(isset($val_amount['recurring_type_id']) && $val_amount['recurring_type_id'] == 7)
-                                {
-                                    $expired_adjustments = $this->renew_qua_end_month_adjustments($is_expired,$adjustment_id,$val_data['id'],0,$recalc_total_usage);
+                                    $total_usage=$val_amount['total_usage'];
+                                    if($val_amount['payable_trans_id']==$val_data['id'])
+                                    {
+                                        $total_usage=$total_usage+$val_amount['recalc_old_usage'];
+                                    }
+                                    $recalc_total_usage=$total_usage;
+                                    if(isset($val_amount['pay_type']) && $val_amount['pay_type']== 3 && $val_amount['pay_amount'] != '')                                {
+                                        $total_adjustments_user_manual = ($val_amount['adjustment_amount']*$val_amount['pay_amount'])/100;
+                                        $total_adjustments = $total_adjustments+$total_adjustments_user_manual;
+                                    }
+                                    else
+                                    {
+                                        $total_adjustments = $total_adjustments+$val_amount['adjustment_amount'];
+                                    }
+                                    if($total_usage>0)
+                                    {
+                                        $total_adjustments = $total_adjustments*$total_usage;
+                                    }
+                                    
+                                    $is_expired = 1;
+                                    $adjustment_id = $val_amount['id'];
+                                    if(isset($val_amount['recurring_type_id']) && $val_amount['recurring_type_id'] == 2)
+                                    {
+                                        $expired_adjustments = $this->renew_mid_month_adjustments($is_expired,$adjustment_id,$val_data['id'],0,$recalc_total_usage);
+                                    }
+                                    if(isset($val_amount['recurring_type_id']) && $val_amount['recurring_type_id'] == 3)
+                                    {
+                                        $expired_adjustments = $this->renew_end_month_adjustments($is_expired,$adjustment_id,$val_data['id'],0,$recalc_total_usage);
+                                    }
+                                    if(isset($val_amount['recurring_type_id']) && $val_amount['recurring_type_id'] == 4)
+                                    {
+                                        $expired_adjustments = $this->renew_semi_mid_month_adjustments($is_expired,$adjustment_id,$val_data['id'],0,$recalc_total_usage);
+                                    }
+                                    if(isset($val_amount['recurring_type_id']) && $val_amount['recurring_type_id'] == 5)
+                                    {
+                                        $expired_adjustments = $this->renew_semi_end_month_adjustments($is_expired,$adjustment_id,$val_data['id'],0,$recalc_total_usage);
+                                    }
+                                    if(isset($val_amount['recurring_type_id']) && $val_amount['recurring_type_id'] == 6)
+                                    {
+                                        $expired_adjustments = $this->renew_qua_mid_month_adjustments($is_expired,$adjustment_id,$val_data['id'],0,$recalc_total_usage);
+                                    }
+                                    if(isset($val_amount['recurring_type_id']) && $val_amount['recurring_type_id'] == 7)
+                                    {
+                                        $expired_adjustments = $this->renew_qua_end_month_adjustments($is_expired,$adjustment_id,$val_data['id'],0,$recalc_total_usage);
+                                    }
                                 }
                             }
                         }
@@ -503,14 +506,17 @@ class payroll extends db{
                         {
                             foreach($check_adjustments as $key_amount=>$val_amount)
                             {
-                                if(isset($val_amount['pay_type']) && $val_amount['pay_type']== 3 && $val_amount['pay_amount'] != '') 
+                                if($payroll_date>=$val_amount['pay_on'])
                                 {
-                                    $total_adjustments_user_manual = ($val_amount['adjustment_amount']*$val_amount['pay_amount'])/100;
-                                    $total_adjustments = $total_adjustments+$total_adjustments_user_manual;
-                                }
-                                else
-                                {
-                                    $total_adjustments = $total_adjustments+$val_amount['adjustment_amount'];
+                                    if(isset($val_amount['pay_type']) && $val_amount['pay_type']== 3 && $val_amount['pay_amount'] != '') 
+                                    {
+                                        $total_adjustments_user_manual = ($val_amount['adjustment_amount']*$val_amount['pay_amount'])/100;
+                                        $total_adjustments = $total_adjustments+$total_adjustments_user_manual;
+                                    }
+                                    else
+                                    {
+                                        $total_adjustments = $total_adjustments+$val_amount['adjustment_amount'];
+                                    }
                                 }
                             }
                         }
@@ -531,6 +537,15 @@ class payroll extends db{
                         }
                         $net_pay = $net_pay+$total_balance;
                     }
+                    //Apply system rates and check with minimum check amount:
+                    $check_minimum_check_amount=$this->check_minimum_check_amount();
+                    
+                    $finra = isset($check_minimum_check_amount['finra'])?$check_minimum_check_amount['finra']:0;
+                    $sipc = isset($check_minimum_check_amount['sipc'])?$check_minimum_check_amount['sipc']:0;
+                    $check_amount = isset($check_minimum_check_amount['minimum_check_amount'])?$check_minimum_check_amount['minimum_check_amount']:0;
+                    $finra_sipc_amount = $finra+$sipc;
+                    $total_system_rate = $net_pay*$finra_sipc_amount/100;
+                    $net_pay = $net_pay-$total_system_rate;
                     
                     //Override rates of other broker deduct:
                     $get_override_rates = $this->get_override_rates($payroll_date,$broker,$product_category,2);
@@ -608,17 +623,7 @@ class payroll extends db{
                     }
                 }
                 
-                //Apply system rates and check with minimum check amount:
-                $check_minimum_check_amount=$this->check_minimum_check_amount();
-                
-                $finra = isset($check_minimum_check_amount['finra'])?$check_minimum_check_amount['finra']:0;
-                $sipc = isset($check_minimum_check_amount['sipc'])?$check_minimum_check_amount['sipc']:0;
-                $finra_sipc_amount = $finra+$sipc;
-                $total_system_rate = $net_pay*$finra_sipc_amount/100;
-                $net_pay = $net_pay-$total_system_rate;
-                
-                $check_amount = isset($check_minimum_check_amount['minimum_check_amount'])?$check_minimum_check_amount['minimum_check_amount']:0;
-                if($net_pay<$check_amount)
+                if(isset($check_amount) && $net_pay<$check_amount)
                 {
                     $q = "UPDATE ".PAYROLL_REVIEW_MASTER." SET `is_balance`='1',`commission_paid`='".$net_pay."',`adjustments`='".$both_total_adjustments."',`balance`='".$total_balance."',`finra`='".$finra."',`sipc`='".$sipc."',`check_amount`='".$check_amount."' ".$this->update_common_sql()." WHERE `id`='".$val_data['id']."'";
                     $res = $this->re_db_query($q);

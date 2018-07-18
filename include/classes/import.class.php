@@ -296,6 +296,18 @@
                         }
                         else if($exception_field == 'representative_number')
                         {
+                                $header_detail = $this->get_files_header_detail($exception_file_id,$exception_data_id,$exception_file_type);
+                                if($header_detail != array()){
+                                        $system_id = $header_detail['system_id'];
+                                        $management_code = $header_detail['management_code'];
+                                        $sponsor_detail = $this->get_sponsor_on_system_management_code($system_id,$management_code);
+                                        $alias_sponsor = isset($sponsor_detail['id'])?$sponsor_detail['id']:'';
+                                        $alias_number = $exception_value;
+                                        
+                                        $q = "INSERT INTO `".BROKER_ALIAS."` SET `broker_id`='".$rep_for_broker."' ,`alias_name`='".$alias_number."' ,`sponsor_company`='".$alias_sponsor."' , 
+                                `date`='".date('Y-m-d')."' ".$this->insert_common_sql();
+                				        $res = $this->re_db_query($q);
+                                }
                                 $q = "UPDATE `".BROKER_MASTER."` SET `fund`='".$exception_value."' WHERE `id`='".$rep_for_broker."'";
                                 $res = $this->re_db_query($q);
                                 
@@ -326,10 +338,19 @@
                             if($exception_field == 'registration_line1')
                             {
                                 $client_name_array = explode(' ',$exception_value);
-                                $first_name = isset($client_name_array[0])?$this->re_db_input($client_name_array[0]):'';
-                                $middle_name = isset($client_name_array[1])?$this->re_db_input($client_name_array[1]):'';
-                                $last_name = isset($client_name_array[2])?$this->re_db_input($client_name_array[2]):'';
-                        
+                                if(isset($client_name_array[2]) && $client_name_array[2] != '')
+                                {
+                                    $first_name = isset($client_name_array[0])?$this->re_db_input($client_name_array[0]):'';
+                                    $middle_name = isset($client_name_array[1])?$this->re_db_input($client_name_array[1]):'';
+                                    $last_name = isset($client_name_array[2])?$this->re_db_input($client_name_array[2]):'';
+                                }
+                                else
+                                {
+                                    $first_name = isset($client_name_array[0])?$this->re_db_input($client_name_array[0]):'';
+                                    $middle_name = '';
+                                    $last_name = isset($client_name_array[1])?$this->re_db_input($client_name_array[1]):'';
+                                }
+                                
                                 $q = "SELECT * FROM `".CLIENT_MASTER."` WHERE `is_delete`='0' AND `first_name`='".$first_name."' AND `mi`='".$middle_name."' AND `last_name`='".$last_name."'";
                 				$res = $this->re_db_query($q);
                 				$return = $this->re_db_num_rows($res);
@@ -482,6 +503,18 @@
                         }
                         else if($exception_field == 'representative_number')
                         {
+                                $header_detail = $this->get_files_header_detail($exception_file_id,$exception_data_id,$exception_file_type);
+                                if($header_detail != array()){
+                                        $system_id = $header_detail['system_id'];
+                                        $management_code = $header_detail['management_code'];
+                                        $sponsor_detail = $this->get_sponsor_on_system_management_code($system_id,$management_code);
+                                        $alias_sponsor = isset($sponsor_detail['id'])?$sponsor_detail['id']:'';
+                                        $alias_number = $exception_value;
+                                        
+                                        $q = "INSERT INTO `".BROKER_ALIAS."` SET `broker_id`='".$rep_for_broker."' ,`alias_name`='".$alias_number."' ,`sponsor_company`='".$alias_sponsor."' , 
+                                `date`='".date('Y-m-d')."' ".$this->insert_common_sql();
+                				        $res = $this->re_db_query($q);
+                                }
                                 $q = "UPDATE `".BROKER_MASTER."` SET `fund`='".$exception_value."' WHERE `id`='".$rep_for_broker."'";
                                 $res = $this->re_db_query($q);
                                 
@@ -497,7 +530,16 @@
                         }
                         else if($exception_field == 'customer_account_number')
                         {
-                                $q = "INSERT `".CLIENT_ACCOUNT."` SET `account_no`='".$exception_value."',`client_id`='".$acc_for_client."' ";
+                                $sponsor = '';
+                                $header_detail = $this->get_files_header_detail($exception_file_id,$exception_data_id,$exception_file_type);
+                                if($header_detail != array()){
+                                        $system_id = $header_detail['system_id'];
+                                        $management_code = $header_detail['management_code'];
+                                        $sponsor_detail = $this->get_sponsor_on_system_management_code($system_id,$management_code);
+                                        $sponsor = isset($sponsor_detail['id'])?$sponsor_detail['id']:'';
+                                }
+                                
+                                $q = "INSERT `".CLIENT_ACCOUNT."` SET `account_no`='".$exception_value."',`sponsor_company`='".$sponsor."',`client_id`='".$acc_for_client."' ";
                                 $res = $this->re_db_query($q);
                                 
                                 $q = "UPDATE `".IMPORT_IDC_DETAIL_DATA."` SET `".$exception_field."`='".$exception_value."' WHERE `id`='".$exception_data_id."' and `file_id`='".$exception_file_id."'";
@@ -1354,13 +1396,21 @@
                             {
                                 $registration_line1 = isset($check_data_val['registration_line1'])?$this->re_db_input($check_data_val['registration_line1']):'';
                                 $client_name_array = explode(' ',$registration_line1);
-                                $first_name = isset($client_name_array[0])?$this->re_db_input($client_name_array[0]):'';
-                                $middle_name = isset($client_name_array[1])?$this->re_db_input($client_name_array[1]):'';
-                                $last_name = isset($client_name_array[2])?$this->re_db_input($client_name_array[2]):'';
-                                
-                                /*if($registration_line1 != '')
+                                if(isset($client_name_array[2]) && $client_name_array[2] != '')
                                 {
-                                    $q = "SELECT * FROM `".CLIENT_MASTER."` WHERE `is_delete`='0' AND `first_name`='".$first_name."' AND `mi`='".$middle_name."' AND `last_name`='".$last_name."'";
+                                    $first_name = isset($client_name_array[0])?$this->re_db_input($client_name_array[0]):'';
+                                    $middle_name = isset($client_name_array[1])?$this->re_db_input($client_name_array[1]):'';
+                                    $last_name = isset($client_name_array[2])?$this->re_db_input($client_name_array[2]):'';
+                                }
+                                else
+                                {
+                                    $first_name = isset($client_name_array[0])?$this->re_db_input($client_name_array[0]):'';
+                                    $middle_name = '';
+                                    $last_name = isset($client_name_array[1])?$this->re_db_input($client_name_array[1]):'';
+                                }
+                                if($registration_line1 != '')
+                                {
+                                    $q = "SELECT * FROM `".CLIENT_MASTER."` WHERE `is_delete`='0' AND `first_name`='".$first_name."' AND `mi`='".$middle_name."' AND `last_name`='".$last_name."' AND `zip_code`='".$check_data_val['zip_code']."'";
                     				$res = $this->re_db_query($q);
                     				$return = $this->re_db_num_rows($res);
                     				if($return > 0)
@@ -1369,7 +1419,7 @@
                     			        $res = $this->re_db_query($q);
                                         $result = 1;
                     				}
-                                }*/
+                                }
                                 /*else
                                 {
                                         $q = "INSERT INTO `".IMPORT_EXCEPTION."` SET `file_id`='".$check_data_val['file_id']."',`temp_data_id`='".$check_data_val['id']."',`date`='".date('Y-m-d')."',`rep`='".$check_data_val['representative_number']."',`rep_name`='".$check_data_val['representative_name']."',`account_no`='".$check_data_val['mutual_fund_customer_account_number']."',`client`='".$check_data_val['registration_line1']."',`cusip`='".$check_data_val['cusip_number']."',`principal`='0',`commission`='0',`error_code_id`='10',`field`='registration_line1',`file_type`='1'".$this->insert_common_sql();
@@ -1813,9 +1863,19 @@
                     {
                         $registration_line1 = isset($check_data_val['registration_line1'])?$this->re_db_input($check_data_val['registration_line1']):'';
                         $client_name_array = explode(' ',$registration_line1);
-                        $first_name = isset($client_name_array[0])?$this->re_db_input($client_name_array[0]):'';
-                        $middle_name = isset($client_name_array[1])?$this->re_db_input($client_name_array[1]):'';
-                        $last_name = isset($client_name_array[2])?$this->re_db_input($client_name_array[2]):'';
+                        if(isset($client_name_array[2]) && $client_name_array[2] != '')
+                        {
+                            $first_name = isset($client_name_array[0])?$this->re_db_input($client_name_array[0]):'';
+                            $middle_name = isset($client_name_array[1])?$this->re_db_input($client_name_array[1]):'';
+                            $last_name = isset($client_name_array[2])?$this->re_db_input($client_name_array[2]):'';
+                        }
+                        else
+                        {
+                            $first_name = isset($client_name_array[0])?$this->re_db_input($client_name_array[0]):'';
+                            $middle_name = '';
+                            $last_name = isset($client_name_array[1])?$this->re_db_input($client_name_array[1]):'';
+                        }
+                        
                     }
                     /*if(isset($check_data_val['mutual_fund_customer_account_number']))
                     {
@@ -2161,7 +2221,7 @@
                             $branch = isset($get_branch_company_detail['branch_id'])?$get_branch_company_detail['branch_id']:'';
                             $company = isset($get_branch_company_detail['company_id'])?$get_branch_company_detail['company_id']:'';
                             
-                            $q1 = "INSERT INTO `".TRANSACTION_MASTER."` SET `file_id`='".$check_data_val['file_id']."',`trade_date`='".$check_data_val['trade_date']."',`posting_date`='".date('Y-m-d')."',`invest_amount`='".ltrim($check_data_val['gross_transaction_amount'],0)."',`gross_amount_sign_code`='".$check_data_val['gross_amount_sign_code']."',`dealer_commission_sign_code`='".$check_data_val['dealer_commission_sign_code']."',`commission_received`='".ltrim($check_data_val['dealer_commission_amount'],0)."',`product_cate`='".$product_category_id."',`product`='".$product_id."',`batch`='".$_SESSION['batch_id']."',`sponsor`='".$sponsor_id."',`broker_name`='".$broker_id."',`client_name`='".$client_id."',`client_number`='".$check_data_val['customer_account_number']."',`branch`='".$branch."',`company`='".$company."',`split`='1',`buy_sell`='1',`cancel`='2'".$con."".$this->insert_common_sql();
+                            $q1 = "INSERT INTO `".TRANSACTION_MASTER."` SET `file_id`='".$check_data_val['file_id']."',`source`='DS',`trade_date`='".$check_data_val['trade_date']."',`posting_date`='".date('Y-m-d')."',`invest_amount`='".ltrim($check_data_val['gross_transaction_amount'],0)."',`gross_amount_sign_code`='".$check_data_val['gross_amount_sign_code']."',`dealer_commission_sign_code`='".$check_data_val['dealer_commission_sign_code']."',`commission_received`='".ltrim($check_data_val['dealer_commission_amount'],0)."',`product_cate`='".$product_category_id."',`product`='".$product_id."',`batch`='".$_SESSION['batch_id']."',`sponsor`='".$sponsor_id."',`broker_name`='".$broker_id."',`client_name`='".$client_id."',`client_number`='".$check_data_val['customer_account_number']."',`branch`='".$branch."',`company`='".$company."',`split`='1',`buy_sell`='1',`cancel`='2'".$con."".$this->insert_common_sql();
          			        $res1 = $this->re_db_query($q1);
                             $last_inserted_id = $this->re_db_insert_id();
                             
@@ -2439,6 +2499,8 @@
                  $file_name_array = explode('.',$file_name);
                  $file_type_key = substr($file_name_array[0], -2);
                  $file_type_check = $file_type_key;
+                 $dst_system_id = '';
+                 $dst_management_code = '';
                  
                  if(isset($file_type_check) && ($file_type_check == '07' || $file_type_check == '08' || $file_type_check == '09'))
                  {
@@ -2454,6 +2516,8 @@
                             }
                             else
                             {
+                                $dst_system_id = substr($val_string, 64, 3);
+                                $dst_management_code = substr($val_string, 67, 2);
                                 $data_array[$array_key][$record_type] = array("record_type" => substr($val_string, 0, 3),"sequence_number" => substr($val_string, 3, 3),"file_type" => substr($val_string, 6, 15),"super_sheet_date" => substr($val_string, 21, 8),"processed_date" => substr($val_string, 29, 8),"processed_time" => substr($val_string, 37, 8),"job_name" => substr($val_string, 45, 8),"file_format_code" => substr($val_string, 53, 3),"request_number" => substr($val_string, 56, 7),"*" => substr($val_string, 63, 1),"system_id" => substr($val_string, 64, 3),"management_code" => substr($val_string, 67, 2),"**" => substr($val_string, 69, 1),"populated_by_dst" => substr($val_string, 70, 1),"variable_universal_life" => substr($val_string, 71, 1),"unused_header_RHR" => substr($val_string, 72, 88));
                             }
                         
@@ -2481,7 +2545,7 @@
                                 {
                                     $array_detail_key++;
                                 }
-                                $data_array[$array_key]['DETAIL'][$array_detail_key][$detail_record_type] = array("record_type1" => substr($val_string, 0, 3),"sequence_number1" => substr($val_string, 3, 3),"dealer_number" => substr($val_string, 6, 7),"dealer_branch_number" => substr($val_string, 13, 9),"cusip_number" => substr($val_string, 22, 9),"mutual_fund_fund_code" => substr($val_string, 31, 7),"mutual_fund_customer_account_number" => substr($val_string, 38, 20),"account_number_code" => substr($val_string, 58, 1),"mutual_fund_established_date" => substr($val_string, 59, 8),"last_maintenance_date" => substr($val_string, 67, 8),"line_code" => substr($val_string, 75, 1),"alpha_code" => substr($val_string, 76, 10),"mutual_fund_dealer_level_control_code" => substr($val_string, 86, 1),"social_code" => substr($val_string, 87, 3),"resident_state_country_code" => substr($val_string, 90, 3),"social_security_number" => substr($val_string, 93, 9),"ssn_status_code" => substr($val_string, 102, 1),"systematic_withdrawal_plan(SWP)_account" => substr($val_string, 103, 1),"pre_authorized_checking_amount" => substr($val_string, 104, 1),"automated_clearing_house_account(ACH)" => substr($val_string, 105, 1),"mutual_fund_reinvest_to_another_account" => substr($val_string, 106, 1),"mutual_fund_capital_gains_distribution_option" => substr($val_string, 107, 1),"mutual_fund_divident_distribution_option" => substr($val_string, 108, 1),"check_writing_account" => substr($val_string, 109, 1),"expedited_redemption_account" => substr($val_string, 110, 1),"mutual_fund_sub_account" => substr($val_string, 111, 1),"foreign_tax_rate" => substr($val_string, 112, 3),"zip_code" => substr($val_string, 115, 9),"zipcode_future_expansion" => substr($val_string, 124, 2),"cumulative_discount_number" => substr($val_string, 126, 9),"letter_of_intent(LOI)_number" => substr($val_string, 135, 9),"timer_flag" => substr($val_string, 144, 1),"list_bill_account" => substr($val_string, 145, 1),"mutual_fund_monitored_VIP_account" => substr($val_string, 146, 1),"mutual_fund_expedited_exchange_account" => substr($val_string, 147, 1),"mutual_fund_penalty_withholding_account" => substr($val_string, 148, 1),"certificate_issuance_code" => substr($val_string, 149, 1),"mutual_fund_stop_transfer_flag" => substr($val_string, 150, 1),"mutual_fund_blue_sky_exemption_flag" => substr($val_string, 151, 1),"bank_card_issued" => substr($val_string, 152, 1),"fiduciary_account" => substr($val_string, 153, 1),"plan_status_code" => substr($val_string, 154, 1),"mutual_fund_net_asset_value(NAV)_account" => substr($val_string, 155, 1),"mailing_flag" => substr($val_string, 156, 1),"interested_party_code" => substr($val_string, 157, 1),"mutual_fund_share_account_phone_check_redemption_code" => substr($val_string, 158, 1),"mutual_fund_share_account_house_account_code" => substr($val_string, 159, 1));
+                                $data_array[$array_key]['DETAIL'][$array_detail_key][$detail_record_type] = array("dst_system_id"=>$dst_system_id,"dst_management_code"=>$dst_management_code,"record_type1" => substr($val_string, 0, 3),"sequence_number1" => substr($val_string, 3, 3),"dealer_number" => substr($val_string, 6, 7),"dealer_branch_number" => substr($val_string, 13, 9),"cusip_number" => substr($val_string, 22, 9),"mutual_fund_fund_code" => substr($val_string, 31, 7),"mutual_fund_customer_account_number" => substr($val_string, 38, 20),"account_number_code" => substr($val_string, 58, 1),"mutual_fund_established_date" => substr($val_string, 59, 8),"last_maintenance_date" => substr($val_string, 67, 8),"line_code" => substr($val_string, 75, 1),"alpha_code" => substr($val_string, 76, 10),"mutual_fund_dealer_level_control_code" => substr($val_string, 86, 1),"social_code" => substr($val_string, 87, 3),"resident_state_country_code" => substr($val_string, 90, 3),"social_security_number" => substr($val_string, 93, 9),"ssn_status_code" => substr($val_string, 102, 1),"systematic_withdrawal_plan(SWP)_account" => substr($val_string, 103, 1),"pre_authorized_checking_amount" => substr($val_string, 104, 1),"automated_clearing_house_account(ACH)" => substr($val_string, 105, 1),"mutual_fund_reinvest_to_another_account" => substr($val_string, 106, 1),"mutual_fund_capital_gains_distribution_option" => substr($val_string, 107, 1),"mutual_fund_divident_distribution_option" => substr($val_string, 108, 1),"check_writing_account" => substr($val_string, 109, 1),"expedited_redemption_account" => substr($val_string, 110, 1),"mutual_fund_sub_account" => substr($val_string, 111, 1),"foreign_tax_rate" => substr($val_string, 112, 3),"zip_code" => substr($val_string, 115, 9),"zipcode_future_expansion" => substr($val_string, 124, 2),"cumulative_discount_number" => substr($val_string, 126, 9),"letter_of_intent(LOI)_number" => substr($val_string, 135, 9),"timer_flag" => substr($val_string, 144, 1),"list_bill_account" => substr($val_string, 145, 1),"mutual_fund_monitored_VIP_account" => substr($val_string, 146, 1),"mutual_fund_expedited_exchange_account" => substr($val_string, 147, 1),"mutual_fund_penalty_withholding_account" => substr($val_string, 148, 1),"certificate_issuance_code" => substr($val_string, 149, 1),"mutual_fund_stop_transfer_flag" => substr($val_string, 150, 1),"mutual_fund_blue_sky_exemption_flag" => substr($val_string, 151, 1),"bank_card_issued" => substr($val_string, 152, 1),"fiduciary_account" => substr($val_string, 153, 1),"plan_status_code" => substr($val_string, 154, 1),"mutual_fund_net_asset_value(NAV)_account" => substr($val_string, 155, 1),"mailing_flag" => substr($val_string, 156, 1),"interested_party_code" => substr($val_string, 157, 1),"mutual_fund_share_account_phone_check_redemption_code" => substr($val_string, 158, 1),"mutual_fund_share_account_house_account_code" => substr($val_string, 159, 1));
                                 $array_detail_check_key++;
                             }
                             else if($detail_record_type == 002)
@@ -2543,6 +2607,8 @@
                         $record_type = substr($val_string, 0, 3);
                         if(isset($record_type) && $record_type == 'RHR')
                         {
+                            $dst_system_id = substr($val_string, 13, 3);
+                            $dst_management_code = substr($val_string, 16, 2);
                             $data_array[$array_key][$record_type] = array("record_type" => substr($val_string, 0, 3),"file_type" => substr($val_string, 3, 10),"system_id" => substr($val_string, 13, 3),"management_code" => substr($val_string, 16, 2),"fund_sponsor_id" => substr($val_string, 18, 5),"transmission_date" => substr($val_string, 23, 8),"unused_RHR" => substr($val_string, 31, 169));
                         }
                         else if(isset($record_type) && ($record_type != 'RHR' && $record_type != 'RTR'))
@@ -2550,7 +2616,7 @@
                             $commission_record_type_code = substr($val_string, 0, 1);
                             if($commission_record_type_code == '1' || $commission_record_type_code == '3')
                             {
-                                $data_array[$array_key]['DETAIL'][$commission_record_type_code][] = array("commission_record_type_code" => substr($val_string, 0, 1),"dealer_number" => substr($val_string, 1, 7),"dealer_branch_number" => substr($val_string, 8, 9),"representative_number" => substr($val_string, 17, 9),"representative_name" => substr($val_string, 26, 30),"CUSIP_number" => substr($val_string, 56, 9),"alpha_code" => substr($val_string, 65, 10),"trade_date" => substr($val_string, 75, 8),"gross_transaction_amount" => substr($val_string, 83, 15),"gross_amount_sign_code" => substr($val_string, 98, 1),"dealer_commission_amount" => substr($val_string, 99, 15),"commission_rate" => substr($val_string, 114, 5),"customer_account_number" => substr($val_string, 119, 20),"account_number_type_code" => substr($val_string, 139, 1),"purchase_type_code" => substr($val_string, 140, 1),"social_code" => substr($val_string, 141, 3),"cumulative_discount_number" => substr($val_string, 144, 9),"letter_of_intent(LOI)_number" => substr($val_string, 153, 9),"social_security_number" => substr($val_string, 162, 9),"social_security_number_status_code" => substr($val_string, 171, 1),"transaction_share_count" => substr($val_string, 172, 15),"share_price_amount" => substr($val_string, 187, 9),"resident_state_country_code" => substr($val_string, 196, 3),"dealer_commission_sign_code" => substr($val_string, 199, 1));
+                                $data_array[$array_key]['DETAIL'][$commission_record_type_code][] = array("dst_system_id"=>$dst_system_id,"dst_management_code"=>$dst_management_code,"commission_record_type_code" => substr($val_string, 0, 1),"dealer_number" => substr($val_string, 1, 7),"dealer_branch_number" => substr($val_string, 8, 9),"representative_number" => substr($val_string, 17, 9),"representative_name" => substr($val_string, 26, 30),"CUSIP_number" => substr($val_string, 56, 9),"alpha_code" => substr($val_string, 65, 10),"trade_date" => substr($val_string, 75, 8),"gross_transaction_amount" => substr($val_string, 83, 15),"gross_amount_sign_code" => substr($val_string, 98, 1),"dealer_commission_amount" => substr($val_string, 99, 15),"commission_rate" => substr($val_string, 114, 5),"customer_account_number" => substr($val_string, 119, 20),"account_number_type_code" => substr($val_string, 139, 1),"purchase_type_code" => substr($val_string, 140, 1),"social_code" => substr($val_string, 141, 3),"cumulative_discount_number" => substr($val_string, 144, 9),"letter_of_intent(LOI)_number" => substr($val_string, 153, 9),"social_security_number" => substr($val_string, 162, 9),"social_security_number_status_code" => substr($val_string, 171, 1),"transaction_share_count" => substr($val_string, 172, 15),"share_price_amount" => substr($val_string, 187, 9),"resident_state_country_code" => substr($val_string, 196, 3),"dealer_commission_sign_code" => substr($val_string, 199, 1));
                             }
                         }
                         else if(isset($record_type) && $record_type == 'RTR')
@@ -2653,6 +2719,25 @@
                     LEFT JOIN `".IMPORT_EXCEPTION_MASTER."` AS `em` on `at`.`error_code_id` = `em`.`id`
                     LEFT JOIN `".IMPORT_CURRENT_FILES."` AS `cf` on `at`.`file_id` = `cf`.`id`
                     WHERE `at`.`is_delete`='0' and `at`.`solved`='0' and `at`.`file_id`='".$file_id."' and `cf`.`user_id`='".$_SESSION['user_id']."'
+                    ORDER BY `at`.`id` ASC";
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     array_push($return,$row);
+                     
+    			}
+            }
+			return $return;
+		}
+        public function select_single_exception_data($file_id,$exception_id){
+			$return = array();
+			
+			$q = "SELECT `at`.*,`em`.`error`
+					FROM `".IMPORT_EXCEPTION."` AS `at`
+                    LEFT JOIN `".IMPORT_EXCEPTION_MASTER."` AS `em` on `at`.`error_code_id` = `em`.`id`
+                    LEFT JOIN `".IMPORT_CURRENT_FILES."` AS `cf` on `at`.`file_id` = `cf`.`id`
+                    WHERE `at`.`is_delete`='0' and `at`.`solved`='0' and `at`.`file_id`='".$file_id."' and `at`.`temp_data_id`='".$exception_id."' and `cf`.`user_id`='".$_SESSION['user_id']."'
                     ORDER BY `at`.`id` ASC";
 			$res = $this->re_db_query($q);
             if($this->re_db_num_rows($res)>0){
@@ -2823,6 +2908,36 @@
                 $a = 0;
     			while($row = $this->re_db_fetch_array($res)){
     			     $return = $row['source'];
+                }
+            }
+			return $return;
+		}
+        public function get_files_header_detail($file_id='',$record_id='',$file_type=''){
+			$return = array();
+			
+			if($file_type==1)
+            {
+                $q = "SELECT `fd`.`header_id`,`fh`.*
+					FROM `".IMPORT_DETAIL_DATA."` AS `fd`
+                    LEFT JOIN `".IMPORT_HEADER1_DATA."` AS `fh` on `fh`.`id`=`fd`.`header_id`
+                    WHERE `fd`.`is_delete`='0' and `fd`.`id`='".$record_id."' and `fd`.`file_id`='".$file_id."'
+                    ORDER BY `fd`.`id` ASC";
+			    $res = $this->re_db_query($q);
+            }
+            else
+            {
+                $q = "SELECT `idcd`.`idc_header_id`,`ih`.*
+					FROM `".IMPORT_IDC_DETAIL_DATA."` AS `idcd`
+                    LEFT JOIN `".IMPORT_IDC_HEADER_DATA."` AS `ih` on `ih`.`id`=`idcd`.`idc_header_id`
+                    WHERE `idcd`.`is_delete`='0' and `idcd`.`id`='".$record_id."' and `idcd`.`file_id`='".$file_id."'
+                    ORDER BY `idcd`.`id` ASC";
+			    $res = $this->re_db_query($q);
+            }
+            
+            if(isset($res) && $this->re_db_num_rows($res)>0){
+                $a = 0;
+    			while($row = $this->re_db_fetch_array($res)){
+    			     $return = $row;
                 }
             }
 			return $return;
