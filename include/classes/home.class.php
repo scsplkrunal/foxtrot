@@ -64,7 +64,7 @@
             }
 			return $return;
 		}
-        public function select_ytd_amount($con=''){
+        public function select_ytd_amount_list($con=''){
            
             $return = array();
             $return_row = array();
@@ -96,6 +96,49 @@
                      $return_row['total_ytd_commission_pending'][]= $row['total_ytd_commission_pending'];
     			}
                 $return = $return_row;
+            }
+            return $return;
+		}
+        public function select_ytd_amount($con=''){
+           
+            $return = array();
+            $return_row = array();
+            
+            $q = "SELECT `t`.`product_cate`,MONTH(`t`.`created_time`) as month, SUM(`t`.`invest_amount`) AS total_ytd_investment_amount,`pc`.`type` AS product_category, 
+            IFNULL((SELECT SUM(ftm.commission_received) 
+            FROM `".TRANSACTION_MASTER."` as ftm 
+            WHERE MONTH(`t`.`created_time`) = MONTH(`ftm`.`created_time`) AND ftm.`is_delete`='0' AND ftm.`hold_commission`='2' 
+            GROUP BY MONTH(`ftm`.`created_time`)),0) AS total_ytd_commission_received,
+            
+            IFNULL((SELECT SUM(ftma.commission_received) 
+            FROM `".TRANSACTION_MASTER."` as ftma 
+            WHERE MONTH(`t`.`created_time`) = MONTH(`ftma`.`created_time`) AND ftma.`is_delete`='0' AND ftma.`hold_commission`='1' 
+            GROUP BY MONTH(`ftma`.`created_time`)),0) AS total_ytd_commission_pending 
+            
+            FROM `".TRANSACTION_MASTER."` AS `t` 
+            LEFT JOIN `".PRODUCT_TYPE."` AS `pc` ON `pc`.`id`=`t`.`product_cate` 
+            WHERE `t`.`is_delete`='0' ".$con." 
+            GROUP BY MONTH(`t`.`created_time`) 
+            ORDER BY MONTH(`t`.`created_time`) ASC";
+            
+			$res = $this->re_db_query($q);
+            if($this->re_db_num_rows($res)>0){
+    			while($row = $this->re_db_fetch_array($res)){
+    			     $return_row[$row['month']]['month'] = $row['month'];
+                     $return_row[$row['month']]['product_cate'] = $row['product_cate'];
+                     $return_row[$row['month']]['product_category'] = $row['product_category'];
+                     $return_row[$row['month']]['total_ytd_investment_amount'] = $row['total_ytd_investment_amount'];
+                     $return_row[$row['month']]['total_ytd_commission_received'] = $row['total_ytd_commission_received'];
+                     $return_row[$row['month']]['total_ytd_commission_pending'] = $row['total_ytd_commission_pending'];
+                     
+                     /*$return_row[$row['month']]['month'][]= $row['month'];
+                     $return_row[$row['month']]['product_cate'][]= $row['product_cate'];
+                     $return_row[$row['month']]['product_category'][]= $row['product_category'];
+                     $return_row[$row['month']]['total_ytd_investment_amount'][]= $row['total_ytd_investment_amount'];
+                     $return_row[$row['month']]['total_ytd_commission_received'][]= $row['total_ytd_commission_received'];
+                     $return_row[$row['month']]['total_ytd_commission_pending'][]= $row['total_ytd_commission_pending'];*/
+    			}
+                $return = $return_row;//echo '<pre>';print_r($return);exit;
             }
             return $return;
 		}

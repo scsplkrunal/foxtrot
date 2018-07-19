@@ -114,43 +114,40 @@ Highcharts.chart('container_daily_importing', {
     }]
 });*/
 
-/*Highcharts.chart('container2', {
+Highcharts.chart('container2', {
+    colors: ['#7cb5ec','#434348','#ffa500'],
     chart: {
         zoomType: 'xy'
     },
     title: {
         text: ''
     },
-    subtitle: {
-        text: 'Source: WorldClimate.com'
-    },
     xAxis: [{
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        categories: <?php echo $dis_month_list; ?>,
         crosshair: true
     }],
     yAxis: [{ // Primary yAxis
         labels: {
-            format: '{value}°C',
+            format: '{value}',
             style: {
                 color: Highcharts.getOptions().colors[1]
             }
         },
         title: {
-            text: 'Temperature',
+            text: 'Investment amount',
             style: {
                 color: Highcharts.getOptions().colors[1]
             }
         }
     }, { // Secondary yAxis
         title: {
-            text: 'Rainfall',
+            text: 'Commission amount',
             style: {
                 color: Highcharts.getOptions().colors[0]
             }
         },
         labels: {
-            format: '{value} mm',
+            format: '{value}',
             style: {
                 color: Highcharts.getOptions().colors[0]
             }
@@ -163,31 +160,31 @@ Highcharts.chart('container_daily_importing', {
     legend: {
         layout: 'vertical',
         align: 'left',
-        x: 120,
+        x: 90,
         verticalAlign: 'top',
-        y: 100,
+        y: 0,
         floating: true,
         backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
     },
     series: [{
-        name: 'Rainfall',
+        name: 'Investment Amount',
         type: 'column',
         yAxis: 1,
-        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
-        tooltip: {
-            valueSuffix: ' mm'
-        }
-
+        data: [<?php echo $ytd_total_investment_amount_chart;?>],
+        
     }, {
-        name: 'Temperature',
+        name: 'Commission Received',
         type: 'spline',
-        data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
-        tooltip: {
-            valueSuffix: '°C'
-        }
+        data: [<?php echo $ytd_total_commission_received_chart;?>],
+        
+    }, {
+        name: 'Retention',
+        type: 'spline',
+        data: [<?php echo $ytd_total_commission_pending_chart;?>],
+        
     }]
-});*/
-Highcharts.chart('container2', {
+});
+/*Highcharts.chart('container2', {
     chart: {
         type: 'bar'
     },
@@ -197,7 +194,7 @@ Highcharts.chart('container2', {
     
     xAxis: {
         categories: 
-        <?php echo $ytd_product_category_chart;?>
+        <?php echo $dis_month_list;?>
         ,
         title: {
             text: null
@@ -239,7 +236,7 @@ Highcharts.chart('container2', {
         data: [<?php echo $ytd_total_commission_pending_chart;?>]
 
     }]
-});
+});*/
 Highcharts.chart('container3', {
     colors: ['#5b9bd5','#ffa500','#70ad48'],
     chart: {
@@ -314,6 +311,65 @@ Highcharts.chart('container_commission', {
         ]
     }]
 });
+
+/*Highcharts.chart('container_payroll', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: ''
+    },
+    xAxis: {
+        categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Total fruit consumption'
+        },
+        stackLabels: {
+            enabled: true,
+            style: {
+                fontWeight: 'bold',
+                color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+            }
+        }
+    },
+    legend: {
+        align: 'right',
+        x: -30,
+        verticalAlign: 'top',
+        y: 25,
+        floating: true,
+        backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+        borderColor: '#CCC',
+        borderWidth: 1,
+        shadow: false
+    },
+    tooltip: {
+        headerFormat: '<b>{point.x}</b><br/>',
+        pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+    },
+    plotOptions: {
+        column: {
+            stacking: 'normal',
+            dataLabels: {
+                enabled: true,
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+            }
+        }
+    },
+    series: [{
+        name: 'John',
+        data: [5, 3, 4, 7, 2]
+    }, {
+        name: 'Jane',
+        data: [2, 2, 3, 2, 1]
+    }, {
+        name: 'Joe',
+        data: [3, 4, 4, 2, 5]
+    }]
+});*/
 Highcharts.chart('container_payroll', {
     chart: {
         type: 'column'
@@ -330,7 +386,7 @@ Highcharts.chart('container_payroll', {
             'Net Commission',
             'Adjustment',
             'Total Check Amount',
-            'Balance Carried Forword',
+            'Balance Carried Forword',  
             'Retention'
         ],
         crosshair: true
@@ -584,6 +640,8 @@ Highcharts.chart('container_payroll', {
 					<div class="row">
                         <?php 
                         foreach($ytd_product_category as $key=>$val){
+                            if($val != '') 
+                            {
                         ?>
 						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
 							<span class="data01title"><b><?php echo $val;?>:</b></span>
@@ -591,7 +649,7 @@ Highcharts.chart('container_payroll', {
                             <span class="data01count"><?php echo $ytd_total_commission_received[$key];?></span>
                             <span class="data01count"><?php echo $ytd_total_commission_pending[$key];?></span>
                         </div>
-                        <?php } ?>
+                        <?php } } ?>
 					</div>
 				</div>
                 <table width='100%' class="graphdata02_5"> 

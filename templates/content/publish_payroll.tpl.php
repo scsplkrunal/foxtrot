@@ -39,11 +39,52 @@
                             </div>
                         </div>
                     </div>
+                    <div id="myModal" class="modal fade" role="dialog" aria-hidden="true" tabindex="-1">
+                    	<div class="modal-dialog modal-lg">
+                    		<!-- Modal content-->
+                    		<div class="modal-content">
+                                <!--<div class="modal-header" style="margin-bottom: 0px !important;">
+                        			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                        			<h4 class="modal-title">Report</h4>
+                        		</div>-->
+                                
+                    			<div class="modal-body" id="output_screen_content">Loading...</div>
+                                <!--<div class="modal-footer" style="margin-bottom: 0px !important;">
+                        			<a href="<?php echo SITE_URL;?>report_batch.php?open=output_print&filter=<?php if(isset($_GET['filter']) && $_GET['filter']){ echo $_GET['filter']; }?>" class="btn btn-warning">Output to Printer</a>
+                                    <a href="<?php echo SITE_URL;?>report_batch.php?filter=<?php if(isset($_GET['filter']) && $_GET['filter']){ echo $_GET['filter']; }?>" class="btn btn-warning">Output to PDF</a>
+                        		</div>-->
+                    		</div>
+                    	</div>
+                    </div>
                 </form>
              </div>
         </div>
     </div>
 </div>
+<?php if(isset($_GET['filter']) && $_GET['filter'] != '' && $output == 1){?>
+<script>
+//location.href=location.href.replace(/&?open=([^&]$|[^&]*)/i, "");
+$(document).ready(function(){
+    
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) 
+        {
+            document.getElementById("output_screen_content").innerHTML = this.responseText;
+        }
+    };
+    xmlhttp.open('GET', 'ajax_publish_payroll_report_view.php?filter=<?php echo $_GET['filter']; ?>', true);
+    xmlhttp.send();
+
+
+    $('#myModal').modal({
+    		show: true
+    	});
+       //location.href=location.href.replace(/&?open=([^&]$|[^&]*)/i, ""); 
+});
+
+</script>
+<?php } ?>
 <script type="text/javascript">
 //date format
 $('#demo-dp-range .input-daterange').datepicker({

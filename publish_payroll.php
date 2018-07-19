@@ -7,12 +7,21 @@
     
     $instance = new payroll();
     
-    if(isset($_POST['submit'])&& $_POST['submit']=='Proceed'){
+    if(isset($_POST['submit'])&& $_POST['submit']=='Proceed'){echo '<pre>';print_r($_POST);exit;
+        $data_array = json_encode($_POST);
         $publish_report = isset($_POST['publish_report'])?$instance->re_db_input($_POST['publish_report']):0;
+        $output = isset($_POST['output'])?$instance->re_db_input($_POST['output']):0;
         
         if(isset($publish_report) && $publish_report == 1)
         {
-            header("location:".SITE_URL."report_payroll_broker_statement.php");exit;
+            if($output == 1)
+            {
+                header('location:'.CURRENT_PAGE.'?filter='.$data_array);exit;
+            }
+            else 
+            {
+                header("location:".SITE_URL."report_payroll_broker_statement.php");exit;
+            }
         }
         else if(isset($publish_report) && $publish_report == 2)
         {

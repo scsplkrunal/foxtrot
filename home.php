@@ -10,7 +10,7 @@
     $dis_month_list = json_encode(array_values($month_array));
     //print_r($dis_month_list);exit;
     $instance = new home();
-    
+    //print_r($_POST);exit;
     if(isset($_POST['filter']) && $_POST['filter'] == 'Filter')
     {
         $from_date = $_POST['from_date'];
@@ -110,6 +110,7 @@
             }
             //YTD chart details:
             $ytd_amount_array = $instance->select_ytd_amount($con);
+            $ytd_amount_array_list = $instance->select_ytd_amount_list($con);
             $_SESSION['chart_5'] = $con;
         }
         else
@@ -117,6 +118,7 @@
             //YTD chart details:
             $con = isset($_SESSION['chart_5'])?$_SESSION['chart_5']:'';
             $ytd_amount_array = $instance->select_ytd_amount($con);
+            $ytd_amount_array_list = $instance->select_ytd_amount_list($con);
         }
     }
     else
@@ -142,6 +144,7 @@
         
         //YTD chart details:
         $ytd_amount_array = $instance->select_ytd_amount();
+        $ytd_amount_array_list = $instance->select_ytd_amount_list();
         
     }
     $di_completed_files = isset($get_di_completed_files['total_completed_files'])?$get_di_completed_files['total_completed_files']:0;
@@ -175,15 +178,39 @@
     $total_processed_transaction = isset($transaction_month_data_processed)?array_sum($transaction_month_data_processed):0;
     $total_hold_transaction = isset($transaction_month_data_hold)?array_sum($transaction_month_data_hold):0;
     
-    $ytd_product_category = isset($ytd_amount_array['product_category'])?$ytd_amount_array['product_category']:array();
-    $ytd_total_investment_amount = isset($ytd_amount_array['total_ytd_investment_amount'])?$ytd_amount_array['total_ytd_investment_amount']:0;
-    $ytd_total_commission_received = isset($ytd_amount_array['total_ytd_commission_received'])?$ytd_amount_array['total_ytd_commission_received']:0;
-    $ytd_total_commission_pending = isset($ytd_amount_array['total_ytd_commission_pending'])?$ytd_amount_array['total_ytd_commission_pending']:0;
+    foreach($month_array as $key=>$val)
+    {
+        if (array_key_exists($key, $ytd_amount_array)) {
+            $ytd_amount_array_['month'][] = isset($ytd_amount_array[$key]['month'])?$ytd_amount_array[$key]['month']:'';
+            $ytd_amount_array_['product_cate'][] = isset($ytd_amount_array[$key]['product_cate'])?$ytd_amount_array[$key]['product_cate']:'';
+            $ytd_amount_array_['product_category'][] = isset($ytd_amount_array[$key]['product_category'])?$ytd_amount_array[$key]['product_category']:'';
+            $ytd_amount_array_['total_ytd_investment_amount'][] = isset($ytd_amount_array[$key]['total_ytd_investment_amount'])?$ytd_amount_array[$key]['total_ytd_investment_amount']:0;
+            $ytd_amount_array_['total_ytd_commission_received'][] = isset($ytd_amount_array[$key]['total_ytd_commission_received'])?$ytd_amount_array[$key]['total_ytd_commission_received']:0;
+            $ytd_amount_array_['total_ytd_commission_pending'][] = isset($ytd_amount_array[$key]['total_ytd_commission_pending'])?$ytd_amount_array[$key]['total_ytd_commission_pending']:0;
+        }
+        else
+        {
+            $ytd_amount_array_['month'][] = '';
+            $ytd_amount_array_['product_cate'][] = '';
+            $ytd_amount_array_['product_category'][] = '';
+            $ytd_amount_array_['total_ytd_investment_amount'][] = 0;
+            $ytd_amount_array_['total_ytd_commission_received'][] = 0;
+            $ytd_amount_array_['total_ytd_commission_pending'][] = 0;
+        }
+        
+    }
     
-    $ytd_product_category_chart = isset($ytd_amount_array['product_category'])?json_encode($ytd_amount_array['product_category']):json_encode(array());
-    $ytd_total_investment_amount_chart = isset($ytd_amount_array['total_ytd_investment_amount'])?implode(',',$ytd_amount_array['total_ytd_investment_amount']):'';
-    $ytd_total_commission_received_chart = isset($ytd_amount_array['total_ytd_commission_received'])?implode(',',$ytd_amount_array['total_ytd_commission_received']):'';
-    $ytd_total_commission_pending_chart = isset($ytd_amount_array['total_ytd_commission_pending'])?implode(',',$ytd_amount_array['total_ytd_commission_pending']):'';
+    //foreach()
+    $ytd_product_category = isset($ytd_amount_array_list['product_category'])?$ytd_amount_array_list['product_category']:array();
+    $ytd_total_investment_amount = isset($ytd_amount_array_list['total_ytd_investment_amount'])?$ytd_amount_array_list['total_ytd_investment_amount']:0;
+    $ytd_total_commission_received = isset($ytd_amount_array_list['total_ytd_commission_received'])?$ytd_amount_array_list['total_ytd_commission_received']:0;
+    $ytd_total_commission_pending = isset($ytd_amount_array_list['total_ytd_commission_pending'])?$ytd_amount_array_list['total_ytd_commission_pending']:0;
+    
+    $ytd_month_chart = isset($ytd_amount_array_['month'])?json_encode($ytd_amount_array_['month']):array();
+    $ytd_product_category_chart = isset($ytd_amount_array_['product_category'])?json_encode($ytd_amount_array_['product_category']):array();
+    $ytd_total_investment_amount_chart = isset($ytd_amount_array_['total_ytd_investment_amount'])?implode(',',$ytd_amount_array_['total_ytd_investment_amount']):0;
+    $ytd_total_commission_received_chart = isset($ytd_amount_array_['total_ytd_commission_received'])?implode(',',$ytd_amount_array_['total_ytd_commission_received']):0;
+    $ytd_total_commission_pending_chart = isset($ytd_amount_array_['total_ytd_commission_pending'])?implode(',',$ytd_amount_array_['total_ytd_commission_pending']):0;
     
     include(DIR_WS_TEMPLATES."main_page.tpl.php");
 ?> 
